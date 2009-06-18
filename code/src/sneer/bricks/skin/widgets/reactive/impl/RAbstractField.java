@@ -29,7 +29,7 @@ import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
 import sneer.foundation.lang.Consumer;
 import sneer.foundation.lang.PickyConsumer;
-import sneer.foundation.lang.exceptions.IllegalParameter;
+import sneer.foundation.lang.exceptions.Refusal;
 
 
 abstract class RAbstractField<WIDGET extends JTextComponent> extends RPanel<WIDGET> implements TextWidget<WIDGET> {
@@ -226,7 +226,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends RPanel<WIDG
 	protected void consume(String text) {
 		try {
 			_setter.consume(text);
-		} catch (IllegalParameter ip) {
+		} catch (Refusal ip) {
 			my(BlinkingLights.class).turnOn(LightType.ERROR, "Invalid Field Value: " + text, ip.getMessage(), ip, 20000);
 			my(Logger.class).logShort(ip, "Invalid Field Value: {} - ", text);
 			requestFocus();

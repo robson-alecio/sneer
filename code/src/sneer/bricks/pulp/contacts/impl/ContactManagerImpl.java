@@ -10,14 +10,14 @@ import sneer.bricks.pulp.reactive.collections.CollectionSignals;
 import sneer.bricks.pulp.reactive.collections.ListRegister;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
 import sneer.foundation.lang.PickyConsumer;
-import sneer.foundation.lang.exceptions.IllegalParameter;
+import sneer.foundation.lang.exceptions.Refusal;
 
 class ContactManagerImpl implements ContactManager {
     
     private final ListRegister<Contact> _contacts = my(CollectionSignals.class).newListRegister();
 
 	@Override
-	synchronized public Contact addContact(String nickname) throws IllegalParameter {
+	synchronized public Contact addContact(String nickname) throws Refusal {
 		nickname.toString();
 		
 		checkAvailability(nickname);
@@ -31,9 +31,9 @@ class ContactManagerImpl implements ContactManager {
 		return result;
 	}
 
-	private void checkAvailability(String nickname) throws IllegalParameter {
+	private void checkAvailability(String nickname) throws Refusal {
 		if (isNicknameAlreadyUsed(nickname))
-			throw new IllegalParameter("Nickname " + nickname + " is already being used.");
+			throw new Refusal("Nickname " + nickname + " is already being used.");
 	}
 
 	@Override
@@ -55,7 +55,7 @@ class ContactManagerImpl implements ContactManager {
 		return null;
 	}
 
-	synchronized private void changeNickname(Contact contact, String newNickname) throws IllegalParameter {
+	synchronized private void changeNickname(Contact contact, String newNickname) throws Refusal {
 		checkAvailability(newNickname);
 		((ContactImpl)contact).nickname(newNickname);
 	}
@@ -68,7 +68,7 @@ class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public PickyConsumer<String> nicknameSetterFor(final Contact contact) {
-		return new PickyConsumer<String>(){ @Override public void consume(String newNickname) throws IllegalParameter {
+		return new PickyConsumer<String>(){ @Override public void consume(String newNickname) throws Refusal {
 			changeNickname(contact, newNickname);
 		}};
 	}

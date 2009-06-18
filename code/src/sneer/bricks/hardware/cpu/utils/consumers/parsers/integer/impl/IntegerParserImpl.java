@@ -1,7 +1,7 @@
 package sneer.bricks.hardware.cpu.utils.consumers.parsers.integer.impl;
 
 import sneer.foundation.lang.PickyConsumer;
-import sneer.foundation.lang.exceptions.IllegalParameter;
+import sneer.foundation.lang.exceptions.Refusal;
 
 class IntegerParserImpl implements PickyConsumer<String> {
 
@@ -12,14 +12,14 @@ class IntegerParserImpl implements PickyConsumer<String> {
 	}
 
 	@Override
-	public void consume(String string) throws IllegalParameter {
+	public void consume(String string) throws Refusal {
 		Integer result;
 
 		try {
 			result = Integer.valueOf(string);
 
 		} catch (NumberFormatException e) {
-			throw new IllegalParameter(string + " is not a valid number.");
+			throw new Refusal(string + " is not a valid number.");
 		}
 
 		_endConsumer.consume(result);

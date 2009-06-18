@@ -12,7 +12,7 @@ import sneer.bricks.pulp.keymanager.KeyManager;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.foundation.brickness.PublicKey;
 import sneer.foundation.lang.Producer;
-import sneer.foundation.lang.exceptions.IllegalParameter;
+import sneer.foundation.lang.exceptions.Refusal;
 
 class IndividualSocketReceiver {
 
@@ -80,7 +80,7 @@ class IndividualSocketReceiver {
 	private Contact tryToCreate(String nickname) {
 		try {
 			return _contactManager.addContact(nickname);
-		} catch (IllegalParameter e) {
+		} catch (Refusal e) {
 			return null;
 		}
 	}

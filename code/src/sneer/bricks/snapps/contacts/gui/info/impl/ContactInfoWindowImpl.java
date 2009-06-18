@@ -43,7 +43,7 @@ import sneer.bricks.snapps.contacts.gui.ContactsGui;
 import sneer.bricks.snapps.contacts.gui.info.ContactInfoWindow;
 import sneer.foundation.lang.Functor;
 import sneer.foundation.lang.PickyConsumer;
-import sneer.foundation.lang.exceptions.IllegalParameter;
+import sneer.foundation.lang.exceptions.Refusal;
 
 class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 
@@ -111,7 +111,7 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 					return contact.nickname();
 				}});
 		
-		PickyConsumer<String> setter = new PickyConsumer<String>(){@Override public void consume(String value) throws IllegalParameter {
+		PickyConsumer<String> setter = new PickyConsumer<String>(){@Override public void consume(String value) throws Refusal {
 			my(ContactManager.class).nicknameSetterFor(contact()).consume(value);
 		}};
 		

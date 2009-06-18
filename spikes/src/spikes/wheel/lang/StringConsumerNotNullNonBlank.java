@@ -1,7 +1,7 @@
 package spikes.wheel.lang;
 
 import sneer.foundation.lang.PickyConsumer;
-import sneer.foundation.lang.exceptions.IllegalParameter;
+import sneer.foundation.lang.exceptions.Refusal;
 
 public class StringConsumerNotNullNonBlank implements PickyConsumer<String> {
 
@@ -14,12 +14,12 @@ public class StringConsumerNotNullNonBlank implements PickyConsumer<String> {
 	}
 
 	@Override
-	public void consume(String valueObject) throws IllegalParameter {
+	public void consume(String valueObject) throws Refusal {
 		if (valueObject == null)
-			throw new IllegalParameter(_friendlyName + " cannot be null.");
+			throw new Refusal(_friendlyName + " cannot be null.");
 		
 		if (valueObject.equals(""))
-			throw new IllegalParameter(_friendlyName + " cannot be blank.");
+			throw new Refusal(_friendlyName + " cannot be blank.");
 		
 		_endConsumer.consume(valueObject);
 

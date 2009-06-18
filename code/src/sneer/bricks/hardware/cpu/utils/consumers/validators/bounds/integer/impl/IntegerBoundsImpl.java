@@ -2,7 +2,7 @@ package sneer.bricks.hardware.cpu.utils.consumers.validators.bounds.integer.impl
 
 import sneer.bricks.hardware.cpu.utils.consumers.validators.bounds.integer.IntegerBounds;
 import sneer.foundation.lang.PickyConsumer;
-import sneer.foundation.lang.exceptions.IllegalParameter;
+import sneer.foundation.lang.exceptions.Refusal;
 
 class IntegerBoundsImpl implements IntegerBounds {
 
@@ -27,8 +27,8 @@ class IntegerBoundsImpl implements IntegerBounds {
 		}
 
 		@Override
-		public void consume(Integer value) throws IllegalParameter {
-			if (value < _min || value > _max) throw new IllegalParameter("" + _friendlyName + " must be no less than " + _min + " and no more than " + _max + ".");
+		public void consume(Integer value) throws Refusal {
+			if (value < _min || value > _max) throw new Refusal("" + _friendlyName + " must be no less than " + _min + " and no more than " + _max + ".");
 			_endConsumer.consume(value);
 		}
 

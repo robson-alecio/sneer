@@ -5,7 +5,7 @@ import java.util.List;
 import org.prevayler.Prevayler;
 
 import sneer.foundation.lang.PickyConsumer;
-import sneer.foundation.lang.exceptions.IllegalParameter;
+import sneer.foundation.lang.exceptions.Refusal;
 
 
 
@@ -20,10 +20,10 @@ class PickyConsumerBubble implements PickyConsumer {
 		_prevayler = prevayler;
 	}
 
-	public void consume(Object vo) throws IllegalParameter {
+	public void consume(Object vo) throws Refusal {
 		try {
 			_prevayler.execute(new Consumption(_getterPathToConsumer, vo));
-		} catch (IllegalParameter e) {
+		} catch (Refusal e) {
 			throw e;
 		} catch (RuntimeException e) {
 			throw e;

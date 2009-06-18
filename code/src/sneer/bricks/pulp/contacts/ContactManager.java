@@ -3,7 +3,7 @@ package sneer.bricks.pulp.contacts;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
 import sneer.foundation.brickness.Brick;
 import sneer.foundation.lang.PickyConsumer;
-import sneer.foundation.lang.exceptions.IllegalParameter;
+import sneer.foundation.lang.exceptions.Refusal;
 
 @Brick
 public interface ContactManager {
@@ -14,8 +14,8 @@ public interface ContactManager {
 	
 	Contact contactGiven(String nickname);
 
-	/** @throws IllegalParameter if there already is a Contact with that nickname.*/
-	Contact addContact(String nickname) throws IllegalParameter;
+	/** @throws Refusal if there already is a Contact with that nickname.*/
+	Contact addContact(String nickname) throws Refusal;
 
 	/** Returns a contact with the given nickname. Creates a new one if there was no contact with that nickname before. */
 	Contact produceContact(String nickname);

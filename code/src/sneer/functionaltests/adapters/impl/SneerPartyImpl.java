@@ -23,7 +23,7 @@ import sneer.bricks.snapps.wind.Shout;
 import sneer.bricks.snapps.wind.Wind;
 import sneer.bricks.software.bricks.Bricks;
 import sneer.foundation.brickness.PublicKey;
-import sneer.foundation.lang.exceptions.IllegalParameter;
+import sneer.foundation.lang.exceptions.Refusal;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
 import sneer.functionaltests.SovereignParty;
 import sneer.functionaltests.adapters.SneerParty;
@@ -63,7 +63,7 @@ class SneerPartyImpl implements SneerParty {
 	public void setSneerPort(int port) {
 		try {
 			_sneerPortKeeper.portSetter().consume(port);
-		} catch (IllegalParameter e) {
+		} catch (Refusal e) {
 			throw new IllegalArgumentException(e);
 		}
 	}
@@ -87,7 +87,7 @@ class SneerPartyImpl implements SneerParty {
 	private Contact addContact(String nickname) {
 		try {
 			return _contactManager.addContact(nickname);
-		} catch (IllegalParameter e) {
+		} catch (Refusal e) {
 			throw new IllegalStateException(e);
 		}
 	}
@@ -109,7 +109,7 @@ class SneerPartyImpl implements SneerParty {
 
 		try {
 			_contactManager.nicknameSetterFor(contact).consume(newNickname);
-		} catch (IllegalParameter e) {
+		} catch (Refusal e) {
 			throw new IllegalStateException(e);
 		}
 		

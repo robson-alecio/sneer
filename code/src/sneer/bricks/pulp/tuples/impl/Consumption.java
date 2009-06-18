@@ -7,7 +7,7 @@ import java.util.List;
 import org.prevayler.TransactionWithQuery;
 
 import sneer.foundation.lang.PickyConsumer;
-import sneer.foundation.lang.exceptions.IllegalParameter;
+import sneer.foundation.lang.exceptions.Refusal;
 
 class Consumption implements TransactionWithQuery {
 
@@ -21,7 +21,7 @@ class Consumption implements TransactionWithQuery {
 	private final String[] _consumerGetterPath;
 	private final Object _valueObject;
 
-	public Object executeAndQuery(Object stateMachine, Date date) throws IllegalParameter {
+	public Object executeAndQuery(Object stateMachine, Date date) throws Refusal {
 		PickyConsumer<Object> consumer = navigateToConsumer(stateMachine);
 		consumer.consume(_valueObject);
 		return null;

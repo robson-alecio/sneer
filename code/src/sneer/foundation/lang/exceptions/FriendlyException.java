@@ -8,6 +8,11 @@ public class FriendlyException extends Exception {
 
 	private final String _help;
 	
+	public FriendlyException(String veryHelpfulMessage) {
+		super(veryHelpfulMessage);
+		_help = null;
+	}
+
 	public FriendlyException(String message, String help) {
 		super(message);
 		_help = help;

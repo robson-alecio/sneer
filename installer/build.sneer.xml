@@ -46,9 +46,11 @@
 		</taskdef>
 
 		<property name="fdc.src" location="../code/src"/>
-		<echo message="${fdc.src}"/>
+		<property name="output" location="build/duplicate.xml"/>
 		
-		<cpd minimumTokenCount="50" format="xml" outputFile="build/cpd.xml">
+		<echo message="${fdc.src} --> ${output}"/>
+		
+		<cpd minimumTokenCount="50" format="xml" outputFile="${output}">
 			<fileset dir="${fdc.src}">
 				<include name="**/*.java"/>
 			</fileset>

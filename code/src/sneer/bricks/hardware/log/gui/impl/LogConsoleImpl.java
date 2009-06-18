@@ -81,8 +81,6 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	}
 
 	private void open() {
-		Rectangle unused = my(WindowBoundsSetter.class).unusedArea();
-		setBounds(_X , unused.height-_HEIGHT-_OFFSET_Y, unused.width-_OFFSET_X, _HEIGHT-_OFFSET_Y);
 		setVisible(true);
 	}
 
@@ -110,6 +108,14 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 		
 		initLogReceiver(txtLog);
 		initClearLogAction(txtLog);
+		
+		final WindowBoundsSetter wbSetter = my(WindowBoundsSetter.class);
+		wbSetter.runWhenBaseContainerIsReady(new Runnable(){ @Override public void run() {
+			Rectangle unused = wbSetter.unusedArea();
+			System.out.println(unused);
+			setBounds(_X , unused.height-_HEIGHT-_OFFSET_Y, unused.width-_OFFSET_X, _HEIGHT-_OFFSET_Y);
+			setVisible(true);
+		}});
 	}
 
 	private ImageIcon loadIcon(String fileName) {

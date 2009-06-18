@@ -191,7 +191,7 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		
 		private void setWindowBounds() {
 			_window.pack();
-			my(WindowBoundsSetter.class).setBestBounds(_window, _container, true, HORIZONTAL_LIMIT);
+			my(WindowBoundsSetter.class).setBestBounds(_window, _container, HORIZONTAL_LIMIT);
 		}
 		
 		private void appendStyledText(StyledDocument doc, String msg, String style) {

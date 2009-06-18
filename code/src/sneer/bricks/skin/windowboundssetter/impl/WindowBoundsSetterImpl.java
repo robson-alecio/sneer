@@ -1,11 +1,13 @@
 package sneer.bricks.skin.windowboundssetter.impl;
-import java.awt.Container;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.IllegalComponentStateException;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.SwingUtilities;
 
@@ -13,26 +15,31 @@ import sneer.bricks.skin.windowboundssetter.WindowBoundsSetter;
 
 class WindowBoundsSetterImpl implements WindowBoundsSetter{
 
-	private Container _container;
+	private List<Runnable> _toRunWhenBaseComponentIsReady = new ArrayList<Runnable>();
+	private Component _component;
 
 	@Override
-	public void defaultContainer(Container container) {
-		_container = container;
+	public void setDefaultBaseComponet(Component container) {
+		_component = container;
+		notifyRunnables();
 	}
 
-	@Override public void setBestBounds(Window window) { 																	setBestBounds(window, _container, false, 0); }
-	@Override public void setBestBounds(Window window, Container container) { 									setBestBounds(window, container, false, 0); }
-	@Override public void setBestBounds(Window window, Container container, int horizontal_limit) {		setBestBounds(window, container, false, horizontal_limit); }
-	@Override public void setBestBounds(Window window, boolean resizeHeight) {									setBestBounds(window, _container, resizeHeight, 0); }
-	@Override public void setBestBounds(Window window, Container container, boolean resizeHeight) { 	setBestBounds(window, container, resizeHeight, 0); }
-	@Override public void setBestBounds(Window window, Container container, boolean resizeHeight , int  horizontalLimit) {
+	private void notifyRunnables() {
+		for (Runnable runnable : _toRunWhenBaseComponentIsReady) 
+			runnable.run();
+		_toRunWhenBaseComponentIsReady.clear();
+	}
+
+	@Override public void setBestBounds(Window window) { 	setBestBounds(window, _component,  0); }
+	@Override public void setBestBounds(Window window, Component component) { setBestBounds(window, component, 0); }
+	@Override public void setBestBounds(Window window, Component component, int  horizontalLimit) {
 	
 		int space = 20;
 		
 		Point location = defaultLocation(window);
-		if(container!=null){
+		if(component!=null){
 			try{
-				location = container.getLocationOnScreen();
+				location = component.getLocationOnScreen();
 			}catch (IllegalComponentStateException e) {
 				//ignore, using default location
 			}
@@ -62,10 +69,10 @@ class WindowBoundsSetterImpl implements WindowBoundsSetter{
 	@Override
 	public Rectangle unusedArea() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); 
-		if(_container==null)
+		if(_component==null)
 			return defaultUnusedArea(screenSize);
 
-		Window windowAncestor = SwingUtilities.getWindowAncestor(_container);
+		Window windowAncestor = SwingUtilities.getWindowAncestor(_component);
 		if(windowAncestor==null)
 			return defaultUnusedArea(screenSize);
 		
@@ -75,5 +82,14 @@ class WindowBoundsSetterImpl implements WindowBoundsSetter{
 
 	private Rectangle defaultUnusedArea(Dimension screenSize) {
 		return new Rectangle(0,0, screenSize.width, screenSize.height);
+	}
+
+	@Override
+	public void runWhenBaseContainerIsReady(Runnable runnable) {
+		if(_component == null) {
+			_toRunWhenBaseComponentIsReady.add(runnable);
+			return;
+		}
+		runnable.run();
 	}
 }

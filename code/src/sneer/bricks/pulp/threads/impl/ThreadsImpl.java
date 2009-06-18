@@ -10,10 +10,11 @@ import sneer.bricks.pulp.own.name.OwnNameKeeper;
 import sneer.bricks.pulp.threads.Latch;
 import sneer.bricks.pulp.threads.Stepper;
 import sneer.bricks.pulp.threads.Threads;
+import sneer.foundation.brickness.testsupport.Daemon;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
-import sneer.foundation.threads.Daemon;
 
+@SuppressWarnings("deprecation")
 class ThreadsImpl implements Threads {
 
 	private static final Set<Object> _reactors = new HashSet<Object>();

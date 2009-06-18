@@ -28,6 +28,7 @@
 		- Fix: Running on more than one machine will cause redundant (abusive) updates. Do not persist last discovered IP. Do a DNS lookup every time instead.
 		- User data - Check if persistence is ok, in the right directory.					
 
+	- [Igor] Daemon - Eliminate uses, especially Daemon.killAllInstances(). Find a better way. Talk to Klaus.
 
 	- [Igor] SpeexTuplesTest - Fix intermittent failure. 	
 

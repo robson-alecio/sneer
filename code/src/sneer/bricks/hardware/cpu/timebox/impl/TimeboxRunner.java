@@ -7,8 +7,9 @@ import java.util.Set;
 
 import sneer.bricks.pulp.log.Logger;
 import sneer.bricks.pulp.threads.Threads;
-import sneer.foundation.threads.Daemon;
+import sneer.foundation.brickness.testsupport.Daemon;
 
+@SuppressWarnings("deprecation")
 class TimeboxRunner {
 
 	static private final int PRECISION_IN_MILLIS = 500;
@@ -90,7 +91,6 @@ class TimeboxRunner {
 		return _worker == null;
 	}
 
-	@SuppressWarnings("deprecation")
 	private void suicide() {
 		synchronized (_isDeadMonitor) {
 			if (_isDead) return;

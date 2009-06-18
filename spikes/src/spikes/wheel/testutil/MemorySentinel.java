@@ -1,12 +1,13 @@
 package spikes.wheel.testutil;
 
 import static java.lang.System.gc;
+import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.pulp.log.Logger;
 import sneer.bricks.pulp.threads.Threads;
-import sneer.foundation.threads.Daemon;
-import static sneer.foundation.environments.Environments.my;
+import sneer.foundation.brickness.testsupport.Daemon;
 
 
+@SuppressWarnings("deprecation")
 public class MemorySentinel {
 
 	private static final int PERIOD_IN_MILLIS = 2000;

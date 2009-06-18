@@ -1,8 +1,9 @@
-package sneer.foundation.threads;
+package sneer.foundation.brickness.testsupport;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Deprecated //Use my(Threads.class).startDaemon() instead.
 public abstract class Daemon extends Thread {
 
 	static private final Set<Daemon> _instances = new HashSet<Daemon>();
@@ -34,7 +35,6 @@ public abstract class Daemon extends Thread {
 		_instances.clear();
 	}
 
-	@SuppressWarnings("deprecation")
 	private void dieQuietly() {
 		this.setUncaughtExceptionHandler(new UncaughtExceptionHandler() { @Override public void uncaughtException(Thread t, Throwable ignored) {
 			//Do nothing.

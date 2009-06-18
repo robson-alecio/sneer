@@ -2,11 +2,11 @@ package spikes.klaus;
 
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.pulp.threads.Threads;
-import sneer.foundation.threads.Daemon;
+import sneer.foundation.brickness.testsupport.Daemon;
 
+@SuppressWarnings("deprecation")
 public class Anything {
 
-	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 		final Threads threads = my(Threads.class);
 

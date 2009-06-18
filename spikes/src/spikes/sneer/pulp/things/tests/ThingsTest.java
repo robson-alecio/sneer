@@ -8,11 +8,12 @@ import org.junit.Test;
 import sneer.bricks.pulp.reactive.collections.SetSignal;
 import sneer.bricks.pulp.threads.Threads;
 import sneer.foundation.brickness.testsupport.BrickTest;
-import sneer.foundation.threads.Daemon;
+import sneer.foundation.brickness.testsupport.Daemon;
 import spikes.sneer.pulp.things.Thing;
 import spikes.sneer.pulp.things.ThingHome;
 import spikes.wheel.testutil.TestDashboard;
 
+@SuppressWarnings("deprecation")
 public class ThingsTest extends BrickTest {
 	
 	private final ThingHome _subject = my(ThingHome.class);

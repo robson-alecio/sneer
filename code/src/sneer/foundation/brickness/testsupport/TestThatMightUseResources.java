@@ -7,7 +7,6 @@ import java.util.Set;
 import org.junit.After;
 import org.junit.Before;
 
-import sneer.foundation.threads.Daemon;
 
 public abstract class TestThatMightUseResources extends AssertUtils {
 
@@ -58,9 +57,10 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@After
 	public void afterTestThatMightUseResources() {
-		Daemon.killAllInstances(); //Fix: This might be killing Daemons created before the test started.
+		Daemon.killAllInstances();
 		checkThreadLeak();
 		deleteFiles();
 	}

@@ -5,7 +5,9 @@
 
 	- [Klaus] Revise entire package structure.
 
-	- MyInfo - Persist
+	- MyInfo
+		- Persist
+		- [Sandro] Focus on My Name Field when Sneer starts.
 
 	- Contact crud: persist with tuples
         

@@ -5,12 +5,12 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.IOException;
 
 import sneer.bricks.hardware.clock.Clock;
+import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.connection.ConnectionManager;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddress;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.bricks.pulp.network.Network;
-import sneer.bricks.pulp.threads.Stepper;
-import sneer.bricks.pulp.threads.Threads;
 
 class OutgoingAttempt {
 

@@ -1,12 +1,12 @@
-package sneer.bricks.pulp.threads.tests;
+package sneer.bricks.hardware.cpu.threads.tests;
 
 import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 
-import sneer.bricks.pulp.threads.Latch;
-import sneer.bricks.pulp.threads.Stepper;
-import sneer.bricks.pulp.threads.Threads;
+import sneer.bricks.hardware.cpu.threads.Latch;
+import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;

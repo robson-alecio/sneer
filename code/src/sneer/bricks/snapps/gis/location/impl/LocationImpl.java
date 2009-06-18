@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.IO;
 import sneer.bricks.pulp.log.Logger;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
-import sneer.bricks.pulp.threads.Threads;
 import sneer.bricks.snapps.gis.location.Location;
 
 class LocationImpl implements Location {

@@ -15,10 +15,10 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.IO;
 import sneer.bricks.pulp.log.Logger;
-import sneer.bricks.pulp.threads.Stepper;
-import sneer.bricks.pulp.threads.Threads;
 import sneer.bricks.skin.sound.kernel.Audio;
 import sneer.bricks.skin.sound.player.SoundPlayer;
 import sneer.foundation.lang.exceptions.NotImplementedYet;

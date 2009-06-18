@@ -1,4 +1,4 @@
-package sneer.bricks.pulp.threads.impl;
+package sneer.bricks.hardware.cpu.threads.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
@@ -6,10 +6,10 @@ import java.lang.ref.WeakReference;
 import java.util.HashSet;
 import java.util.Set;
 
+import sneer.bricks.hardware.cpu.threads.Latch;
+import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.own.name.OwnNameKeeper;
-import sneer.bricks.pulp.threads.Latch;
-import sneer.bricks.pulp.threads.Stepper;
-import sneer.bricks.pulp.threads.Threads;
 import sneer.foundation.brickness.testsupport.Daemon;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;

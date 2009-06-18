@@ -3,13 +3,13 @@ package sneer.bricks.pulp.retrier.impl;
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.exceptions.Hiccup;
+import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.pulp.retrier.Retrier;
 import sneer.bricks.pulp.retrier.Task;
-import sneer.bricks.pulp.threads.Stepper;
-import sneer.bricks.pulp.threads.Threads;
 import sneer.foundation.lang.exceptions.FriendlyException;
 
 class RetrierImpl implements Retrier {

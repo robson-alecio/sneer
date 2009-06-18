@@ -1,4 +1,4 @@
-package sneer.bricks.pulp.threads;
+package sneer.bricks.hardware.cpu.threads;
 
 
 /** Same as a java.util.concurrent.CountDownLatch.class of 1 and which does not throw InterruptedException. Throws IllegalState instead.

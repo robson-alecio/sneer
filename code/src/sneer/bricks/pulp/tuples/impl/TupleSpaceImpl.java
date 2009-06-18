@@ -19,12 +19,12 @@ import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 
 import sneer.bricks.hardware.clock.Clock;
+import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
 import sneer.bricks.pulp.keymanager.KeyManager;
 import sneer.bricks.pulp.reactive.collections.CollectionSignals;
 import sneer.bricks.pulp.reactive.collections.ListRegister;
-import sneer.bricks.pulp.threads.Stepper;
-import sneer.bricks.pulp.threads.Threads;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.brickness.StoragePath;
 import sneer.foundation.brickness.Tuple;

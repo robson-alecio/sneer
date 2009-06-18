@@ -1,11 +1,11 @@
-package sneer.bricks.pulp.threads.mocks;
+package sneer.bricks.hardware.cpu.threads.mocks;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import sneer.bricks.pulp.threads.Latch;
-import sneer.bricks.pulp.threads.Stepper;
-import sneer.bricks.pulp.threads.Threads;
+import sneer.bricks.hardware.cpu.threads.Latch;
+import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Threads;
 
 public class ThreadsMock implements Threads {
 

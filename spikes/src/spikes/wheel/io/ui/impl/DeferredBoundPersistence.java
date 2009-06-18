@@ -5,7 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.awt.Rectangle;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import sneer.bricks.pulp.threads.Threads;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import spikes.wheel.io.ui.BoundsPersistence;
 
 public class DeferredBoundPersistence implements BoundsPersistence {

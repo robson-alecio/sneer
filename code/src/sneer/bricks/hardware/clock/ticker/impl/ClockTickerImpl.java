@@ -3,8 +3,8 @@ package sneer.bricks.hardware.clock.ticker.impl;
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.clock.ticker.ClockTicker;
-import sneer.bricks.pulp.threads.Stepper;
-import sneer.bricks.pulp.threads.Threads;
+import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Threads;
 
 class ClockTickerImpl implements ClockTicker {
 

@@ -18,8 +18,8 @@ import javax.swing.event.TreeWillExpandListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
-import sneer.bricks.pulp.threads.Threads;
 import static sneer.foundation.environments.Environments.my;
 
 public class TreeModelExample extends JFrame {

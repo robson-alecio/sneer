@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.Test;
 
 import sneer.bricks.hardware.clock.Clock;
-import sneer.bricks.pulp.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Stepper;
 import sneer.foundation.brickness.testsupport.BrickTest;
 
 public class ClockTest extends BrickTest {

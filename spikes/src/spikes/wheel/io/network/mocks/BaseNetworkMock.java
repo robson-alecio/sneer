@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.bricks.pulp.threads.Threads;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import spikes.wheel.io.network.ObjectServerSocket;
 import spikes.wheel.io.network.ObjectSocket;
 

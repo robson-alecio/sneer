@@ -4,7 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import java.awt.Image;
 
-import sneer.bricks.pulp.threads.Threads;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.skin.imgselector.ImageSelector;
 import sneer.foundation.brickness.Brickness;
 import sneer.foundation.environments.Environments;

@@ -4,6 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 
+import sneer.bricks.hardware.cpu.threads.mocks.ThreadsMock;
 import sneer.bricks.pulp.bandwidth.BandwidthCounter;
 import sneer.bricks.pulp.connection.ByteConnection;
 import sneer.bricks.pulp.connection.ConnectionManager;
@@ -13,7 +14,6 @@ import sneer.bricks.pulp.lang.StringUtils;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
-import sneer.bricks.pulp.threads.mocks.ThreadsMock;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.Contribute;
 import sneer.foundation.lang.ByRef;

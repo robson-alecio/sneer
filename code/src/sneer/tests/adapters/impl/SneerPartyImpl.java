@@ -5,6 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.File;
 
 import sneer.bricks.hardware.clock.Clock;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.connection.ByteConnection;
 import sneer.bricks.pulp.connection.ConnectionManager;
 import sneer.bricks.pulp.connection.SocketOriginator;
@@ -18,7 +19,6 @@ import sneer.bricks.pulp.port.PortKeeper;
 import sneer.bricks.pulp.probe.ProbeManager;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
-import sneer.bricks.pulp.threads.Threads;
 import sneer.bricks.snapps.wind.Shout;
 import sneer.bricks.snapps.wind.Wind;
 import sneer.bricks.software.bricks.Bricks;

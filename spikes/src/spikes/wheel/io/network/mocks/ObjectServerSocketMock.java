@@ -8,7 +8,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import java.io.IOException;
 
-import sneer.bricks.pulp.threads.Threads;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import spikes.wheel.io.network.ObjectServerSocket;
 import spikes.wheel.io.network.ObjectSocket;
 

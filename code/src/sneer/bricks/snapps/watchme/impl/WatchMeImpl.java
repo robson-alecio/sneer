@@ -7,6 +7,8 @@ import java.util.List;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.exceptions.Hiccup;
+import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.ram.arrays.ImmutableByteArray;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
@@ -17,8 +19,6 @@ import sneer.bricks.pulp.events.EventNotifier;
 import sneer.bricks.pulp.events.EventNotifiers;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.log.Logger;
-import sneer.bricks.pulp.threads.Stepper;
-import sneer.bricks.pulp.threads.Threads;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.bricks.skin.screenshotter.Screenshotter;
 import sneer.bricks.snapps.watchme.ImageDeltaPacket;

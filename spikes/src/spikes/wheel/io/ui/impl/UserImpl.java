@@ -14,8 +14,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
-import sneer.bricks.pulp.threads.Threads;
 import sneer.foundation.lang.Consumer;
 import sneer.foundation.lang.exceptions.FriendlyException;
 import spikes.wheel.io.ui.CancelledByUser;

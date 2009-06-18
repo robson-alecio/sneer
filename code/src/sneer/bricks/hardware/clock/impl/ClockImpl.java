@@ -6,11 +6,11 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import sneer.bricks.hardware.clock.Clock;
+import sneer.bricks.hardware.cpu.threads.Latch;
+import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.cpu.timebox.Timebox;
 import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
-import sneer.bricks.pulp.threads.Latch;
-import sneer.bricks.pulp.threads.Stepper;
-import sneer.bricks.pulp.threads.Threads;
 import sneer.foundation.lang.ByRef;
 
 class ClockImpl implements Clock {

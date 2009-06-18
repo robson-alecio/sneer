@@ -5,8 +5,8 @@ import static sneer.foundation.environments.Environments.my;
 import org.junit.Assert;
 import org.junit.Test;
 
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.reactive.collections.SetSignal;
-import sneer.bricks.pulp.threads.Threads;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.Daemon;
 import spikes.sneer.pulp.things.Thing;

@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.network.ByteArraySocket;
-import sneer.bricks.pulp.threads.Threads;
 
 class InProcessByteArraySocket implements ByteArraySocket {
 

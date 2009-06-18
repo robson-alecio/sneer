@@ -4,9 +4,9 @@ import static sneer.foundation.environments.Environments.my;
 
 import java.io.IOException;
 
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.network.ByteArrayServerSocket;
 import sneer.bricks.pulp.network.ByteArraySocket;
-import sneer.bricks.pulp.threads.Threads;
 
 class InProcessByteArrayServerSocket implements ByteArrayServerSocket {
 

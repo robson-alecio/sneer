@@ -4,7 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 
-import sneer.bricks.pulp.threads.mocks.ThreadsMock;
+import sneer.bricks.hardware.cpu.threads.mocks.ThreadsMock;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.Contribute;

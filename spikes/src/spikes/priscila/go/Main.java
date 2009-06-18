@@ -12,8 +12,8 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
-import sneer.bricks.pulp.threads.Threads;
 import sneer.foundation.brickness.Brickness;
 import sneer.foundation.environments.Environments;
 import spikes.priscila.go.GoBoard.StoneColor;

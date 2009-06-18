@@ -5,8 +5,8 @@ import static sneer.foundation.environments.Environments.my;
 import java.util.HashSet;
 import java.util.Set;
 
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.log.Logger;
-import sneer.bricks.pulp.threads.Threads;
 import sneer.foundation.brickness.testsupport.Daemon;
 
 @SuppressWarnings("deprecation")

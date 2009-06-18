@@ -8,6 +8,7 @@ import org.jmock.Expectations;
 import org.junit.Test;
 
 import sneer.bricks.hardware.clock.Clock;
+import sneer.bricks.hardware.cpu.threads.mocks.ThreadsMock;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.dyndns.client.DynDnsClient;
@@ -22,7 +23,6 @@ import sneer.bricks.pulp.propertystore.mocks.TransientPropertyStore;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
-import sneer.bricks.pulp.threads.mocks.ThreadsMock;
 import sneer.foundation.brickness.StoragePath;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.BrickTestRunner;

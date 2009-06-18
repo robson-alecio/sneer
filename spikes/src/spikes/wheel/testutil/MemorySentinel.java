@@ -2,8 +2,8 @@ package spikes.wheel.testutil;
 
 import static java.lang.System.gc;
 import static sneer.foundation.environments.Environments.my;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.log.Logger;
-import sneer.bricks.pulp.threads.Threads;
 import sneer.foundation.brickness.testsupport.Daemon;
 
 

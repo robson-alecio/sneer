@@ -5,11 +5,11 @@ import static sneer.foundation.environments.Environments.my;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import sneer.bricks.hardware.clock.Clock;
+import sneer.bricks.hardware.cpu.threads.Stepper;
 import sneer.bricks.pulp.bandwidth.BandwidthCounter;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
-import sneer.bricks.pulp.threads.Stepper;
 
 class BandwidthCounterImpl implements BandwidthCounter {
 

@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 
-import sneer.bricks.pulp.threads.Threads;
+import sneer.bricks.hardware.cpu.threads.Threads;
 
 public class HelloWorld implements Runnable {
 

@@ -1,4 +1,4 @@
-package sneer.bricks.pulp.memory;
+package sneer.bricks.hardware.ram.meter;
 
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.foundation.brickness.Brick;

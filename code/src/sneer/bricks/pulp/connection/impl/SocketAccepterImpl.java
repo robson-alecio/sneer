@@ -4,6 +4,8 @@ import static sneer.foundation.environments.Environments.my;
 
 import java.io.IOException;
 
+import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.blinkinglights.LightType;
@@ -17,8 +19,6 @@ import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.bricks.pulp.network.Network;
 import sneer.bricks.pulp.port.PortKeeper;
 import sneer.bricks.pulp.reactive.Signals;
-import sneer.bricks.pulp.threads.Stepper;
-import sneer.bricks.pulp.threads.Threads;
 import sneer.foundation.lang.Consumer;
 
 class SocketAccepterImpl implements SocketAccepter {

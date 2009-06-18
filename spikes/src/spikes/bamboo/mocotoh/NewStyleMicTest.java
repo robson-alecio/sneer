@@ -7,8 +7,8 @@ import javax.sound.sampled.TargetDataLine;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import sneer.bricks.pulp.threads.Stepper;
-import sneer.bricks.pulp.threads.Threads;
+import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.bricks.skin.sound.PcmSoundPacket;
 import sneer.bricks.skin.sound.kernel.Audio;

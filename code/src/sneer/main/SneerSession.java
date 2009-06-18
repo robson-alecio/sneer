@@ -1,6 +1,6 @@
 package sneer.main;
 
-import sneer.bricks.pulp.threads.Threads;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.foundation.brickness.BrickLoadingException;
 import sneer.foundation.brickness.Brickness;
 import sneer.foundation.environments.Environment;

@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.clock.ticker.ClockTicker;
-import sneer.bricks.pulp.threads.Threads;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.foundation.brickness.testsupport.BrickTest;
 
 public class ClockTickerTest extends BrickTest {

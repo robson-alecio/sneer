@@ -5,6 +5,8 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.IOException;
 
 import sneer.bricks.hardware.clock.Clock;
+import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.blinkinglights.LightType;
@@ -20,8 +22,6 @@ import sneer.bricks.pulp.dyndns.updater.UpdaterException;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.propertystore.PropertyStore;
 import sneer.bricks.pulp.reactive.Signals;
-import sneer.bricks.pulp.threads.Stepper;
-import sneer.bricks.pulp.threads.Threads;
 import sneer.foundation.lang.Consumer;
 
 class DynDnsClientImpl implements DynDnsClient {

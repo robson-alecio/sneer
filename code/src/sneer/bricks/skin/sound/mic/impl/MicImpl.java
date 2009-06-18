@@ -1,14 +1,14 @@
 package sneer.bricks.skin.sound.mic.impl;
 
 import static sneer.foundation.environments.Environments.my;
+import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.retrier.Retrier;
 import sneer.bricks.pulp.retrier.RetrierManager;
 import sneer.bricks.pulp.retrier.Task;
-import sneer.bricks.pulp.threads.Stepper;
-import sneer.bricks.pulp.threads.Threads;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.bricks.skin.sound.PcmSoundPacket;
 import sneer.bricks.skin.sound.mic.Mic;

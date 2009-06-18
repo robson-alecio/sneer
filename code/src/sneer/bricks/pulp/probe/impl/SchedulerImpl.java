@@ -5,9 +5,9 @@ import static sneer.foundation.environments.Environments.my;
 import java.util.LinkedList;
 import java.util.List;
 
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.connection.ByteConnection.PacketScheduler;
 import sneer.bricks.pulp.serialization.Serializer;
-import sneer.bricks.pulp.threads.Threads;
 import sneer.foundation.brickness.Tuple;
 
 class SchedulerImpl implements PacketScheduler {

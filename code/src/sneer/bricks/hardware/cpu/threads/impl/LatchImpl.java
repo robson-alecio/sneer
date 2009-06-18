@@ -1,8 +1,8 @@
-package sneer.bricks.pulp.threads.impl;
+package sneer.bricks.hardware.cpu.threads.impl;
 
 import java.util.concurrent.CountDownLatch;
 
-import sneer.bricks.pulp.threads.Latch;
+import sneer.bricks.hardware.cpu.threads.Latch;
 
 public class LatchImpl implements Latch {
 

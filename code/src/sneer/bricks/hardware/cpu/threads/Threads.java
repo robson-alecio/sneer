@@ -1,4 +1,4 @@
-package sneer.bricks.pulp.threads;
+package sneer.bricks.hardware.cpu.threads;
 
 import sneer.foundation.brickness.Brick;
 

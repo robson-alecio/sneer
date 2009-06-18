@@ -11,7 +11,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import sneer.bricks.hardware.gui.guithread.GuiThread;
-import sneer.bricks.pulp.memory.MemoryMeter;
+import sneer.bricks.hardware.ram.meter.MemoryMeter;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.main.dashboard.InstrumentPanel;

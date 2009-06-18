@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.serialization.DeepCopier;
-import sneer.bricks.pulp.threads.Threads;
 import spikes.wheel.io.network.ObjectSocket;
 
 

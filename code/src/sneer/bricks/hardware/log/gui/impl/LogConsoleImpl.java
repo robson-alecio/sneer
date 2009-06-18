@@ -14,7 +14,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -58,11 +57,12 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	private final JPopupMenu _popupMenu = new JPopupMenu();
 	private final MainMenu _mainMenu = my(MainMenu.class);
 
-	@SuppressWarnings("unused")	
-	private Object _referenceToAvoidGc;
-	
 	private final JTabbedPane _tab = new JTabbedPane();
-
+	private final JTextArea _txtLog = new JTextArea();
+	
+	@SuppressWarnings("unused")
+	private final WidgetLogger _logger = new WidgetLogger();
+	
 	{my(Dashboard.class);}
 
 	LogConsoleImpl(){
@@ -85,10 +85,9 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	}
 
 	private void initGui() {
-		JTextArea txtLog = new JTextArea();
-		txtLog.setEditable(false);
+		_txtLog.setEditable(false);
 
-		JScrollPane scroll = newAutoScroll(txtLog);
+		JScrollPane scroll = newAutoScroll();
 		getContentPane().setLayout(new BorderLayout());
 		
 		my(Synth.class).attach(_tab, "LogConsoleTab");
@@ -106,8 +105,7 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 		
 		getContentPane().add(_tab, BorderLayout.CENTER);
 		
-		initLogReceiver(txtLog);
-		initClearLogAction(txtLog);
+		initClearLogAction();
 		
 		final WindowBoundsSetter wbSetter = my(WindowBoundsSetter.class);
 		wbSetter.runWhenBaseContainerIsReady(new Runnable(){ @Override public void run() {
@@ -119,12 +117,6 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 
 	private ImageIcon loadIcon(String fileName) {
 		return new ImageIcon(this.getClass().getResource(fileName));
-	}
-
-	private void initLogReceiver(final JTextArea txtLog) {
-		_referenceToAvoidGc = my(Signals.class).receive(my(LogNotifier.class).loggedMessages(), new Consumer<String>() { @Override public void consume(String value) {
-			txtLog.append(value);
-		}});
 	}
 
 	private JPanel initFilterGui() {
@@ -178,12 +170,12 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 		}});
 	}
 
-	private void initClearLogAction(final JTextArea txtLog) {
-		txtLog.addMouseListener(new MouseAdapter(){ 
+	private void initClearLogAction() {
+		_txtLog.addMouseListener(new MouseAdapter(){ 
 			JMenuItem clear = new JMenuItem("Clear Log");{
 				_popupMenu.add(clear);
 				clear.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent ae) {
-					txtLog.setText("");
+					_txtLog.setText("");
 				}});			
 			}
 
@@ -195,9 +187,23 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 		});
 	}
 
-	private JScrollPane newAutoScroll(JComponent component) {
+	private JScrollPane newAutoScroll() {
 		JScrollPane scroll = my(AutoScrolls.class).create(my(LogNotifier.class).loggedMessages());
-		scroll.getViewport().add(component);
+		scroll.getViewport().add(_txtLog);
 		return scroll;
+	}
+
+	class WidgetLogger {
+		@SuppressWarnings("unused") private final Object _referenceToAvoidGc;
+		private WidgetLogger(){
+			_referenceToAvoidGc = my(Signals.class).receive(my(LogNotifier.class).loggedMessages(), 
+				new Consumer<String>(){ @Override public void consume(String msg) {
+					log(msg);
+				}});
+		}
+		
+		private void log(String msg){
+			_txtLog.append(msg);
+		}
 	}
 }

@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -19,10 +20,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import sneer.bricks.hardware.gui.Action;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
@@ -46,7 +50,6 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	private final Synth _synth = my(Synth.class);
 	
 	{_synth.load(this.getClass());}
-	private final double _SPLIT_LOCATION = (((Integer) _synth.getDefaultProperty("LodConsoleImpl.splitLocationPercent")).doubleValue())/100;
 	private final Integer _OFFSET_X = (Integer) _synth.getDefaultProperty("LodConsoleImpl.offsetX");
 	private final Integer _OFFSET_Y = (Integer) _synth.getDefaultProperty("LodConsoleImpl.offsetY");
 	private final Integer _HEIGHT = (Integer) _synth.getDefaultProperty("LodConsoleImpl.height");
@@ -55,12 +58,14 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	private final JPopupMenu _popupMenu = new JPopupMenu();
 	private final MainMenu _mainMenu = my(MainMenu.class);
 
-	@SuppressWarnings("unused")	private Object _referenceToAvoidGc;	
+	@SuppressWarnings("unused")	
+	private Object _referenceToAvoidGc;
+	
+	private final JTabbedPane _tab = new JTabbedPane();
 
 	{my(Dashboard.class);}
 
 	LogConsoleImpl(){
-		super("Sneer Log Console");
 		addMenuAction();
 		my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
 			initGui();
@@ -76,6 +81,8 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	}
 
 	private void open() {
+		Rectangle unused = my(WindowBoundsSetter.class).unusedArea();
+		setBounds(_X , unused.height-_HEIGHT-_OFFSET_Y, unused.width-_OFFSET_X, _HEIGHT-_OFFSET_Y);
 		setVisible(true);
 	}
 
@@ -86,18 +93,27 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 		JScrollPane scroll = newAutoScroll(txtLog);
 		getContentPane().setLayout(new BorderLayout());
 		
-		Rectangle unused = my(WindowBoundsSetter.class).unusedArea();
-		setBounds(_X , unused.height-_HEIGHT-_OFFSET_Y, unused.width-_OFFSET_X, _HEIGHT-_OFFSET_Y);
-
-		JSplitPane main = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scroll, initFilterGui());
-		main.setOneTouchExpandable(true);
-		getContentPane().add(main, BorderLayout.CENTER);
+		my(Synth.class).attach(_tab, "LogConsoleTab");
+		
+		_tab.addTab("", loadIcon("Log.png"), scroll, "Log");
+		_tab.addTab("", loadIcon("Filter.png"), initFilterGui(), "Filter");
+		
+		_tab.setTabPlacement(SwingConstants.RIGHT);
+		_tab.addChangeListener(new ChangeListener(){ @Override public void stateChanged(ChangeEvent e) {
+			if(_tab.getSelectedIndex()==0)
+				setTitle("Sneer Log Console");
+			else
+				setTitle("Sneer Log Console (Filter)");
+		}});
+		
+		getContentPane().add(_tab, BorderLayout.CENTER);
 		
 		initLogReceiver(txtLog);
 		initClearLogAction(txtLog);
-		
-		setVisible(true);
-		main.setDividerLocation(_SPLIT_LOCATION);
+	}
+
+	private ImageIcon loadIcon(String fileName) {
+		return new ImageIcon(this.getClass().getResource(fileName));
 	}
 
 	private void initLogReceiver(final JTextArea txtLog) {

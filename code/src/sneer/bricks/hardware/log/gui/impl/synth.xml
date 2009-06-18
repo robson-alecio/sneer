@@ -4,7 +4,6 @@
 	<defaultsProperty key="LodConsoleImpl.offsetY" type="Integer" value="0"/>
 	<defaultsProperty key="LodConsoleImpl.height" type="Integer" value="160"/>
 	<defaultsProperty key="LodConsoleImpl.x" type="Integer" value="10"/>
-	<defaultsProperty key="LodConsoleImpl.splitLocationPercent" type="Integer" value="80"/>
 	
 	<imageIcon id="add" path="add.png" />
 	<imageIcon id="del" path="del.png" />
@@ -47,6 +46,20 @@
 		</state>
 	</style>
 
+	<style id="Tab">
+		<insets top="5" left="5" right="5" bottom="5"/>
+		<state>
+			<imagePainter method="tabbedPaneTabBackground" path="tabBack.png" sourceInsets="2 0 2 6"/>
+		</state>
+		<state value="MOUSE_OVER">
+			<imagePainter method="tabbedPaneTabBackground" path="tabOver.png" sourceInsets="2 0 2 6"/>
+		</state>
+		<state value="SELECTED">
+			<imagePainter method="tabbedPaneTabBackground" path="tab.png" sourceInsets="2 0 2 6"/>
+		</state>
+	</style>
+	
+	<bind style="Tab" type="region" key="TabbedPaneTab"/>
 	<bind key="FilterPanel" style="filterPanelStyle" type="name"  />
 	<bind key="AddButton" style="addButtonStyle" type="name" />
 	<bind key="DelButton" style="delButtonStyle" type="name" />

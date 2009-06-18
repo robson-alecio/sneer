@@ -13,12 +13,11 @@ public class AutoScrollsImpl implements AutoScrolls {
 
 	@Override
 	public <T> JScrollPane create(JTextPane component, ListSignal<T> inputSignal, Consumer<CollectionChange<T>> receiver) {
-		return new AutoScroll<T>(component, inputSignal, receiver);
+		return new AutoScroll<T>(component, inputSignal, receiver).scrollPane();
 	}
 
 	@Override
 	public <T> JScrollPane create(EventSource<T> eventSource) {
-		return new AutoScroll<T>(eventSource);
+		return new AutoScroll<T>(eventSource).scrollPane();
 	}
-
 }

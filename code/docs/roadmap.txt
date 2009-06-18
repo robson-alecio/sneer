@@ -147,8 +147,6 @@ TASKS
 
 	- ContactsGUI - Accept cell part renderers. (dependency inverted) Discuss with team.
 	
-	- [Sandro] Community Initiative - Incorporate Gandhi's Google maps brick. (Run LocationGuiMain)
-
 	- TopTen
 		 - Categories (Ex.: Movies, Sports, Songs, Restaurants, etc)
 		 	- CRUD

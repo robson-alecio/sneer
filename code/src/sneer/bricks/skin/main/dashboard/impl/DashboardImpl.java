@@ -130,6 +130,9 @@ class DashboardImpl implements Dashboard {
 			initSynth();
 			initRootPanel();	
 			resizeWindow();
+			my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
+				my(WindowBoundsSetter.class).setDefaultBaseComponet(_rootPanel);
+			}});
 		}
 		
 		private void initSynth() {
@@ -148,7 +151,6 @@ class DashboardImpl implements Dashboard {
 			}});
 			_frame = _rwindow.getMainWidget();
 			_frame.setIconImage(IconUtil.getLogo());
-			my(WindowBoundsSetter.class).defaultContainer(_rootPanel);
 			
 			_frame.addWindowListener(new WindowAdapter(){
 				@Override public void windowDeactivated(WindowEvent e) {

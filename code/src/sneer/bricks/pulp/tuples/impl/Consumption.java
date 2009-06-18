@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.prevayler.TransactionWithQuery;
 
-import sneer.bricks.hardware.cpu.exceptions.IllegalParameter;
-import sneer.bricks.hardware.cpu.lang.PickyConsumer;
+import sneer.foundation.lang.PickyConsumer;
+import sneer.foundation.lang.exceptions.IllegalParameter;
 
 class Consumption implements TransactionWithQuery {
 

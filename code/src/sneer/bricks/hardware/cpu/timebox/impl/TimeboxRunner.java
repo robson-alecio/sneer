@@ -7,7 +7,7 @@ import java.util.Set;
 
 import sneer.bricks.pulp.log.Logger;
 import sneer.bricks.pulp.threads.Threads;
-import sneer.foundation.commons.threads.Daemon;
+import sneer.foundation.threads.Daemon;
 
 class TimeboxRunner {
 

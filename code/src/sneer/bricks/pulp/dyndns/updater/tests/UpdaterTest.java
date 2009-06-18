@@ -18,7 +18,7 @@ import sneer.bricks.pulp.dyndns.updater.UpdaterException;
 import sneer.bricks.pulp.httpclient.HttpClient;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.Contribute;
-import sneer.foundation.commons.lang.Pair;
+import sneer.foundation.lang.Pair;
 
 public class UpdaterTest extends BrickTest {
 

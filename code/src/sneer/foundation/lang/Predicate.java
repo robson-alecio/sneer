@@ -1,4 +1,4 @@
-package sneer.bricks.hardware.cpu.lang;
+package sneer.foundation.lang;
 
 public interface Predicate<T> {
 

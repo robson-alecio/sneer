@@ -5,13 +5,13 @@ import static sneer.foundation.environments.Environments.my;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.reactive.collections.CollectionChange;
 import sneer.bricks.pulp.reactive.collections.CollectionSignal;
 import sneer.bricks.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.bricks.pulp.reactive.signalchooser.SignalChooser;
-import sneer.foundation.commons.lang.exceptions.NotImplementedYet;
+import sneer.foundation.lang.Consumer;
+import sneer.foundation.lang.exceptions.NotImplementedYet;
 
 class SignalChooserReceiver<T> {
 	

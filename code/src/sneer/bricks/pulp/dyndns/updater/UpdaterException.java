@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.dyndns.updater;
 
-import sneer.bricks.hardware.cpu.exceptions.FriendlyException;
+import sneer.foundation.lang.exceptions.FriendlyException;
 
 public abstract class UpdaterException extends FriendlyException {
 

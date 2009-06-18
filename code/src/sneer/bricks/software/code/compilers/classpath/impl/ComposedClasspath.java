@@ -32,6 +32,6 @@ class ComposedClasspath implements Classpath {
 
 	@Override
 	public void add(File element) {
-		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet();
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet();
 	}
 }

@@ -13,37 +13,37 @@ public class PolicySpike extends Policy {
 	@Override
 	public Parameters getParameters() {
 		// Implement Auto-generated method stub
-		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet();
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet();
 	}
 
 	@Override
 	public PermissionCollection getPermissions(CodeSource codesource) {
 		// Implement Auto-generated method stub
-		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet();
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet();
 	}
 
 	@Override
 	public PermissionCollection getPermissions(ProtectionDomain domain) {
 		// Implement Auto-generated method stub
-		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet();
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet();
 	}
 
 	@Override
 	public Provider getProvider() {
 		// Implement Auto-generated method stub
-		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet();
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet();
 	}
 
 	@Override
 	public String getType() {
 		// Implement Auto-generated method stub
-		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet();
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet();
 	}
 
 	@Override
 	public void refresh() {
 		// Implement Auto-generated method stub
-		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet();
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet();
 	}
 
 	@Override

@@ -11,9 +11,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
+import sneer.bricks.hardware.io.IO;
 import sneer.bricks.pulp.propertystore.PropertyStore;
 import sneer.foundation.brickness.StoragePath;
-import sneer.foundation.commons.io.Streams;
 
 class PropertyStoreImpl implements PropertyStore {
 
@@ -50,9 +50,9 @@ class PropertyStoreImpl implements PropertyStore {
 		} catch (FileNotFoundException ignore) {
 //			my(Logger.class).log("File not found: {}", file().getAbsolutePath());
 		} catch (IOException e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		} finally {
-			if (in != null) Streams.crash(in);
+			if (in != null) my(IO.class).crash(in);
 		}
 		return result;
 	}
@@ -63,10 +63,10 @@ class PropertyStoreImpl implements PropertyStore {
 			try {
 				_properties.store(out, "Sneer System Persistence File - Handle with Care :)");
 			} finally {
-				Streams.crash(out);
+				my(IO.class).crash(out);
 			}
 		} catch (IOException e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		} 
 	}
 

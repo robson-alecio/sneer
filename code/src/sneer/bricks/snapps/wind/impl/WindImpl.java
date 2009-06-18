@@ -4,7 +4,6 @@ import static sneer.foundation.environments.Environments.my;
 
 import java.util.Comparator;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.reactive.collections.CollectionSignals;
 import sneer.bricks.pulp.reactive.collections.ListRegister;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
@@ -12,6 +11,7 @@ import sneer.bricks.pulp.reactive.collections.listsorter.ListSorter;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.bricks.snapps.wind.Shout;
 import sneer.bricks.snapps.wind.Wind;
+import sneer.foundation.lang.Consumer;
 
 class WindImpl implements Wind, Consumer<Shout> {
 

@@ -8,7 +8,6 @@ import org.jmock.Expectations;
 import org.jmock.Sequence;
 import org.junit.Test;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.clock.Clock;
 import sneer.bricks.pulp.dyndns.checkip.CheckIp;
 import sneer.bricks.pulp.dyndns.ownip.OwnIpDiscoverer;
@@ -17,6 +16,7 @@ import sneer.bricks.pulp.propertystore.mocks.TransientPropertyStore;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.Contribute;
+import sneer.foundation.lang.Consumer;
 
 public class OwnIpDiscovererTest extends BrickTest {
 	

@@ -19,7 +19,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import sneer.bricks.hardware.cpu.lang.PickyConsumer;
 import sneer.bricks.hardware.cpu.utils.consumers.parsers.integer.IntegerParsers;
 import sneer.bricks.hardware.gui.Action;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
@@ -34,9 +33,10 @@ import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.TextWidget;
 import sneer.bricks.skin.windowboundssetter.WindowBoundsSetter;
 import sneer.bricks.snapps.welcomewizard.UserInfo;
-import sneer.foundation.commons.lang.ByRef;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
+import sneer.foundation.lang.ByRef;
+import sneer.foundation.lang.PickyConsumer;
 
 class UserInfoImpl extends JFrame implements UserInfo {
 	

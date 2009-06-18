@@ -9,7 +9,6 @@ import javax.swing.BoundedRangeModel;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.reactive.Signals;
@@ -17,7 +16,8 @@ import sneer.bricks.pulp.reactive.collections.CollectionChange;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
 import sneer.bricks.pulp.reactive.collections.impl.SimpleListReceiver;
 import sneer.bricks.skin.main.synth.Synth;
-import sneer.foundation.commons.lang.ByRef;
+import sneer.foundation.lang.ByRef;
+import sneer.foundation.lang.Consumer;
 
 class AutoScroll<T> extends JScrollPane{
 	

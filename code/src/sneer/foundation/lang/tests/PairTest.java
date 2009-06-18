@@ -1,11 +1,11 @@
-package sneer.foundation.commons.lang.tests;
+package sneer.foundation.lang.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 
-import sneer.foundation.commons.lang.Pair;
+import sneer.foundation.lang.Pair;
 
 
 public class PairTest {

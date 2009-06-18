@@ -1,9 +1,9 @@
 package sneer.bricks.pulp.own.name;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.contacts.Contact;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.foundation.brickness.Brick;
+import sneer.foundation.lang.Consumer;
 
 @Brick
 public interface OwnNameKeeper {

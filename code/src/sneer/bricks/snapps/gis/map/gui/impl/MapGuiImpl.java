@@ -17,7 +17,6 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.pulp.reactive.Reception;
 import sneer.bricks.pulp.reactive.Signals;
@@ -28,6 +27,7 @@ import sneer.bricks.snapps.gis.location.Location;
 import sneer.bricks.snapps.gis.location.Locations;
 import sneer.bricks.snapps.gis.map.MapRenderer;
 import sneer.bricks.snapps.gis.map.gui.MapGui;
+import sneer.foundation.lang.Consumer;
 
 class MapGuiImpl implements MapGui{
 

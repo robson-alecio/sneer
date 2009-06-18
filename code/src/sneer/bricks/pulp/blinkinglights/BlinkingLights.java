@@ -1,8 +1,8 @@
 package sneer.bricks.pulp.blinkinglights;
 
-import sneer.bricks.hardware.cpu.exceptions.FriendlyException;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
 import sneer.foundation.brickness.Brick;
+import sneer.foundation.lang.exceptions.FriendlyException;
 
 @Brick
 public interface BlinkingLights {

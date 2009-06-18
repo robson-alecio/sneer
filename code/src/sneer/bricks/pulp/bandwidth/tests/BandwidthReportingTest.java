@@ -4,7 +4,6 @@ import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.bandwidth.BandwidthCounter;
 import sneer.bricks.pulp.connection.ByteConnection;
 import sneer.bricks.pulp.connection.ConnectionManager;
@@ -17,7 +16,8 @@ import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.threads.mocks.ThreadsMock;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.Contribute;
-import sneer.foundation.commons.lang.ByRef;
+import sneer.foundation.lang.ByRef;
+import sneer.foundation.lang.Consumer;
 
 public class BandwidthReportingTest extends BrickTest {
 
@@ -123,7 +123,7 @@ public class BandwidthReportingTest extends BrickTest {
 		}
 		@Override public void received(int sizeBytes) { store(sizeBytes); }
 		@Override public void sent(int sizeBytes) {	store(sizeBytes); }
-		@Override public Signal<Integer> downloadSpeed() { throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); }
-		@Override public Signal<Integer> uploadSpeed() {throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); }
+		@Override public Signal<Integer> downloadSpeed() { throw new sneer.foundation.lang.exceptions.NotImplementedYet(); }
+		@Override public Signal<Integer> uploadSpeed() {throw new sneer.foundation.lang.exceptions.NotImplementedYet(); }
 	};
 }

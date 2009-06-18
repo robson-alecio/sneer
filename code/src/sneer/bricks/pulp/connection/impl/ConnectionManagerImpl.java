@@ -7,7 +7,7 @@ import sneer.bricks.pulp.connection.ConnectionManager;
 import sneer.bricks.pulp.contacts.Contact;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.bricks.pulp.own.name.OwnNameKeeper;
-import sneer.foundation.commons.lang.Producer;
+import sneer.foundation.lang.Producer;
 
 class ConnectionManagerImpl implements ConnectionManager {
 

@@ -6,10 +6,10 @@ import static sneer.foundation.environments.Environments.my;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.foundation.brickness.testsupport.BrickTestRunner;
+import sneer.foundation.lang.Consumer;
 
 @RunWith(BrickTestRunner.class)
 public class ReceiverTest {

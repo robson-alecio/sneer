@@ -4,10 +4,10 @@ import static sneer.foundation.environments.Environments.my;
 
 import javax.swing.JFrame;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.widgets.reactive.Widget;
+import sneer.foundation.lang.Consumer;
 
 class RFrameImpl extends JFrame implements Widget<JFrame> {
 

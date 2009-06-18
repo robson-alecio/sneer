@@ -9,13 +9,13 @@ import java.awt.Insets;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
-import sneer.bricks.hardware.cpu.lang.PickyConsumer;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.main.synth.Synth;
 import sneer.bricks.skin.widgets.reactive.TextWidget;
+import sneer.foundation.lang.Consumer;
+import sneer.foundation.lang.PickyConsumer;
 
 class RLabelImpl extends RPanel<JLabel> implements TextWidget<JLabel>{
 
@@ -82,7 +82,7 @@ class RLabelImpl extends RPanel<JLabel> implements TextWidget<JLabel>{
 	@Override
 	public PickyConsumer<? super String> setter() {
 		if(_setter==null)
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 		
 		return _setter;
 	}

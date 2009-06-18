@@ -1,5 +1,6 @@
 package sneer.bricks.hardware.io.impl;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,5 +56,12 @@ class IOImpl implements IO {
 	@Override
 	public Streams streams() {
 		return _streams;
+	}
+
+	@Override
+	public void crash(Closeable closeable) {
+		try {
+			if(closeable!=null) closeable.close();
+		} catch (IOException ignored) {}
 	}
 }

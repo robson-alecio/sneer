@@ -1,6 +1,6 @@
-package sneer.bricks.hardware.cpu.lang;
+package sneer.foundation.lang;
 
-import sneer.bricks.hardware.cpu.exceptions.IllegalParameter;
+import sneer.foundation.lang.exceptions.IllegalParameter;
 
 
 public interface PickyConsumer<T> {

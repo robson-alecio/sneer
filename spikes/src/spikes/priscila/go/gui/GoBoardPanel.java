@@ -12,12 +12,12 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.threads.Threads;
+import sneer.foundation.lang.Consumer;
 import spikes.priscila.go.GoBoard;
 import spikes.priscila.go.Move;
 import spikes.priscila.go.ToroidalGoBoard;

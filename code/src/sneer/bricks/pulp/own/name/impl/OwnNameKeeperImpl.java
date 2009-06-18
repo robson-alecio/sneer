@@ -1,12 +1,12 @@
 package sneer.bricks.pulp.own.name.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.contacts.Contact;
 import sneer.bricks.pulp.own.name.OwnNameKeeper;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
+import sneer.foundation.lang.Consumer;
 
 class OwnNameKeeperImpl implements OwnNameKeeper {
 
@@ -29,7 +29,7 @@ class OwnNameKeeperImpl implements OwnNameKeeper {
 
 	@Override
 	public Signal<String> nameOf(Contact contact) {
-		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
 	
 //	private Consumer<? super OwnName> ownNameSubscriber() {

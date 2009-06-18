@@ -13,12 +13,12 @@ class DurableStateMachine implements StateMachine {
 
 	@Override
 	public Object changeState(Object event) {
-		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
 	@Override
 	public Object queryState(Object query) {
-		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
 }

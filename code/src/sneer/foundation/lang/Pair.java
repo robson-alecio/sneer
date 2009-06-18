@@ -1,4 +1,4 @@
-package sneer.foundation.commons.lang;
+package sneer.foundation.lang;
 
 import java.io.Serializable;
 

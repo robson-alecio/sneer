@@ -5,14 +5,14 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.IOException;
 import java.util.Arrays;
 
-import sneer.bricks.hardware.cpu.exceptions.IllegalParameter;
 import sneer.bricks.pulp.connection.ConnectionManager;
 import sneer.bricks.pulp.contacts.Contact;
 import sneer.bricks.pulp.contacts.ContactManager;
 import sneer.bricks.pulp.keymanager.KeyManager;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.foundation.brickness.PublicKey;
-import sneer.foundation.commons.lang.Producer;
+import sneer.foundation.lang.Producer;
+import sneer.foundation.lang.exceptions.IllegalParameter;
 
 class IndividualSocketReceiver {
 

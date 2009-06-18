@@ -1,4 +1,4 @@
-package sneer.bricks.hardware.cpu.exceptions;
+package sneer.foundation.lang.exceptions;
 
 /**
  * An exception which always contains an useful help

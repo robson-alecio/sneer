@@ -8,7 +8,6 @@ import org.jmock.Expectations;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
@@ -21,6 +20,7 @@ import sneer.bricks.pulp.reactive.collections.listsorter.ListSorter;
 import sneer.bricks.pulp.reactive.signalchooser.SignalChooser;
 import sneer.foundation.brickness.testsupport.AssertUtils;
 import sneer.foundation.brickness.testsupport.BrickTest;
+import sneer.foundation.lang.Consumer;
 
 @Ignore
 public class ListSorterTest extends BrickTest {

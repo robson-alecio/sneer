@@ -11,12 +11,12 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.reactive.gates.logic.LogicGates;
 import sneer.foundation.brickness.testsupport.BrickTestRunner;
+import sneer.foundation.lang.Consumer;
 
 @RunWith(BrickTestRunner.class)
 public class AndTest {

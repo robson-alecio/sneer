@@ -15,7 +15,7 @@ public class ObjectUtils
 		try {
 			return cl.loadClass(className);
 		} catch (ClassNotFoundException e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
 	}
 	

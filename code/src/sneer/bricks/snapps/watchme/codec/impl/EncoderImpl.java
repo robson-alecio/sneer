@@ -20,7 +20,7 @@ import sneer.bricks.hardware.ram.arrays.ImmutableArrays;
 import sneer.bricks.skin.image.ImageFactory;
 import sneer.bricks.snapps.watchme.codec.ImageDelta;
 import sneer.bricks.snapps.watchme.codec.ImageCodec.Encoder;
-import sneer.foundation.commons.lang.Pair;
+import sneer.foundation.lang.Pair;
 
 class EncoderImpl implements Encoder {
 	

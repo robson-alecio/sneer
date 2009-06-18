@@ -16,7 +16,7 @@ import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
 import javax.swing.border.BevelBorder;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
+import sneer.foundation.lang.Consumer;
 
 
 class Keyhole extends JComponent {

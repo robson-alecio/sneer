@@ -1,8 +1,8 @@
 package sneer.foundation.environments;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.foundation.commons.lang.ByRef;
-import sneer.foundation.commons.lang.Producer;
+import sneer.foundation.lang.ByRef;
+import sneer.foundation.lang.Producer;
 
 public class EnvironmentUtils {
 

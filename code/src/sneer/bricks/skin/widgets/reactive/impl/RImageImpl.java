@@ -11,14 +11,14 @@ import java.awt.RenderingHints;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
-import sneer.bricks.hardware.cpu.lang.PickyConsumer;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.image.ImageFactory;
 import sneer.bricks.skin.widgets.reactive.ImageWidget;
+import sneer.foundation.lang.Consumer;
+import sneer.foundation.lang.PickyConsumer;
 
 class RImageImpl extends JPanel implements ImageWidget{
 

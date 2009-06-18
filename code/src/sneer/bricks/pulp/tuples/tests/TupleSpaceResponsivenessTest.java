@@ -4,12 +4,12 @@ import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.threads.mocks.ThreadsMock;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.Contribute;
-import sneer.foundation.commons.lang.ByRef;
+import sneer.foundation.lang.ByRef;
+import sneer.foundation.lang.Consumer;
 
 public class TupleSpaceResponsivenessTest extends BrickTest {
 

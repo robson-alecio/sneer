@@ -1,8 +1,6 @@
 package sneer.bricks.pulp.contacts.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.hardware.cpu.exceptions.IllegalParameter;
-import sneer.bricks.hardware.cpu.lang.PickyConsumer;
 import sneer.bricks.pulp.contacts.Contact;
 import sneer.bricks.pulp.contacts.ContactManager;
 import sneer.bricks.pulp.reactive.Register;
@@ -11,6 +9,8 @@ import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.reactive.collections.CollectionSignals;
 import sneer.bricks.pulp.reactive.collections.ListRegister;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
+import sneer.foundation.lang.PickyConsumer;
+import sneer.foundation.lang.exceptions.IllegalParameter;
 
 class ContactManagerImpl implements ContactManager {
     

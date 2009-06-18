@@ -26,7 +26,7 @@ public class BrickTestRunnerTest {
 	final FooBrick _foo = new FooBrick() {
 		@Override
 		public BarBrick bar() {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 		}
 	};
 	

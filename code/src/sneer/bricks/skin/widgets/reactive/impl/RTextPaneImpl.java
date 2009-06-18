@@ -10,9 +10,9 @@ import javax.swing.text.Keymap;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyledDocument;
 
-import sneer.bricks.hardware.cpu.lang.PickyConsumer;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.skin.widgets.reactive.NotificationPolicy;
+import sneer.foundation.lang.PickyConsumer;
 
 class RTextPaneImpl extends RAbstractField<JTextPane> {
 	
@@ -52,7 +52,7 @@ class RTextPaneImpl extends RAbstractField<JTextPane> {
 			document.insertString(carretPosition, LINE_BREAK_STRING, attributes);
 			_textComponent.setCaretPosition(carretPosition+1);
 		} catch (BadLocationException e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
     }
     

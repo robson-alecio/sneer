@@ -1,8 +1,8 @@
 package sneer.bricks.pulp.events.impl;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.events.EventNotifier;
 import sneer.bricks.pulp.events.EventNotifiers;
+import sneer.foundation.lang.Consumer;
 
 class EventNotifiersImpl implements EventNotifiers {
 

@@ -5,7 +5,6 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.IOException;
 import java.util.Arrays;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.bandwidth.BandwidthCounter;
 import sneer.bricks.pulp.connection.ByteConnection;
 import sneer.bricks.pulp.contacts.Contact;
@@ -17,6 +16,7 @@ import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.threads.Stepper;
 import sneer.bricks.pulp.threads.Threads;
+import sneer.foundation.lang.Consumer;
 
 class ByteConnectionImpl implements ByteConnection {
 

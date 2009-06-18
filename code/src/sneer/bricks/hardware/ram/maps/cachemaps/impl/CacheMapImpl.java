@@ -3,7 +3,7 @@ package sneer.bricks.hardware.ram.maps.cachemaps.impl;
 import java.util.HashMap;
 
 import sneer.bricks.hardware.ram.maps.cachemaps.CacheMap;
-import sneer.foundation.commons.lang.Producer;
+import sneer.foundation.lang.Producer;
 
 class CacheMapImpl<K, V> extends HashMap<K, V> implements CacheMap<K, V> {
 

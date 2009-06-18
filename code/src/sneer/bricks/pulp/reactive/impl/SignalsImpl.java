@@ -1,12 +1,12 @@
 package sneer.bricks.pulp.reactive.impl;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.reactive.Reception;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
-import sneer.foundation.commons.lang.Functor;
+import sneer.foundation.lang.Consumer;
+import sneer.foundation.lang.Functor;
 
 class SignalsImpl implements Signals {
 

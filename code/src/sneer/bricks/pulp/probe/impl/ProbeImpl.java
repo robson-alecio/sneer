@@ -4,7 +4,6 @@
 package sneer.bricks.pulp.probe.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.contacts.Contact;
 import sneer.bricks.pulp.distribution.filtering.TupleFilterManager;
 import sneer.bricks.pulp.keymanager.KeyManager;
@@ -13,6 +12,7 @@ import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.brickness.PublicKey;
 import sneer.foundation.brickness.Tuple;
+import sneer.foundation.lang.Consumer;
 
 final class ProbeImpl implements Consumer<Tuple> {
 

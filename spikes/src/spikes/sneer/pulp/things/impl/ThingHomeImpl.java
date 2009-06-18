@@ -35,11 +35,11 @@ class ThingHomeImpl implements ThingHome {
 			IndexWriter index = openIndex(true);
 			index.close();
 		} catch (CorruptIndexException e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		} catch (LockObtainFailedException e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		} catch (IOException e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		}
 		
 	}
@@ -68,11 +68,11 @@ class ThingHomeImpl implements ThingHome {
 		try {
 			tryToAddToIndex(thing);
 		} catch (CorruptIndexException e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		} catch (LockObtainFailedException e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		} catch (IOException e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		}
 	}
 
@@ -112,13 +112,13 @@ class ThingHomeImpl implements ThingHome {
 		try {
 			return tryToSearch(tags);
 		} catch (CorruptIndexException e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		} catch (LockObtainFailedException e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		} catch (IOException e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		} catch (ParseException e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		}
 	}
 

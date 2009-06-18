@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.events.EventNotifier;
 import sneer.bricks.pulp.events.EventNotifiers;
 import sneer.bricks.pulp.reactive.Signal;
@@ -18,6 +17,7 @@ import sneer.bricks.pulp.reactive.collections.MapRegister;
 import sneer.bricks.pulp.reactive.collections.MapSignal;
 import sneer.bricks.pulp.reactive.collections.SetRegister;
 import sneer.bricks.pulp.reactive.collections.SetSignal;
+import sneer.foundation.lang.Consumer;
 
 class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 	
@@ -93,7 +93,7 @@ class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 		
 		@Override
 		public Signal<Integer> size() {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 		}
 
 		@Override

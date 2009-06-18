@@ -12,7 +12,6 @@ import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.reactive.gates.logic.LogicGates;
@@ -27,6 +26,7 @@ import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.TextWidget;
 import sneer.bricks.snapps.whisper.gui.WhisperGui;
 import sneer.foundation.environments.Environments;
+import sneer.foundation.lang.Consumer;
 
 class WhisperGuiImpl implements WhisperGui {
 

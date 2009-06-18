@@ -1,8 +1,8 @@
 package sneer.bricks.pulp.reactive.impl;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.reactive.Reception;
+import sneer.foundation.lang.Consumer;
 
 class ReceiversImpl {
 

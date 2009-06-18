@@ -8,7 +8,7 @@ class CollectionSignalsImpl implements CollectionSignals {
 
 	@Override
 	public <K, V> MapRegister<K, V> newMapRegister() {
-		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
 	@Override

@@ -18,7 +18,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.clock.Clock;
 import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
 import sneer.bricks.pulp.keymanager.KeyManager;
@@ -31,6 +30,7 @@ import sneer.foundation.brickness.StoragePath;
 import sneer.foundation.brickness.Tuple;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
+import sneer.foundation.lang.Consumer;
 
 class TupleSpaceImpl implements TupleSpace {
 
@@ -132,9 +132,9 @@ class TupleSpaceImpl implements TupleSpace {
 		try {
 			return factory.create();
 		} catch (IOException e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		} catch (ClassNotFoundException e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
 	}
 

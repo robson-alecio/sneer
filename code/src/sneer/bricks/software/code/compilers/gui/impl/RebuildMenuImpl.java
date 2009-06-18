@@ -16,6 +16,6 @@ class RebuildMenuImpl implements RebuildMenu {
 	}
 
 	private void rebuild() {
-		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
 }

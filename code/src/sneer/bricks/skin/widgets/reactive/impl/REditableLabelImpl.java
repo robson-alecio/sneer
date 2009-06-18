@@ -13,10 +13,10 @@ import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 
-import sneer.bricks.hardware.cpu.lang.PickyConsumer;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.skin.widgets.reactive.NotificationPolicy;
 import sneer.bricks.skin.widgets.reactive.TextWidget;
+import sneer.foundation.lang.PickyConsumer;
 
 class REditableLabelImpl extends RPanel<JTextField> implements TextWidget<JTextField>{
 

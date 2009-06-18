@@ -24,7 +24,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.hardware.gui.Action;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.hardware.log.gui.LogConsole;
@@ -40,6 +39,7 @@ import sneer.bricks.skin.widgets.reactive.ListWidget;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.autoscroll.AutoScrolls;
 import sneer.bricks.skin.windowboundssetter.WindowBoundsSetter;
+import sneer.foundation.lang.Consumer;
 
 class LogConsoleImpl extends JFrame implements LogConsole {
 

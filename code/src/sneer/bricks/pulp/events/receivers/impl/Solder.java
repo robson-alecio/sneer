@@ -1,9 +1,9 @@
 package sneer.bricks.pulp.events.receivers.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.reactive.Signals;
+import sneer.foundation.lang.Consumer;
 
 public class Solder<T> {
 

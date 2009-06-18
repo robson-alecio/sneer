@@ -14,7 +14,7 @@ import sneer.bricks.pulp.dyndns.updater.Updater;
 import sneer.bricks.pulp.dyndns.updater.UpdaterException;
 import sneer.bricks.pulp.httpclient.HttpClient;
 import sneer.bricks.pulp.log.Logger;
-import sneer.foundation.commons.lang.Pair;
+import sneer.foundation.lang.Pair;
 
 class UpdaterImpl implements Updater {
 	

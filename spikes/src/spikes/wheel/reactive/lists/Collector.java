@@ -5,7 +5,7 @@ import sneer.bricks.pulp.reactive.collections.CollectionSignals;
 import sneer.bricks.pulp.reactive.collections.ListRegister;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
 import sneer.bricks.pulp.reactive.collections.impl.VisitingListReceiver;
-import sneer.foundation.commons.lang.Functor;
+import sneer.foundation.lang.Functor;
 
 public class Collector<IN, OUT> {
 
@@ -32,7 +32,7 @@ public class Collector<IN, OUT> {
 
 		@Override
 		public void elementMoved(int index, int newIndex, IN newElement) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 		}
 	}
 

@@ -15,7 +15,6 @@ import org.jmock.Sequence;
 import org.junit.Test;
 
 import sneer.bricks.hardware.cpu.exceptions.Hiccup;
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.hardware.gui.images.Images;
 import sneer.bricks.pulp.clock.Clock;
 import sneer.bricks.pulp.events.EventSource;
@@ -32,6 +31,7 @@ import sneer.foundation.brickness.testsupport.BrickTestRunner;
 import sneer.foundation.brickness.testsupport.Contribute;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.EnvironmentUtils;
+import sneer.foundation.lang.Consumer;
 
 public class WatchMeTest extends BrickTest {
 	

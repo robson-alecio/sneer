@@ -25,7 +25,6 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.pulp.log.Logger;
 import sneer.bricks.pulp.reactive.Signals;
@@ -42,6 +41,7 @@ import sneer.bricks.skin.widgets.reactive.autoscroll.AutoScrolls;
 import sneer.bricks.snapps.wind.Shout;
 import sneer.bricks.snapps.wind.Wind;
 import sneer.bricks.snapps.wind.gui.WindGui;
+import sneer.foundation.lang.Consumer;
 
 class WindGuiImpl implements WindGui {
 

@@ -5,7 +5,6 @@ import static sneer.foundation.environments.Environments.my;
 import org.jmock.Expectations;
 import org.junit.Test;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.hardware.ram.arrays.ImmutableArrays;
 import sneer.bricks.hardware.ram.arrays.ImmutableByteArray2D;
 import sneer.bricks.pulp.clock.Clock;
@@ -22,7 +21,8 @@ import sneer.foundation.brickness.PublicKey;
 import sneer.foundation.brickness.Tuple;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.Contribute;
-import sneer.foundation.commons.lang.ByRef;
+import sneer.foundation.lang.ByRef;
+import sneer.foundation.lang.Consumer;
 
 public class SpeexTuplesTest extends BrickTest {
 	

@@ -2,7 +2,7 @@ package spikes.klaus;
 
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.pulp.threads.Threads;
-import sneer.foundation.commons.threads.Daemon;
+import sneer.foundation.threads.Daemon;
 
 public class Anything {
 

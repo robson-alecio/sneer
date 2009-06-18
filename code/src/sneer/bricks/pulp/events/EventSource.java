@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.events;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
+import sneer.foundation.lang.Consumer;
 
 public interface EventSource<VO> {
 

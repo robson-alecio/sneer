@@ -9,7 +9,7 @@ import java.net.URLConnection;
 
 import sneer.bricks.hardware.io.IO;
 import sneer.bricks.pulp.httpclient.HttpClient;
-import sneer.foundation.commons.lang.Pair;
+import sneer.foundation.lang.Pair;
 
 class HttpClientImpl implements HttpClient {
 

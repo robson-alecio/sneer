@@ -20,7 +20,7 @@ import sneer.bricks.skin.main.synth.Synth;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.TextWidget;
 import sneer.bricks.snapps.meter.memory.gui.MemoryMeterGui;
-import sneer.foundation.commons.lang.Functor;
+import sneer.foundation.lang.Functor;
 
 class MemoryMeterGuiImpl implements MemoryMeterGui {
 

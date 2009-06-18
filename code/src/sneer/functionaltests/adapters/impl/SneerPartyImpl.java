@@ -4,7 +4,6 @@ import static sneer.foundation.environments.Environments.my;
 
 import java.io.File;
 
-import sneer.bricks.hardware.cpu.exceptions.IllegalParameter;
 import sneer.bricks.pulp.clock.Clock;
 import sneer.bricks.pulp.connection.ByteConnection;
 import sneer.bricks.pulp.connection.ConnectionManager;
@@ -24,7 +23,8 @@ import sneer.bricks.snapps.wind.Shout;
 import sneer.bricks.snapps.wind.Wind;
 import sneer.bricks.software.bricks.Bricks;
 import sneer.foundation.brickness.PublicKey;
-import sneer.foundation.commons.lang.exceptions.NotImplementedYet;
+import sneer.foundation.lang.exceptions.IllegalParameter;
+import sneer.foundation.lang.exceptions.NotImplementedYet;
 import sneer.functionaltests.SovereignParty;
 import sneer.functionaltests.adapters.SneerParty;
 

@@ -1,11 +1,11 @@
 package spikes.wheel.reactive.tests;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.events.receivers.impl.Solder;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
+import sneer.foundation.lang.Consumer;
 
 public class LoopbackTester {
 

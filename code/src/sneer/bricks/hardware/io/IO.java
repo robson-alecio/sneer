@@ -1,5 +1,6 @@
 package sneer.bricks.hardware.io;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +12,8 @@ import sneer.foundation.brickness.Brick;
 @Brick
 public interface IO {
 
+	void crash(Closeable closeable);
+	
 	Files files();
 	Streams streams();
 	

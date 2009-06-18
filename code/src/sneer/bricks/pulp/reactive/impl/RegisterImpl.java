@@ -2,9 +2,9 @@ package sneer.bricks.pulp.reactive.impl;
 
 import java.lang.ref.WeakReference;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
+import sneer.foundation.lang.Consumer;
 
 class RegisterImpl<T> implements Register<T> {
 

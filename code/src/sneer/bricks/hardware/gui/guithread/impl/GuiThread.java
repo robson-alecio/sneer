@@ -27,9 +27,9 @@ class GuiThreadImpl implements GuiThread {
 		try {
 			SwingUtilities.invokeAndWait(envolve(environment, runnable));
 		} catch (InterruptedException e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		} catch (InvocationTargetException e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
 	}
 	

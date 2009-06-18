@@ -7,7 +7,6 @@ import java.io.IOException;
 import org.jmock.Expectations;
 import org.junit.Test;
 
-import sneer.bricks.hardware.cpu.exceptions.FriendlyException;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.clock.Clock;
@@ -29,6 +28,7 @@ import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.BrickTestRunner;
 import sneer.foundation.brickness.testsupport.Contribute;
 import sneer.foundation.environments.EnvironmentUtils;
+import sneer.foundation.lang.exceptions.FriendlyException;
 
 public class DynDnsClientTest extends BrickTest {
 	

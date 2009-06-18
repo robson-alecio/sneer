@@ -5,7 +5,6 @@ import static sneer.foundation.environments.Environments.my;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.hardware.cpu.lang.ref.weakreferencekeeper.WeakReferenceKeeper;
 import sneer.bricks.pulp.reactive.ReactivePredicate;
 import sneer.bricks.pulp.reactive.Signal;
@@ -14,6 +13,7 @@ import sneer.bricks.pulp.reactive.collections.CollectionChange;
 import sneer.bricks.pulp.reactive.collections.SetRegister;
 import sneer.bricks.pulp.reactive.collections.SetSignal;
 import sneer.bricks.pulp.reactive.collections.impl.SetRegisterImpl;
+import sneer.foundation.lang.Consumer;
 
 final class Filter<T> {
 

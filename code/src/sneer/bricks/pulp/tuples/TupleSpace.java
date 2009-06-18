@@ -2,9 +2,9 @@ package sneer.bricks.pulp.tuples;
 
 import java.util.List;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.foundation.brickness.Brick;
 import sneer.foundation.brickness.Tuple;
+import sneer.foundation.lang.Consumer;
 
 @Brick
 public interface TupleSpace {

@@ -1,4 +1,4 @@
-package sneer.foundation.commons.threads;
+package sneer.foundation.threads;
 
 import java.util.HashSet;
 import java.util.Set;

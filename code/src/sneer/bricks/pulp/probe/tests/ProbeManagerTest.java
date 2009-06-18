@@ -8,7 +8,6 @@ import org.jmock.lib.action.CustomAction;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.bandwidth.BandwidthCounter;
 import sneer.bricks.pulp.connection.ByteConnection;
 import sneer.bricks.pulp.connection.ConnectionManager;
@@ -24,6 +23,7 @@ import sneer.bricks.pulp.serialization.Serializer;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.Contribute;
+import sneer.foundation.lang.Consumer;
 
 public class ProbeManagerTest extends BrickTest {
 

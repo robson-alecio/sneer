@@ -13,7 +13,7 @@ import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.TextWidget;
-import sneer.foundation.commons.lang.Functor;
+import sneer.foundation.lang.Functor;
 
 public class GoScorePanel extends JPanel {
 

@@ -7,9 +7,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import sneer.foundation.commons.lang.ByRef;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
+import sneer.foundation.lang.ByRef;
 
 final class ProxyInEnvironment<T> implements InvocationHandler {
 

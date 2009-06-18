@@ -5,9 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-import sneer.bricks.hardware.cpu.exceptions.FriendlyException;
 import sneer.bricks.hardware.cpu.exceptions.Hiccup;
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.hardware.ram.arrays.ImmutableByteArray;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
@@ -30,6 +28,8 @@ import sneer.bricks.snapps.watchme.codec.ImageDelta;
 import sneer.bricks.snapps.watchme.codec.ImageCodec.Decoder;
 import sneer.bricks.snapps.watchme.codec.ImageCodec.Encoder;
 import sneer.foundation.brickness.PublicKey;
+import sneer.foundation.lang.Consumer;
+import sneer.foundation.lang.exceptions.FriendlyException;
 
 class WatchMeImpl implements WatchMe {
 

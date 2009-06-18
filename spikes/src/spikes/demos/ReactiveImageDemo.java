@@ -16,8 +16,8 @@ import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.widgets.reactive.ImageWidget;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.foundation.brickness.Brickness;
-import sneer.foundation.commons.lang.Functor;
 import sneer.foundation.environments.Environments;
+import sneer.foundation.lang.Functor;
 import spikes.wheel.reactive.impl.mocks.RandomBoolean;
 
 public class ReactiveImageDemo {
@@ -51,7 +51,7 @@ public class ReactiveImageDemo {
 		try {
 			return ImageIO.read(ReactiveImageDemo.class.getResource(fileName));
 		} catch (IOException e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
 	}
 	

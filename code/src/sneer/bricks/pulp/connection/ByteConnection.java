@@ -1,7 +1,7 @@
 package sneer.bricks.pulp.connection;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.reactive.Signal;
+import sneer.foundation.lang.Consumer;
 
 public interface ByteConnection {
 

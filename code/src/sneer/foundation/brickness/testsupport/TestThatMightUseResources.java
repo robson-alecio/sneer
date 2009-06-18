@@ -7,7 +7,7 @@ import java.util.Set;
 import org.junit.After;
 import org.junit.Before;
 
-import sneer.foundation.commons.threads.Daemon;
+import sneer.foundation.threads.Daemon;
 
 public abstract class TestThatMightUseResources extends AssertUtils {
 

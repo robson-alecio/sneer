@@ -26,8 +26,8 @@ import sneer.bricks.skin.widgets.reactive.LabelProvider;
 import sneer.bricks.skin.widgets.reactive.ListWidget;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.foundation.brickness.Brickness;
-import sneer.foundation.commons.lang.ByRef;
 import sneer.foundation.environments.Environments;
+import sneer.foundation.lang.ByRef;
 import spikes.wheel.reactive.impl.mocks.RandomBoolean;
 
 public class SortTest {

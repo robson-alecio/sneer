@@ -3,11 +3,11 @@ package sneer.bricks.skin.widgets.reactive.autoscroll.impl;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.reactive.collections.CollectionChange;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
 import sneer.bricks.skin.widgets.reactive.autoscroll.AutoScrolls;
+import sneer.foundation.lang.Consumer;
 
 public class AutoScrollsImpl implements AutoScrolls {
 

@@ -13,7 +13,7 @@ import sneer.bricks.pulp.reactive.collections.SetSignal;
 import sneer.bricks.pulp.reactive.collections.impl.SetRegisterImpl;
 import sneer.bricks.pulp.reactive.collections.setfilter.SetFilter;
 import sneer.foundation.brickness.testsupport.BrickTest;
-import sneer.foundation.commons.lang.Functor;
+import sneer.foundation.lang.Functor;
 
 public class SetFilterTest extends BrickTest {
 	

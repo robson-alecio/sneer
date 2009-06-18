@@ -29,27 +29,27 @@ public class ThreadsMock implements Threads {
 
 	@Override
 	public Latch newLatch() {
-		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
 	@Override
 	public void joinWithoutInterruptions(Thread thread) {
-		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
 	@Override
 	public void preventFromBeingGarbageCollected(Object reactor) {
-		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
 	@Override
 	public void sleepWithoutInterruptions(long milliseconds) {
-		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
 	@Override
 	public void startDaemon(String threadName, Runnable runnable) {
-		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
 	@Override
@@ -64,11 +64,11 @@ public class ThreadsMock implements Threads {
 
 	@Override
 	public void waitUntilCrash() {
-		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
 	@Override
 	public void crashAllThreads() {
-		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
 }

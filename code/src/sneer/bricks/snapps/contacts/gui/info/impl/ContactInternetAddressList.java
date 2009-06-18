@@ -15,7 +15,7 @@ import sneer.bricks.pulp.reactive.collections.SetSignal;
 import sneer.bricks.pulp.reactive.collections.listsorter.ListSorter;
 import sneer.bricks.pulp.reactive.collections.setfilter.SetFilter;
 import sneer.bricks.snapps.contacts.gui.ContactsGui;
-import sneer.foundation.commons.lang.Functor;
+import sneer.foundation.lang.Functor;
 
 class ContactInternetAddressList {
 

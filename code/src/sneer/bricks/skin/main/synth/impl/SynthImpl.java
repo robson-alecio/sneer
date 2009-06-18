@@ -26,7 +26,7 @@ class SynthImpl implements Synth {
 				load(SynthImpl.class);
 				UIManager.setLookAndFeel(_default);
 			} catch (Exception e) {
-				throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+				throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 			}
 		}});
 	}
@@ -49,7 +49,7 @@ class SynthImpl implements Synth {
 				is = resourceBase.getResourceAsStream("synth.xml");
 				_synth.load(is, resourceBase);
 			} catch (Exception e) {
-				throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+				throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 			} finally {
 				try { is.close(); } catch (Exception e2) { /* ignore */ }
 			}
@@ -64,7 +64,7 @@ class SynthImpl implements Synth {
 				SwingUtilities.updateComponentTreeUI(component);
 				UIManager.setLookAndFeel(_default);
 			} catch (UnsupportedLookAndFeelException e) {
-				throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+				throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 			}			
 		}});
 	}

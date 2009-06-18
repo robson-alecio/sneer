@@ -15,13 +15,13 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import sneer.bricks.hardware.io.IO;
 import sneer.bricks.pulp.log.Logger;
 import sneer.bricks.pulp.threads.Stepper;
 import sneer.bricks.pulp.threads.Threads;
 import sneer.bricks.skin.sound.kernel.Audio;
 import sneer.bricks.skin.sound.player.SoundPlayer;
-import sneer.foundation.commons.io.Streams;
-import sneer.foundation.commons.lang.exceptions.NotImplementedYet;
+import sneer.foundation.lang.exceptions.NotImplementedYet;
 
 class SoundPlayerImpl implements SoundPlayer {
 
@@ -49,13 +49,13 @@ class SoundPlayerImpl implements SoundPlayer {
 		try {
 			audioInputStream = tryInitAudioInputStream(url);
 		} catch (IOException e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Fix Use BL
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Fix Use BL
 		}
 		
 		try {
 			play(audioInputStream); 
 		} finally {
-			Streams.crash(audioInputStream);
+			my(IO.class).crash(audioInputStream);
 		} 
 	}
 

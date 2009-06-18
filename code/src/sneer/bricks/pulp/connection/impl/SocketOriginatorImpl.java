@@ -5,11 +5,11 @@ import static sneer.foundation.environments.Environments.my;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.connection.SocketOriginator;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddress;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.bricks.pulp.reactive.collections.CollectionChange;
+import sneer.foundation.lang.Consumer;
 
 class SocketOriginatorImpl implements SocketOriginator {
 

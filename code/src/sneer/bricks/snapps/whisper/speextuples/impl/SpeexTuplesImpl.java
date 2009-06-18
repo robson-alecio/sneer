@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.hardware.ram.arrays.ImmutableArrays;
 import sneer.bricks.hardware.ram.arrays.ImmutableByteArray2D;
 import sneer.bricks.pulp.distribution.filtering.TupleFilterManager;
@@ -24,6 +23,7 @@ import sneer.bricks.snapps.whisper.speextuples.SpeexPacket;
 import sneer.bricks.snapps.whisper.speextuples.SpeexTuples;
 import sneer.foundation.brickness.PublicKey;
 import sneer.foundation.brickness.Tuple;
+import sneer.foundation.lang.Consumer;
 
 class SpeexTuplesImpl implements SpeexTuples {
 

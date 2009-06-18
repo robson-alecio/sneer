@@ -4,13 +4,13 @@ import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.reactive.Reception;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.foundation.brickness.testsupport.BrickTest;
-import sneer.foundation.commons.lang.Functor;
+import sneer.foundation.lang.Consumer;
+import sneer.foundation.lang.Functor;
 
 public class SignalsTest extends BrickTest {
 

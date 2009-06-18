@@ -9,10 +9,10 @@ import java.util.Map;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.skin.sound.PcmSoundPacket;
 import sneer.bricks.skin.sound.kernel.Audio;
 import sneer.foundation.brickness.PublicKey;
+import sneer.foundation.lang.Consumer;
 
 class PacketPlayer implements Consumer<PcmSoundPacket> {
 

@@ -13,7 +13,7 @@ import sneer.bricks.pulp.events.EventNotifiers;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.keymanager.KeyManager;
 import sneer.foundation.brickness.PublicKey;
-import sneer.foundation.commons.lang.Producer;
+import sneer.foundation.lang.Producer;
 
 class KeyManagerImpl implements KeyManager {
 

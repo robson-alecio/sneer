@@ -1,9 +1,9 @@
 package sneer.bricks.pulp.reactive.collections.impl;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.reactive.collections.ListChange;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
 import sneer.bricks.pulp.reactive.collections.ListChange.Visitor;
+import sneer.foundation.lang.Consumer;
 
 public abstract class VisitingListReceiver<T> implements Consumer<ListChange<T>>, Visitor<T> {
 

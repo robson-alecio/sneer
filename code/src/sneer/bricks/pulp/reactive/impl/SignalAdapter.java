@@ -1,12 +1,12 @@
 package sneer.bricks.pulp.reactive.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.hardware.cpu.lang.ref.weakreferencekeeper.WeakReferenceKeeper;
 import sneer.bricks.pulp.reactive.Reception;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
-import sneer.foundation.commons.lang.Functor;
+import sneer.foundation.lang.Consumer;
+import sneer.foundation.lang.Functor;
 
 class SignalAdapter<IN, OUT> {
 

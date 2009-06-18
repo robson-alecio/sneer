@@ -1,9 +1,9 @@
 package sneer.bricks.pulp.contacts;
 
-import sneer.bricks.hardware.cpu.exceptions.IllegalParameter;
-import sneer.bricks.hardware.cpu.lang.PickyConsumer;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
 import sneer.foundation.brickness.Brick;
+import sneer.foundation.lang.PickyConsumer;
+import sneer.foundation.lang.exceptions.IllegalParameter;
 
 @Brick
 public interface ContactManager {

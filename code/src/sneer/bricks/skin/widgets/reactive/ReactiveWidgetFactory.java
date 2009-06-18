@@ -9,11 +9,11 @@ import javax.swing.JTextPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
-import sneer.bricks.hardware.cpu.lang.PickyConsumer;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
 import sneer.bricks.pulp.reactive.signalchooser.SignalChooser;
 import sneer.foundation.brickness.Brick;
+import sneer.foundation.lang.PickyConsumer;
 
 @Brick
 public interface ReactiveWidgetFactory {

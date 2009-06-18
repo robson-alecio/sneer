@@ -4,7 +4,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.foundation.brickness.testsupport.BrickTest;
-import sneer.foundation.commons.lang.exceptions.NotImplementedYet;
+import sneer.foundation.lang.exceptions.NotImplementedYet;
 import spikes.priscila.go.GoBoard;
 import spikes.priscila.go.ToroidalGoBoard;
 

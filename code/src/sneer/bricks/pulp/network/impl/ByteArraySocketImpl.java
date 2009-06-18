@@ -4,13 +4,15 @@
 
 package sneer.bricks.pulp.network.impl;
 
+import static sneer.foundation.environments.Environments.my;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import sneer.bricks.hardware.io.IO;
 import sneer.bricks.pulp.network.ByteArraySocket;
-import sneer.foundation.commons.io.Streams;
 
 class ByteArraySocketImpl implements ByteArraySocket {
 
@@ -50,8 +52,8 @@ class ByteArraySocketImpl implements ByteArraySocket {
 
 	@Override
 	public void crash() {
-		Streams.crash(_inputStream);
-		Streams.crash(_outputStream);
+		my(IO.class).crash(_inputStream);
+		my(IO.class).crash(_outputStream);
 		try {
 			_socket.close();
 		} catch (IOException e) {

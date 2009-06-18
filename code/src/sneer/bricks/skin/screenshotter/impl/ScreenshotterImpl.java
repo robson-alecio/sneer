@@ -10,11 +10,11 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;
 
-import sneer.bricks.hardware.cpu.exceptions.FriendlyException;
 import sneer.bricks.hardware.cpu.exceptions.Hiccup;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.skin.screenshotter.Screenshotter;
+import sneer.foundation.lang.exceptions.FriendlyException;
 
 class ScreenshotterImpl implements Screenshotter {
 

@@ -18,8 +18,8 @@ import sneer.bricks.hardware.cpu.lang.Lang;
 import sneer.bricks.hardware.ram.collections.Collections;
 import sneer.bricks.pulp.natures.gui.GUINatureRuntime;
 import sneer.foundation.brickness.ClassDefinition;
-import sneer.foundation.commons.lang.Functor;
-import sneer.foundation.commons.lang.Pair;
+import sneer.foundation.lang.Functor;
+import sneer.foundation.lang.Pair;
 
 public class GUIMethodEnhancer {
 
@@ -43,7 +43,7 @@ public class GUIMethodEnhancer {
 			_resultingClasses.add(makeThunkFor());
 			enhanceMethod();
 		} catch (Exception e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(_method.toString(), e);
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(_method.toString(), e);
 		}
 	}
 

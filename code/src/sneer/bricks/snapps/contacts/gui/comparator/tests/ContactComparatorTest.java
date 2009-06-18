@@ -5,7 +5,6 @@ import static sneer.foundation.environments.Environments.my;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.connection.ByteConnection;
 import sneer.bricks.pulp.connection.ConnectionManager;
 import sneer.bricks.pulp.contacts.Contact;
@@ -22,6 +21,7 @@ import sneer.bricks.snapps.contacts.gui.comparator.ContactComparator;
 import sneer.foundation.brickness.testsupport.AssertUtils;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.Contribute;
+import sneer.foundation.lang.Consumer;
 
 public class ContactComparatorTest extends BrickTest {
 	
@@ -67,12 +67,12 @@ class ConnectionManagerMock implements ConnectionManager{
 			public Signal<Boolean> isOnline() {
 				return ((ContactMock)contact)._isOnline;
 			}
-			@Override public void initCommunications(PacketScheduler sender, Consumer<byte[]> receiver) { throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet();}
+			@Override public void initCommunications(PacketScheduler sender, Consumer<byte[]> receiver) { throw new sneer.foundation.lang.exceptions.NotImplementedYet();}
 		};
 	}
-	@Override public void manageIncomingSocket(Contact contact, ByteArraySocket socket) { throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); }
-	@Override public void manageOutgoingSocket(Contact contact, ByteArraySocket socket) { throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); }
-	@Override public void closeConnectionFor(Contact contact) {	throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); }
+	@Override public void manageIncomingSocket(Contact contact, ByteArraySocket socket) { throw new sneer.foundation.lang.exceptions.NotImplementedYet(); }
+	@Override public void manageOutgoingSocket(Contact contact, ByteArraySocket socket) { throw new sneer.foundation.lang.exceptions.NotImplementedYet(); }
+	@Override public void closeConnectionFor(Contact contact) {	throw new sneer.foundation.lang.exceptions.NotImplementedYet(); }
 }
 
 class ContactMock implements Contact{

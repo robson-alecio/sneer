@@ -1,8 +1,8 @@
 package sneer.bricks.pulp.port.impl;
 
-import sneer.bricks.hardware.cpu.lang.PickyConsumer;
 import sneer.bricks.pulp.port.PortKeeper;
 import sneer.bricks.pulp.reactive.Signal;
+import sneer.foundation.lang.PickyConsumer;
 
 class PortKeeperImpl implements PortKeeper {
 

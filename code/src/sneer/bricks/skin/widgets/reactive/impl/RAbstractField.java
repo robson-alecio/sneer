@@ -17,9 +17,6 @@ import java.lang.reflect.Method;
 import javax.swing.JComponent;
 import javax.swing.text.JTextComponent;
 
-import sneer.bricks.hardware.cpu.exceptions.IllegalParameter;
-import sneer.bricks.hardware.cpu.lang.Consumer;
-import sneer.bricks.hardware.cpu.lang.PickyConsumer;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.LightType;
@@ -30,6 +27,9 @@ import sneer.bricks.skin.widgets.reactive.NotificationPolicy;
 import sneer.bricks.skin.widgets.reactive.TextWidget;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
+import sneer.foundation.lang.Consumer;
+import sneer.foundation.lang.PickyConsumer;
+import sneer.foundation.lang.exceptions.IllegalParameter;
 
 
 abstract class RAbstractField<WIDGET extends JTextComponent> extends RPanel<WIDGET> implements TextWidget<WIDGET> {
@@ -172,7 +172,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends RPanel<WIDG
 		try {
 			_textComponent.getClass().getMethod("setText", new Class[]{String.class}).invoke(_textComponent, new Object[]{text});
 		} catch (Exception e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet("Invalid Widget", e);
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet("Invalid Widget", e);
 		}		
 	}
 
@@ -180,7 +180,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends RPanel<WIDG
 		try {
 			return (String) _textComponent.getClass().getMethod("getText", new Class[0]).invoke(_textComponent, new Object[0]);
 		} catch (Exception e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet("Invalid Widget", e);
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet("Invalid Widget", e);
 		}
 	}
 	

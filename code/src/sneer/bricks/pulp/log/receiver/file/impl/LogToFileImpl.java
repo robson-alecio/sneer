@@ -6,11 +6,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.log.receiver.file.LogToFile;
 import sneer.bricks.pulp.log.workers.notifier.LogNotifier;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.foundation.brickness.StoragePath;
+import sneer.foundation.lang.Consumer;
 
 class LogToFileImpl implements LogToFile {
 
@@ -35,7 +35,7 @@ class LogToFileImpl implements LogToFile {
 			fileWriter.write(msg);
 			fileWriter.flush();
 		} catch (IOException e) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e);
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e);
 		} finally{
 			try { fileWriter.close(); } catch (Exception ignore) {}
 		}

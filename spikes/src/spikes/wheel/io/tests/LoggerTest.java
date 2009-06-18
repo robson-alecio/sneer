@@ -4,12 +4,12 @@ import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 
-import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.log.Logger;
 import sneer.bricks.pulp.log.workers.notifier.LogNotifier;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.foundation.brickness.testsupport.BrickTest;
-import sneer.foundation.commons.lang.ByRef;
+import sneer.foundation.lang.ByRef;
+import sneer.foundation.lang.Consumer;
 
 
 public class LoggerTest extends BrickTest {

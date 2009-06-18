@@ -2,7 +2,7 @@ package sneer.bricks.hardware.ram.maps.cachemaps;
 
 import java.util.Map;
 
-import sneer.foundation.commons.lang.Producer;
+import sneer.foundation.lang.Producer;
 
 public interface CacheMap<K, V> extends Map<K, V> {
 

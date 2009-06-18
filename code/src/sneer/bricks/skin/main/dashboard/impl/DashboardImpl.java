@@ -36,7 +36,7 @@ import sneer.bricks.skin.main.synth.Synth;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.Widget;
 import sneer.bricks.skin.windowboundssetter.WindowBoundsSetter;
-import sneer.foundation.commons.lang.Functor;
+import sneer.foundation.lang.Functor;
 
 class DashboardImpl implements Dashboard {
 
@@ -86,7 +86,7 @@ class DashboardImpl implements Dashboard {
 		@Override protected void elementAdded(Instrument instrument) { 	_dashboardPanel.install(instrument); }
 		@Override protected void elementPresent(Instrument instrument) { _dashboardPanel.install(instrument); }
 		@Override protected void elementRemoved(Instrument element) {
-			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 		}
 	};
 

@@ -11,7 +11,7 @@ import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
 import sneer.bricks.pulp.threads.Latch;
 import sneer.bricks.pulp.threads.Stepper;
 import sneer.bricks.pulp.threads.Threads;
-import sneer.foundation.commons.lang.ByRef;
+import sneer.foundation.lang.ByRef;
 
 class ClockImpl implements Clock {
 	

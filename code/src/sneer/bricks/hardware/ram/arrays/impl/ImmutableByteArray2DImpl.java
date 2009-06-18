@@ -19,7 +19,7 @@ public class ImmutableByteArray2DImpl implements ImmutableByteArray2D {
 
 	@Override
 	public byte[] get(int index) {
-		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
 	static private byte[][] copy(byte[][] original) {

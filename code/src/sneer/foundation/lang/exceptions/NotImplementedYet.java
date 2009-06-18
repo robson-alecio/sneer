@@ -1,4 +1,4 @@
-package sneer.foundation.commons.lang.exceptions;
+package sneer.foundation.lang.exceptions;
 
 public class NotImplementedYet extends RuntimeException {
 	private static final long serialVersionUID = 1L;

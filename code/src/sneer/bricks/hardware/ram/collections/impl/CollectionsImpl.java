@@ -6,7 +6,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
 
 import sneer.bricks.hardware.ram.collections.Collections;
-import sneer.foundation.commons.lang.Functor;
+import sneer.foundation.lang.Functor;
 
 public class CollectionsImpl implements Collections{
 

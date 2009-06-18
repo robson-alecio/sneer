@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import sneer.bricks.hardware.ram.iterables.Iterables;
-import sneer.foundation.commons.lang.Functor;
+import sneer.foundation.lang.Functor;
 
 class IterablesImpl implements Iterables {
 

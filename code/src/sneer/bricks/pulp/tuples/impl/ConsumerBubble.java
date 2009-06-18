@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.prevayler.Prevayler;
 
-import sneer.bricks.hardware.cpu.exceptions.IllegalParameter;
-import sneer.bricks.hardware.cpu.lang.Consumer;
+import sneer.foundation.lang.Consumer;
+import sneer.foundation.lang.exceptions.IllegalParameter;
 
 
 @SuppressWarnings("unchecked")

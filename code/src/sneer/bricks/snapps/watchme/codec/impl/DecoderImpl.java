@@ -10,7 +10,7 @@ import java.util.Map;
 import sneer.bricks.skin.image.ImageFactory;
 import sneer.bricks.snapps.watchme.codec.ImageDelta;
 import sneer.bricks.snapps.watchme.codec.ImageCodec.Decoder;
-import sneer.foundation.commons.lang.Pair;
+import sneer.foundation.lang.Pair;
 
 class DecoderImpl implements Decoder {
 

@@ -36,7 +36,7 @@ import sneer.bricks.snapps.contacts.actions.ContactActionManager;
 import sneer.bricks.snapps.contacts.gui.ContactsGui;
 import sneer.bricks.snapps.contacts.gui.comparator.ContactComparator;
 import sneer.bricks.snapps.contacts.gui.info.ContactInfoWindow;
-import sneer.foundation.commons.lang.Functor;
+import sneer.foundation.lang.Functor;
 
 class ContactsGuiImpl implements ContactsGui {
 	

@@ -18,7 +18,7 @@ import sneer.bricks.snapps.contacts.actions.ContactAction;
 import sneer.bricks.snapps.contacts.actions.ContactActionManager;
 import sneer.bricks.snapps.contacts.gui.ContactsGui;
 import sneer.bricks.snapps.contacts.gui.delete.DeleteContactWindow;
-import sneer.foundation.commons.lang.ByRef;
+import sneer.foundation.lang.ByRef;
 
 class DeleteContactWindowImpl extends JFrame implements DeleteContactWindow {
 	

@@ -12,7 +12,7 @@ import java.util.Set;
 import sneer.bricks.hardware.ram.graphs.DirectedGraph;
 import sneer.bricks.hardware.ram.maps.cachemaps.CacheMap;
 import sneer.bricks.hardware.ram.maps.cachemaps.CacheMaps;
-import sneer.foundation.commons.lang.Producer;
+import sneer.foundation.lang.Producer;
 
 class DirectedGraphImpl<T> implements DirectedGraph<T> {
 

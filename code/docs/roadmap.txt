@@ -13,8 +13,6 @@
         
 	- .sneer - Fix Tuplespace persistence. Use my(StoragePath.class)
 
-	- [Sandro] Fix Autoscroll.
-
 	- [Sandro] Fix Wind Scroll.
 	
 	- [Klaus] Code - Check restore code msg ( InstallationWizard.restore() ).

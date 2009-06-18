@@ -11,6 +11,7 @@ import javax.swing.JScrollPane;
 
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.pulp.events.EventSource;
+import sneer.bricks.pulp.reactive.Reception;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.reactive.collections.CollectionChange;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
@@ -25,7 +26,7 @@ class AutoScroll<T> extends JScrollPane{
 
 	private boolean _shouldAutoscroll = true;
 
-	@SuppressWarnings("unused") private Object _referenceToAvoidGc;
+	private Reception _reception;
 
 	AutoScroll(JComponent keyTypeSource, ListSignal<T> inputSignal, Consumer<CollectionChange<T>> receiver) {
 		keyTypeSource.addKeyListener(new KeyAdapter(){@Override public void keyReleased(KeyEvent e) {
@@ -59,14 +60,15 @@ class AutoScroll<T> extends JScrollPane{
 	
 	private void initReceivers(ListSignal<T> inputSignal, Consumer<CollectionChange<T>> consumer) {
 		initPreChangeReceiver(inputSignal);		
-		_referenceToAvoidGc = my(Signals.class).receive(inputSignal, consumer);
+		_reception = my(Signals.class).receive(consumer, inputSignal);
 		initPosChangeReceiver(inputSignal);
 	}
 	
 	private void initReceivers(EventSource<T> eventSource) {
-		_referenceToAvoidGc = my(Signals.class).receive(eventSource, new Consumer<T>(){ @Override public void consume(T value) {
-			if(_shouldAutoscroll) placeAtEnd();
-		}});
+		_reception = my(Signals.class).receive(new Consumer<T>(){ @Override public void consume(T value) {
+			if(_shouldAutoscroll) 
+				placeAtEnd();
+		}}, eventSource);
 	}
 
 	@SuppressWarnings("unused")
@@ -92,5 +94,10 @@ class AutoScroll<T> extends JScrollPane{
 		@Override protected void elementRemoved(T element) 	{ fire();}
 
 		protected abstract void fire();
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		_reception.dispose();
 	}
 }

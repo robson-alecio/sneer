@@ -58,10 +58,12 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	private final MainMenu _mainMenu = my(MainMenu.class);
 
 	private final JTabbedPane _tab = new JTabbedPane();
+	
 	private final JTextArea _txtLog = new JTextArea();
 	
 	@SuppressWarnings("unused")
 	private final WidgetLogger _logger = new WidgetLogger();
+	private final JScrollPane _autoScroll = AutoScroll();
 	
 	{my(Dashboard.class);}
 
@@ -86,13 +88,11 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 
 	private void initGui() {
 		_txtLog.setEditable(false);
-
-		JScrollPane scroll = newAutoScroll();
 		getContentPane().setLayout(new BorderLayout());
 		
 		my(Synth.class).attach(_tab, "LogConsoleTab");
 		
-		_tab.addTab("", loadIcon("Log.png"), scroll, "Log");
+		_tab.addTab("", loadIcon("Log.png"), _autoScroll, "Log");
 		_tab.addTab("", loadIcon("Filter.png"), initFilterGui(), "Filter");
 		
 		_tab.setTabPlacement(SwingConstants.RIGHT);
@@ -187,23 +187,21 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 		});
 	}
 
-	private JScrollPane newAutoScroll() {
+	private JScrollPane AutoScroll() {
 		JScrollPane scroll = my(AutoScrolls.class).create(my(LogNotifier.class).loggedMessages());
 		scroll.getViewport().add(_txtLog);
 		return scroll;
 	}
 
-	class WidgetLogger {
+	private class WidgetLogger {
 		@SuppressWarnings("unused") private final Object _referenceToAvoidGc;
 		private WidgetLogger(){
 			_referenceToAvoidGc = my(Signals.class).receive(my(LogNotifier.class).loggedMessages(), 
-				new Consumer<String>(){ @Override public void consume(String msg) {
-					log(msg);
+				new Consumer<String>(){ @Override public void consume(final String msg) {
+					my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
+						_txtLog.append(msg);
+					}});
 				}});
-		}
-		
-		private void log(String msg){
-			_txtLog.append(msg);
 		}
 	}
 }

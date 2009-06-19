@@ -44,9 +44,7 @@ class SnappStarterImpl implements SnappStarter {
 	}
 
 	private File binDirectory() {
-		File result = new File(my(StoragePath.class).get(), "code/bin");
-		System.out.println(result);
-		return result;
+		return new File(my(StoragePath.class).get(), "code/bin");
 	}
 
 }

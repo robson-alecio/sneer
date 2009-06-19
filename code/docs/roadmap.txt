@@ -1,9 +1,9 @@
 ﻿TASKS
 =========
 
-	- [Klaus] Revise entire package structure.
-
 	- [Klaus] Sneer Dummy - Fix
+
+	- [Klaus] Revise entire package structure.
 
 	- [Sandro] BrickFinderImpl is using FileFilterUtils directly - Encapsulate FileFilterUtils in IO brick.
 
@@ -16,6 +16,9 @@
 		- [Sandro] Focus on My Name Field when Sneer starts.
 
 	- Contact crud: persist with tuples
+        
+------------------------------------------ "EAT YOUR OWN DOGFOOD" RELEASE
+
         
 	- Savepoints - For entire source code.
 
@@ -59,7 +62,6 @@
 	- [Bamboo] Create/Install ("publish") brick locally
 		- Brickness - "The simplest possible container"
 			- Unify the Bindings vs Contributions metaphors.
-			- SneerCommunity.newContainer - All that mess with StoragePath and SneerConfig is ugly.
 			- Unignore Freedom7 tests.
 			- Make a test run a brick in a directory that is not in the system ClassLoader classpath (Eclipse classpath). It will probably fail. Implement the logic using NewContainerImpl.createApiClassLoader() to return a URLClassloader that can be extended with new classpaths for new brick interfaces;
 
@@ -71,7 +73,6 @@
 		- Simplify to remove all synchronization. Let the container synchronize the brick.
 			- Concurrency - Synchronize calls on Bricks, according to docs/brick_types.txt  
 
--------------------------------------- Standalone Dogfood Release
 
 	- Contact Connection
 		- Own Name - Show contacts' names in contact list
@@ -83,7 +84,7 @@
 		- Open Jar leak - Fix in Freedom7Test
 		- Diffs
 
---------------------------------------- "Me Too" Dogfood Release
+------------------------------------------ "SHARE YOUR OWN DOGFOOD" RELEASE
 
 
 	- Security

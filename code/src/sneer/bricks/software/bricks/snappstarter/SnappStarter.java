@@ -1,5 +1,6 @@
 package sneer.bricks.software.bricks.snappstarter;
 
-public interface SnappStarter {
+import sneer.foundation.brickness.Brick;
 
-}
+@Brick
+public interface SnappStarter {}

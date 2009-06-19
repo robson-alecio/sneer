@@ -9,10 +9,6 @@ import sneer.foundation.environments.Environments;
 
 public class SneerSession {
 
-	public static void main(String[] ignored) throws Exception {
-		new SneerSession();
-	}
-	
 	public SneerSession() {
 		Environments.runWith(container(), new Runnable(){ @Override public void run() {
 			runInEnvironment();

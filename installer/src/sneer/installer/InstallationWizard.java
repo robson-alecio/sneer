@@ -1,6 +1,5 @@
 package sneer.installer;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 
@@ -10,43 +9,25 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.synth.SynthLookAndFeel;
 
-public class InstallationWizard extends JFrame{
+import sneer.conventions.Directories;
 
-	private static final long serialVersionUID = 1L;
+public class InstallationWizard extends JFrame {
+
 	private final String WIZARD_TITLE = "Sneer Installation Wizard";
-	private final File _sneerHome;
 
-	InstallationWizard(File sneerHome) throws Exception {
-		this(sneerHome, false);
-	}
-	
-	InstallationWizard(File sneerHome, boolean restoringCode) throws Exception {
-		_sneerHome = sneerHome;
-
+	InstallationWizard() throws Exception {
 		loadSynthLookAndFeel();
-		dialogsWorkflow(restoringCode);
+		dialogsWorkflow();
 		loadMetalLookAndFeel();
 	}
 
-	private void dialogsWorkflow(boolean restoringCode) throws IOException {
-		if(restoringCode){
-			restore();
-			new Installation(_sneerHome);
-			return;
-		}
-			
+	private void dialogsWorkflow() throws IOException {
 		welcome();
 		license();
 		dogFoodInformation();
 		configInformation();
-		new Installation(_sneerHome);
+		new Installation();
 		congratulations();
-	}
-	
-	private void restore() {
-		showDialog(
-		"Restoring Code Folder?", 
-		"Restore","Quit"); 		
 	}
 	
 	private void welcome() {
@@ -80,7 +61,7 @@ public class InstallationWizard extends JFrame{
 		showDialog(
 		"Each user of this computer can have his own Sneer setup.\n\n" +
 		"To store your setup, the following folder will be created:\n" +
-		_sneerHome.getAbsolutePath(), 
+		Directories.SNEER_HOME.getAbsolutePath(), 
 		
 		"Whatever >");
 	}
@@ -120,4 +101,6 @@ public class InstallationWizard extends JFrame{
 	private static void loadMetalLookAndFeel() throws UnsupportedLookAndFeelException, ParseException, IOException {
 		UIManager.setLookAndFeel(new MetalLookAndFeel());
 	}
+	
+	private static final long serialVersionUID = 1L;
 }

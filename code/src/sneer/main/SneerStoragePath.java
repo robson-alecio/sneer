@@ -12,7 +12,7 @@ class SneerStoragePath implements StoragePath {
 	}
 	
 	private static String userHome() {
-		String override = System.getProperty("home_override");
+		String override = System.getProperty("sneer.home");
 		if (override != null) return override;
 		
 		return System.getProperty("user.home");

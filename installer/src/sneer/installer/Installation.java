@@ -9,14 +9,16 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
 
+import sneer.conventions.Directories;
+
+import static sneer.conventions.Directories.SNEER_HOME;;
+
 class Installation {
 
-	private File _sneerHome;
 	private File _sneerInstallDir;
 
-	Installation(File sneerHome) throws IOException {
-		_sneerHome = sneerHome;
-		_sneerInstallDir = new File(_sneerHome.getParentFile(), "sneer_installer");
+	Installation() throws IOException {
+		_sneerInstallDir = new File(SNEER_HOME.getParentFile(), "sneer_installer");
 		
 		createDirectory();
 		addBinaries();
@@ -26,8 +28,8 @@ class Installation {
 	private void createDirectory() throws IOException {
 		IOUtils.deleteDirectory(_sneerInstallDir);
 		
-		if(_sneerHome.exists()){
-			_sneerInstallDir=_sneerHome;
+		if(SNEER_HOME.exists()){
+			_sneerInstallDir=SNEER_HOME;
 			return;
 		}
 		
@@ -35,14 +37,14 @@ class Installation {
 	}
 
 	private void renameDirectory() throws IOException {
-		if(_sneerInstallDir == _sneerHome) return;
-		if(!_sneerInstallDir.renameTo(_sneerHome))
-			throw new IOException(_sneerInstallDir.getAbsolutePath() + " can't renamed to " + _sneerHome.getAbsolutePath());	
+		if(_sneerInstallDir == SNEER_HOME) return;
+		if(!_sneerInstallDir.renameTo(SNEER_HOME))
+			throw new IOException(_sneerInstallDir.getAbsolutePath() + " can't renamed to " + SNEER_HOME.getAbsolutePath());	
 	}
 	
 	private void addBinaries() throws IOException {
 		URL jarFileName = this.getClass().getResource("/sneer.jar");
-		IOUtils.write(new  File(_sneerInstallDir, "log.txt"), "jar file url: " + jarFileName.toString());
+		IOUtils.write(Directories.LOG_FILE, "jar file url: " + jarFileName.toString());
 		File file = extractJar(jarFileName);
 		extractFiles(file);
 	}
@@ -58,7 +60,7 @@ class Installation {
 	}
 	
 	private void extractFiles(File src) throws IOException {
-		IOUtils.write(new  File(_sneerInstallDir, "log.txt"), "expand files from: " + src.getAbsolutePath());
+		IOUtils.write(Directories.LOG_FILE, "expand files from: " + src.getAbsolutePath());
 		if(!(src.exists()))
 			throw new IOException("File '" + src.getAbsolutePath() + "' not found!");	
 

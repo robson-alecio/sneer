@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.bricks.software.bricks.finder.BrickFinder;
@@ -20,7 +19,6 @@ public class BrickFinderTest extends BrickTest {
 
 	private final BrickFinder _subject = my(BrickFinder.class);
 	
-	@Ignore
 	@Test
 	public void findBricks() throws IOException {
 		File testDir = JarUtils.fileFor(getClass()).getParentFile();

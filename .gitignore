@@ -1,7 +1,9 @@
-data
-logs
-code/own
 bin
 build
 .byecycle
+
+#User stuff
+code/own
+data
+logs
 

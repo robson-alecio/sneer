@@ -1,11 +1,13 @@
 ﻿TASKS
 =========
 
-	- [Klaus] Clean sneer/lib.
-
 	- [Klaus] Revise entire package structure.
 
-	- [Sandro] Update - Newer webstart versions delete and recreate the code directory ALWAYS, even if it has not been deleted, without asking the user. After if is done, show a message: "The old Sneer code was deleted and the new code was installed. (Whatever)". (See email about user code)
+	- [Sandro] BrickFinderImpl is using FileFilterUtils directly - Encapsulate FileFilterUtils in IO brick.
+
+	- [Sandro] JarBuilder - Make it into a brick.
+
+	- [Sandro] Update - Newer webstart versions delete and recreate the code directory ALWAYS, even if it has not been deleted, without asking the user. After if is done, show a message: "The old Sneer code was deleted and new code was installed. (Whatever)". (See email about user code)
 
 	- MyInfo
 		- Persist
@@ -14,7 +16,6 @@
 	- Contact crud: persist with tuples
         
 	- Savepoints - For entire source code.
-
 
 	- DynDns
 		- Fix: Running on more than one machine will cause redundant (abusive) updates. Do not persist last discovered IP. Do a DNS lookup every time instead.

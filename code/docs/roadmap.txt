@@ -15,12 +15,6 @@
         
 	- .sneer - Fix Tuplespace persistence. Use my(StoragePath.class)
 
-	- [Sandro] Fix LogConsole.
-
-	- [Sandro] Log Console - Separate filter into another window.
-
-	- [Sandro] "Git -> Webstart -> Git" Full Cycle - Test. Talk to Klaus.
-
 	- [Klaus] Code - Check restore code msg ( InstallationWizard.restore() ).
 
 	- "Rebuild"
@@ -151,8 +145,6 @@ TASKS
 
 	- ContactsGUI - Accept cell part renderers. (dependency inverted) Discuss with team.
 	
-	- [Sandro] Community Initiative - Incorporate Gandhi's Google maps brick. (Run LocationGuiMain)
-
 	- TopTen
 		 - Categories (Ex.: Movies, Sports, Songs, Restaurants, etc)
 		 	- CRUD

@@ -130,9 +130,6 @@ class DashboardImpl implements Dashboard {
 			initSynth();
 			initRootPanel();	
 			resizeWindow();
-			my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
-				my(WindowBoundsSetter.class).setDefaultBaseComponet(_rootPanel);
-			}});
 		}
 		
 		private void initSynth() {
@@ -202,6 +199,10 @@ class DashboardImpl implements Dashboard {
 			_frame.setState(Frame.NORMAL);
 			_frame.setVisible(true);
 			_frame.requestFocusInWindow();
+
+			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
+				my(WindowBoundsSetter.class).setDefaultBaseComponet(_rootPanel);
+			}});
 		}
 
 		private Signal<String> reactiveTitle() {

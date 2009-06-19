@@ -79,8 +79,7 @@ class Installation {
 				file.mkdirs();
 				continue;
         	}
-        	
-        	IOUtils.write(file, IOUtils.readEntryBytes(jar, entry));
+        	IOUtils.writeEntry(jar, entry, file);
         }
 	}
 }

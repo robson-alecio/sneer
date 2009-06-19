@@ -6,11 +6,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import sneer.foundation.brickness.Brickness;
 import sneer.foundation.environments.CachingEnvironment;
 import sneer.foundation.environments.Environments;
-import sneer.main.SneerSession;
+import sneer.foundation.lang.exceptions.NotImplementedYet;
 import spikes.bamboo.bricksorter.BrickSorter;
 
 public class BrickSorterApplication {
@@ -34,7 +33,7 @@ public class BrickSorterApplication {
 	}
 
 	private static Class<?>[] bricksToSortAccordingToDependencies() {
-		return SneerSession.platformBricks();
+		throw new NotImplementedYet("You just have to return the bricks you want sorted according to dependencies...");
 	}
 
 }

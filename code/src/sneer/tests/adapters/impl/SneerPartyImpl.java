@@ -8,23 +8,20 @@ import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.connection.ByteConnection;
 import sneer.bricks.pulp.connection.ConnectionManager;
-import sneer.bricks.pulp.connection.SocketOriginator;
-import sneer.bricks.pulp.connection.SocketReceiver;
 import sneer.bricks.pulp.contacts.Contact;
 import sneer.bricks.pulp.contacts.ContactManager;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.bricks.pulp.keymanager.KeyManager;
 import sneer.bricks.pulp.own.name.OwnNameKeeper;
 import sneer.bricks.pulp.port.PortKeeper;
-import sneer.bricks.pulp.probe.ProbeManager;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
 import sneer.bricks.snapps.wind.Shout;
 import sneer.bricks.snapps.wind.Wind;
 import sneer.bricks.software.bricks.Bricks;
 import sneer.foundation.brickness.PublicKey;
-import sneer.foundation.lang.exceptions.Refusal;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
+import sneer.foundation.lang.exceptions.Refusal;
 import sneer.tests.SovereignParty;
 import sneer.tests.adapters.SneerParty;
 
@@ -46,17 +43,15 @@ class SneerPartyImpl implements SneerParty {
 
 	private final Wind _wind = my(Wind.class);
 
-	@SuppressWarnings("unused")
-	private final ProbeManager _probes = my(ProbeManager.class);
-	
-	
-	@SuppressWarnings("unused") //We need to start this brick so that it listens to others and does its thing.
-	private final SocketOriginator _originator = my(SocketOriginator.class);
-
-	@SuppressWarnings("unused") //We need to start this brick so that it listens to others and does its thing.
-	private final SocketReceiver _receiver = my(SocketReceiver.class);
-
 	private final KeyManager _keyManager = my(KeyManager.class);
+	
+	{
+		my(sneer.bricks.pulp.log.receiver.sysout.LogToSysout.class);
+		my(sneer.bricks.pulp.connection.SocketOriginator.class);
+		my(sneer.bricks.pulp.connection.SocketReceiver.class);
+		my(sneer.bricks.pulp.probe.ProbeManager.class);
+		my(sneer.bricks.hardware.clock.ticker.ClockTicker.class);
+	}
 	
 
 	@Override

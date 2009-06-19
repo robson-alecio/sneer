@@ -3,6 +3,8 @@
 
 	- [Klaus] Revise entire package structure.
 
+	- [Klaus] Sneer Dummy - Fix
+
 	- [Sandro] BrickFinderImpl is using FileFilterUtils directly - Encapsulate FileFilterUtils in IO brick.
 
 	- [Sandro] JarBuilder - Make it into a brick.

@@ -10,7 +10,7 @@ public class SneerDummy {
 	}
 
 	private static String dummyHome() {
-		return new File(System.getProperty("user.home"), ".sneerdummy").getAbsolutePath();
+		return new File(System.getProperty("user.home"), "sneerdummy").getAbsolutePath();
 	}
 
 }

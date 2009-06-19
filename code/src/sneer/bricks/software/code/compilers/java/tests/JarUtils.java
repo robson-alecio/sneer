@@ -7,9 +7,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import sneer.foundation.brickness.testsupport.JarBuilder;
+import sneer.foundation.testsupport.JarBuilder;
 
 
+@SuppressWarnings("deprecation")
 public class JarUtils {
 
 	public static File jarGiven(Class<?> clazz) {

@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.runner.RunWith;
 
 import sneer.foundation.brickness.StoragePath;
+import sneer.foundation.testsupport.TestThatMightUseResources;
 
 @RunWith(BrickTestWithMockRunner.class)
 public abstract class BrickTest extends TestThatMightUseResources {

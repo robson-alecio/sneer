@@ -11,8 +11,9 @@ import sneer.bricks.hardware.ram.iterables.Iterables;
 import sneer.bricks.software.code.compilers.java.JavaCompiler;
 import sneer.bricks.software.code.compilers.java.Result;
 import sneer.bricks.software.code.metaclass.MetaClass;
-import sneer.foundation.brickness.testsupport.JarBuilder;
+import sneer.foundation.testsupport.JarBuilder;
 
+@SuppressWarnings("deprecation")
 public class LibBuilder {
 
 	private final JavaCompiler _compiler;

@@ -11,8 +11,8 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import sneer.foundation.brickness.testsupport.AssertUtils;
 import sneer.foundation.brickness.testsupport.BrickTest;
+import sneer.foundation.testsupport.AssertUtils;
 import spikes.sneer.kernel.container.bytecode.dependencies.DependencyFinder;
 
 public class DependencyTest extends BrickTest {

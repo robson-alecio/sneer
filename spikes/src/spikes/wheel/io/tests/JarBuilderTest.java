@@ -1,6 +1,6 @@
 package spikes.wheel.io.tests;
 
-import sneer.foundation.brickness.testsupport.TestThatMightUseResources;
+import sneer.foundation.testsupport.TestThatMightUseResources;
 
 public class JarBuilderTest extends TestThatMightUseResources {
 

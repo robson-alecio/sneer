@@ -7,7 +7,7 @@ import java.util.Set;
 
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.log.Logger;
-import sneer.foundation.brickness.testsupport.Daemon;
+import sneer.foundation.testsupport.Daemon;
 
 @SuppressWarnings("deprecation")
 class TimeboxRunner {

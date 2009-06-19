@@ -1,4 +1,4 @@
-package sneer.foundation.brickness.testsupport;
+package sneer.foundation.testsupport;
 
 import java.util.HashSet;
 import java.util.Set;

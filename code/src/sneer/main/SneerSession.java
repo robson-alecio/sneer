@@ -1,9 +1,6 @@
 package sneer.main;
 
 import static sneer.foundation.environments.Environments.my;
-
-import java.io.IOException;
-
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.software.bricks.snappstarter.SnappStarter;
 import sneer.foundation.brickness.Brickness;
@@ -13,12 +10,11 @@ import sneer.foundation.environments.Environments;
 public class SneerSession {
 
 	public static void main(String[] ignored) throws Exception {
-		Environment environment = Brickness.newBrickContainer(new SneerStoragePath());
-		new SneerSession(environment);
+		new SneerSession();
 	}
 	
-	public SneerSession(Environment environment) {
-		Environments.runWith(environment, new Runnable(){ @Override public void run() {
+	public SneerSession() {
+		Environments.runWith(container(), new Runnable(){ @Override public void run() {
 			runInEnvironment();
 		}});
 	}
@@ -28,4 +24,8 @@ public class SneerSession {
 		my(Threads.class).waitUntilCrash();
 	}
 
+	private Environment container() {
+		return Brickness.newBrickContainer(new SneerStoragePath());
+	}
+	
 }

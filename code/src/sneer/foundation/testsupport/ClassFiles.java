@@ -1,10 +1,9 @@
-package sneer.foundation.brickness.testsupport;
+package sneer.foundation.testsupport;
 
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-
 
 
 public class ClassFiles {

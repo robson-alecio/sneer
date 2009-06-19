@@ -1,4 +1,4 @@
-package sneer.foundation.brickness.testsupport;
+package sneer.foundation.testsupport;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 
+@Deprecated
 public class JarBuilder implements Closeable{
 
 	private final JarOutputStream _out;

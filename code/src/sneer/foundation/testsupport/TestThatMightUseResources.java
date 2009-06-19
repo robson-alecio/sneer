@@ -1,11 +1,13 @@
-package sneer.foundation.brickness.testsupport;
+package sneer.foundation.testsupport;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
+
 
 
 public abstract class TestThatMightUseResources extends AssertUtils {
@@ -78,7 +80,7 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 		long t0 = System.currentTimeMillis();
 		while (true) {
 			try {
-				IOUtils.deleteDirectory(tmp);
+				deleteDirectory(tmp);
 				return;
 			} catch (IOException e) {
 				if (System.currentTimeMillis() - t0 > 1000) {
@@ -108,4 +110,29 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 			return this;
 		}
 	}
+
+	void deleteDirectory(File directory) throws IOException {
+		if (!directory.exists()) return;
+		if (!directory.isDirectory()) 
+			throw new IllegalArgumentException(directory.getAbsolutePath() + " is not a directory");
+
+		recursiveDelete(directory);
+
+		if (!directory.delete()) 
+			throw new IOException("Unable to delete directory: " + directory.getAbsolutePath());
+	}
+
+	private void recursiveDelete(File directory) throws IOException, FileNotFoundException {
+		for (File file : directory.listFiles()) {
+			if (!file.exists()) 
+				throw new FileNotFoundException("File does not exist: " + file.getAbsolutePath());
+			
+			if (file.isFile() && !file.delete()) 
+				throw new IOException(("Unable to delete file: " + file.getAbsolutePath()));
+			
+			deleteDirectory(file);
+		}
+	}
+
 }
+

@@ -1,4 +1,4 @@
-package sneer.foundation.brickness.testsupport;
+package sneer.foundation.testsupport;
 
 import org.junit.Assert;
 

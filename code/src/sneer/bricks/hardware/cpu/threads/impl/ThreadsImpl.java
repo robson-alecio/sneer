@@ -10,9 +10,9 @@ import sneer.bricks.hardware.cpu.threads.Latch;
 import sneer.bricks.hardware.cpu.threads.Stepper;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.own.name.OwnNameKeeper;
-import sneer.foundation.brickness.testsupport.Daemon;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
+import sneer.foundation.testsupport.Daemon;
 
 @SuppressWarnings("deprecation")
 class ThreadsImpl implements Threads {

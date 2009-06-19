@@ -2,13 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="lib/asm-all-3.1.jar"/>
-	<classpathentry kind="lib" path="lib/javassist.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/junit-4.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jmock-2.5.1/hamcrest-core-1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jmock-2.5.1/hamcrest-library-1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jmock-2.5.1/jmock-2.5.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jmock-2.5.1/jmock-junit4-2.5.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="src/sneer/foundation/testsupport/lib/hamcrest-core-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="src/sneer/foundation/testsupport/lib/hamcrest-library-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="src/sneer/foundation/testsupport/lib/jmock-2.5.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="src/sneer/foundation/testsupport/lib/jmock-junit4-2.5.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="src/sneer/foundation/testsupport/lib/junit-4.4.jar"/>
 	<classpathentry kind="lib" path="src/sneer/bricks/snapps/whisper/speex/impl/lib/speex.jar"/>
 	<classpathentry kind="lib" path="src/sneer/bricks/software/code/compilers/java/impl/lib/compiler-7-ea-b17-02_aug_2007.jar"/>
 	<classpathentry kind="lib" path="src/sneer/bricks/pulp/tuples/impl/lib/xpp3_min-1.1.4c.jar"/>
@@ -19,5 +17,7 @@
 	<classpathentry kind="lib" path="src/sneer/bricks/hardware/io/impl/lib/commons-io-1.4.jar" sourcepath="src/sneer/bricks/hardware/io/impl/lib/commons-io-1.4-src.zip"/>
 	<classpathentry kind="lib" path="src/sneer/bricks/hardware/ram/collections/impl/lib/commons-collections-3.2.1.jar" sourcepath="bricks/src/sneer/hardware/ram/collections/impl/lib/commons-collections-3.2.1-src.zip"/>
 	<classpathentry kind="lib" path="src/sneer/bricks/pulp/crypto/impl/lib/bcprov-jdk16-139.jar"/>
+	<classpathentry kind="lib" path="src/sneer/bricks/pulp/natures/gui/impl/lib/javassist.jar"/>
+	<classpathentry kind="lib" path="src/sneer/bricks/software/code/metaclass/impl/lib/asm-all-3.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

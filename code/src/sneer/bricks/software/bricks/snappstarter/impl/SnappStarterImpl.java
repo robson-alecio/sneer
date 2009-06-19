@@ -1,58 +1,52 @@
 package sneer.bricks.software.bricks.snappstarter.impl;
 
 import static sneer.foundation.environments.Environments.my;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
+
+import sneer.bricks.software.bricks.finder.BrickFinder;
+import sneer.bricks.software.bricks.snappstarter.Snapp;
 import sneer.bricks.software.bricks.snappstarter.SnappStarter;
-import sneer.foundation.brickness.BrickLoadingException;
+import sneer.foundation.brickness.StoragePath;
 
 class SnappStarterImpl implements SnappStarter {
 
-	{
-		loadBricks(platformBricks());
-		loadBricks(snappBricks());
-	}
-	
-	private void loadBricks(final Class<?>... bricks) throws BrickLoadingException {
-		for (Class<?> brick : bricks) my(brick);
-	}
+	private final ClassLoader _apiClassLoader = SnappStarter.class.getClassLoader();
 
-	private Class<?>[] platformBricks() {
-		return new Class<?>[] {
-				sneer.bricks.pulp.log.receiver.file.LogToFile.class,
-				sneer.bricks.pulp.log.receiver.sysout.LogToSysout.class,
-
-				sneer.bricks.hardware.clock.ticker.ClockTicker.class,
-
-				sneer.bricks.pulp.connection.SocketOriginator.class,
-				sneer.bricks.pulp.connection.SocketReceiver.class,
-				sneer.bricks.pulp.probe.ProbeManager.class,
-		};
+	@Override
+	public void startSnapps() {
+		try {
+			tryToStartSnapps();
+		} catch (Exception e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
-	private Class<?>[] snappBricks() {
-		return new Class<?>[] {
-				sneer.bricks.skin.main.menu.MainMenu.class,
-				
-				sneer.bricks.snapps.welcomewizard.UserInfo.class,
-				
-				sneer.bricks.snapps.contacts.gui.delete.DeleteContactWindow.class,
-				sneer.bricks.snapps.contacts.gui.ContactsGui.class,
-				sneer.bricks.snapps.contacts.gui.info.ContactInfoWindow.class,
-				sneer.bricks.snapps.wind.gui.WindGui.class,
-				sneer.bricks.snapps.whisper.gui.WhisperGui.class,
-				sneer.bricks.snapps.meter.memory.gui.MemoryMeterGui.class,
-				sneer.bricks.snapps.meter.bandwidth.gui.BandwidthMeterGui.class,
-				sneer.bricks.snapps.blinkinglights.gui.BlinkingLightsGui.class,
+	private void tryToStartSnapps() throws IOException, ClassNotFoundException {
+		for (String brickName : brickNames()) {
+			Class<?> brick = _apiClassLoader.loadClass(brickName);
+			if (isSnapp(brick)) start(brick);
+		}
+	}
 
-				sneer.bricks.skin.main.dashboard.Dashboard.class,
+	private void start(Class<?> brick) {
+		my(brick);
+	}
 
-				sneer.bricks.hardware.log.gui.LogConsole.class,
-				
-				sneer.bricks.pulp.log.exceptions.ExceptionLogger.class,
-				sneer.bricks.snapps.contacts.hardcoded.HardcodedContacts.class,
-				sneer.bricks.snapps.gis.map.gui.MapGui.class,
-				
-				sneer.bricks.skin.main.menu.exit.ExitMenuItem.class,
-		};
+	private boolean isSnapp(Class<?> brick) {
+		return brick.getAnnotation(Snapp.class) != null;
+	}
+
+	private Collection<String> brickNames() throws IOException {
+		return my(BrickFinder.class).findBricks(binDirectory());
+	}
+
+	private File binDirectory() {
+		File result = new File(my(StoragePath.class).get(), "code/bin");
+		System.out.println(result);
+		return result;
 	}
 
 }

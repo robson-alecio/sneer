@@ -1,6 +1,9 @@
 package sneer.main;
 
 import static sneer.foundation.environments.Environments.my;
+
+import java.io.IOException;
+
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.software.bricks.snappstarter.SnappStarter;
 import sneer.foundation.brickness.Brickness;
@@ -21,7 +24,7 @@ public class SneerSession {
 	}
 
 	private void runInEnvironment() {
-		my(SnappStarter.class);
+		my(SnappStarter.class).startSnapps();
 		my(Threads.class).waitUntilCrash();
 	}
 

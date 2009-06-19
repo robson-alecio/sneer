@@ -3,4 +3,8 @@ package sneer.bricks.software.bricks.snappstarter;
 import sneer.foundation.brickness.Brick;
 
 @Brick
-public interface SnappStarter {}
+public interface SnappStarter {
+
+	void startSnapps();
+
+}

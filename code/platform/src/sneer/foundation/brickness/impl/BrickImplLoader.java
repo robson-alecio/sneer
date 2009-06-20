@@ -10,7 +10,6 @@ import sneer.foundation.brickness.Brick;
 import sneer.foundation.brickness.BrickConventions;
 import sneer.foundation.brickness.BrickLoadingException;
 import sneer.foundation.brickness.Nature;
-import sneer.foundation.testsupport.ClassFiles;
 
 
 class BrickImplLoader {
@@ -24,6 +23,7 @@ class BrickImplLoader {
 	
 
 	Class<?> loadImplClassFor(Class<?> brick) throws ClassNotFoundException {
+		
 		File path = ClassFiles.classpathRootFor(brick);
 		String implPackage = BrickConventions.implPackageFor(brick.getName());
 		List<Nature> natures = naturesFor(brick);
@@ -35,15 +35,14 @@ class BrickImplLoader {
 		return packageLoader.loadClass(implNameFor(brick.getName()));
 	}
 
-	
-	private List<Nature> naturesFor(Class<?> brick) {
+	private static List<Nature> naturesFor(Class<?> brick) {
 		final Brick annotation = brick.getAnnotation (Brick.class);
 		if (annotation == null) throw new BrickLoadingException("Brick '" + brick.getName() + "' is not annotated as such!");
 
 		return naturesImplsFor(annotation.value());
 	}
 	
-	private List<Nature> naturesImplsFor(final Class<? extends Nature>[] natureClasses) {
+	private static List<Nature> naturesImplsFor(final Class<? extends Nature>[] natureClasses) {
 		final ArrayList<Nature> result = new ArrayList<Nature>(natureClasses.length);
 		for (Class<? extends Nature> natureClass : natureClasses)
 			result.add(my(natureClass));
@@ -54,5 +53,5 @@ class BrickImplLoader {
 	private static String implNameFor(final String brickInterfaceName) {
 		return BrickConventions.implClassNameFor(brickInterfaceName);
 	}
-
+	
 }

@@ -12,7 +12,6 @@ import sneer.bricks.pulp.network.Network;
 import sneer.foundation.brickness.Brickness;
 import sneer.foundation.brickness.StoragePath;
 import sneer.foundation.environments.Environment;
-import sneer.foundation.environments.EnvironmentUtils;
 import sneer.tests.SovereignCommunity;
 import sneer.tests.SovereignParty;
 import sneer.tests.utils.network.InProcessNetwork;
@@ -32,7 +31,6 @@ public class SneerCommunity implements SovereignCommunity {
 	@Override
 	public SovereignParty createParty(final String name) {
 		Environment container = newContainer(name);
-		EnvironmentUtils.retrieveFrom(container, SneerParty.class);
 		
 		final SneerParty party = ProxyInEnvironment.newInstance(SneerParty.class, container);
 		party.setOwnName(name);
@@ -57,13 +55,15 @@ public class SneerCommunity implements SovereignCommunity {
 		if (!binDir.exists() && !binDir.mkdirs())
 			throw new IllegalStateException("Could not create temporary directory '" + binDir + "'!");
 
-		URL url;
+		return new URLClassLoader(new URL[]{toURL(binDir)}, SneerCommunity.class.getClassLoader());
+	}
+
+	private URL toURL(File file) {
 		try {
-			url = binDir.toURI().toURL();
+			return file.toURI().toURL();
 		} catch (MalformedURLException e) {
 			throw new IllegalStateException(e);
 		}
-		return new URLClassLoader(new URL[]{url}, SneerCommunity.class.getClassLoader());
 	}
 
 	private File rootDirectory(String name) {

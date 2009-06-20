@@ -3,9 +3,11 @@ package sneer.foundation.brickness.impl.tests;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Arrays;
 
 import org.jmock.Expectations;
@@ -22,7 +24,6 @@ import sneer.foundation.brickness.impl.tests.fixtures.nature.brick.impl.BrickOfS
 import sneer.foundation.brickness.impl.tests.fixtures.nature.provider.SomeNature;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.EnvironmentUtils;
-import sneer.foundation.testsupport.ClassFiles;
 
 // TODO: test multiple natures
 public class NatureTest extends Assert {
@@ -58,15 +59,9 @@ public class NatureTest extends Assert {
 	}
 
 	private byte[] bytecodeFor(final Class<?> clazz) throws IOException {
-		File file = ClassFiles.fileFor(clazz);
-
-		if (!file.exists())  throw new FileNotFoundException("File '" + file + "' does not exist");
-		if (file.isDirectory()) throw new IOException("File '" + file + "' exists but is a directory");
-		if (file.canRead() == false)  throw new IOException("File '" + file + "' cannot be read");
-		
 		InputStream in = null;
 		try {
-			in = new FileInputStream(file);
+			in = new FileInputStream(fileFor(clazz));
 		    ByteArrayOutputStream output = new ByteArrayOutputStream();
 			byte[] buffer = new byte[1024*4];
 			int n = 0;
@@ -75,7 +70,21 @@ public class NatureTest extends Assert {
 			
 			return output.toByteArray();
 		} finally {
-		    try {	in.close(); } catch (Throwable ignore) {}
+		    try { in.close(); } catch (Exception ignore) {}
 		}
 	}
+
+	private File fileFor(final Class<?> clazz) {
+		final String fileName = clazz.getCanonicalName().replace('.', '/') + ".class";
+		return new File(toURI(clazz.getResource("/" + fileName)));
+	}
+	
+	private static URI toURI(final URL url) {
+		try {
+			return url.toURI();
+		} catch (URISyntaxException e) {
+			throw new IllegalStateException();
+		}
+	}
+
 }

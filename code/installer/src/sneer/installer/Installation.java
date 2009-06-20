@@ -9,9 +9,9 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
 
-import sneer.conventions.Directories;
+import sneer.main.SneerDirectories;
 
-import static sneer.conventions.Directories.SNEER_HOME;;
+import static sneer.main.SneerDirectories.SNEER_HOME;
 
 class Installation {
 
@@ -44,7 +44,7 @@ class Installation {
 	
 	private void addBinaries() throws IOException {
 		URL jarFileName = this.getClass().getResource("/sneer.jar");
-		IOUtils.write(Directories.LOG_FILE, "jar file url: " + jarFileName.toString());
+		IOUtils.write(SneerDirectories.LOG_FILE, "jar file url: " + jarFileName.toString());
 		File file = extractJar(jarFileName);
 		extractFiles(file);
 	}
@@ -60,7 +60,7 @@ class Installation {
 	}
 	
 	private void extractFiles(File src) throws IOException {
-		IOUtils.write(Directories.LOG_FILE, "expand files from: " + src.getAbsolutePath());
+		IOUtils.write(SneerDirectories.LOG_FILE, "expand files from: " + src.getAbsolutePath());
 		if(!(src.exists()))
 			throw new IOException("File '" + src.getAbsolutePath() + "' not found!");	
 

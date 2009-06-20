@@ -9,7 +9,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.synth.SynthLookAndFeel;
 
-import sneer.conventions.Directories;
+import sneer.main.SneerDirectories;
 
 public class InstallationWizard extends JFrame {
 
@@ -61,7 +61,7 @@ public class InstallationWizard extends JFrame {
 		showDialog(
 		"Each user of this computer can have his own Sneer setup.\n\n" +
 		"To store your setup, the following folder will be created:\n" +
-		Directories.SNEER_HOME.getAbsolutePath(), 
+		SneerDirectories.SNEER_HOME.getAbsolutePath(), 
 		
 		"Whatever >");
 	}

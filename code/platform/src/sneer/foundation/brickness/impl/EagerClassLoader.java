@@ -18,7 +18,7 @@ abstract class EagerClassLoader extends URLClassLoader {
 
 	@Override
 	protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
-		if (resolve) throw new IllegalStateException();
+		if (resolve) throw new UnsupportedOperationException();
 		
 		Class<?> loaded = findLoadedClass(name);
 		if (loaded != null) return loaded;

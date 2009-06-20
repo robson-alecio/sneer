@@ -3,6 +3,8 @@ package sneer.foundation.brickness.testsupport;
 
 import static sneer.foundation.environments.Environments.my;
 
+import java.io.File;
+
 import org.jmock.Mockery;
 import org.jmock.Sequence;
 import org.jmock.integration.junit4.JUnit4Mockery;
@@ -10,13 +12,17 @@ import org.jmock.internal.ExpectationBuilder;
 import org.junit.After;
 import org.junit.runner.RunWith;
 
+import sneer.foundation.brickness.StorageDirectory;
 import sneer.foundation.brickness.StoragePath;
 import sneer.foundation.testsupport.TestThatMightUseResources;
 
 @RunWith(BrickTestWithMockRunner.class)
 public abstract class BrickTest extends TestThatMightUseResources {
 	
-	@Contribute	final StoragePath _storageDir = new StoragePath(){ @Override public String get() {
+	@Contribute	final StorageDirectory _storageDir = new StorageDirectory(){ @Override public File get() {
+		return tmpDirectory();
+	}};
+	@Contribute	final StoragePath _storagePath = new StoragePath(){ @Override public String get() {
 		return tmpDirectory().getAbsolutePath();
 	}};
 	

@@ -7,15 +7,13 @@ import sneer.foundation.brickness.Brickness;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
 
-public class SneerSession {
+public class SneerSession implements Runnable {
 
 	public SneerSession() {
-		Environments.runWith(container(), new Runnable(){ @Override public void run() {
-			runInEnvironment();
-		}});
+		Environments.runWith(container(), this);
 	}
 
-	private void runInEnvironment() {
+	public void run() {
 		my(SnappStarter.class).startSnapps();
 		my(Threads.class).waitUntilCrash();
 	}

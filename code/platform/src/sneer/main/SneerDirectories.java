@@ -1,8 +1,8 @@
-package sneer.conventions;
+package sneer.main;
 
 import java.io.File;
 
-public class Directories {
+public class SneerDirectories {
 
 	public static final File SNEER_HOME 	= sneerHome();
 	public static final File DATA 			= new File(SNEER_HOME, "data");

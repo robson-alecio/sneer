@@ -147,11 +147,6 @@ class SneerPartyImpl implements SneerParty {
         return _sneerPortKeeper.port().currentValue();
     }
 
-	@Override
-	public PublicKey ownPublicKey() {
-		return _keyManager.ownPublicKey();
-	}
-
 
 	@Override
 	public void publishBricks(File sourceDirectory) {

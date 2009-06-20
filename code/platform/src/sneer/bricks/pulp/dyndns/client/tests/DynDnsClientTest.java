@@ -23,7 +23,6 @@ import sneer.bricks.pulp.propertystore.mocks.TransientPropertyStore;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
-import sneer.foundation.brickness.StoragePath;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.BrickTestRunner;
 import sneer.foundation.brickness.testsupport.Contribute;
@@ -61,9 +60,6 @@ Unacceptable Client Behavior
 	@Contribute final Updater _updater = mock(Updater.class);
 	@Contribute final TransientPropertyStore _propertyStore = new TransientPropertyStore();
 	@Contribute final ThreadsMock _threads = new ThreadsMock();
-	@Contribute final StoragePath _storagePath = new StoragePath(){@Override public String get() {
-		return tmpDirectory().getAbsolutePath();
-	}};
 	
 	@Test
 	public void updateOnIpChange() throws Exception {

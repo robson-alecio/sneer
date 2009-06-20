@@ -5,7 +5,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import sneer.conventions.Directories;
 
 public class Sneer {
 
@@ -17,15 +16,15 @@ public class Sneer {
 		independentClassLoader().loadClass("sneer.main.SneerSession").newInstance();
 	}
 
-	private URLClassLoader independentClassLoader() throws Exception {
+	private URLClassLoader independentClassLoader() {
 		ClassLoader noParent = null;
 		return new URLClassLoader(classpath(), noParent);
 	}
 
 	private URL[] classpath() {
-		return new URL[]{
-			toURL(Directories.OWN_BIN),
-			toURL(Directories.PLATFORM_BIN)
+		return new URL[] {
+			toURL(SneerDirectories.OWN_BIN),
+			toURL(SneerDirectories.PLATFORM_BIN)
 		};
 	}
 
@@ -36,6 +35,5 @@ public class Sneer {
 			throw new IllegalStateException(e);
 		}
 	}
-
 	
 }

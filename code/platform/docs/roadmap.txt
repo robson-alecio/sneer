@@ -5,14 +5,14 @@
 
 	- [Klaus] Revise entire package structure.
 
-	- [Sandro] Remove Installer duplication - The installer project now depends on the sneer project because it uses the Sneer class and the sneer.conventions.Directories constants, to eliminate duplication.
-		- Copy ONLY Sneer and Directories classes to the installer jar.
-		- Use the Directories class constants and remove all hardcoded directory references.
+	- [Sandro] Remove Installer duplication - The installer project now depends on the sneer project because it uses the Sneer and SneerDirectories classes, to eliminate duplication.
+		- Copy ONLY Sneer and SneerDirectories classes to the installer jar.
+		- Use the SneerDirectories constants and remove all hardcoded directory references from the installer.
+		- Use the SneerDirectories.LOG_FILE constant and remove the hardcoded log file name from the installer.
 	
-	- [Sandro] Update - Newer webstart versions delete and recreate the code directory ALWAYS, even if it has not been deleted, without asking the user.
-		- I deleted the old update-on-delete logic already.
-
 	- [Sandro] BrickFinderImpl is using FileFilterUtils directly - Encapsulate FileFilterUtils in IO brick.
+
+	- [Sandro] Update - Newer webstart versions delete and recreate the code directory ALWAYS, even if it has not been deleted, without asking the user. The old update-on-delete logic was already deleted.
 
 	- [Sandro] JarBuilder - Make it into a brick.
 

@@ -1,8 +1,6 @@
 ﻿TASKS
 =========
 
-	- [Klaus] Refactor EagerClassLoader in SneerCommunity
-
 	- [Klaus] Sneer Dummy - Fix
 
 	- [Klaus] Revise entire package structure.

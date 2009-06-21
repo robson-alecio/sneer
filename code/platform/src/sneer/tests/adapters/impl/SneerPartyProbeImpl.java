@@ -25,9 +25,9 @@ import sneer.foundation.lang.exceptions.NotImplementedYet;
 import sneer.foundation.lang.exceptions.Refusal;
 import sneer.tests.SovereignParty;
 import sneer.tests.adapters.SneerParty;
-import sneer.tests.adapters.SneerPartyBrick;
+import sneer.tests.adapters.SneerPartyProbe;
 
-class SneerPartyBrickImpl implements SneerPartyBrick, SneerParty {
+class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	
 	static private final String MOCK_ADDRESS = "localhost";
 
@@ -70,7 +70,7 @@ class SneerPartyBrickImpl implements SneerPartyBrick, SneerParty {
 		Contact contact = addContact(party.ownName());
 
 		SneerParty sneerParty = (SneerParty)party;
-		storePublicKey(contact, sneerParty.publicKey());
+		storePublicKey(contact, new PublicKey(sneerParty.publicKey()));
 		_internetAddressKeeper.add(contact, MOCK_ADDRESS, sneerParty.sneerPort());
 		
 		sneerParty.giveNicknameTo(this, this.ownName());
@@ -101,7 +101,7 @@ class SneerPartyBrickImpl implements SneerPartyBrick, SneerParty {
 	
     @Override
     public void giveNicknameTo(SovereignParty peer, String newNickname) {
-    	PublicKey publicKey = ((SneerParty)peer).publicKey();
+    	byte[] publicKey = ((SneerParty)peer).publicKey();
 		Contact contact = waitForContactGiven(publicKey);
 
 		try {
@@ -121,9 +121,9 @@ class SneerPartyBrickImpl implements SneerPartyBrick, SneerParty {
 			my(Threads.class).sleepWithoutInterruptions(1);
 	}
 
-	private Contact waitForContactGiven(PublicKey publicKey) {
+	private Contact waitForContactGiven(byte[] publicKey) {
 		while (true) {
-			Contact contact = _keyManager.contactGiven(publicKey);
+			Contact contact = _keyManager.contactGiven(new PublicKey(publicKey));
 			if (contact != null) return contact;
 			my(Threads.class).sleepWithoutInterruptions(1);
 			_clock.advanceTime(60 * 1000);
@@ -131,8 +131,8 @@ class SneerPartyBrickImpl implements SneerPartyBrick, SneerParty {
 	}
 
 	@Override
-    public PublicKey publicKey() {
-		return _keyManager.ownPublicKey();
+    public byte[] publicKey() {
+		return _keyManager.ownPublicKey().bytes();
 	}
 
 	@Override

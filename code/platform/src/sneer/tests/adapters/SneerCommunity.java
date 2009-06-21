@@ -35,7 +35,7 @@ public class SneerCommunity implements SovereignCommunity {
 		Environment container = newContainer(storagePath);
 		URLClassLoader apiClassLoader = apiClassLoader(storagePath.get());
 		
-		Object partyImpl = EnvironmentUtils.retrieveFrom(container, loadSneerPartyBrickClass(apiClassLoader));
+		Object partyImpl = EnvironmentUtils.retrieveFrom(container, loadProbeClassUsing(apiClassLoader));
 		final SneerParty party = (SneerParty)ProxyInEnvironment.newInstance(container, partyImpl);
 		
 		party.setOwnName(name);
@@ -43,9 +43,9 @@ public class SneerCommunity implements SovereignCommunity {
 		return party;
 	}
 
-	private Class<?> loadSneerPartyBrickClass(URLClassLoader apiClassLoader) {
+	private Class<?> loadProbeClassUsing(URLClassLoader apiClassLoader) {
 		try {
-			return apiClassLoader.loadClass(SneerPartyBrick.class.getName());
+			return apiClassLoader.loadClass(SneerPartyProbe.class.getName());
 		} catch (ClassNotFoundException e) {
 			throw new IllegalStateException(e);
 		}
@@ -76,7 +76,7 @@ public class SneerCommunity implements SovereignCommunity {
 			private boolean isSharedByAllParties(String className) {
 				if (className.contains("xstream")) return true; System.out.println("Sandro, delete this line after XStream is made into a brick.");
 
-				if (className.equals(SneerPartyBrick.class.getName())) return false;
+				if (className.equals(SneerPartyProbe.class.getName())) return false;
 				if (isPublishedByUser(className)) return false;
 				if (isNetworkClass(className)) return true;
 				

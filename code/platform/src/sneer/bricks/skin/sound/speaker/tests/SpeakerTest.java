@@ -16,7 +16,7 @@ import sneer.bricks.skin.sound.kernel.Audio;
 import sneer.bricks.skin.sound.speaker.Speaker;
 import sneer.foundation.brickness.PublicKey;
 import sneer.foundation.brickness.testsupport.BrickTest;
-import sneer.foundation.brickness.testsupport.Contribute;
+import sneer.foundation.brickness.testsupport.Bind;
 
 public class SpeakerTest extends BrickTest {
 	
@@ -24,7 +24,7 @@ public class SpeakerTest extends BrickTest {
 	private final KeyManager _keyManager = my(KeyManager.class);
 	private final TupleSpace _tupleSpace = my(TupleSpace.class);
 
-	@Contribute private final Audio _audio = mock(Audio.class);
+	@Bind private final Audio _audio = mock(Audio.class);
 	private final SourceDataLine _line = mock(SourceDataLine.class);
 	
 	@Test

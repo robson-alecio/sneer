@@ -15,13 +15,13 @@ import sneer.bricks.pulp.propertystore.PropertyStore;
 import sneer.bricks.pulp.propertystore.mocks.TransientPropertyStore;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.foundation.brickness.testsupport.BrickTest;
-import sneer.foundation.brickness.testsupport.Contribute;
+import sneer.foundation.brickness.testsupport.Bind;
 import sneer.foundation.lang.Consumer;
 
 public class OwnIpDiscovererTest extends BrickTest {
 	
-	@Contribute final CheckIp checkip = mock(CheckIp.class);
-	@Contribute final PropertyStore store = new TransientPropertyStore();
+	@Bind final CheckIp checkip = mock(CheckIp.class);
+	@Bind final PropertyStore store = new TransientPropertyStore();
 	
 	@Test
 	public void testDiscovery() throws IOException {

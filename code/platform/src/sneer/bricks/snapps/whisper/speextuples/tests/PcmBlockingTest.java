@@ -9,12 +9,12 @@ import sneer.bricks.pulp.distribution.filtering.TupleFilterManager;
 import sneer.bricks.skin.sound.PcmSoundPacket;
 import sneer.bricks.snapps.whisper.speextuples.SpeexTuples;
 import sneer.foundation.brickness.testsupport.BrickTest;
-import sneer.foundation.brickness.testsupport.Contribute;
+import sneer.foundation.brickness.testsupport.Bind;
 
 public class PcmBlockingTest extends BrickTest {
 	
 	
-	@Contribute
+	@Bind
 	private final TupleFilterManager _filter = mock(TupleFilterManager.class);
 	
 	{ 

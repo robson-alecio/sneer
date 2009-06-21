@@ -7,13 +7,13 @@ import org.junit.Test;
 import sneer.bricks.hardware.cpu.threads.mocks.ThreadsMock;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.brickness.testsupport.BrickTest;
-import sneer.foundation.brickness.testsupport.Contribute;
+import sneer.foundation.brickness.testsupport.Bind;
 import sneer.foundation.lang.ByRef;
 import sneer.foundation.lang.Consumer;
 
 public class TupleSpaceResponsivenessTest extends BrickTest {
 
-	@Contribute private final ThreadsMock _threads = new ThreadsMock();
+	@Bind private final ThreadsMock _threads = new ThreadsMock();
 	
 	private final TupleSpace _subject = my(TupleSpace.class);
 	

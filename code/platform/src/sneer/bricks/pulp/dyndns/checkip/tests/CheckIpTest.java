@@ -10,11 +10,11 @@ import org.junit.Test;
 import sneer.bricks.pulp.dyndns.checkip.CheckIp;
 import sneer.bricks.pulp.httpclient.HttpClient;
 import sneer.foundation.brickness.testsupport.BrickTest;
-import sneer.foundation.brickness.testsupport.Contribute;
+import sneer.foundation.brickness.testsupport.Bind;
 
 public class CheckIpTest extends BrickTest {
 	
-	@Contribute final HttpClient _client = mock(HttpClient.class);
+	@Bind final HttpClient _client = mock(HttpClient.class);
 	
 	@Test
 	public void test() throws IOException {

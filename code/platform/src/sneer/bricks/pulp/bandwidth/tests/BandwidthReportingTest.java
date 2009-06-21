@@ -15,7 +15,7 @@ import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.foundation.brickness.testsupport.BrickTest;
-import sneer.foundation.brickness.testsupport.Contribute;
+import sneer.foundation.brickness.testsupport.Bind;
 import sneer.foundation.lang.ByRef;
 import sneer.foundation.lang.Consumer;
 
@@ -25,8 +25,8 @@ public class BandwidthReportingTest extends BrickTest {
 	private final int _IN_PACKET_SIZE = _BYTE_ARRAY_OK.length;
 	private final int _OUT_PACKET_SIZE = 1024;
 
-	@Contribute private final ThreadsMock _threads = new ThreadsMock();
-	@Contribute private final BandwidthCounter _bandwidthCounter = new BandwidthCounterMock();
+	@Bind private final ThreadsMock _threads = new ThreadsMock();
+	@Bind private final BandwidthCounter _bandwidthCounter = new BandwidthCounterMock();
 	private final ConnectionManager _connectionManager = my(ConnectionManager.class);
 
 	@Test

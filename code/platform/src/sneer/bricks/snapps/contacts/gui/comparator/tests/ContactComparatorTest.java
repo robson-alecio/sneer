@@ -19,13 +19,13 @@ import sneer.bricks.pulp.reactive.collections.listsorter.ListSorter;
 import sneer.bricks.pulp.reactive.signalchooser.SignalChooser;
 import sneer.bricks.snapps.contacts.gui.comparator.ContactComparator;
 import sneer.foundation.brickness.testsupport.BrickTest;
-import sneer.foundation.brickness.testsupport.Contribute;
+import sneer.foundation.brickness.testsupport.Bind;
 import sneer.foundation.lang.Consumer;
 import sneer.foundation.testsupport.AssertUtils;
 
 public class ContactComparatorTest extends BrickTest {
 	
-	@Contribute final ConnectionManager _connectionsMock = new ConnectionManagerMock();
+	@Bind final ConnectionManager _connectionsMock = new ConnectionManagerMock();
 	
 	private ListSorter _sorter;
 	private final ListRegister<Contact> _contacts = my(CollectionSignals.class).newListRegister();

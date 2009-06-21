@@ -17,12 +17,12 @@ import sneer.bricks.pulp.dyndns.updater.Updater;
 import sneer.bricks.pulp.dyndns.updater.UpdaterException;
 import sneer.bricks.pulp.httpclient.HttpClient;
 import sneer.foundation.brickness.testsupport.BrickTest;
-import sneer.foundation.brickness.testsupport.Contribute;
+import sneer.foundation.brickness.testsupport.Bind;
 import sneer.foundation.lang.Pair;
 
 public class UpdaterTest extends BrickTest {
 
-	@Contribute final HttpClient client = mock(HttpClient.class);
+	@Bind final HttpClient client = mock(HttpClient.class);
 	
 	@Test
 	public void testUpdateSuccess() throws Exception {

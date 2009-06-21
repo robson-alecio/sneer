@@ -136,7 +136,7 @@ public class BrickTestRunner extends JUnit4ClassRunner {
 			final Class<? extends Object> klass) {
 		
 		for (Field field : klass.getDeclaredFields()) {
-			if (field.getAnnotation(Contribute.class) == null)
+			if (field.getAnnotation(Bind.class) == null)
 				continue;
 			collector.add(field);
 		}

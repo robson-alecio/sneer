@@ -19,10 +19,10 @@ import sneer.foundation.testsupport.TestThatMightUseResources;
 @RunWith(BrickTestWithMockRunner.class)
 public abstract class BrickTest extends TestThatMightUseResources {
 	
-	@Contribute	final StorageDirectory _storageDir = new StorageDirectory(){ @Override public File get() {
+	@Bind	final StorageDirectory _storageDir = new StorageDirectory(){ @Override public File get() {
 		return tmpDirectory();
 	}};
-	@Contribute	final StoragePath _storagePath = new StoragePath(){ @Override public String get() {
+	@Bind	final StoragePath _storagePath = new StoragePath(){ @Override public String get() {
 		return tmpDirectory().getAbsolutePath();
 	}};
 	

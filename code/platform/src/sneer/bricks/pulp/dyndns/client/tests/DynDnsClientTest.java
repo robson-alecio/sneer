@@ -25,7 +25,7 @@ import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.BrickTestRunner;
-import sneer.foundation.brickness.testsupport.Contribute;
+import sneer.foundation.brickness.testsupport.Bind;
 import sneer.foundation.environments.EnvironmentUtils;
 import sneer.foundation.lang.exceptions.FriendlyException;
 
@@ -55,11 +55,11 @@ Unacceptable Client Behavior
 	final DynDnsAccount _account = new DynDnsAccount("test.dyndns.org", "test", "test");
 	final Register<DynDnsAccount> _ownAccount = my(Signals.class).newRegister(_account);
 	
-	@Contribute final OwnIpDiscoverer _ownIpDiscoverer = mock(OwnIpDiscoverer.class);
-	@Contribute final DynDnsAccountKeeper _ownAccountKeeper = mock(DynDnsAccountKeeper.class);
-	@Contribute final Updater _updater = mock(Updater.class);
-	@Contribute final TransientPropertyStore _propertyStore = new TransientPropertyStore();
-	@Contribute final ThreadsMock _threads = new ThreadsMock();
+	@Bind final OwnIpDiscoverer _ownIpDiscoverer = mock(OwnIpDiscoverer.class);
+	@Bind final DynDnsAccountKeeper _ownAccountKeeper = mock(DynDnsAccountKeeper.class);
+	@Bind final Updater _updater = mock(Updater.class);
+	@Bind final TransientPropertyStore _propertyStore = new TransientPropertyStore();
+	@Bind final ThreadsMock _threads = new ThreadsMock();
 	
 	@Test
 	public void updateOnIpChange() throws Exception {

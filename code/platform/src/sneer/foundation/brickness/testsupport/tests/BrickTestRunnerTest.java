@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import sneer.foundation.brickness.testsupport.BrickTestRunner;
-import sneer.foundation.brickness.testsupport.Contribute;
+import sneer.foundation.brickness.testsupport.Bind;
 import sneer.foundation.brickness.testsupport.tests.bar.BarBrick;
 import sneer.foundation.brickness.testsupport.tests.foo.FooBrick;
 
@@ -19,7 +19,7 @@ public class BrickTestRunnerTest {
 		my(BrickTestRunner.class).instanceBeingInitialized(this);
 	}
 	
-	@Contribute
+	@Bind
 	final BarBrick _bar = new BarBrick() {
 	};
 	

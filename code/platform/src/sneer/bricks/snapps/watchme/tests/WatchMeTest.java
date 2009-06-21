@@ -28,14 +28,14 @@ import sneer.bricks.snapps.watchme.WatchMe;
 import sneer.foundation.brickness.PublicKey;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.BrickTestRunner;
-import sneer.foundation.brickness.testsupport.Contribute;
+import sneer.foundation.brickness.testsupport.Bind;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.EnvironmentUtils;
 import sneer.foundation.lang.Consumer;
 
 public class WatchMeTest extends BrickTest {
 	
-	@Contribute
+	@Bind
 	final private Screenshotter _shotter = mock(Screenshotter.class);
 	private final TupleSpace _sharedSpace = my(TupleSpace.class);
 	

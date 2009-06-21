@@ -13,11 +13,11 @@ import sneer.bricks.pulp.events.EventNotifier;
 import sneer.bricks.pulp.events.EventNotifiers;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.foundation.brickness.testsupport.BrickTest;
-import sneer.foundation.brickness.testsupport.Contribute;
+import sneer.foundation.brickness.testsupport.Bind;
 
 public class ReachabilityTest extends BrickTest {
 	
-	@Contribute private final SocketAccepter _accepter = mock(SocketAccepter.class);
+	@Bind private final SocketAccepter _accepter = mock(SocketAccepter.class);
 	private final EventNotifier<ByteArraySocket> _notifier = my(EventNotifiers.class).create();
 	
 	private final Clock _clock = my(Clock.class);

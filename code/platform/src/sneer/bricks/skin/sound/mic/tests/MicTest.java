@@ -13,14 +13,14 @@ import sneer.bricks.pulp.reactive.SignalUtils;
 import sneer.bricks.skin.sound.kernel.Audio;
 import sneer.bricks.skin.sound.mic.Mic;
 import sneer.foundation.brickness.testsupport.BrickTest;
-import sneer.foundation.brickness.testsupport.Contribute;
+import sneer.foundation.brickness.testsupport.Bind;
 
 public class MicTest extends BrickTest {
 
 	private final Mic _subject = my(Mic.class);
 	private final TargetDataLine _line = mock(TargetDataLine.class);
 	private final AudioFormat _format = new AudioFormat(8000, 16, 1, true, false);
-	@Contribute	private final Audio _audio = mock(Audio.class);
+	@Bind	private final Audio _audio = mock(Audio.class);
 
 	@Test
 	public void testIsRunningSignal() throws LineUnavailableException {

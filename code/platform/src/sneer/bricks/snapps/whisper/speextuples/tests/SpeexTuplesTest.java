@@ -20,7 +20,7 @@ import sneer.bricks.snapps.whisper.speextuples.SpeexTuples;
 import sneer.foundation.brickness.PublicKey;
 import sneer.foundation.brickness.Tuple;
 import sneer.foundation.brickness.testsupport.BrickTest;
-import sneer.foundation.brickness.testsupport.Contribute;
+import sneer.foundation.brickness.testsupport.Bind;
 import sneer.foundation.lang.ByRef;
 import sneer.foundation.lang.Consumer;
 
@@ -29,7 +29,7 @@ public class SpeexTuplesTest extends BrickTest {
 	private final KeyManager _keyManager = my(KeyManager.class);
 	private final Clock _clock = my(Clock.class);
 	private final TupleSpace _tupleSpace = my(TupleSpace.class);
-	@Contribute private final Speex _speex = mock(Speex.class);
+	@Bind private final Speex _speex = mock(Speex.class);
 	
 	private final Encoder _encoder = mock(Encoder.class);
 	private final Decoder _decoder = mock(Decoder.class);

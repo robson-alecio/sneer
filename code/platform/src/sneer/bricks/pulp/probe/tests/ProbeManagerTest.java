@@ -22,14 +22,14 @@ import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.serialization.Serializer;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.brickness.testsupport.BrickTest;
-import sneer.foundation.brickness.testsupport.Contribute;
+import sneer.foundation.brickness.testsupport.Bind;
 import sneer.foundation.lang.Consumer;
 
 public class ProbeManagerTest extends BrickTest {
 
-	@Contribute private final ConnectionManager _connectionManager = mock(ConnectionManager.class);
-	@Contribute private final Serializer _serializer = mock(Serializer.class);
-	@Contribute private final BandwidthCounter _bandwidthCounter = mock(BandwidthCounter.class);
+	@Bind private final ConnectionManager _connectionManager = mock(ConnectionManager.class);
+	@Bind private final Serializer _serializer = mock(Serializer.class);
+	@Bind private final BandwidthCounter _bandwidthCounter = mock(BandwidthCounter.class);
 
 	@SuppressWarnings("unused")
 	private final ProbeManager _subject = my(ProbeManager.class);

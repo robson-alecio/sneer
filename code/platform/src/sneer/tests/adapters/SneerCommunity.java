@@ -6,6 +6,8 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 import sneer.bricks.pulp.events.EventSource;
+import sneer.bricks.pulp.network.ByteArrayServerSocket;
+import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.bricks.pulp.network.Network;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.collections.CollectionSignal;
@@ -85,6 +87,9 @@ public class SneerCommunity implements SovereignCommunity {
 				if (className.equals(Environments.class.getName())) return false;
 				if (className.equals(Environment.class.getName())) return false;
 				if (className.equals(StoragePath.class.getName())) return false;
+				if (className.equals(Network.class.getName())) return false;
+				if (className.equals(ByteArrayServerSocket.class.getName())) return false;
+				if (className.equals(ByteArraySocket.class.getName())) return false;
 
 				//Refactor: Simplify SneerParty interface to use only JRE types:
 				if (className.equals(Signal.class.getName())) return false;

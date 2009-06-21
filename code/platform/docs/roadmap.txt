@@ -1,6 +1,12 @@
 ﻿TASKS
 =========
 
+	- [Klaus] Refactor EagerClassLoader in SneerCommunity
+
+	- [Klaus] Unignore Freedom5TestBase.shoutToTheWind
+
+	- [Klaus] Contribute -> Bind
+
 	- [Klaus] Sneer Dummy - Fix
 
 	- [Klaus] Revise entire package structure.
@@ -11,6 +17,10 @@
 		- Use the SneerDirectories.LOG_FILE constant and remove the hardcoded log file name from the installer.
 	
 	- [Sandro] BrickFinderImpl is using FileFilterUtils directly - Encapsulate FileFilterUtils in IO brick.
+
+	- [Sandro] ClassFiles
+		- sneer.tests.adapters.ClassFiles: Make into a brick.
+		- sneer.foundation.brickness.impl.ClassFiles: Do not change nor make it public. Making this public would pollute the foundation API. Yes, it will be redundant with the ClassFiles brick above. 
 
 	- [Sandro] Update - Newer webstart versions delete and recreate the code directory ALWAYS, even if it has not been deleted, without asking the user. The old update-on-delete logic was already deleted.
 

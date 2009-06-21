@@ -9,8 +9,4 @@ public class Brickness {
 		return new BricknessImpl(bindings);
 	}
 
-	public static Environment newBrickContainerWithApiClassLoader(ClassLoader apiClassLoader, Object... bindings) {
-		return new BricknessImpl(apiClassLoader, bindings);
-	}
-
 }

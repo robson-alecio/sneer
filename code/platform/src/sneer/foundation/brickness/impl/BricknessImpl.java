@@ -14,17 +14,13 @@ import sneer.foundation.environments.EnvironmentUtils;
 public class BricknessImpl implements Environment {
 	
 	public BricknessImpl(Object... bindings) {
-		this(BricknessImpl.class.getClassLoader(), bindings);
-	}
-
-	public BricknessImpl(ClassLoader apiClassLoader, Object... bindings) {
 		_bindings = new Bindings();
 		_bindings.bind(this);
 		_bindings.bind(bindings);
 	
 		_cache = createCachingEnvironment();
 		
-		_brickImplLoader = new BrickImplLoader(apiClassLoader);
+		_brickImplLoader = new BrickImplLoader();
 	}
 
 	

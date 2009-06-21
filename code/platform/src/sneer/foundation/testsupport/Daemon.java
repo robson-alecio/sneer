@@ -36,11 +36,11 @@ public abstract class Daemon extends Thread {
 	}
 
 	private void dieQuietly() {
-		this.setUncaughtExceptionHandler(new UncaughtExceptionHandler() { @Override public void uncaughtException(Thread t, Throwable ignored) {
+		setUncaughtExceptionHandler(new UncaughtExceptionHandler() { @Override public void uncaughtException(Thread t, Throwable ignored) {
 			//Do nothing.
 		}});
 			
-		this.stop();
+		stop();
 	}
 
 	@Override

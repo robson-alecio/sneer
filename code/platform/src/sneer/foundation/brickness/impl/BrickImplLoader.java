@@ -14,22 +14,14 @@ import sneer.foundation.brickness.Nature;
 
 class BrickImplLoader {
 
-	public BrickImplLoader(ClassLoader apiClassLoader) {
-		_apiClassLoader = apiClassLoader;
-	}
-
-	
-	private final ClassLoader _apiClassLoader;
-	
-
 	Class<?> loadImplClassFor(Class<?> brick) throws ClassNotFoundException {
-		
 		File path = ClassFiles.classpathRootFor(brick);
 		String implPackage = BrickConventions.implPackageFor(brick.getName());
 		List<Nature> natures = naturesFor(brick);
 
-		ClassLoader libsClassLoader = ClassLoaderForBrickLibs.newInstanceIfNecessary(path, implPackage, natures, _apiClassLoader);
-		ClassLoader nextClassLoader = libsClassLoader == null ? _apiClassLoader : libsClassLoader;
+		ClassLoader apiClassLoader = brick.getClassLoader();
+		ClassLoader libsClassLoader = ClassLoaderForBrickLibs.newInstanceIfNecessary(path, implPackage, natures, apiClassLoader);
+		ClassLoader nextClassLoader = libsClassLoader == null ? apiClassLoader : libsClassLoader;
 		ClassLoader packageLoader = new ClassLoaderForPackage(path, implPackage, natures, nextClassLoader);
 
 		return packageLoader.loadClass(implNameFor(brick.getName()));

@@ -46,7 +46,7 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 		long t0 = System.currentTimeMillis();
 		while (true) {
 			if (thread.getState() == Thread.State.TERMINATED) return true;
-			if (System.currentTimeMillis() - t0 > 2000) return false;
+			if (System.currentTimeMillis() - t0 > 200) return false;
 			sleep(10);
 		}
 	}

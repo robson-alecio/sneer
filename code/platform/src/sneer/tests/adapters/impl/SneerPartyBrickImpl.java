@@ -24,8 +24,9 @@ import sneer.foundation.lang.exceptions.NotImplementedYet;
 import sneer.foundation.lang.exceptions.Refusal;
 import sneer.tests.SovereignParty;
 import sneer.tests.adapters.SneerParty;
+import sneer.tests.adapters.SneerPartyBrick;
 
-class SneerPartyImpl implements SneerParty {
+class SneerPartyBrickImpl implements SneerPartyBrick, SneerParty {
 	
 	static private final String MOCK_ADDRESS = "localhost";
 

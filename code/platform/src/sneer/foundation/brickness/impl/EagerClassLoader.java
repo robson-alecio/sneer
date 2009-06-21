@@ -4,7 +4,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 /** Does not have a parent, so it has first pick on the classes it wants to load. Defers to the "next" classLoader to load the classes it doesn't want to load.*/
-abstract class EagerClassLoader extends URLClassLoader {
+public abstract class EagerClassLoader extends URLClassLoader {
 
 	protected final ClassLoader _next;
 

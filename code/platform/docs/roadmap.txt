@@ -3,8 +3,6 @@
 
 	- [Klaus] Refactor EagerClassLoader in SneerCommunity
 
-	- [Klaus] Unignore Freedom5TestBase.shoutToTheWind
-
 	- [Klaus] Contribute -> Bind
 
 	- [Klaus] Sneer Dummy - Fix

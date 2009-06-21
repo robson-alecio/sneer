@@ -4,7 +4,6 @@ import static sneer.foundation.environments.Environments.my;
 
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.bricks.hardware.cpu.lang.Lang;
@@ -16,7 +15,6 @@ import sneer.tests.SovereignParty;
 
 public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 	
-	@Ignore
 	@Test (timeout = 10000)
 	public void shoutToTheWind() {
 		

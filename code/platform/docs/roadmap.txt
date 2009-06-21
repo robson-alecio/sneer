@@ -3,11 +3,11 @@
 
 	- [Klaus] Refactor EagerClassLoader in SneerCommunity
 
-	- [Klaus] Contribute -> Bind
-
 	- [Klaus] Sneer Dummy - Fix
 
 	- [Klaus] Revise entire package structure.
+
+	- [Sandro] XStream - Make into a brick.
 
 	- [Sandro] Remove Installer duplication - The installer project now depends on the sneer project because it uses the Sneer and SneerDirectories classes, to eliminate duplication.
 		- Copy ONLY Sneer and SneerDirectories classes to the installer jar.

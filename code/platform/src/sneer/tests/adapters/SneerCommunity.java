@@ -5,30 +5,19 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.network.ByteArrayServerSocket;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.bricks.pulp.network.Network;
-import sneer.bricks.pulp.reactive.Signal;
-import sneer.bricks.pulp.reactive.collections.CollectionSignal;
-import sneer.bricks.pulp.reactive.collections.ListSignal;
-import sneer.foundation.brickness.Brick;
 import sneer.foundation.brickness.Brickness;
-import sneer.foundation.brickness.PublicKey;
 import sneer.foundation.brickness.StoragePath;
 import sneer.foundation.brickness.impl.EagerClassLoader;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.EnvironmentUtils;
-import sneer.foundation.environments.Environments;
-import sneer.foundation.lang.Consumer;
-import sneer.foundation.lang.PickyConsumer;
-import sneer.foundation.testsupport.Daemon;
 import sneer.tests.SovereignCommunity;
 import sneer.tests.SovereignParty;
 import sneer.tests.utils.network.InProcessNetwork;
 
 
-@SuppressWarnings("deprecation")
 public class SneerCommunity implements SovereignCommunity {
 
 	private final Network _network = new InProcessNetwork();
@@ -81,32 +70,32 @@ public class SneerCommunity implements SovereignCommunity {
 		return new EagerClassLoader(new URL[]{toURL(binDir), toURL(ClassFiles.classpathRootFor(SneerCommunity.class))}, SneerCommunity.class.getClassLoader()) {
 			@Override
 			protected boolean isEagerToLoad(String className) {
-				if (className.equals(SovereignParty.class.getName())) return false;
-				if (className.equals(SneerParty.class.getName())) return false;
-				if (className.equals(Brick.class.getName())) return false;
-				if (className.equals(Environments.class.getName())) return false;
-				if (className.equals(Environment.class.getName())) return false;
-				if (className.equals(StoragePath.class.getName())) return false;
-				if (className.equals(Network.class.getName())) return false;
-				if (className.equals(ByteArrayServerSocket.class.getName())) return false;
-				if (className.equals(ByteArraySocket.class.getName())) return false;
+				return !isSharedByAllParties(className);
+			}
 
-				//Refactor: Simplify SneerParty interface to use only JRE types:
-				if (className.equals(Signal.class.getName())) return false;
-				if (className.equals(ListSignal.class.getName())) return false;
-				if (className.equals(CollectionSignal.class.getName())) return false;
-				if (className.equals(EventSource.class.getName())) return false;
-				if (className.equals(Consumer.class.getName())) return false;
-				if (className.equals(PickyConsumer.class.getName())) return false;
-				if (className.equals(PublicKey.class.getName())) return false;
+			private boolean isSharedByAllParties(String className) {
+				if (className.contains("xstream")) return true; System.out.println("Sandro, delete this line after XStream is made into a brick.");
 
-				//Refactor: Use Threads brick.
-				if (className.equals(Daemon.class.getName())) return false;
+				if (className.equals(SneerPartyBrick.class.getName())) return false;
+				if (isPublishedByUser(className)) return false;
+				if (isNetworkClass(className)) return true;
+				
+				return !isBrick(className); //Foundation classes such as Environments and functional tests classes such as SovereignParty mush be shared by all SneerParties.
+			}
 
-				//Refactor: Make into a brick:
-				if (className.contains("xstream")) return false;
+			private boolean isBrick(String className) {
+				return className.startsWith("sneer.bricks");
+			}
 
-				return true;
+			private boolean isNetworkClass(String className) {
+				if (className.equals(Network.class.getName())) return true;
+				if (className.equals(ByteArrayServerSocket.class.getName())) return true;
+				if (className.equals(ByteArraySocket.class.getName())) return true;
+				return false;
+			}
+
+			private boolean isPublishedByUser(String className) {
+				return !className.startsWith("sneer");
 			}
 		};
 	}

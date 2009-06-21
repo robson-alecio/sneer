@@ -3,9 +3,12 @@ package sneer.tests.adapters.impl;
 import static sneer.foundation.environments.Environments.my;
 
 import java.io.File;
+import java.util.List;
 
 import sneer.bricks.hardware.clock.Clock;
+import sneer.bricks.hardware.cpu.lang.Lang;
 import sneer.bricks.hardware.cpu.threads.Threads;
+import sneer.bricks.hardware.ram.iterables.Iterables;
 import sneer.bricks.pulp.connection.ByteConnection;
 import sneer.bricks.pulp.connection.ConnectionManager;
 import sneer.bricks.pulp.contacts.Contact;
@@ -14,8 +17,6 @@ import sneer.bricks.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.bricks.pulp.keymanager.KeyManager;
 import sneer.bricks.pulp.own.name.OwnNameKeeper;
 import sneer.bricks.pulp.port.PortKeeper;
-import sneer.bricks.pulp.reactive.Signal;
-import sneer.bricks.pulp.reactive.collections.ListSignal;
 import sneer.bricks.snapps.wind.Shout;
 import sneer.bricks.snapps.wind.Wind;
 import sneer.bricks.software.bricks.Bricks;
@@ -135,11 +136,10 @@ class SneerPartyBrickImpl implements SneerPartyBrick, SneerParty {
 	}
 
 	@Override
-    public Signal<String> navigateAndGetName(String nicknamePath) {
-		if (nicknamePath.split("/").length > 1) throw new NotImplementedYet();
-		
-		Contact contact = _contactManager.contactGiven(nicknamePath);
-		return _ownNameKeeper.nameOf(contact);
+    public void navigateAndWaitForName(String nicknamePath, String expectedName) {
+		//nicknamePath.split("/")
+		//my(SignalUtils.class).waitForValue() might be useful.
+		throw new NotImplementedYet();
     }
 
 
@@ -161,8 +161,21 @@ class SneerPartyBrickImpl implements SneerPartyBrick, SneerParty {
 	}
 
 	@Override
-	public ListSignal<Shout> shoutsHeard() {
-		return _wind.shoutsHeard();
+	public void waitForShouts(String shoutsExpected) {
+		while (true) {
+			String shoutsHeard = concat(_wind.shoutsHeard());
+			if (shoutsHeard.equals(shoutsExpected)) return;
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException ignored) {
+				throw new RuntimeException(ownName() + " was waiting for: " + shoutsExpected + "  was still: " + shoutsHeard);
+			}
+		}
+	}
+
+	private String concat(Iterable<Shout> shouts) {
+		List<Shout> sorted = my(Iterables.class).sortByToString(shouts);
+		return my(Lang.class).strings().join(sorted, ", ");
 	}
 
 }

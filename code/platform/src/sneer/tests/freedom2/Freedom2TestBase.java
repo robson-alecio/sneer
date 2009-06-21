@@ -1,28 +1,22 @@
 package sneer.tests.freedom2;
 
-import static sneer.foundation.environments.Environments.my;
-
 import org.junit.Test;
 
-import sneer.bricks.pulp.reactive.Signal;
-import sneer.bricks.pulp.reactive.SignalUtils;
 import sneer.tests.SovereignFunctionalTestBase;
 import sneer.tests.SovereignParty;
 
 public abstract class Freedom2TestBase extends SovereignFunctionalTestBase {
 
-	private static final SignalUtils SIGNAL_UTILS = my(SignalUtils.class);
-
 	@Test (timeout = 1000)
 	public void testRemoteNameChange() {
-		SIGNAL_UTILS.waitForValue("Ana Almeida", b().navigateAndGetName("Ana Almeida"));
-		SIGNAL_UTILS.waitForValue("Bruno Barros", a().navigateAndGetName("Bruno Barros"));
+		b().navigateAndWaitForName("Ana Almeida", "Ana Almeida");
+		a().navigateAndWaitForName("Bruno Barros", "Bruno Barros");
 
-		b().setOwnName("B. Barros");
-		SIGNAL_UTILS.waitForValue("B. Barros", a().navigateAndGetName("Bruno Barros"));
+		b().setOwnName("BB");
+		a().navigateAndWaitForName("Bruno Barros", "BB");
 
 		b().setOwnName("Dr Barros");
-		SIGNAL_UTILS.waitForValue("Dr Barros", a().navigateAndGetName("Bruno Barros"));
+		a().navigateAndWaitForName("Bruno Barros", "Dr Barros");
 	}
 
 	@Test (timeout = 10000)
@@ -34,25 +28,21 @@ public abstract class Freedom2TestBase extends SovereignFunctionalTestBase {
 		b().bidirectionalConnectTo(c);
 		c.bidirectionalConnectTo(d);
 
-		SIGNAL_UTILS.waitForValue("Carla Costa", b().navigateAndGetName("Carla Costa"));
+		b().navigateAndWaitForName("Carla Costa", "Carla Costa");
 
 		a().giveNicknameTo(b(), "Bruno");
 		b().giveNicknameTo(a(), "Aninha");
 		a().giveNicknameTo(c, "Carla");
 		c.giveNicknameTo(d, "Dedé");
 
-		SIGNAL_UTILS.waitForValue("Bruno Barros", a().navigateAndGetName("Bruno"));
-		SIGNAL_UTILS.waitForValue("Ana Almeida", b().navigateAndGetName("Carla Costa/Ana Almeida"));
-		SIGNAL_UTILS.waitForValue("Ana Almeida", a().navigateAndGetName("Bruno/Aninha"));
-		SIGNAL_UTILS.waitForValue("Bruno Barros", a().navigateAndGetName("Bruno/Aninha/Bruno"));
-		SIGNAL_UTILS.waitForValue("Denis Dalton", a().navigateAndGetName("Bruno/Carla Costa/Dedé"));
+		a().navigateAndWaitForName("Bruno", "Bruno Barros");
+		b().navigateAndWaitForName("Carla Costa/Ana Almeida", "Ana Almeida");
+		a().navigateAndWaitForName("Bruno/Aninha", "Ana Almeida");
+		a().navigateAndWaitForName("Bruno/Aninha/Bruno", "Bruno Barros");
+		a().navigateAndWaitForName("Bruno/Carla Costa/Dedé", "Denis Dalton");
 
-		Signal<String> anasName = b().navigateAndGetName("Carla Costa/Ana Almeida");
 		b().giveNicknameTo(c, "Carlinha");
 		c.giveNicknameTo(a(), "Aninha");
-		SIGNAL_UTILS.waitForValue("Ana Almeida", b().navigateAndGetName("Carlinha/Aninha"));
-
-		a().setOwnName("Dr Ana");
-		SIGNAL_UTILS.waitForValue("Dr Ana", anasName);
+		b().navigateAndWaitForName("Carlinha/Aninha", "Ana Almeida");
 	}
 }

@@ -1,14 +1,7 @@
 package sneer.tests.freedom5;
 
-import static sneer.foundation.environments.Environments.my;
-
-import java.util.List;
-
 import org.junit.Test;
 
-import sneer.bricks.hardware.cpu.lang.Lang;
-import sneer.bricks.hardware.ram.iterables.Iterables;
-import sneer.bricks.pulp.reactive.collections.ListSignal;
 import sneer.tests.SovereignFunctionalTestBase;
 import sneer.tests.SovereignParty;
 
@@ -22,18 +15,18 @@ public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 		SovereignParty d = createParty("Dan");
 		
 		b().bidirectionalConnectTo(c);
-		c.bidirectionalConnectTo(a());
-		c.bidirectionalConnectTo(d);
+		c  .bidirectionalConnectTo(a());
+		c  .bidirectionalConnectTo(d);
 		
 		a().shout("A!!!");
 		b().shout("B!!!");
-		c.shout("C!!!");
-		d.shout("D!!!");
+		c  .shout("C!!!");
+		d  .shout("D!!!");
 
-		waitForShoutsHeardBy(a(), "A!!!, B!!!, C!!!, D!!!");
-		waitForShoutsHeardBy(b(), "A!!!, B!!!, C!!!, D!!!");
-		waitForShoutsHeardBy(c, "A!!!, B!!!, C!!!, D!!!");
-		waitForShoutsHeardBy(d, "A!!!, B!!!, C!!!, D!!!");
+		a().waitForShouts("A!!!, B!!!, C!!!, D!!!");
+		b().waitForShouts("A!!!, B!!!, C!!!, D!!!");
+		c  .waitForShouts("A!!!, B!!!, C!!!, D!!!");
+		d  .waitForShouts("A!!!, B!!!, C!!!, D!!!");
 		
 		//Implement: Measure traffic among peers
 //		assertSame(8, abTraffic.currentValue());
@@ -53,23 +46,7 @@ public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 		SovereignParty c = createParty("Cid");
 		c.bidirectionalConnectTo(b());
 
-		waitForShoutsHeardBy(c, "A!!!, B!!!");
+		c.waitForShouts("A!!!, B!!!");
 	}
 
-	private void waitForShoutsHeardBy(SovereignParty user, String shoutsExpected) {
-		while (true) {
-			String heard = concat(user.shoutsHeard());
-			if (shoutsExpected.equals(heard)) return;
-			try {
-				Thread.sleep(200);
-			} catch (InterruptedException ignored) {
-				throw new RuntimeException(user.ownName() + " was waiting for: " + shoutsExpected + "  was still: " + heard);
-			}
-		}
-	}
-	
-	private String concat(ListSignal<?> listSignal) {
-		List<?> sorted = my(Iterables.class).sortByToString(listSignal);
-		return my(Lang.class).strings().join(sorted, ", ");
-	}
 }

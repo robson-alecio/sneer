@@ -2,25 +2,26 @@
 =========
 
 	- [Klaus] Sneer Dummy - Fix
+		- StoragePath - Cleanup mess.
 
 	- [Klaus] Revise entire package structure.
 
-	- [Sandro] XStream - Make into a brick.
+	- [Sandro] XStream - Make into a brick. Other bricks cannot call it directly.
 
-	- [Sandro] Remove Installer duplication - The installer project now depends on the sneer project because it uses the Sneer and SneerDirectories classes, to eliminate duplication.
-		- Copy ONLY Sneer and SneerDirectories classes to the installer jar.
-		- Use the SneerDirectories constants and remove all hardcoded directory references from the installer.
-		- Use the SneerDirectories.LOG_FILE constant and remove the hardcoded log file name from the installer.
-	
-	- [Sandro] BrickFinderImpl is using FileFilterUtils directly - Encapsulate FileFilterUtils in IO brick.
+	- [Sandro] FileFilterUtils - Encapsulate in IO brick. BrickFinderImpl cannot call FileFilterUtils directly.
 
 	- [Sandro] ClassFiles
 		- sneer.tests.adapters.ClassFiles: Make into a brick.
 		- sneer.foundation.brickness.impl.ClassFiles: Do not change nor make it public. Making this public would pollute the foundation API. Yes, it will be redundant with the ClassFiles brick above. 
 
-	- [Sandro] Update - Newer webstart versions delete and recreate the code directory ALWAYS, even if it has not been deleted, without asking the user. The old update-on-delete logic was already deleted.
-
 	- [Sandro] JarBuilder - Make it into a brick.
+
+	- [Sandro] Remove Installer duplication - The installer project now depends on the sneer project because it uses the Sneer and SneerDirectories classes, to eliminate duplication.
+		- Copy ONLY Sneer and SneerDirectories classes to the installer jar.
+		- Use the SneerDirectories constants and remove all hardcoded directory references from the installer.
+		- Use the SneerDirectories.LOG_FILE constant and remove the hardcoded log file name from the installer.
+
+	- [Sandro] Update - Newer webstart versions delete and recreate the code directory ALWAYS, even if it has not been deleted, without asking the user. The old update-on-delete logic was already deleted.
 
 	- MyInfo
 		- Persist

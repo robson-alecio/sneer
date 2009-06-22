@@ -13,14 +13,14 @@ import sneer.bricks.software.code.compilers.classpath.ClasspathFactory;
 import sneer.bricks.software.code.compilers.java.JavaCompiler;
 import sneer.bricks.software.code.compilers.java.Result;
 import sneer.bricks.software.code.metaclass.MetaClass;
-import sneer.foundation.brickness.StoragePath;
+import sneer.bricks.software.directoryconfig.DirectoryConfig;
 
 public class BricksImpl implements Bricks {
 
 	@Override
 	public void publish(File sourceDirectory) {
 		
-		final Result result = compile(sourceDirectory, binDirectory());
+		final Result result = compile(sourceDirectory, ownBinDirectory());
 		if (!result.success())
 			throw new CompilationError(result.getErrorString());
 		
@@ -57,10 +57,10 @@ public class BricksImpl implements Bricks {
 		return new ArrayList<File>(my(IO.class).files().listFiles(sourceDirectory, extensions, true));
 	}
 
-	private File binDirectory() {
-		File result = new File(my(StoragePath.class).get(), "bin");
+	private File ownBinDirectory() {
+		File result = my(DirectoryConfig.class).ownBinDirectory().get();
 		if (!result.exists() && !result.mkdirs())
-			throw new IllegalStateException("Could not create temporary directory '" + result + "'!");
+			throw new IllegalStateException("Could not create own brick bin directory: '" + result + "'!");
 		return result;
 	}
 

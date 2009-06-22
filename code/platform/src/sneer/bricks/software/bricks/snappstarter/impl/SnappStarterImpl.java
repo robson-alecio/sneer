@@ -2,13 +2,15 @@ package sneer.bricks.software.bricks.snappstarter.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import sneer.bricks.software.bricks.finder.BrickFinder;
 import sneer.bricks.software.bricks.snappstarter.Snapp;
 import sneer.bricks.software.bricks.snappstarter.SnappStarter;
-import sneer.main.SneerDirectories;
+import sneer.bricks.software.directoryconfig.DirectoryConfig;
 
 class SnappStarterImpl implements SnappStarter {
 
@@ -39,6 +41,13 @@ class SnappStarterImpl implements SnappStarter {
 	}
 
 	private Collection<String> brickNames() throws IOException {
-		return my(BrickFinder.class).findBricks(SneerDirectories.PLATFORM_BIN);
+		Collection<String> result = new ArrayList<String>();
+		collectBricks(result, my(DirectoryConfig.class).ownBinDirectory().get());
+		collectBricks(result, my(DirectoryConfig.class).platformBinDirectory().get());
+		return result;
+	}
+
+	private void collectBricks(Collection<String> result, File binDirectory) throws IOException {
+		result.addAll(my(BrickFinder.class).findBricks(binDirectory));
 	}
 }

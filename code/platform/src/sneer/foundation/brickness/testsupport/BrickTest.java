@@ -13,7 +13,7 @@ import org.junit.After;
 import org.junit.runner.RunWith;
 
 import sneer.foundation.brickness.StorageDirectory;
-import sneer.foundation.brickness.StoragePath;
+import sneer.foundation.brickness.SneerHome;
 import sneer.foundation.testsupport.TestThatMightUseResources;
 
 @RunWith(BrickTestWithMockRunner.class)
@@ -22,7 +22,7 @@ public abstract class BrickTest extends TestThatMightUseResources {
 	@Bind	final StorageDirectory _storageDir = new StorageDirectory(){ @Override public File get() {
 		return tmpDirectory();
 	}};
-	@Bind	final StoragePath _storagePath = new StoragePath(){ @Override public String get() {
+	@Bind	final SneerHome _storagePath = new SneerHome(){ @Override public String get() {
 		return tmpDirectory().getAbsolutePath();
 	}};
 	

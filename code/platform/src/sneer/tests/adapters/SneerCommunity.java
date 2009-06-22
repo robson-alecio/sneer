@@ -10,7 +10,7 @@ import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.bricks.pulp.network.Network;
 import sneer.bricks.software.adapters.classfiles.ClassFiles;
 import sneer.foundation.brickness.Brickness;
-import sneer.foundation.brickness.StoragePath;
+import sneer.foundation.brickness.SneerHome;
 import sneer.foundation.brickness.impl.EagerClassLoader;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.EnvironmentUtils;
@@ -32,16 +32,31 @@ public class SneerCommunity implements SovereignCommunity {
 	
 	@Override
 	public SovereignParty createParty(final String name) {
-		StoragePath storagePath = storagePath(name);
-		Environment container = newContainer(storagePath);
-		URLClassLoader apiClassLoader = apiClassLoader(storagePath.get());
+		SneerHome sneerHome = sneerHomeFor(name);
+		File ownBinDirectory = ownBinDirectoryIn(sneerHome.get());
+		
+		Environment container = newContainer(sneerHome);
+		URLClassLoader apiClassLoader = apiClassLoader(ownBinDirectory);
 		
 		Object partyImpl = EnvironmentUtils.retrieveFrom(container, loadProbeClassUsing(apiClassLoader));
 		final SneerParty party = (SneerParty)ProxyInEnvironment.newInstance(container, partyImpl);
 		
 		party.setOwnName(name);
 		party.setSneerPort(_nextPort++);
+		party.setOwnBinDirectory(ownBinDirectory);
 		return party;
+	}
+
+
+	private File ownBinDirectoryIn(String sneerHome) {
+		return makeDirectory(new File(sneerHome), "own/bin");
+	}
+
+	private File makeDirectory(File parent, String child) {
+		File result = new File(parent, child);
+		if (!result.mkdirs())
+			throw new IllegalStateException("Could not create directory '" + result + "'!");
+		return result;
 	}
 
 	private Class<?> loadProbeClassUsing(URLClassLoader apiClassLoader) {
@@ -52,22 +67,18 @@ public class SneerCommunity implements SovereignCommunity {
 		}
 	}
 
-	private Environment newContainer(StoragePath storagePath) {
+	private Environment newContainer(SneerHome storagePath) {
 		return Brickness.newBrickContainer(_network, storagePath);
 	}
 
-	private StoragePath storagePath(String name) {
+	private SneerHome sneerHomeFor(String name) {
 		final File rootDirectory = rootDirectory(name);
-		return new StoragePath() { @Override public String get() {
+		return new SneerHome() { @Override public String get() {
 			return rootDirectory.getAbsolutePath();
 		}};
 	}
 
-	private URLClassLoader apiClassLoader(String rootDirectory) {
-		File binDir = new File(rootDirectory, "bin");
-		if (!binDir.exists() && !binDir.mkdirs())
-			throw new IllegalStateException("Could not create temporary directory '" + binDir + "'!");
-
+	private URLClassLoader apiClassLoader(File binDir) {
 		return new EagerClassLoader(new URL[]{toURL(binDir), toURL(my(ClassFiles.class).classpathRootFor(SneerCommunity.class))}, SneerCommunity.class.getClassLoader()) {
 			@Override
 			protected boolean isEagerToLoad(String className) {
@@ -108,10 +119,7 @@ public class SneerCommunity implements SovereignCommunity {
 
 	private File rootDirectory(String name) {
 		String home = "sneer-" + name.replace(' ', '_');
-		File result = new File(_tmpDirectory, home);
-		if (!result.mkdirs()) throw new IllegalStateException();
-		return result;
-		
+		return makeDirectory(_tmpDirectory, home);
 	}
 
 }

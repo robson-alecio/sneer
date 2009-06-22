@@ -6,6 +6,8 @@
 
 	- [Klaus] Revise entire package structure.
 
+	- [Sandro] Make all constants in SneerDirectories protected and create a subclass in the installer to access them. Bricks CANNOT have dependencies on main. The have to use the DirectoryConfig brick instead. 
+
 	- MyInfo
 		- Persist
 		

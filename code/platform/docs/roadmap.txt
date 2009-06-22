@@ -13,6 +13,12 @@
 		
 	- [Sandro] remove /sneer/src/sneer/bricks/software/bricks/finder/impl/lib/asm-all-3.1.jar and creake a ASM Brick.
 
+	- [Sandro] Instrument Menu
+		- Arrow
+			- Make it black.
+			- Move it 2 pixels to the right and 1 pixel up.
+		- Add "Show Me The Code > Copy Class Name to Clipboard" menu item. 
+
 	- Contact crud: persist with tuples
         
 ------------------------------------------ "EAT YOUR OWN DOGFOOD" RELEASE

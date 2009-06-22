@@ -9,7 +9,11 @@ import sneer.foundation.brickness.Brick;
 public interface DirectoryConfig {
 
 	Immutable<File> ownBinDirectory();
-
 	Immutable<File> platformBinDirectory();
+
+	Immutable<File> dataDirectory();
+	File getStorageDirectoryFor(Class<?> brick);
+
+	Immutable<File> logFile();
 
 }

@@ -1,25 +1,20 @@
 package sneer.bricks.pulp.reactive.gates.logic.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static sneer.foundation.environments.Environments.my;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.reactive.gates.logic.LogicGates;
-import sneer.foundation.brickness.testsupport.BrickTestRunner;
+import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.lang.Consumer;
 
-@RunWith(BrickTestRunner.class)
-public class AndTest {
+public class AndTest extends BrickTest {
 
 	private final Signals SIGNALS = my(Signals.class);
 

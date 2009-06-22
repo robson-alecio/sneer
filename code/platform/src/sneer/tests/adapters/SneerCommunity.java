@@ -10,7 +10,6 @@ import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.bricks.pulp.network.Network;
 import sneer.bricks.software.adapters.classfiles.ClassFiles;
 import sneer.foundation.brickness.Brickness;
-import sneer.foundation.brickness.SneerHome;
 import sneer.foundation.brickness.impl.EagerClassLoader;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.EnvironmentUtils;
@@ -32,10 +31,11 @@ public class SneerCommunity implements SovereignCommunity {
 	
 	@Override
 	public SovereignParty createParty(final String name) {
-		SneerHome sneerHome = sneerHomeFor(name);
-		File ownBinDirectory = ownBinDirectoryIn(sneerHome.get());
+		File sneerHome = rootDirectory(name);
+		File ownBinDirectory = makeDirectory(sneerHome, "own/bin");
+		File dataDirectory = makeDirectory(sneerHome, "data");
 		
-		Environment container = newContainer(sneerHome);
+		Environment container = Brickness.newBrickContainer(_network);
 		URLClassLoader apiClassLoader = apiClassLoader(ownBinDirectory);
 		
 		Object partyImpl = EnvironmentUtils.retrieveFrom(container, loadProbeClassUsing(apiClassLoader));
@@ -44,13 +44,12 @@ public class SneerCommunity implements SovereignCommunity {
 		party.setOwnName(name);
 		party.setSneerPort(_nextPort++);
 		party.setOwnBinDirectory(ownBinDirectory);
+		party.setDataDirectory(dataDirectory);
+		
+		party.startSnapps();
 		return party;
 	}
 
-
-	private File ownBinDirectoryIn(String sneerHome) {
-		return makeDirectory(new File(sneerHome), "own/bin");
-	}
 
 	private File makeDirectory(File parent, String child) {
 		File result = new File(parent, child);
@@ -65,17 +64,6 @@ public class SneerCommunity implements SovereignCommunity {
 		} catch (ClassNotFoundException e) {
 			throw new IllegalStateException(e);
 		}
-	}
-
-	private Environment newContainer(SneerHome storagePath) {
-		return Brickness.newBrickContainer(_network, storagePath);
-	}
-
-	private SneerHome sneerHomeFor(String name) {
-		final File rootDirectory = rootDirectory(name);
-		return new SneerHome() { @Override public String get() {
-			return rootDirectory.getAbsolutePath();
-		}};
 	}
 
 	private URLClassLoader apiClassLoader(File binDir) {

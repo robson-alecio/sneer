@@ -13,16 +13,12 @@ import java.util.Properties;
 
 import sneer.bricks.hardware.io.IO;
 import sneer.bricks.pulp.propertystore.PropertyStore;
-import sneer.foundation.brickness.SneerHome;
+import sneer.bricks.software.directoryconfig.DirectoryConfig;
 
 class PropertyStoreImpl implements PropertyStore {
 
 	private static final String FILE_NAME = "propertystore.txt";
 
-
-	private final SneerHome _config = my(SneerHome.class);
-
-	
 	private final Properties _properties = loadProperties();
 
 	@Override
@@ -79,7 +75,8 @@ class PropertyStoreImpl implements PropertyStore {
 	}
 
 	private File file() {
-		return new File(_config.get(), FILE_NAME);
+		File directory = my(DirectoryConfig.class).getStorageDirectoryFor(PropertyStore.class);
+		return new File(directory, FILE_NAME);
 	}
 
 }

@@ -14,5 +14,8 @@ public interface SneerParty extends SovereignParty {
 	int sneerPort();
 
 	void setOwnBinDirectory(File ownBinDirectory);
+	void setDataDirectory(File dataDirectory);
+
+	void startSnapps();
 
 }

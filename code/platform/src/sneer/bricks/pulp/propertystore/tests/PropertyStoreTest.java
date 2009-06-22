@@ -2,6 +2,7 @@ package sneer.bricks.pulp.propertystore.tests;
 
 import static sneer.foundation.environments.Environments.my;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.bricks.pulp.propertystore.PropertyStore;
@@ -12,6 +13,7 @@ import sneer.foundation.environments.Environments;
 
 public class PropertyStoreTest extends BrickTest {
 
+	@Ignore
 	@Test
 	public void testPropertyStore() {
 		runInNewEnvironment(new Runnable() { @Override public void run() {

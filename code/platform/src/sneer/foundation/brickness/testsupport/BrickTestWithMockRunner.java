@@ -10,8 +10,7 @@ import org.junit.internal.runners.TestMethod;
 
 public class BrickTestWithMockRunner extends BrickTestRunner {
 
-	public BrickTestWithMockRunner(Class<?> testClass)
-			throws InitializationError {
+	public BrickTestWithMockRunner(Class<?> testClass) throws InitializationError {
 		super(testClass);
 	}
 	

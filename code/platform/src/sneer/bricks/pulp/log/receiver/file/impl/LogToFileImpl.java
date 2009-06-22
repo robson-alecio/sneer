@@ -9,15 +9,14 @@ import java.io.IOException;
 import sneer.bricks.pulp.log.receiver.file.LogToFile;
 import sneer.bricks.pulp.log.workers.notifier.LogNotifier;
 import sneer.bricks.pulp.reactive.Signals;
-import sneer.foundation.brickness.SneerHome;
+import sneer.bricks.software.directoryconfig.DirectoryConfig;
 import sneer.foundation.lang.Consumer;
 
 class LogToFileImpl implements LogToFile {
 
-	private static final String FILENAME = "sneer.log";
 	private static final boolean WRITE_TO_THE_END = true;
 	
-	File _file = new File(my(SneerHome.class).get(), FILENAME);
+	File _file = my(DirectoryConfig.class).logFile().get();
 
 	@SuppressWarnings("unused")	private final Object _referenceToAvoidGc;
 

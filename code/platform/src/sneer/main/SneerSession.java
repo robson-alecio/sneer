@@ -5,11 +5,14 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.File;
 
 import sneer.bricks.hardware.cpu.threads.Threads;
+import sneer.bricks.hardware.ram.ref.immutable.Immutable;
 import sneer.bricks.software.bricks.snappstarter.SnappStarter;
 import sneer.bricks.software.directoryconfig.DirectoryConfig;
 import sneer.foundation.brickness.Brickness;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
+
+import static sneer.main.SneerDirectories.*;
 
 public class SneerSession implements Runnable {
 
@@ -29,14 +32,18 @@ public class SneerSession implements Runnable {
 		return Brickness.newBrickContainer();
 	}
 	
-	private static void configure(DirectoryConfig config) {
-		config.ownBinDirectory().set(mkDirs(SneerDirectories.OWN_BIN));
-		config.platformBinDirectory().set(SneerDirectories.PLATFORM_BIN);
+	
+	private static void configure(DirectoryConfig dirs) {
+		set(dirs.ownBinDirectory(), OWN_BIN);
+		set(dirs.platformBinDirectory(), PLATFORM_BIN);
+		set(dirs.dataDirectory(), DATA);
+		
+		dirs.logFile().set(LOG_FILE);
 	}
 
-	private static File mkDirs(File directory) {
-		if (!directory.exists() && !directory.mkdirs()) throw new IllegalStateException("Unable to create directory " + directory);
-		return directory;
+	private static void set(Immutable<File> property, File directory) {
+		if (!directory.exists() && !directory.mkdirs()) throw new IllegalStateException("Unable to create directory " + property);
+		property.set(directory);
 	}
 
 }

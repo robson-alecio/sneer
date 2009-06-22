@@ -44,17 +44,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	
 	private final InternetAddressKeeper _internetAddressKeeper = my(InternetAddressKeeper.class);
 
-	private final Wind _wind = my(Wind.class);
-
 	private final KeyManager _keyManager = my(KeyManager.class);
-	
-	{
-		my(sneer.bricks.pulp.log.receiver.sysout.LogToSysout.class);
-		my(sneer.bricks.pulp.connection.SocketOriginator.class);
-		my(sneer.bricks.pulp.connection.SocketReceiver.class);
-		my(sneer.bricks.pulp.probe.ProbeManager.class);
-		my(sneer.bricks.hardware.clock.ticker.ClockTicker.class);
-	}
 	
 
 	@Override
@@ -158,13 +148,13 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 	@Override
 	public void shout(String phrase) {
-		_wind.megaphone().consume(phrase);
+		my(Wind.class).megaphone().consume(phrase);
 	}
 
 	@Override
 	public void waitForShouts(String shoutsExpected) {
 		while (true) {
-			String shoutsHeard = concat(_wind.shoutsHeard());
+			String shoutsHeard = concat(my(Wind.class).shoutsHeard());
 			if (shoutsHeard.equals(shoutsExpected)) return;
 			try {
 				Thread.sleep(200);
@@ -182,6 +172,20 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	@Override
 	public void setOwnBinDirectory(File ownBinDirectory) {
 		my(DirectoryConfig.class).ownBinDirectory().set(ownBinDirectory);
+	}
+
+	@Override
+	public void setDataDirectory(File dataDirectory) {
+		my(DirectoryConfig.class).dataDirectory().set(dataDirectory);
+	}
+
+	@Override
+	public void startSnapps() {
+		my(sneer.bricks.pulp.log.receiver.sysout.LogToSysout.class);
+		my(sneer.bricks.pulp.connection.SocketOriginator.class);
+		my(sneer.bricks.pulp.connection.SocketReceiver.class);
+		my(sneer.bricks.pulp.probe.ProbeManager.class);
+		my(sneer.bricks.hardware.clock.ticker.ClockTicker.class);
 	}
 
 }

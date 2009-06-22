@@ -1,8 +1,7 @@
 ﻿TASKS
 =========
 
-	- [Klaus] SneerDirectories - Use them instead of hardcoded references.
-		- StoragePath - Cleanup mess.
+	- [Klaus] PropertyStoreTest and TuplePersistenceTest - Unignore.
 
 	- [Klaus] Revise entire package structure.
 

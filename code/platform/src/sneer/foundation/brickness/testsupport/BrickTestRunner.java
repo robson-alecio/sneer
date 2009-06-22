@@ -86,8 +86,7 @@ public class BrickTestRunner extends JUnit4ClassRunner {
 		}
 
 		private <T> T provideContribution(Class<T> intrface) {
-			if (_testInstance == null)
-				return null;
+			if (_testInstance == null) throw new IllegalStateException();
 				
 			for (Field field : _contributedFields) {
 				final Object value = fieldValueFor(field, _testInstance);

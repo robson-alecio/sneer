@@ -111,7 +111,9 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 		wbSetter.runWhenBaseContainerIsReady(new Runnable(){ @Override public void run() {
 			Rectangle unused = wbSetter.unusedArea();
 			setBounds(_X , unused.height-_HEIGHT-_OFFSET_Y, unused.width-_OFFSET_X, _HEIGHT-_OFFSET_Y);
+			setFocusableWindowState(false);
 			setVisible(true);
+			setFocusableWindowState(true);
 		}});
 	}
 
@@ -149,9 +151,7 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 		return filter;
 	}
 
-	private void initAddFilterAction(
-			final ListRegister<String> whiteListEntries,
-			final JTextField newInclude, JButton addButton) {
+	private void initAddFilterAction( final ListRegister<String> whiteListEntries, final JTextField newInclude, JButton addButton) {
 		addButton.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			String value = newInclude.getText();
 			newInclude.setText("");

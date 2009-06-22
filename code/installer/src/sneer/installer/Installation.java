@@ -9,11 +9,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
 
-import sneer.main.SneerDirectories;
-
-import static sneer.main.SneerDirectories.SNEER_HOME;
-import static sneer.main.SneerDirectories.PLATFORM_CODE;
-
 class Installation {
 
 	private final URL jarFileName = this.getClass().getResource("/sneer.jar");
@@ -25,17 +20,17 @@ class Installation {
 	}
 
 	private void cleanup() throws IOException {
-		PLATFORM_CODE.delete();
+		platformCode().delete();
 	}
-	
+
 	private void createDirectories() throws IOException {
-		if(!SNEER_HOME.exists())
-			SNEER_HOME.mkdirs();
-		PLATFORM_CODE.mkdirs();
+		if(!sneerHome().exists())
+			sneerHome().mkdirs();
+		platformCode().mkdirs();
 	}
 
 	private void addBinaries() throws IOException {
-		IOUtils.write(SneerDirectories.LOG_FILE, "jar file url: " + jarFileName.toString());
+		IOUtils.write(logFile(), "jar file url: " + jarFileName.toString());
 		File file = extractJar(jarFileName);
 		extractFiles(file);
 	}
@@ -51,7 +46,7 @@ class Installation {
 	}
 	
 	private void extractFiles(File src) throws IOException {
-		IOUtils.write(SneerDirectories.LOG_FILE, "expand files from: " + src.getAbsolutePath());
+		IOUtils.write(logFile(), "expand files from: " + src.getAbsolutePath());
 		if(!(src.exists()))
 			throw new IOException("File '" + src.getAbsolutePath() + "' not found!");	
 
@@ -66,7 +61,7 @@ class Installation {
 		JarEntry entry = null;
 		
         while ((entry = jis.getNextJarEntry()) != null) {
-        	File file = new File(PLATFORM_CODE, entry.getName());
+        	File file = new File(platformCode(), entry.getName());
 
         	if(entry.isDirectory()) {
         		file.mkdirs();
@@ -75,4 +70,8 @@ class Installation {
         	IOUtils.writeEntry(jar, entry, file);
         }
 	}
+	
+	private File platformCode() { return Directories.PLATFORM_CODE(); }
+	private File sneerHome() { return Directories.SNEER_HOME(); }
+	private File logFile() { return Directories.LOG_FILE(); }
 }

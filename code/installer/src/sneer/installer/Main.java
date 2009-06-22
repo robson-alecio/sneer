@@ -1,12 +1,11 @@
 package sneer.installer;
 
 import sneer.main.Sneer;
-import sneer.main.SneerDirectories;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		if(SneerDirectories.SNEER_HOME.exists()) new Installation();
+		if(Directories.SNEER_HOME().exists()) new Installation();
 		else new InstallationWizard();
 		
 		overcomeWebstartSecurityRestrictions();

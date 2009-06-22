@@ -8,6 +8,7 @@ import java.net.URLClassLoader;
 import sneer.bricks.pulp.network.ByteArrayServerSocket;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.bricks.pulp.network.Network;
+import sneer.bricks.software.adapters.classfiles.ClassFiles;
 import sneer.foundation.brickness.Brickness;
 import sneer.foundation.brickness.StoragePath;
 import sneer.foundation.brickness.impl.EagerClassLoader;
@@ -16,7 +17,7 @@ import sneer.foundation.environments.EnvironmentUtils;
 import sneer.tests.SovereignCommunity;
 import sneer.tests.SovereignParty;
 import sneer.tests.utils.network.InProcessNetwork;
-
+import static sneer.foundation.environments.Environments.my;
 
 public class SneerCommunity implements SovereignCommunity {
 
@@ -67,7 +68,7 @@ public class SneerCommunity implements SovereignCommunity {
 		if (!binDir.exists() && !binDir.mkdirs())
 			throw new IllegalStateException("Could not create temporary directory '" + binDir + "'!");
 
-		return new EagerClassLoader(new URL[]{toURL(binDir), toURL(ClassFiles.classpathRootFor(SneerCommunity.class))}, SneerCommunity.class.getClassLoader()) {
+		return new EagerClassLoader(new URL[]{toURL(binDir), toURL(my(ClassFiles.class).classpathRootFor(SneerCommunity.class))}, SneerCommunity.class.getClassLoader()) {
 			@Override
 			protected boolean isEagerToLoad(String className) {
 				return !isSharedByAllParties(className);

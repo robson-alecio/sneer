@@ -6,10 +6,6 @@
 
 	- [Klaus] Revise entire package structure.
 
-	- [Sandro] ClassFiles
-		- sneer.tests.adapters.ClassFiles: Make into a brick.
-		- sneer.foundation.brickness.impl.ClassFiles: Do not change nor make it public. Making this public would pollute the foundation API. Yes, it will be redundant with the ClassFiles brick above. 
-
 	- [Sandro] JarBuilder - Make it into a brick.
 
 	- [Sandro] Remove Installer duplication - The installer project now depends on the sneer project because it uses the Sneer and SneerDirectories classes, to eliminate duplication.

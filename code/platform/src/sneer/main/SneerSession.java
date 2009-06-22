@@ -21,5 +21,4 @@ public class SneerSession implements Runnable {
 	private Environment container() {
 		return Brickness.newBrickContainer(new SneerStoragePath());
 	}
-	
 }

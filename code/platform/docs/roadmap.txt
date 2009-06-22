@@ -6,8 +6,6 @@
 
 	- [Klaus] Revise entire package structure.
 
-	- [Sandro] XStream - Make into a brick. Other bricks cannot call the classes in the jar directly. The xpp3 jar must be in the same lib folder as the xstream jar. 
-
 	- [Sandro] FileFilterUtils - Encapsulate in IO brick. BrickFinderImpl cannot call FileFilterUtils directly.
 
 	- [Sandro] ClassFiles

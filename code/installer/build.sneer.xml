@@ -45,7 +45,7 @@
 			<classpath refid="pmd.lib" />
 		</taskdef>
 
-		<property name="fdc.src" location="../code/src"/>
+		<property name="fdc.src" location="../platform/src"/>
 		<property name="output" location="duplicate.xml"/>
 		
 		<echo message="${fdc.src} --> ${output}"/>

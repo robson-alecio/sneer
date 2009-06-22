@@ -17,7 +17,7 @@ public abstract class EagerClassLoader extends URLClassLoader {
 
 
 	@Override
-	protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+	synchronized protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
 		if (resolve) throw new UnsupportedOperationException();
 		
 		Class<?> loaded = findLoadedClass(name);
@@ -28,7 +28,7 @@ public abstract class EagerClassLoader extends URLClassLoader {
 			: _next.loadClass(name);
 	}
 
-	protected Class<?> doLoadClass(String name) throws ClassNotFoundException{
+	synchronized protected Class<?> doLoadClass(String name) throws ClassNotFoundException{
 		return super.loadClass(name, false);
 	}
 }

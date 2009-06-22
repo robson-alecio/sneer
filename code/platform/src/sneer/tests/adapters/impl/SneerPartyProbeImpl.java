@@ -20,6 +20,7 @@ import sneer.bricks.pulp.port.PortKeeper;
 import sneer.bricks.snapps.wind.Shout;
 import sneer.bricks.snapps.wind.Wind;
 import sneer.bricks.software.bricks.Bricks;
+import sneer.bricks.software.directoryconfig.DirectoryConfig;
 import sneer.foundation.brickness.PublicKey;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
 import sneer.foundation.lang.exceptions.Refusal;
@@ -176,6 +177,11 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	private String concat(Iterable<Shout> shouts) {
 		List<Shout> sorted = my(Iterables.class).sortByToString(shouts);
 		return my(Lang.class).strings().join(sorted, ", ");
+	}
+
+	@Override
+	public void setOwnBinDirectory(File ownBinDirectory) {
+		my(DirectoryConfig.class).ownBinDirectory().set(ownBinDirectory);
 	}
 
 }

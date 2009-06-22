@@ -9,7 +9,7 @@ import java.util.Collection;
 import sneer.bricks.software.bricks.finder.BrickFinder;
 import sneer.bricks.software.bricks.snappstarter.Snapp;
 import sneer.bricks.software.bricks.snappstarter.SnappStarter;
-import sneer.foundation.brickness.StoragePath;
+import sneer.foundation.brickness.SneerHome;
 
 class SnappStarterImpl implements SnappStarter {
 
@@ -44,7 +44,7 @@ class SnappStarterImpl implements SnappStarter {
 	}
 
 	private File binDirectory() {
-		return new File(my(StoragePath.class).get(), "code/bin");
+		return new File(my(SneerHome.class).get(), "code/bin");
 	}
 
 }

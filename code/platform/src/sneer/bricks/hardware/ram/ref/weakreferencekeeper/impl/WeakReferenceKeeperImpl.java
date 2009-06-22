@@ -1,4 +1,4 @@
-package sneer.bricks.hardware.cpu.lang.ref.weakreferencekeeper.impl;
+package sneer.bricks.hardware.ram.ref.weakreferencekeeper.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import sneer.bricks.hardware.clock.Clock;
-import sneer.bricks.hardware.cpu.lang.ref.weakreferencekeeper.WeakReferenceKeeper;
 import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.ram.ref.weakreferencekeeper.WeakReferenceKeeper;
 
 public class WeakReferenceKeeperImpl implements WeakReferenceKeeper { // Refactor: in-line this brick, it's too simple 
 

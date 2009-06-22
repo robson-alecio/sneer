@@ -9,7 +9,7 @@ import java.io.IOException;
 import sneer.bricks.pulp.log.receiver.file.LogToFile;
 import sneer.bricks.pulp.log.workers.notifier.LogNotifier;
 import sneer.bricks.pulp.reactive.Signals;
-import sneer.foundation.brickness.StoragePath;
+import sneer.foundation.brickness.SneerHome;
 import sneer.foundation.lang.Consumer;
 
 class LogToFileImpl implements LogToFile {
@@ -17,7 +17,7 @@ class LogToFileImpl implements LogToFile {
 	private static final String FILENAME = "sneer.log";
 	private static final boolean WRITE_TO_THE_END = true;
 	
-	private final StoragePath _persistenceConfig = my(StoragePath.class);	
+	private final SneerHome _persistenceConfig = my(SneerHome.class);	
 	File _file = new File(_persistenceConfig.get(), FILENAME);
 
 	@SuppressWarnings("unused")	private final Object _referenceToAvoidGc;

@@ -13,14 +13,14 @@ import java.util.Properties;
 
 import sneer.bricks.hardware.io.IO;
 import sneer.bricks.pulp.propertystore.PropertyStore;
-import sneer.foundation.brickness.StoragePath;
+import sneer.foundation.brickness.SneerHome;
 
 class PropertyStoreImpl implements PropertyStore {
 
 	private static final String FILE_NAME = "propertystore.txt";
 
 
-	private final StoragePath _config = my(StoragePath.class);
+	private final SneerHome _config = my(SneerHome.class);
 
 	
 	private final Properties _properties = loadProperties();

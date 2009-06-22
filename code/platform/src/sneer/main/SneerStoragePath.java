@@ -2,9 +2,9 @@ package sneer.main;
 
 import java.io.File;
 
-import sneer.foundation.brickness.StoragePath;
+import sneer.foundation.brickness.SneerHome;
 
-class SneerStoragePath implements StoragePath {
+class SneerStoragePath implements SneerHome {
 
 	@Override
 	public String get() {

@@ -138,25 +138,25 @@
 	</target>
 
 	<target name="init-clover">
-		<mkdir dir="clover/bin"/>
+		<mkdir dir="${build.dir}/clover/bin"/>
 		<taskdef resource="cloverlib.xml" classpath="${clover.jar}"/>
-		<clover-setup initString="clover/bin/mycoverage.db"/>
+		<clover-setup initString="${build.dir}/clover/bin/mycoverage.db"/>
 	</target>
 
 	<target name="report-clover">
-		<fileset dir="../code/src" id="clover.sources">
+		<fileset dir="../platform/src" id="clover.sources">
 			<include name="**/*.java" />
 		</fileset>
 
 		<clover-report>
-			<current outfile="clover/clover.xml">
+			<current outfile="${build.dir}/clover/clover.xml">
 				<format type="xml"/>
 				<fileset refid="clover.sources" />
 			</current>
 		</clover-report>
 
 		<clover-report>
-			<current outfile="clover/html">
+			<current outfile="${build.dir}/clover/html">
 				<format type="html"/>
 				<fileset refid="clover.sources" />
 			</current>

@@ -6,21 +6,15 @@
 	<property name="jnlp.file" location="${build.dir}/dist/sneer.jnlp" />
 	<property name="jnlp.mainClass" value="sneer.installer.Main" />
 
-	<target name="main" depends="clean, compile, copy, log, makeJars, makeJnlp, signJars">
+	<target name="main" depends="compile, copy, log, makeJars, makeJnlp, signJars">
 	</target>
 
-	<target name="clean">
-		<delete dir="${bin.dir}" />
-		<mkdir dir="${bin.dir}" />
-	</target>
-	
 	<target name="copy">
 		<copy todir="${build.dir}/dist">
 			<fileset dir="web">
 				<include name='**/*.*' />
 			</fileset>
 		</copy>
-		
 	</target>
 
 	<target name="log">
@@ -85,6 +79,10 @@
 	</target>
 
 	<target name="compile">
+		<path id="classpath">
+			<pathelement path="./bin"/>
+		</path>		
+		
 		<javac srcdir="src"
 				destdir="${bin.dir}"
 				listfiles="true"
@@ -92,6 +90,7 @@
 				debug="on"
 				target="1.5"
 				encoding="utf-8">
+			<classpath refid="classpath"/>
 		</javac>
 	</target>
 	

@@ -9,6 +9,8 @@
 	- MyInfo
 		- Persist
 		- [Sandro] Focus on My Name Field when Sneer starts.
+		
+	- [Sandro] remove /sneer/src/sneer/bricks/software/bricks/finder/impl/lib/asm-all-3.1.jar and creake a ASM Brick.
 
 	- Contact crud: persist with tuples
         

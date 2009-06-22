@@ -17,8 +17,7 @@ class LogToFileImpl implements LogToFile {
 	private static final String FILENAME = "sneer.log";
 	private static final boolean WRITE_TO_THE_END = true;
 	
-	private final SneerHome _persistenceConfig = my(SneerHome.class);	
-	File _file = new File(_persistenceConfig.get(), FILENAME);
+	File _file = new File(my(SneerHome.class).get(), FILENAME);
 
 	@SuppressWarnings("unused")	private final Object _referenceToAvoidGc;
 

@@ -1,12 +1,12 @@
 ﻿TASKS
 =========
 
-	- [Klaus] Sneer Dummy - Fix
+	- [Klaus] SneerDirectories - Use them instead of hardcoded references.
 		- StoragePath - Cleanup mess.
 
 	- [Klaus] Revise entire package structure.
 
-	- [Sandro] XStream - Make into a brick. Other bricks cannot call it directly.
+	- [Sandro] XStream - Make into a brick. Other bricks cannot call the classes in the jar directly. The xpp3 jar must be in the same lib folder as the xstream jar. 
 
 	- [Sandro] FileFilterUtils - Encapsulate in IO brick. BrickFinderImpl cannot call FileFilterUtils directly.
 
@@ -17,9 +17,9 @@
 	- [Sandro] JarBuilder - Make it into a brick.
 
 	- [Sandro] Remove Installer duplication - The installer project now depends on the sneer project because it uses the Sneer and SneerDirectories classes, to eliminate duplication.
-		- Copy ONLY Sneer and SneerDirectories classes to the installer jar.
-		- Use the SneerDirectories constants and remove all hardcoded directory references from the installer.
-		- Use the SneerDirectories.LOG_FILE constant and remove the hardcoded log file name from the installer.
+		- Copy >ONLY< the Sneer and SneerDirectories classes to the installer jar.
+		- Use the SneerDirectories constants and remove all hardcoded directory references from the installer. Klaus will remove hardcoded references from bricks.
+		- Use the SneerDirectories.LOG_FILE constant and remove the hardcoded log file name from the installer. Klaus will remove hardcoded references from bricks.
 
 	- [Sandro] Update - Newer webstart versions delete and recreate the code directory ALWAYS, even if it has not been deleted, without asking the user. The old update-on-delete logic was already deleted.
 

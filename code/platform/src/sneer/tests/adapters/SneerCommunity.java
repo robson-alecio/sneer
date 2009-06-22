@@ -87,10 +87,9 @@ public class SneerCommunity implements SovereignCommunity {
 			private boolean isSharedByAllParties(String className) {
 				if (className.contains("xstream")) return true; System.out.println("Sandro, delete this line after XStream is made into a brick.");
 
+				if (isNetworkClass(className)) return true;
 				if (className.equals(SneerPartyProbe.class.getName())) return false;
 				if (isPublishedByUser(className)) return false;
-				if (isNetworkClass(className)) return true;
-				
 				return !isBrick(className); //Foundation classes such as Environments and functional tests classes such as SovereignParty mush be shared by all SneerParties.
 			}
 

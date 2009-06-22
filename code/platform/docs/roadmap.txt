@@ -5,7 +5,7 @@
 
 	- [Bamboo and Igor] PropertyStoreTest and TuplePersistenceTest - Unignore and make them pass. The problem is they have two different environments with two different DirectoryConfig instances. Both environments should use the same instance configured in BrickTest.<init>. The solution has to work for all tests that call BrickTestRunner.newTestEnvironment(), not only the failing ones, because they will probably need persistence soon.  
 
-	- [Bamboo] my(StorageDirectory.class) - Make it work context-based and delete DirectoryConfig.getStorageDirectoryFor(brick).
+	- [Bamboo and Igor] my(StorageDirectory.class) - Make it work context-based and delete DirectoryConfig.getStorageDirectoryFor(brick).
 
 	- [Sandro] Make all constants in SneerDirectories protected and create a subclass in the installer to access them. Bricks CANNOT have dependencies on main. The have to use the DirectoryConfig brick instead. 
 

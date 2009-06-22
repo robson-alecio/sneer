@@ -25,7 +25,6 @@ public class BrickFinderImpl implements BrickFinder {
 	@Override
 	public Collection<String> findBricks(File binDirectory) throws IOException {
 		Collection<String> result = new ArrayList<String>();
-		if (!binDirectory.exists()) return result;
 
 		for (File candidate : findClassFileCandidates(binDirectory)) {
 			ClassVisitor visitor = new ClassVisitor(candidate);

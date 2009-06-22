@@ -1,6 +1,9 @@
 package sneer.main;
 
 import static sneer.foundation.environments.Environments.my;
+
+import java.io.File;
+
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.software.bricks.snappstarter.SnappStarter;
 import sneer.bricks.software.directoryconfig.DirectoryConfig;
@@ -27,8 +30,13 @@ public class SneerSession implements Runnable {
 	}
 	
 	private static void configure(DirectoryConfig config) {
-		config.ownBinDirectory().set(SneerDirectories.OWN_BIN);
+		config.ownBinDirectory().set(mkDirs(SneerDirectories.OWN_BIN));
 		config.platformBinDirectory().set(SneerDirectories.PLATFORM_BIN);
+	}
+
+	private static File mkDirs(File directory) {
+		if (!directory.exists() && !directory.mkdirs()) throw new IllegalStateException("Unable to create directory " + directory);
+		return directory;
 	}
 
 }

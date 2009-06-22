@@ -1,5 +1,7 @@
 package sneer.bricks.software.code.compilers.java.tests;
 
+import static sneer.foundation.environments.Environments.my;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -7,10 +9,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import sneer.foundation.testsupport.JarBuilder;
+import sneer.bricks.software.code.jar.JarBuilder;
+import sneer.bricks.software.code.jar.Jars;
 
-
-@SuppressWarnings("deprecation")
 public class JarUtils {
 
 	public static File jarGiven(Class<?> clazz) {
@@ -28,7 +29,7 @@ public class JarUtils {
 
 
 	public static void createJar(File file, Class<?> klass) throws IOException, URISyntaxException {
-		final JarBuilder builder = new JarBuilder(file);
+		final JarBuilder builder = my(Jars.class).builder(file);
 		try {
 			final String fileName = klass.getCanonicalName().replace('.', '/') + ".class";
 			final URL url = klass.getResource("/" + fileName);

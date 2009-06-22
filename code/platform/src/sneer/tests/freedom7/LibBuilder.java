@@ -10,10 +10,10 @@ import sneer.bricks.hardware.io.IO;
 import sneer.bricks.hardware.ram.iterables.Iterables;
 import sneer.bricks.software.code.compilers.java.JavaCompiler;
 import sneer.bricks.software.code.compilers.java.Result;
+import sneer.bricks.software.code.jar.JarBuilder;
+import sneer.bricks.software.code.jar.Jars;
 import sneer.bricks.software.code.metaclass.MetaClass;
-import sneer.foundation.testsupport.JarBuilder;
 
-@SuppressWarnings("deprecation")
 public class LibBuilder {
 
 	private final JavaCompiler _compiler;
@@ -35,7 +35,7 @@ public class LibBuilder {
 		
 		targetJar.getParentFile().mkdirs();
 		
-		final JarBuilder jar = new JarBuilder(targetJar);
+		final JarBuilder jar = my(Jars.class).builder(targetJar);
 		try {
 			for (MetaClass klass : result.compiledClasses()) {
 				jar.add(klass.getName().replace('.', '/') + ".class", klass.classFile());

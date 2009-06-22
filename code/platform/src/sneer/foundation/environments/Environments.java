@@ -1,6 +1,5 @@
 package sneer.foundation.environments;
 
-
 public class Environments {
 	
 	private final static ThreadLocal<Environment> _environment = new ThreadLocal<Environment>() { @Override	protected Environment initialValue() { return null;};};
@@ -28,5 +27,4 @@ public class Environments {
 	private static Environment current() {
 		return _environment.get();
 	}
-
 }

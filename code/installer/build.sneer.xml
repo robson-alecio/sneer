@@ -46,7 +46,7 @@
 		</taskdef>
 
 		<property name="fdc.src" location="../platform/src"/>
-		<property name="output" location="duplicate.xml"/>
+		<property name="output" location="build/duplicate.xml"/>
 		
 		<echo message="${fdc.src} --> ${output}"/>
 		

@@ -10,4 +10,6 @@ public interface DirectoryConfig {
 
 	Immutable<File> ownBinDirectory();
 
+	Immutable<File> platformBinDirectory();
+
 }

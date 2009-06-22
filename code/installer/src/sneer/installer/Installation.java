@@ -12,38 +12,29 @@ import java.util.jar.JarInputStream;
 import sneer.main.SneerDirectories;
 
 import static sneer.main.SneerDirectories.SNEER_HOME;
+import static sneer.main.SneerDirectories.PLATFORM_CODE;
 
 class Installation {
 
-	private File _sneerInstallDir;
-
+	private final URL jarFileName = this.getClass().getResource("/sneer.jar");
+	
 	Installation() throws IOException {
-		_sneerInstallDir = new File(SNEER_HOME.getParentFile(), "sneer_installer");
-		
-		createDirectory();
+		cleanup();
+		createDirectories();
 		addBinaries();
-		renameDirectory();
 	}
 
-	private void createDirectory() throws IOException {
-		IOUtils.deleteDirectory(_sneerInstallDir);
-		
-		if(SNEER_HOME.exists()){
-			_sneerInstallDir=SNEER_HOME;
-			return;
-		}
-		
-		_sneerInstallDir.mkdirs();
-	}
-
-	private void renameDirectory() throws IOException {
-		if(_sneerInstallDir == SNEER_HOME) return;
-		if(!_sneerInstallDir.renameTo(SNEER_HOME))
-			throw new IOException(_sneerInstallDir.getAbsolutePath() + " can't renamed to " + SNEER_HOME.getAbsolutePath());	
+	private void cleanup() throws IOException {
+		PLATFORM_CODE.delete();
 	}
 	
+	private void createDirectories() throws IOException {
+		if(!SNEER_HOME.exists())
+			SNEER_HOME.mkdirs();
+		PLATFORM_CODE.mkdirs();
+	}
+
 	private void addBinaries() throws IOException {
-		URL jarFileName = this.getClass().getResource("/sneer.jar");
 		IOUtils.write(SneerDirectories.LOG_FILE, "jar file url: " + jarFileName.toString());
 		File file = extractJar(jarFileName);
 		extractFiles(file);
@@ -75,10 +66,10 @@ class Installation {
 		JarEntry entry = null;
 		
         while ((entry = jis.getNextJarEntry()) != null) {
-        	File file = new File(new File(_sneerInstallDir, "code"), entry.getName());
+        	File file = new File(PLATFORM_CODE, entry.getName());
 
         	if(entry.isDirectory()) {
-				file.mkdirs();
+        		file.mkdirs();
 				continue;
         	}
         	IOUtils.writeEntry(jar, entry, file);

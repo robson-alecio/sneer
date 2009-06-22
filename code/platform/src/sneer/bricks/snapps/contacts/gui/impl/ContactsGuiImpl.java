@@ -15,6 +15,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 
+import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.hardware.gui.images.Images;
 import sneer.bricks.pulp.connection.ConnectionManager;
 import sneer.bricks.pulp.contacts.Contact;
@@ -36,6 +37,7 @@ import sneer.bricks.snapps.contacts.actions.ContactActionManager;
 import sneer.bricks.snapps.contacts.gui.ContactsGui;
 import sneer.bricks.snapps.contacts.gui.comparator.ContactComparator;
 import sneer.bricks.snapps.contacts.gui.info.ContactInfoWindow;
+import sneer.foundation.lang.ByRef;
 import sneer.foundation.lang.Functor;
 
 class ContactsGuiImpl implements ContactsGui {
@@ -46,10 +48,19 @@ class ContactsGuiImpl implements ContactsGui {
 	private final Image ONLINE = getImage("ContactsGuiImpl.onlineIconName");
 	private final Image OFFLINE = getImage("ContactsGuiImpl.offlineIconName");
 	
-	private final SignalChooser<Contact> _chooser;
+	private final SignalChooser<Contact> _chooser = new SignalChooser<Contact>(){ @Override public Signal<?>[] signalsToReceiveFrom(Contact element) {
+		return new Signal<?>[]{my(ConnectionManager.class).connectionFor(element).isOnline(), element.nickname()};
+	}};
 
-	private ListSignal<Contact> _sortedList;
-	private ListWidget<Contact> _contactList;
+	private final ListSignal<Contact> _sortedList = my(ListSorter.class).sort( my(ContactManager.class).contacts() , my(ContactComparator.class), _chooser);
+	private final ListWidget<Contact> _contactList;{
+		final ByRef<ListWidget<Contact>> ref = ByRef.newInstance();
+		my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
+			ref.value = my(ReactiveWidgetFactory.class).newList(_sortedList, new ContactLabelProvider(), new ContactsGuiCellRenderer(new ContactLabelProvider()));
+		}});
+		_contactList = ref.value;
+	}
+
 	private Container _container;
 	
 	private Image getImage(String key) {
@@ -58,20 +69,11 @@ class ContactsGuiImpl implements ContactsGui {
 	
 	ContactsGuiImpl(){
 		my(InstrumentRegistry.class).registerInstrument(this);
-		_chooser = new SignalChooser<Contact>(){ @Override public Signal<?>[] signalsToReceiveFrom(Contact element) {
-			return new Signal<?>[]{my(ConnectionManager.class).connectionFor(element).isOnline(), element.nickname()};
-		}};
 	} 
 
 	@Override
 	public void init(InstrumentPanel window) {
-		ContactLabelProvider labelProvider = new ContactLabelProvider();
-		ContactsGuiCellRenderer cellRenderer = new ContactsGuiCellRenderer(labelProvider);
-
 		_container = window.contentPane();
-		_sortedList = my(ListSorter.class).sort( my(ContactManager.class).contacts() , my(ContactComparator.class), _chooser);
-		
-		_contactList = my(ReactiveWidgetFactory.class).newList(_sortedList, labelProvider, cellRenderer);
 		_contactList.getComponent().setName("ContactList");
 		_synth.attach(_contactList.getComponent());
 		

@@ -6,8 +6,6 @@
 
 	- [Klaus] Revise entire package structure.
 
-	- [Sandro] JarBuilder - Make it into a brick.
-
 	- [Sandro] Remove Installer duplication - The installer project now depends on the sneer project because it uses the Sneer and SneerDirectories classes, to eliminate duplication.
 		- Copy >ONLY< the Sneer and SneerDirectories classes to the installer jar.
 		- Use the SneerDirectories constants and remove all hardcoded directory references from the installer. Klaus will remove hardcoded references from bricks.

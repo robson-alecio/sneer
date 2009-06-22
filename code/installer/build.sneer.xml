@@ -8,10 +8,10 @@
 	
 	<property name="clover.jar" location="lib/clover.jar" />
 
-	<property name="sneer.home" location="../code" />
-	<property name="sneer.src" location="../code/src" />
-	<property name="sneer.lib" location="../code/lib" />
-	<property name="sneer.bin" location="../code/bin" />
+	<property name="sneer.home" location="../platform" />
+	<property name="sneer.src" location="../platform/src" />
+	<property name="sneer.lib" location="../platform/src" />
+	<property name="sneer.bin" location="../platform/bin" />
 
 	<path id="classpath">
 		<pathelement path="${bin.dir}"/>

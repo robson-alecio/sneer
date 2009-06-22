@@ -59,7 +59,10 @@ class UserInfoImpl extends JFrame implements UserInfo {
 		_environment = my(Environment.class);
 		initGui();
 		restoreFieldData();
-		open();
+		
+		my(WindowBoundsSetter.class).runWhenBaseContainerIsReady(new Runnable(){ @Override public void run() {
+			open();
+		}});
 	}
 
 	private void open() {
@@ -67,6 +70,7 @@ class UserInfoImpl extends JFrame implements UserInfo {
 		
 		my(WindowBoundsSetter.class).setBestBounds(this);
 		setVisible(true);
+		_yourOwnName.getMainWidget().requestFocus();
 	}
 	
 	private boolean hasRequiredUserData() {

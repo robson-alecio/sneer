@@ -4,14 +4,14 @@ import java.io.File;
 
 public class SneerDirectories {
 
-	public static final File SNEER_HOME 	= sneerHome();
-	public static final File DATA 			= new File(SNEER_HOME, dummyPrefix() + "data");
-	public static final File LOG_FILE 		= new File(SNEER_HOME, dummyPrefix() + "logs/log.txt");
-	public static final File CODE 			= new File(SNEER_HOME, "code");
-	public static final File OWN_CODE 		= new File(SNEER_HOME, "code/own");
-	public static final File OWN_BIN 		= new File(SNEER_HOME, "code/own/bin");
-	public static final File PLATFORM_CODE 	= new File(SNEER_HOME, "code/platform");
-	public static final File PLATFORM_BIN 	= new File(SNEER_HOME, "code/platform/bin");
+	protected static final File SNEER_HOME 	= sneerHome();
+	protected static final File DATA 			= new File(SNEER_HOME, dummyPrefix() + "data");
+	protected static final File LOG_FILE 		= new File(SNEER_HOME, dummyPrefix() + "logs/log.txt");
+	protected static final File CODE 			= new File(SNEER_HOME, "code");
+	protected static final File OWN_CODE 		= new File(SNEER_HOME, "code/own");
+	protected static final File OWN_BIN 		= new File(SNEER_HOME, "code/own/bin");
+	protected static final File PLATFORM_CODE 	= new File(SNEER_HOME, "code/platform");
+	protected static final File PLATFORM_BIN 	= new File(SNEER_HOME, "code/platform/bin");
 
 	private static File sneerHome() {
 		String override = System.getProperty("sneer.home");

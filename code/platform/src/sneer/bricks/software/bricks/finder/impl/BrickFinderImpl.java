@@ -1,18 +1,20 @@
 package sneer.bricks.software.bricks.finder.impl;
 
+import static sneer.foundation.environments.Environments.my;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.FileFilterUtils;
-import org.apache.commons.io.filefilter.IOFileFilter;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.commons.EmptyVisitor;
 
+import sneer.bricks.hardware.io.IO;
+import sneer.bricks.hardware.io.IO.FileFilters;
+import sneer.bricks.hardware.io.IO.Filter;
 import sneer.bricks.software.bricks.finder.BrickFinder;
 import sneer.foundation.brickness.Brick;
 
@@ -34,9 +36,11 @@ public class BrickFinderImpl implements BrickFinder {
 	}
 
 	private Collection<File> findClassFileCandidates(File binDirectory) {
-		IOFileFilter dirFilter = FileFilterUtils.notFileFilter(FileFilterUtils.nameFileFilter("impl"));
-		IOFileFilter fileFilter = FileFilterUtils.suffixFileFilter(".class");
-		return FileUtils.listFiles(binDirectory, fileFilter, dirFilter);
+		FileFilters filters = my(IO.class).fileFilters();
+		
+		Filter dirFilter = filters.not(filters.name("impl"));
+		Filter fileFilter = filters.suffix(".class");
+		return filters.listFiles(binDirectory, fileFilter, dirFilter);
 	}
 
 	private class ClassVisitor extends EmptyVisitor {

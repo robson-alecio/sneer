@@ -15,7 +15,20 @@ public interface IO {
 	void crash(Closeable closeable);
 	
 	Files files();
+	FileFilters fileFilters();
 	Streams streams();
+	
+	interface FileFilters{
+		Filter not(Filter filter);
+		Filter suffix(String sulfix);
+		Filter name(String name);
+		Collection<File> listFiles(File directory, Filter file, Filter dir);
+	}
+	
+	interface Filter{
+		public boolean accept(File file);
+		public boolean accept(File dir, String name);
+	}
 	
 	interface Files{
 		boolean isEmpty(File file);

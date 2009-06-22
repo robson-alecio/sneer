@@ -10,6 +10,8 @@ import java.util.Iterator;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
 
 import sneer.bricks.hardware.io.IO;
 
@@ -49,6 +51,24 @@ class IOImpl implements IO {
 		}
 	};
 
+	private FileFilters _fileFilters = new FileFilters(){
+		@Override public Filter name(String name) { return adapt(FileFilterUtils.nameFileFilter(name)); }
+		@Override public Filter not(Filter filter) { return adapt(FileFilterUtils.notFileFilter((IOFileFilter) filter)); }
+		@Override public Filter suffix(String sulfix) { return adapt(FileFilterUtils.suffixFileFilter(sulfix)); }
+
+		@Override public Collection<File> listFiles(File directory, Filter fileFilter, Filter dirFilter){ 
+			return FileUtils.listFiles(directory, (IOFileFilter)fileFilter, (IOFileFilter)dirFilter);}
+		
+		private Filter adapt(IOFileFilter filter) { return new IOFileFilterAdapter(filter); }
+		
+		class IOFileFilterAdapter implements IOFileFilter, Filter{
+			IOFileFilter _delegate;
+			public IOFileFilterAdapter(IOFileFilter delegate) { _delegate = delegate; }
+			@Override public boolean accept(File file) { return _delegate.accept(file);}
+			@Override public boolean accept(File dir, String name) { return _delegate.accept(dir, name); }
+		}
+	};
+	
 	@Override
 	public Files files() {
 		return _files;
@@ -64,5 +84,10 @@ class IOImpl implements IO {
 		try {
 			if(closeable!=null) closeable.close();
 		} catch (IOException ignored) {}
+	}
+
+	@Override
+	public FileFilters fileFilters() {
+		return _fileFilters;
 	}
 }

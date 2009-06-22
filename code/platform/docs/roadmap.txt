@@ -6,8 +6,6 @@
 
 	- [Klaus] Revise entire package structure.
 
-	- [Sandro] FileFilterUtils - Encapsulate in IO brick. BrickFinderImpl cannot call FileFilterUtils directly.
-
 	- [Sandro] ClassFiles
 		- sneer.tests.adapters.ClassFiles: Make into a brick.
 		- sneer.foundation.brickness.impl.ClassFiles: Do not change nor make it public. Making this public would pollute the foundation API. Yes, it will be redundant with the ClassFiles brick above. 

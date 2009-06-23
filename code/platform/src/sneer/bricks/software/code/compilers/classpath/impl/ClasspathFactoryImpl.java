@@ -8,6 +8,7 @@ import sneer.bricks.software.code.classutils.ClassUtils;
 import sneer.bricks.software.code.compilers.classpath.Classpath;
 import sneer.bricks.software.code.compilers.classpath.ClasspathFactory;
 import sneer.foundation.brickness.Brick;
+
 class ClasspathFactoryImpl implements ClasspathFactory {
 
 	private Classpath _sneerApi;

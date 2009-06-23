@@ -7,8 +7,6 @@
 
 	- [Bamboo and Igor] my(StorageDirectory.class) - Make it work context-based and delete DirectoryConfig.getStorageDirectoryFor(brick).
 
-	- [Sandro] remove /sneer/src/sneer/bricks/software/bricks/finder/impl/lib/asm-all-3.1.jar and creake a ASM Brick.
-
 	- [Sandro] Instrument Menu
 		- Arrow
 			- Make it black.

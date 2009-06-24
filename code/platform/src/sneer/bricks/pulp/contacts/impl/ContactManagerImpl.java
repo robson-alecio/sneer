@@ -6,22 +6,22 @@ import sneer.bricks.pulp.contacts.ContactManager;
 import sneer.bricks.pulp.reactive.collections.CollectionSignals;
 import sneer.bricks.pulp.reactive.collections.ListRegister;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
-import sneer.bricks.snapps.contacts.stored.ContactStore;
 import sneer.foundation.lang.PickyConsumer;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
 import sneer.foundation.lang.exceptions.Refusal;
 
 class ContactManagerImpl implements ContactManager {
     
-    final ListRegister<Contact> _contacts = my(CollectionSignals.class).newListRegister();
+    private final ListRegister<Contact> _contacts = my(CollectionSignals.class).newListRegister();
+    private final Store _store = new Store();
     
     ContactManagerImpl(){
-		restoreContacts();
+		restore();
     }
 
-	private void restoreContacts() {
+	private void restore() {
 		try {
-			for (String nick : my(ContactStore.class).getRestoredNicks())
+			for (String nick : _store.getRestoredNicks())
 				addContact(nick);
 		} catch (Refusal e) {
 			throw new NotImplementedYet(e); // Fix Handle this exception.
@@ -36,7 +36,7 @@ class ContactManagerImpl implements ContactManager {
 		
 		Contact result = doAddContact(nickname);
 
-		my(ContactStore.class).save();
+		_store.save();
 		
 		return result;
 	}
@@ -74,13 +74,13 @@ class ContactManagerImpl implements ContactManager {
 	synchronized private void changeNickname(Contact contact, String newNickname) throws Refusal {
 		checkAvailability(newNickname);
 		((ContactImpl)contact).nickname(newNickname);
-		my(ContactStore.class).save();
+		_store.save();
 	}
 
 	@Override
 	public void removeContact(Contact contact) {
 		_contacts.remove(contact);
-		my(ContactStore.class).save();
+		_store.save();
 	}
 	
 	@Override

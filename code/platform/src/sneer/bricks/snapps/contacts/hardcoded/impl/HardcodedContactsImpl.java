@@ -5,25 +5,19 @@ import sneer.bricks.pulp.contacts.Contact;
 import sneer.bricks.pulp.contacts.ContactManager;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.bricks.pulp.keymanager.KeyManager;
-import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.snapps.contacts.hardcoded.HardcodedContacts;
-import sneer.bricks.snapps.contacts.stored.ContactStore;
 import sneer.foundation.brickness.PublicKey;
-import sneer.foundation.lang.Consumer;
 
 public class HardcodedContactsImpl implements HardcodedContacts {
 
 	private final ContactManager _contactManager = my(ContactManager.class);
 
 	HardcodedContactsImpl(){
-		my(Signals.class).receive(my(ContactStore.class).failToRestoreContacts(), 
-			new Consumer<Boolean>(){ @Override public void consume(Boolean fail) {
-				if(!fail) return;
+		if(_contactManager.contacts().currentElements().size()>0) 
+			return;
 				
-				for (ContactInfo contact : contacts())
-					add(contact);
-			}
-		});
+		for (ContactInfo contact : contacts())
+			add(contact);
 	}
 	
 	private void add(ContactInfo contact) {

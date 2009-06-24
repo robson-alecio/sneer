@@ -147,15 +147,18 @@ class ContactsGuiImpl implements ContactsGui {
 	private final class ListContactsPopUpSupport {
 		private ListContactsPopUpSupport() {
 			final JList list = _contactList.getMainWidget();
-			list.addMouseListener(new MouseAdapter(){ @Override public void mouseReleased(MouseEvent e) {
-				int index = list.locationToIndex(e.getPoint());
-				list.getSelectionModel().setSelectionInterval(index, index);
-				if (e.isPopupTrigger())
-					tryToShowContactMenu(e);
-			}});
+			list.addMouseListener(new MouseAdapter(){ 
+				@Override public void mousePressed(MouseEvent e) { tryToShowContactMenu(e); }
+				@Override public void mouseReleased(MouseEvent e) { tryToShowContactMenu(e); }
+			});
 		}
-
+		
 		private void tryToShowContactMenu(MouseEvent e) {
+			JList list = _contactList.getMainWidget();
+			int index = list.locationToIndex(e.getPoint());
+			list.getSelectionModel().setSelectionInterval(index, index);
+			if (!e.isPopupTrigger()) return;
+			
 			JPopupMenu popupMain = new JPopupMenu();	
 			for (ContactAction action : my(ContactActionManager.class).actions())
 				if (action.isVisible())

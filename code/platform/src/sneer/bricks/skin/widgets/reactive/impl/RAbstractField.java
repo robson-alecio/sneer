@@ -18,9 +18,9 @@ import javax.swing.JComponent;
 import javax.swing.text.JTextComponent;
 
 import sneer.bricks.hardware.gui.guithread.GuiThread;
+import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.LightType;
-import sneer.bricks.pulp.log.Logger;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.widgets.reactive.NotificationPolicy;

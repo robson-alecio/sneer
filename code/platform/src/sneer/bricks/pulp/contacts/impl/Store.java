@@ -5,11 +5,11 @@ import static sneer.foundation.environments.Environments.my;
 import java.util.ArrayList;
 import java.util.List;
 
-import sneer.bricks.hardware.io.brickstatestore.BrickStateStore;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.pulp.contacts.Contact;
 import sneer.bricks.pulp.contacts.ContactManager;
+import sneer.bricks.software.bricks.statestore.BrickStateStore;
 
 class Store{
 	

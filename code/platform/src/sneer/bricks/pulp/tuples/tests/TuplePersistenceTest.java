@@ -4,7 +4,6 @@ import static sneer.foundation.environments.Environments.my;
 
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.bricks.pulp.tuples.TupleSpace;
@@ -16,7 +15,6 @@ import sneer.foundation.environments.Environments;
 
 public class TuplePersistenceTest extends BrickTest {
 
-	@Ignore
 	@Test
 	public void testTuplePersistence() {
 		runInNewEnvironment(new Runnable() { @Override public void run() {

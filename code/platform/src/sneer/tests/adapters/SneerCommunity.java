@@ -1,5 +1,7 @@
 package sneer.tests.adapters;
 
+import static sneer.foundation.environments.Environments.my;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -8,7 +10,7 @@ import java.net.URLClassLoader;
 import sneer.bricks.pulp.network.ByteArrayServerSocket;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.bricks.pulp.network.Network;
-import sneer.bricks.software.adapters.classfiles.ClassFiles;
+import sneer.bricks.software.code.classutils.ClassUtils;
 import sneer.foundation.brickness.Brickness;
 import sneer.foundation.brickness.impl.EagerClassLoader;
 import sneer.foundation.environments.Environment;
@@ -16,7 +18,6 @@ import sneer.foundation.environments.EnvironmentUtils;
 import sneer.tests.SovereignCommunity;
 import sneer.tests.SovereignParty;
 import sneer.tests.utils.network.InProcessNetwork;
-import static sneer.foundation.environments.Environments.my;
 
 public class SneerCommunity implements SovereignCommunity {
 
@@ -67,7 +68,7 @@ public class SneerCommunity implements SovereignCommunity {
 	}
 
 	private URLClassLoader apiClassLoader(File binDir) {
-		return new EagerClassLoader(new URL[]{toURL(binDir), toURL(my(ClassFiles.class).classpathRootFor(SneerCommunity.class))}, SneerCommunity.class.getClassLoader()) {
+		return new EagerClassLoader(new URL[]{toURL(binDir), toURL(my(ClassUtils.class).classpathRootFor(SneerCommunity.class))}, SneerCommunity.class.getClassLoader()) {
 			@Override
 			protected boolean isEagerToLoad(String className) {
 				return !isSharedByAllParties(className);

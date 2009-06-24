@@ -1,16 +1,15 @@
 ﻿TASKS
 =========
 
-	- [Klaus] Revise entire package structure.
-
-	- [Bamboo and Igor] PropertyStoreTest and TuplePersistenceTest - Unignore and make them pass. The problem is they have two different environments with two different DirectoryConfig instances. Both environments should use the same instance configured in BrickTest.<init>. The solution has to work for all tests that call BrickTestRunner.newTestEnvironment(), not only the failing ones, because they will probably need persistence soon.  
-
-	- [Bamboo and Igor] my(StorageDirectory.class) - Make it work context-based and delete DirectoryConfig.getStorageDirectoryFor(brick).
-
-	- [Sandro] Instrument Menu
-		- Add "Show Me The Code > Copy Class Name to Clipboard" menu item. 
+	- [Klaus] Revise entire package structure.  
 
 	- [Sandro] Make all constants in SneerDirectories protected and create a subclass in the installer to access them. Bricks CANNOT have dependencies on main. The have to use the DirectoryConfig brick instead. 
+
+	- [Sandro] sneer.bricks.pulp.lang.StringUtils - Delete and move logic to Lang.strings() 
+
+	- [Sandro] Contact crud - persist trivially
+
+	- [Sandro] MyInfo - Persist trivially
 
 	- [Sandro] Make installer create code/own project structure ready to be imported by Eclipse. Talk to Klaus.
 
@@ -19,10 +18,17 @@
 	- MyInfo
 		- Persist
 		
-	- Contact crud: persist with tuples
+	- [Sandro] Instrument Menu
+		- Add "Show Me The Code > Copy Class Name to Clipboard" menu item. 
+
+	- [Bamboo and Igor] BrickTestRunner.environmentWithDirectoryConfigFor() - Make it test-specific.
+
         
 ------------------------------------------ "EAT YOUR OWN DOGFOOD" RELEASE
 
+	- [Bamboo and Igor] my(StorageDirectory.class) - Make it work context-based and delete DirectoryConfig.getStorageDirectoryFor(brick).
+
+	- [Igor] Clock - Leave only time() and advanceTime*() methods. Extract all other methods to a new Timer brick.
         
 	- Savepoints - For entire source code.
 

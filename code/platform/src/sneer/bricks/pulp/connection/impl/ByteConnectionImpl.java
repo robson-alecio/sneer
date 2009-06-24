@@ -7,11 +7,11 @@ import java.util.Arrays;
 
 import sneer.bricks.hardware.cpu.threads.Stepper;
 import sneer.bricks.hardware.cpu.threads.Threads;
+import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.bandwidth.BandwidthCounter;
 import sneer.bricks.pulp.connection.ByteConnection;
 import sneer.bricks.pulp.contacts.Contact;
 import sneer.bricks.pulp.keymanager.KeyManager;
-import sneer.bricks.pulp.log.Logger;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;

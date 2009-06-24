@@ -46,7 +46,7 @@ class ClasspathFactoryImpl implements ClasspathFactory {
 	}
 
 	private Classpath buildEclipseClasspath() {
-		Classpath kernelPlusWheel = new DirectoryBasedClasspath(my(ClassUtils.class).rootDirectoryFor(Brick.class));
+		Classpath kernelPlusWheel = new DirectoryBasedClasspath(my(ClassUtils.class).classpathRootFor(Brick.class));
 		return kernelPlusWheel;
 	}
 

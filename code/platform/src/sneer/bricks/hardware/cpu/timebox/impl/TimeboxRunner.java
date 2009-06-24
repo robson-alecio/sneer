@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import sneer.bricks.hardware.cpu.threads.Threads;
-import sneer.bricks.pulp.log.Logger;
+import sneer.bricks.hardware.io.log.Logger;
 import sneer.foundation.testsupport.Daemon;
 
 @SuppressWarnings("deprecation")

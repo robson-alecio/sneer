@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.events.EventNotifier;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
-import sneer.bricks.pulp.log.Logger;
 import sneer.foundation.environments.Environments;
 import sneer.foundation.lang.Consumer;
 

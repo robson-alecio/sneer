@@ -5,9 +5,6 @@
 
 	- [Sandro] Make installer create code/own project structure ready to be imported by Eclipse. Talk to Klaus.
 
-	- [Sandro] Instrument Menu
-		- Add "Show Me The Code > Copy Class Name to Clipboard" menu item. 
-
 	- [Bamboo] BrickTestRunner.environmentWithDirectoryConfigFor() - Make it test-specific.
 
 	- [Bamboo] Video Tutorial with Jazz :)

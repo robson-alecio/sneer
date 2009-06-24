@@ -13,6 +13,11 @@ import java.awt.Graphics2D;
 import java.awt.IllegalComponentStateException;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -25,6 +30,8 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollBar;
@@ -214,11 +221,28 @@ class DashboardPanel extends JPanel {
 			private final JButton _menu = new JButton();
 			
 			private Toolbar(String title){
+				initCopyClassNameToClipboardAction();
+				
 				initGui(title);
 				initSynth();
+				
 				DashboardPanel.this._dashboardLayeredPane.add(_toolbarShadow, new Integer(1));
 				DashboardPanel.this._dashboardLayeredPane.add(_mouseBlockButton, new Integer(2));
 				DashboardPanel.this._dashboardLayeredPane.add(_toolbarPanel, new Integer(3));
+			}
+
+			private void initCopyClassNameToClipboardAction() {
+				JMenu showMeTheCode = new JMenu("Show Me The Code");
+				_menuActions.add(showMeTheCode);
+				
+				String name = "Copy Class Name to Clipboard (" +_instrument.getClass().getSimpleName() + ")";
+				JMenuItem copyClassName = new JMenuItem(name);
+				showMeTheCode.add(copyClassName);
+				copyClassName.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
+					StringSelection stringSelection = new StringSelection(_instrument.getClass().getName());
+				    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				    clipboard.setContents(stringSelection, new ClipboardOwner(){ @Override public void lostOwnership(Clipboard clipboard_, Transferable contents) {}});
+				}});
 			}
 
 			private void initSynth() {

@@ -7,7 +7,7 @@ import java.io.IOException;
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.threads.Stepper;
 import sneer.bricks.hardware.cpu.threads.Threads;
-import sneer.bricks.pulp.connection.ConnectionManager;
+import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddress;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.bricks.pulp.network.Network;

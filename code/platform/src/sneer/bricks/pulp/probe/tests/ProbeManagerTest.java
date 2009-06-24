@@ -8,12 +8,12 @@ import org.jmock.lib.action.CustomAction;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import sneer.bricks.network.computers.sockets.connections.ByteConnection;
+import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
+import sneer.bricks.network.computers.sockets.connections.ByteConnection.PacketScheduler;
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.network.social.ContactManager;
 import sneer.bricks.pulp.bandwidth.BandwidthCounter;
-import sneer.bricks.pulp.connection.ByteConnection;
-import sneer.bricks.pulp.connection.ConnectionManager;
-import sneer.bricks.pulp.connection.ByteConnection.PacketScheduler;
 import sneer.bricks.pulp.distribution.filtering.TupleFilterManager;
 import sneer.bricks.pulp.keymanager.KeyManager;
 import sneer.bricks.pulp.probe.ProbeManager;

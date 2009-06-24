@@ -1,4 +1,4 @@
-package sneer.bricks.pulp.connection;
+package sneer.bricks.network.computers.sockets.connections;
 
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.pulp.network.ByteArraySocket;

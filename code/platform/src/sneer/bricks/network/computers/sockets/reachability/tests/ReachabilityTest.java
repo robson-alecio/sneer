@@ -1,4 +1,4 @@
-package sneer.bricks.pulp.connection.reachability.tests;
+package sneer.bricks.network.computers.sockets.reachability.tests;
 
 import static sneer.foundation.environments.Environments.my;
 
@@ -7,8 +7,8 @@ import org.junit.Test;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.network.computers.sockets.accepter.SocketAccepter;
+import sneer.bricks.network.computers.sockets.reachability.ReachabilitySentinel;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
-import sneer.bricks.pulp.connection.reachability.ReachabilitySentinel;
 import sneer.bricks.pulp.events.EventNotifier;
 import sneer.bricks.pulp.events.EventNotifiers;
 import sneer.bricks.pulp.network.ByteArraySocket;

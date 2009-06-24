@@ -1,4 +1,4 @@
-package sneer.bricks.pulp.connection.reachability;
+package sneer.bricks.network.computers.sockets.reachability;
 
 import sneer.foundation.brickness.Brick;
 

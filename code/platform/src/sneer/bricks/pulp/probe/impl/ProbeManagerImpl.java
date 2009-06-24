@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import sneer.bricks.network.computers.sockets.connections.ByteConnection;
+import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.network.social.ContactManager;
-import sneer.bricks.pulp.connection.ByteConnection;
-import sneer.bricks.pulp.connection.ConnectionManager;
 import sneer.bricks.pulp.probe.ProbeManager;
 import sneer.bricks.pulp.reactive.collections.impl.SimpleListReceiver;
 import sneer.bricks.pulp.serialization.Serializer;

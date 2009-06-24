@@ -1,4 +1,4 @@
-package sneer.bricks.pulp.connection.impl;
+package sneer.bricks.network.computers.sockets.connections.impl;
 
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.pulp.lang.StringUtils;

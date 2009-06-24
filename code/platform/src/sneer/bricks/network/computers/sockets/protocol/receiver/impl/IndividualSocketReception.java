@@ -5,10 +5,10 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.IOException;
 import java.util.Arrays;
 
+import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
 import sneer.bricks.network.computers.sockets.protocol.ProtocolTokens;
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.network.social.ContactManager;
-import sneer.bricks.pulp.connection.ConnectionManager;
 import sneer.bricks.pulp.keymanager.KeyManager;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.foundation.brickness.PublicKey;

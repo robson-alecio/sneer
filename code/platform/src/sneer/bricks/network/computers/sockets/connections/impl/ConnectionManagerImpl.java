@@ -1,10 +1,10 @@
-package sneer.bricks.pulp.connection.impl;
+package sneer.bricks.network.computers.sockets.connections.impl;
 
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.ram.maps.cachemaps.CacheMap;
 import sneer.bricks.hardware.ram.maps.cachemaps.CacheMaps;
+import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
 import sneer.bricks.network.social.Contact;
-import sneer.bricks.pulp.connection.ConnectionManager;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.bricks.pulp.own.name.OwnNameKeeper;
 import sneer.foundation.lang.Producer;

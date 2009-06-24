@@ -1,4 +1,4 @@
-package sneer.bricks.pulp.contacts;
+package sneer.bricks.network.social;
 
 import sneer.bricks.pulp.reactive.collections.ListSignal;
 import sneer.foundation.brickness.Brick;

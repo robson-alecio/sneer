@@ -10,6 +10,7 @@ public interface SovereignParty {
 	void setOwnName(String newName);
 	
 	void bidirectionalConnectTo(SovereignParty peer);
+	boolean isOnline(String string);
 	void giveNicknameTo(SovereignParty peer, String nickname);
 	void navigateAndWaitForName(String nicknamePath, String expectedName);
 	

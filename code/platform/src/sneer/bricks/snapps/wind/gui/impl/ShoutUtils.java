@@ -5,7 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import sneer.bricks.pulp.contacts.Contact;
+import sneer.bricks.network.social.Contact;
 import sneer.bricks.pulp.keymanager.KeyManager;
 import sneer.bricks.pulp.own.name.OwnNameKeeper;
 import sneer.bricks.skin.main.synth.Synth;

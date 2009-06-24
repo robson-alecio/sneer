@@ -4,7 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import java.util.Comparator;
 
-import sneer.bricks.pulp.contacts.Contact;
+import sneer.bricks.network.social.Contact;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddress;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.bricks.pulp.reactive.ReactivePredicate;

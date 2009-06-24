@@ -5,11 +5,11 @@ import static sneer.foundation.environments.Environments.my;
 import org.junit.Test;
 
 import sneer.bricks.hardware.cpu.threads.mocks.ThreadsMock;
+import sneer.bricks.network.social.Contact;
 import sneer.bricks.pulp.bandwidth.BandwidthCounter;
 import sneer.bricks.pulp.connection.ByteConnection;
 import sneer.bricks.pulp.connection.ConnectionManager;
 import sneer.bricks.pulp.connection.ByteConnection.PacketScheduler;
-import sneer.bricks.pulp.contacts.Contact;
 import sneer.bricks.pulp.lang.StringUtils;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.bricks.pulp.reactive.Signal;

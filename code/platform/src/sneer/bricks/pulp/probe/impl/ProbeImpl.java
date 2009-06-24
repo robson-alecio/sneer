@@ -4,7 +4,7 @@
 package sneer.bricks.pulp.probe.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.pulp.contacts.Contact;
+import sneer.bricks.network.social.Contact;
 import sneer.bricks.pulp.distribution.filtering.TupleFilterManager;
 import sneer.bricks.pulp.keymanager.KeyManager;
 import sneer.bricks.pulp.reactive.Signal;

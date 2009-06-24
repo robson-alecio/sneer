@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.connection;
 
-import sneer.bricks.pulp.contacts.Contact;
+import sneer.bricks.network.social.Contact;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.foundation.brickness.Brick;
 

@@ -5,8 +5,8 @@ import static sneer.foundation.environments.Environments.my;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.bricks.pulp.contacts.Contact;
-import sneer.bricks.pulp.contacts.ContactManager;
+import sneer.bricks.network.social.Contact;
+import sneer.bricks.network.social.ContactManager;
 import sneer.bricks.pulp.reactive.collections.impl.SimpleListReceiver;
 import sneer.bricks.snapps.watchme.gui.windows.RemoteWatchMeWindows;
 

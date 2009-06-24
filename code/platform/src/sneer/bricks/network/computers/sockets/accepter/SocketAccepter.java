@@ -1,4 +1,4 @@
-package sneer.bricks.pulp.connection;
+package sneer.bricks.network.computers.sockets.accepter;
 
 import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.network.ByteArraySocket;

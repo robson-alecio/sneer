@@ -1,5 +1,6 @@
 package sneer.tests.freedom2;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.tests.SovereignFunctionalTestBase;
@@ -7,6 +8,14 @@ import sneer.tests.SovereignParty;
 
 public abstract class Freedom2TestBase extends SovereignFunctionalTestBase {
 
+	@Test (timeout = 3000)
+	public void isOnline() {
+		assertTrue(a().isOnline("Bruno Barros"));
+		assertTrue(b().isOnline("Ana Almeida"));
+	}
+
+	
+	@Ignore
 	@Test (timeout = 1000)
 	public void testRemoteNameChange() {
 		b().navigateAndWaitForName("Ana Almeida", "Ana Almeida");
@@ -19,6 +28,7 @@ public abstract class Freedom2TestBase extends SovereignFunctionalTestBase {
 		a().navigateAndWaitForName("Bruno Barros", "Dr Barros");
 	}
 
+	@Ignore
 	@Test (timeout = 10000)
 	public void testNicknames() {
 		SovereignParty c = createParty("Carla Costa");

@@ -6,8 +6,8 @@ import org.jmock.Expectations;
 import org.junit.Test;
 
 import sneer.bricks.hardware.clock.Clock;
+import sneer.bricks.network.computers.sockets.accepter.SocketAccepter;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
-import sneer.bricks.pulp.connection.SocketAccepter;
 import sneer.bricks.pulp.connection.reachability.ReachabilitySentinel;
 import sneer.bricks.pulp.events.EventNotifier;
 import sneer.bricks.pulp.events.EventNotifiers;

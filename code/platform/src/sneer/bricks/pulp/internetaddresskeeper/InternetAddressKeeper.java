@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.internetaddresskeeper;
 
-import sneer.bricks.pulp.contacts.Contact;
+import sneer.bricks.network.social.Contact;
 import sneer.bricks.pulp.reactive.collections.SetSignal;
 import sneer.foundation.brickness.Brick;
 

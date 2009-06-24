@@ -1,20 +1,21 @@
-package sneer.bricks.pulp.connection.impl;
+package sneer.bricks.network.computers.sockets.protocol.receiver.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
 import java.io.IOException;
 import java.util.Arrays;
 
+import sneer.bricks.network.computers.sockets.protocol.ProtocolTokens;
+import sneer.bricks.network.social.Contact;
+import sneer.bricks.network.social.ContactManager;
 import sneer.bricks.pulp.connection.ConnectionManager;
-import sneer.bricks.pulp.contacts.Contact;
-import sneer.bricks.pulp.contacts.ContactManager;
 import sneer.bricks.pulp.keymanager.KeyManager;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.foundation.brickness.PublicKey;
 import sneer.foundation.lang.Producer;
 import sneer.foundation.lang.exceptions.Refusal;
 
-class IndividualSocketReceiver {
+class IndividualSocketReception {
 
 	private final KeyManager _keyManager = my(KeyManager.class);
 	
@@ -23,8 +24,8 @@ class IndividualSocketReceiver {
 	private final ConnectionManager _connectionManager = my(ConnectionManager.class);
 	
 	private final ByteArraySocket _socket;
-	
-	IndividualSocketReceiver(ByteArraySocket socket) {
+
+	IndividualSocketReception(ByteArraySocket socket) {
 		_socket = socket;
 
 		try {

@@ -9,10 +9,10 @@ import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.lang.Lang;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.ram.iterables.Iterables;
+import sneer.bricks.network.social.Contact;
+import sneer.bricks.network.social.ContactManager;
 import sneer.bricks.pulp.connection.ByteConnection;
 import sneer.bricks.pulp.connection.ConnectionManager;
-import sneer.bricks.pulp.contacts.Contact;
-import sneer.bricks.pulp.contacts.ContactManager;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.bricks.pulp.keymanager.KeyManager;
 import sneer.bricks.pulp.own.name.OwnNameKeeper;
@@ -182,10 +182,16 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	@Override
 	public void startSnapps() {
 		my(sneer.bricks.snapps.system.log.sysout.LogToSysout.class);
-		my(sneer.bricks.pulp.connection.SocketOriginator.class);
-		my(sneer.bricks.pulp.connection.SocketReceiver.class);
+		my(sneer.bricks.network.computers.sockets.protocol.originator.SocketOriginator.class);
+		my(sneer.bricks.network.computers.sockets.protocol.receiver.SocketReceiver.class);
 		my(sneer.bricks.pulp.probe.ProbeManager.class);
 		my(sneer.bricks.hardware.clock.ticker.ClockTicker.class);
+	}
+
+	@Override
+	public boolean isOnline(String nickname) {
+		Contact contact = _contactManager.contactGiven(nickname);
+		return _connectionManager.connectionFor(contact).isOnline().currentValue();
 	}
 
 }

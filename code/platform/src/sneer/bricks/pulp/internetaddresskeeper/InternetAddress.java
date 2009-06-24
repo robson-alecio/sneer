@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.internetaddresskeeper;
 
-import sneer.bricks.pulp.contacts.Contact;
+import sneer.bricks.network.social.Contact;
 
 public interface InternetAddress {
 

@@ -1,7 +1,7 @@
 package sneer.bricks.pulp.own.name.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.pulp.contacts.Contact;
+import sneer.bricks.network.social.Contact;
 import sneer.bricks.pulp.own.name.OwnNameKeeper;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;

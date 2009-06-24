@@ -5,6 +5,4 @@ import sneer.foundation.brickness.Brick;
 
 @Snapp
 @Brick
-public interface ProbeManager {
-
-}
+public interface ProbeManager {}

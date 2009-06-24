@@ -5,9 +5,9 @@ import static sneer.foundation.environments.Environments.my;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import sneer.bricks.network.social.Contact;
 import sneer.bricks.pulp.connection.ByteConnection;
 import sneer.bricks.pulp.connection.ConnectionManager;
-import sneer.bricks.pulp.contacts.Contact;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;

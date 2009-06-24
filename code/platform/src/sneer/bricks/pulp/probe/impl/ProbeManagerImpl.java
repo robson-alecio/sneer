@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import sneer.bricks.network.social.Contact;
+import sneer.bricks.network.social.ContactManager;
 import sneer.bricks.pulp.connection.ByteConnection;
 import sneer.bricks.pulp.connection.ConnectionManager;
-import sneer.bricks.pulp.contacts.Contact;
-import sneer.bricks.pulp.contacts.ContactManager;
 import sneer.bricks.pulp.probe.ProbeManager;
 import sneer.bricks.pulp.reactive.collections.impl.SimpleListReceiver;
 import sneer.bricks.pulp.serialization.Serializer;
@@ -41,12 +41,12 @@ class ProbeManagerImpl implements ProbeManager {
 
 			@Override
 			protected void elementPresent(Contact contact) {
-				initCommunications(contact);
+				startProbeFor(contact);
 			}
 
 			@Override
 			protected void elementAdded(Contact contact) {
-				initCommunications(contact);
+				startProbeFor(contact);
 			}
 
 			@Override
@@ -58,9 +58,10 @@ class ProbeManagerImpl implements ProbeManager {
 		};
 	}
 
-	private void initCommunications(Contact contact) {
+	private void startProbeFor(Contact contact) {
 		ByteConnection connection = _connections.connectionFor(contact);
-		connection.initCommunications(createProbe(contact, connection)._scheduler, createReceiver());
+		ProbeImpl probe = createProbe(contact, connection);
+		connection.initCommunications(probe._scheduler, createReceiver());
 	}
 
 	private ProbeImpl createProbe(Contact contact, ByteConnection connection) {

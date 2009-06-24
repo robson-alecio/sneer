@@ -6,7 +6,7 @@ import java.io.StreamCorruptedException;
 
 import org.xiph.speex.SpeexDecoder;
 
-import sneer.bricks.skin.sound.kernel.Audio;
+import sneer.bricks.skin.audio.kernel.Audio;
 import sneer.bricks.snapps.whisper.speex.Decoder;
 
 class DecoderImpl implements Decoder {

@@ -6,7 +6,7 @@ import org.jmock.Expectations;
 import org.junit.Test;
 
 import sneer.bricks.pulp.distribution.filtering.TupleFilterManager;
-import sneer.bricks.skin.sound.PcmSoundPacket;
+import sneer.bricks.skin.audio.PcmSoundPacket;
 import sneer.bricks.snapps.whisper.speextuples.SpeexTuples;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.Bind;

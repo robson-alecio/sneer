@@ -10,9 +10,9 @@ import org.junit.runner.RunWith;
 import sneer.bricks.hardware.cpu.threads.Stepper;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.tuples.TupleSpace;
-import sneer.bricks.skin.sound.PcmSoundPacket;
-import sneer.bricks.skin.sound.kernel.Audio;
-import sneer.bricks.skin.sound.mic.Mic;
+import sneer.bricks.skin.audio.PcmSoundPacket;
+import sneer.bricks.skin.audio.kernel.Audio;
+import sneer.bricks.skin.audio.mic.Mic;
 import sneer.foundation.lang.Consumer;
 
 @RunWith(Mocotoh.class)

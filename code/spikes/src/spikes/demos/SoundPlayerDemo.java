@@ -1,7 +1,7 @@
 package spikes.demos;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.skin.sound.player.SoundPlayer;
+import sneer.bricks.skin.audio.player.SoundPlayer;
 import sneer.foundation.brickness.Brickness;
 import sneer.foundation.environments.Environments;
 

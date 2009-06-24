@@ -4,7 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import org.xiph.speex.SpeexEncoder;
 
-import sneer.bricks.skin.sound.kernel.Audio;
+import sneer.bricks.skin.audio.kernel.Audio;
 import sneer.bricks.snapps.whisper.speex.Encoder;
 
 class EncoderImpl implements Encoder {

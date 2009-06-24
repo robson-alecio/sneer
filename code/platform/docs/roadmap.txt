@@ -3,13 +3,6 @@
 
 	- [Klaus] Revise entire package structure.  
 
-	- [Bamboo and Igor] BrickTestRunner.environmentWithDirectoryConfigFor() - Make it test-specific.
-
-	- [Bamboo and Igor] my(StorageDirectory.class) - Make it work context-based and delete DirectoryConfig.getStorageDirectoryFor(brick).
-
-	- [Sandro] sneer.bricks.hardware.io.brickstatestore - Rename to sneer.software.bricks.statestore
-	- [Sandro] sneer.bricks.hardware.log.gui - Rename to sneer.snapps.log.gui
-
 	- [Sandro] Make all constants in SneerDirectories protected and create a subclass in the installer to access them. Bricks CANNOT have dependencies on main. The have to use the DirectoryConfig brick instead. 
 
 	- [Sandro] Contact crud - persist trivially
@@ -21,9 +14,14 @@
 	- [Sandro] Instrument Menu
 		- Add "Show Me The Code > Copy Class Name to Clipboard" menu item. 
 
+	- [Bamboo and Igor] BrickTestRunner.environmentWithDirectoryConfigFor() - Make it test-specific.
+
         
 ------------------------------------------ "EAT YOUR OWN DOGFOOD" RELEASE
 
+	- [Bamboo and Igor] my(StorageDirectory.class) - Make it work context-based and delete DirectoryConfig.getStorageDirectoryFor(brick).
+
+	- [Igor] Clock - Leave only time() and advanceTime*() methods. Extract all other methods to a new Timer brick.
         
 	- Savepoints - For entire source code.
 

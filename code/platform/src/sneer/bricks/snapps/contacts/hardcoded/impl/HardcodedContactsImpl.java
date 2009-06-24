@@ -5,16 +5,25 @@ import sneer.bricks.pulp.contacts.Contact;
 import sneer.bricks.pulp.contacts.ContactManager;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.bricks.pulp.keymanager.KeyManager;
+import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.snapps.contacts.hardcoded.HardcodedContacts;
+import sneer.bricks.snapps.contacts.stored.ContactStore;
 import sneer.foundation.brickness.PublicKey;
+import sneer.foundation.lang.Consumer;
 
 public class HardcodedContactsImpl implements HardcodedContacts {
 
-	private static final ContactManager ContactManager = my(ContactManager.class);
+	private final ContactManager _contactManager = my(ContactManager.class);
 
-	{
-		for (ContactInfo contact : contacts())
-			add(contact);
+	HardcodedContactsImpl(){
+		my(Signals.class).receive(my(ContactStore.class).failToRestoreContacts(), 
+			new Consumer<Boolean>(){ @Override public void consume(Boolean fail) {
+				if(!fail) return;
+				
+				for (ContactInfo contact : contacts())
+					add(contact);
+			}
+		});
 	}
 	
 	private void add(ContactInfo contact) {
@@ -61,7 +70,6 @@ public class HardcodedContactsImpl implements HardcodedContacts {
 			_host = host;
 			_port = port;
 		}
-
 	}
 
 	private void addAddress(String nick, String host, int port) {
@@ -75,10 +83,10 @@ public class HardcodedContactsImpl implements HardcodedContacts {
 	}
 
 	private Contact produceContact(String nick) {
-		Contact result = ContactManager.contactGiven(nick);
+		Contact result = _contactManager.contactGiven(nick);
 		if (result != null) return result;
 		
-		result = ContactManager.produceContact(nick);
+		result = _contactManager.produceContact(nick);
 		keyManager().addKey(result, mickeyMouseKey(nick));
 		return result;
 	}
@@ -86,6 +94,4 @@ public class HardcodedContactsImpl implements HardcodedContacts {
 	private KeyManager keyManager() {
 		return my(KeyManager.class);
 	}
-
-	
 }

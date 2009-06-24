@@ -1,10 +1,10 @@
-package sneer.bricks.hardware.io.brickstatestore.tests;
+package sneer.bricks.software.bricks.statestore.tests;
 
 import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 
-import sneer.bricks.hardware.io.brickstatestore.BrickStateStore;
+import sneer.bricks.software.bricks.statestore.BrickStateStore;
 import sneer.foundation.brickness.testsupport.BrickTest;
 
 public class BrickStateStoreTest extends BrickTest {

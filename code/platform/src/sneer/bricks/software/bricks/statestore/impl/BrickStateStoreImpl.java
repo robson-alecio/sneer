@@ -1,4 +1,4 @@
-package sneer.bricks.hardware.io.brickstatestore.impl;
+package sneer.bricks.software.bricks.statestore.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
@@ -7,8 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import sneer.bricks.hardware.io.brickstatestore.BrickStateStore;
 import sneer.bricks.pulp.serialization.Serializer;
+import sneer.bricks.software.bricks.statestore.BrickStateStore;
 import sneer.bricks.software.directoryconfig.DirectoryConfig;
 
 public class BrickStateStoreImpl implements BrickStateStore {

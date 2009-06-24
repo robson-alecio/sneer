@@ -4,7 +4,6 @@ import static sneer.foundation.environments.Environments.my;
 
 import java.util.List;
 
-import sneer.bricks.hardware.io.brickstatestore.BrickStateStore;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.blinkinglights.LightType;
@@ -14,6 +13,7 @@ import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.snapps.contacts.stored.ContactStore;
+import sneer.bricks.software.bricks.statestore.BrickStateStore;
 
 class ContactStoreImpl implements ContactStore{
 

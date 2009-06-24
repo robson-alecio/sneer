@@ -1,4 +1,4 @@
-package sneer.bricks.hardware.log.gui.impl;
+package sneer.bricks.snapps.system.log.gui.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
@@ -29,7 +29,6 @@ import javax.swing.event.ChangeListener;
 
 import sneer.bricks.hardware.gui.Action;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
-import sneer.bricks.hardware.log.gui.LogConsole;
 import sneer.bricks.pulp.log.filter.LogFilter;
 import sneer.bricks.pulp.log.workers.notifier.LogNotifier;
 import sneer.bricks.pulp.reactive.Signals;
@@ -42,6 +41,7 @@ import sneer.bricks.skin.widgets.reactive.ListWidget;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.autoscroll.AutoScrolls;
 import sneer.bricks.skin.windowboundssetter.WindowBoundsSetter;
+import sneer.bricks.snapps.system.log.gui.LogConsole;
 import sneer.foundation.lang.Consumer;
 
 class LogConsoleImpl extends JFrame implements LogConsole {

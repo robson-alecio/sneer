@@ -1,4 +1,4 @@
-package sneer.bricks.hardware.io.brickstatestore;
+package sneer.bricks.software.bricks.statestore;
 
 import java.io.IOException;
 

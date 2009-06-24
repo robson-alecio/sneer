@@ -30,12 +30,14 @@ public class DirectoryConfigImpl implements DirectoryConfig {
 	public Immutable<File> dataDirectory() {
 		return _dataDirectory;
 	}
-	
+
 	@Override
 	public File getStorageDirectoryFor(Class<?> brick) {
-		return new File(dataDirectory().get(), brick.getName().replace(".", "/"));
+		final File directory = new File(dataDirectory().get(), brick.getName().replace(".", "/"));
+		directory.mkdirs();
+		return directory;
 	}
-	
+
 	@Override
 	public Immutable<File> logFile() {
 		return _logFile;

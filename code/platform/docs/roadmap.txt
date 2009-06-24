@@ -1,9 +1,7 @@
 ﻿TASKS
 =========
 
-	- [Klaus] Revise entire package structure.
-
-	- [Bamboo and Igor] PropertyStoreTest and TuplePersistenceTest - Unignore and make them pass. The problem is they have two different environments with two different DirectoryConfig instances. Both environments should use the same instance configured in BrickTest.<init>. The solution has to work for all tests that call BrickTestRunner.newTestEnvironment(), not only the failing ones, because they will probably need persistence soon.  
+	- [Klaus] Revise entire package structure.  
 
 	- [Bamboo and Igor] my(StorageDirectory.class) - Make it work context-based and delete DirectoryConfig.getStorageDirectoryFor(brick).
 

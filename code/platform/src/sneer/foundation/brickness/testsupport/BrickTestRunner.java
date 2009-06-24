@@ -13,6 +13,7 @@ import org.junit.internal.runners.TestClass;
 import org.junit.internal.runners.TestMethod;
 import org.junit.runner.notification.RunNotifier;
 
+import sneer.bricks.software.directoryconfig.DirectoryConfig;
 import sneer.foundation.brickness.Brickness;
 import sneer.foundation.environments.Bindings;
 import sneer.foundation.environments.CachingEnvironment;
@@ -157,9 +158,15 @@ public class BrickTestRunner extends JUnit4ClassRunner {
 	public Environment newTestEnvironment(Object... bindings) {
 		return new CachingEnvironment(
 				EnvironmentUtils.compose(
-					new Bindings(bindings).environment(),
+					environmentWithDirectoryConfigFor(bindings),
 					my(TestInstanceEnvironment.class),
 					Brickness.newBrickContainer()));
+	}
+
+	private Environment environmentWithDirectoryConfigFor(Object... bindings) {
+		final Bindings newBindings = new Bindings(bindings);
+		newBindings.bind(my(DirectoryConfig.class));
+		return newBindings.environment();
 	}
 
 	private Environment newEnvironment() {

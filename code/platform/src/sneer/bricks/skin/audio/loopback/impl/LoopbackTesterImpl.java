@@ -2,7 +2,7 @@ package sneer.bricks.skin.audio.loopback.impl;
 
 import java.io.ByteArrayOutputStream;
 
-import sneer.bricks.pulp.log.Logger;
+import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.skin.audio.loopback.LoopbackTester;
 import static sneer.foundation.environments.Environments.my;
 

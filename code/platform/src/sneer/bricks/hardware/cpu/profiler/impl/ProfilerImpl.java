@@ -1,7 +1,7 @@
 package sneer.bricks.hardware.cpu.profiler.impl;
 
 import sneer.bricks.hardware.cpu.profiler.Profiler;
-import sneer.bricks.pulp.log.Logger;
+import sneer.bricks.hardware.io.log.Logger;
 import static sneer.foundation.environments.Environments.my;
 
 

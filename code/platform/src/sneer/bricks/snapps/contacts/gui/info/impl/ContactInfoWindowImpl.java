@@ -21,13 +21,13 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import sneer.bricks.hardware.gui.guithread.GuiThread;
+import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.pulp.contacts.Contact;
 import sneer.bricks.pulp.contacts.ContactManager;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddress;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddressKeeper;
-import sneer.bricks.pulp.log.Logger;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.main.synth.scroll.SynthScrolls;

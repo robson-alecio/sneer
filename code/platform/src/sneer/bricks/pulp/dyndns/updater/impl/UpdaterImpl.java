@@ -5,6 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.IOException;
 
 import sneer.bricks.hardware.io.codecs.base64.Base64;
+import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.dyndns.updater.BadAuthException;
 import sneer.bricks.pulp.dyndns.updater.InvalidHostException;
 import sneer.bricks.pulp.dyndns.updater.RedundantUpdateException;
@@ -13,7 +14,6 @@ import sneer.bricks.pulp.dyndns.updater.UnexpectedResponseException;
 import sneer.bricks.pulp.dyndns.updater.Updater;
 import sneer.bricks.pulp.dyndns.updater.UpdaterException;
 import sneer.bricks.pulp.httpclient.HttpClient;
-import sneer.bricks.pulp.log.Logger;
 import sneer.foundation.lang.Pair;
 
 class UpdaterImpl implements Updater {

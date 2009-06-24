@@ -1,7 +1,7 @@
 package sneer.bricks.pulp.connection.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.pulp.log.Logger;
+import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.foundation.lang.Consumer;
 

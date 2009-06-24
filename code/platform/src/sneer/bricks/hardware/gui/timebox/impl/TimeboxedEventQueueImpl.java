@@ -10,7 +10,7 @@ import java.util.List;
 
 import sneer.bricks.hardware.cpu.timebox.Timebox;
 import sneer.bricks.hardware.gui.timebox.TimeboxedEventQueue;
-import sneer.bricks.pulp.log.Logger;
+import sneer.bricks.hardware.io.log.Logger;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.EnvironmentUtils;
 import sneer.foundation.environments.Environments;

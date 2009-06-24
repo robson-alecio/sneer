@@ -26,7 +26,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import sneer.bricks.hardware.gui.guithread.GuiThread;
-import sneer.bricks.pulp.log.Logger;
+import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.reactive.collections.CollectionChange;
 import sneer.bricks.skin.audio.player.SoundPlayer;

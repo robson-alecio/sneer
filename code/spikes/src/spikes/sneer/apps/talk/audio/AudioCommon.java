@@ -14,7 +14,7 @@ import javax.sound.sampled.Mixer;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
-import sneer.bricks.pulp.log.Logger;
+import sneer.bricks.hardware.io.log.Logger;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
 
 // This class is a singleton.

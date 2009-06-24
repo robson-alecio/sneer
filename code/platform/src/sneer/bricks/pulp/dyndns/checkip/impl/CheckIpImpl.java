@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.dyndns.checkip.CheckIp;
 import sneer.bricks.pulp.httpclient.HttpClient;
-import sneer.bricks.pulp.log.Logger;
 
 class CheckIpImpl implements CheckIp {
 	

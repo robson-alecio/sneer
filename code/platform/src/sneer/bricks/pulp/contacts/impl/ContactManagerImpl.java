@@ -8,11 +8,25 @@ import sneer.bricks.pulp.reactive.collections.ListRegister;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
 import sneer.bricks.snapps.contacts.stored.ContactStore;
 import sneer.foundation.lang.PickyConsumer;
+import sneer.foundation.lang.exceptions.NotImplementedYet;
 import sneer.foundation.lang.exceptions.Refusal;
+
 class ContactManagerImpl implements ContactManager {
     
-	private final ContactStore _store = my(ContactStore.class);
-    final ListRegister<Contact> _contacts = my(CollectionSignals.class).newListRegister(); 
+    final ListRegister<Contact> _contacts = my(CollectionSignals.class).newListRegister();
+    
+    ContactManagerImpl(){
+		restoreContacts();
+    }
+
+	private void restoreContacts() {
+		try {
+			for (String nick : my(ContactStore.class).getRestoredNicks())
+				addContact(nick);
+		} catch (Refusal e) {
+			throw new NotImplementedYet(e); // Fix Handle this exception.
+		}
+	}
     
 	@Override
 	synchronized public Contact addContact(String nickname) throws Refusal {
@@ -22,7 +36,7 @@ class ContactManagerImpl implements ContactManager {
 		
 		Contact result = doAddContact(nickname);
 
-		_store.save();
+		my(ContactStore.class).save();
 		
 		return result;
 	}
@@ -60,13 +74,13 @@ class ContactManagerImpl implements ContactManager {
 	synchronized private void changeNickname(Contact contact, String newNickname) throws Refusal {
 		checkAvailability(newNickname);
 		((ContactImpl)contact).nickname(newNickname);
-		_store.save();
+		my(ContactStore.class).save();
 	}
 
 	@Override
 	public void removeContact(Contact contact) {
 		_contacts.remove(contact);
-		_store.save();
+		my(ContactStore.class).save();
 	}
 	
 	@Override

@@ -2,10 +2,10 @@ package sneer.bricks.snapps.contacts.stored.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
-import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.pulp.contacts.Contact;
 import sneer.bricks.pulp.contacts.ContactManager;
@@ -16,21 +16,18 @@ import sneer.bricks.snapps.contacts.stored.ContactStore;
 import sneer.bricks.software.bricks.statestore.BrickStateStore;
 
 class ContactStoreImpl implements ContactStore{
-
+	
+	private final int TIMEOUT = 30*1000;
 	private final Register<Boolean> _failToRestoreContacts = my(Signals.class).newRegister(false);
+	private List<String> _restoredNicks;
 	 
 	ContactStoreImpl(){
 		try {
-			List<Contact> contacts = (List<Contact>) my(BrickStateStore.class).readObjectFor(ContactManager.class, getClass().getClassLoader());
-			ContactManager _contactManager = my(ContactManager.class);
-			
-			for (Contact contact : contacts) 
-				_contactManager.addContact(contact.nickname().currentValue());
-			
+			_restoredNicks = (List<String>) my(BrickStateStore.class).readObjectFor(ContactManager.class, getClass().getClassLoader());
 		} catch (Throwable e) {
 			BlinkingLights bl = my(BlinkingLights.class);
-			Light _cantRestoreContacts = bl.prepare(LightType.WARN);
-			bl.turnOnIfNecessary(_cantRestoreContacts, "Unable to restore Contacts, using hardcoded Contacts", null, e);
+			bl.  turnOn(LightType.WARN, "Unable to restore Contacts", "Sneer can't restore your contacts, using hardcoded Contacts", e, TIMEOUT);
+			_restoredNicks = new ArrayList<String>();
 			_failToRestoreContacts.setter().consume(true);
 		} 
 	 }
@@ -38,11 +35,15 @@ class ContactStoreImpl implements ContactStore{
 	 @Override
 	 public void save() {
 		try {
-			my(BrickStateStore.class).writeObjectFor(ContactManager.class, my(ContactManager.class).contacts().currentElements());
+			List<String> nicks = new ArrayList<String>();
+			
+			for (Contact contact : my(ContactManager.class).contacts().currentElements()) 
+				nicks.add(contact.nickname().currentValue());
+
+			my(BrickStateStore.class).writeObjectFor(ContactManager.class, nicks);
 		} catch (Exception e) {
 			BlinkingLights bl = my(BlinkingLights.class);
-			Light _cantStoreContacts = bl.prepare(LightType.ERROR);
-			bl.turnOnIfNecessary(_cantStoreContacts, "Unable to store Contacts", null, e);
+			bl.turnOn(LightType.ERROR, "Unable to store Contacts", null, e, TIMEOUT);
 		}
 	 }
 	 
@@ -51,4 +52,8 @@ class ContactStoreImpl implements ContactStore{
 		 return _failToRestoreContacts.output();
 	 }
 	 
+	 @Override
+	 public List<String> getRestoredNicks(){
+		 return _restoredNicks;
+	 }
 }

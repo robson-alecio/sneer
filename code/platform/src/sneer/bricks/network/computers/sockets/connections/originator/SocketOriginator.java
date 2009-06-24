@@ -1,8 +1,8 @@
-package sneer.bricks.network.computers.sockets.protocol.receiver;
+package sneer.bricks.network.computers.sockets.connections.originator;
 
 import sneer.bricks.software.bricks.snappstarter.Snapp;
 import sneer.foundation.brickness.Brick;
 
 @Snapp
 @Brick
-public interface SocketReceiver {}
+public interface SocketOriginator {}

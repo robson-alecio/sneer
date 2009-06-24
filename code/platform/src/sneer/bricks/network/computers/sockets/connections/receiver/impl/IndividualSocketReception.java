@@ -1,4 +1,4 @@
-package sneer.bricks.network.computers.sockets.protocol.receiver.impl;
+package sneer.bricks.network.computers.sockets.connections.receiver.impl;
 
 import static sneer.foundation.environments.Environments.my;
 

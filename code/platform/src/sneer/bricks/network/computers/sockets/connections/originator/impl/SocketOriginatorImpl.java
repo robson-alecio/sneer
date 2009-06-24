@@ -1,11 +1,11 @@
-package sneer.bricks.network.computers.sockets.protocol.originator.impl;
+package sneer.bricks.network.computers.sockets.connections.originator.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.bricks.network.computers.sockets.protocol.originator.SocketOriginator;
+import sneer.bricks.network.computers.sockets.connections.originator.SocketOriginator;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddress;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.bricks.pulp.reactive.collections.CollectionChange;

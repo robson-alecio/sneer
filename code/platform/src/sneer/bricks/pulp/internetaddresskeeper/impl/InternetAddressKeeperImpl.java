@@ -1,8 +1,8 @@
 package sneer.bricks.pulp.internetaddresskeeper.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.pulp.contacts.Contact;
-import sneer.bricks.pulp.contacts.ContactManager;
+import sneer.bricks.network.social.Contact;
+import sneer.bricks.network.social.ContactManager;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddress;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.bricks.pulp.reactive.collections.SetRegister;

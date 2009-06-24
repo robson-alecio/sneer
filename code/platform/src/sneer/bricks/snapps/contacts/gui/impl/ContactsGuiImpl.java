@@ -17,9 +17,9 @@ import javax.swing.JScrollPane;
 
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.hardware.gui.images.Images;
-import sneer.bricks.pulp.connection.ConnectionManager;
-import sneer.bricks.pulp.contacts.Contact;
-import sneer.bricks.pulp.contacts.ContactManager;
+import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
+import sneer.bricks.network.social.Contact;
+import sneer.bricks.network.social.ContactManager;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.reactive.collections.ListSignal;

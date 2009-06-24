@@ -11,8 +11,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-import sneer.bricks.pulp.contacts.Contact;
-import sneer.bricks.pulp.contacts.ContactManager;
+import sneer.bricks.network.social.Contact;
+import sneer.bricks.network.social.ContactManager;
 import sneer.bricks.skin.windowboundssetter.WindowBoundsSetter;
 import sneer.bricks.snapps.contacts.actions.ContactAction;
 import sneer.bricks.snapps.contacts.actions.ContactActionManager;

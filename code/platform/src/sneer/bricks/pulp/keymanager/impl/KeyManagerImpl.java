@@ -5,7 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.bricks.pulp.contacts.Contact;
+import sneer.bricks.network.social.Contact;
 import sneer.bricks.pulp.crypto.Crypto;
 import sneer.bricks.pulp.crypto.Sneer1024;
 import sneer.bricks.pulp.events.EventNotifier;

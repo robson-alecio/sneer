@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.own.name;
 
-import sneer.bricks.pulp.contacts.Contact;
+import sneer.bricks.network.social.Contact;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.foundation.brickness.Brick;
 import sneer.foundation.lang.Consumer;

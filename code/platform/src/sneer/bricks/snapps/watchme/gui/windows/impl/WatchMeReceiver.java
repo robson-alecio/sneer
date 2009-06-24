@@ -15,7 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 
 import sneer.bricks.hardware.gui.guithread.GuiThread;
-import sneer.bricks.pulp.contacts.Contact;
+import sneer.bricks.network.social.Contact;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.keymanager.KeyManager;
 import sneer.bricks.pulp.reactive.Reception;

@@ -15,14 +15,13 @@
 		<property key="Label.margin" type="insets" value="0 0 0 0" />
   		<insets top="0" left="0" bottom="0" right="0"/>
 		<state>
-			<color value="#2d92bd" type="FOREGROUND" />
+			<color value="BLACK" type="FOREGROUND" />
 			<color value="RED" type="BACKGROUND"/>
 		</state>
 	</style>
 
 	<style id="button">	
-		<property key="Button.margin" type="insets" value="0 8 0 0"/>
-   		<insets top="3" left="0" bottom="2" right="8"/>
+   		<insets top="10" left="10" bottom="5" right="5"/>
 		<state>
       		<imagePainter method="buttonBackground" path="menu_off.png" center="true"/>
 		</state>

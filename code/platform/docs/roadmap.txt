@@ -8,9 +8,6 @@
 	- [Bamboo and Igor] my(StorageDirectory.class) - Make it work context-based and delete DirectoryConfig.getStorageDirectoryFor(brick).
 
 	- [Sandro] Instrument Menu
-		- Arrow
-			- Make it black.
-			- Move it 2 pixels to the right and 1 pixel up.
 		- Add "Show Me The Code > Copy Class Name to Clipboard" menu item. 
 
 	- [Sandro] Make all constants in SneerDirectories protected and create a subclass in the installer to access them. Bricks CANNOT have dependencies on main. The have to use the DirectoryConfig brick instead. 

@@ -2,6 +2,9 @@ package sneer.bricks.hardware.io.brickstatestore.tests;
 
 import static sneer.foundation.environments.Environments.my;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
 import sneer.bricks.hardware.io.brickstatestore.BrickStateStore;
@@ -13,14 +16,16 @@ public class BrickStateStoreTest extends BrickTest {
 
 	@Test
 	public void writeAndReadBrickState() throws Exception {
-		String toStore = "Teste";
+		List<String> toStore = new ArrayList<String>();
+		toStore.add("1");
+		toStore.add("2");
+		toStore.add("3");
 
 		_subject.writeObjectFor(BrickStateStore.class, toStore);
-		String restored = (String) _subject.readObjectFor(BrickStateStore.class, getClass().getClassLoader());
+		List<String> restored = (List<String>) _subject.readObjectFor(BrickStateStore.class, getClass().getClassLoader());
 		
-		assertEquals(toStore, restored);
+		assertEquals(toStore.size(), restored.size());
 		assertTrue(toStore!=restored);
 	}
-
 }
 

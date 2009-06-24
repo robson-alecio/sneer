@@ -9,8 +9,6 @@
 
 	- [Sandro] Make installer create code/own project structure ready to be imported by Eclipse. Talk to Klaus.
 
-	- [Sandro] Gandi's Snapp - Revise Zoom
-
 	- MyInfo
 		- Persist
 		

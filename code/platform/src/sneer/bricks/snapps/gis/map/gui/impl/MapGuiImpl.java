@@ -118,13 +118,15 @@ class MapGuiImpl implements MapGui{
 		JMenuItem zoomIn = new JMenuItem("Zoom In");
 		container.actions().add(zoomIn);
 		zoomIn.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
-			updateAddress(_address.getText(), _zoom++);
+			_zoom=_zoom+1;
+			updateAddress(_address.getText(), _zoom);
 		}});
 		
 		JMenuItem zoomOut = new JMenuItem("Zoom Out");
 		container.actions().add(zoomOut);
 		zoomOut.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
-			updateAddress(_address.getText(), _zoom--);
+			_zoom=_zoom-1;
+			updateAddress(_address.getText(), _zoom);
 		}});
 
 		_address.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) {

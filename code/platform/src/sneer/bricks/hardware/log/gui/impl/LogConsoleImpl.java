@@ -92,8 +92,8 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 		
 		my(Synth.class).attach(_tab, "LogConsoleTab");
 		
-		_tab.addTab("", loadIcon("Log.png"), _autoScroll, "Log");
-		_tab.addTab("", loadIcon("Filter.png"), initFilterGui(), "Filter");
+		_tab.addTab("", loadIcon("log.png"), _autoScroll, "Log");
+		_tab.addTab("", loadIcon("filter.png"), initFilterGui(), "Filter");
 		
 		_tab.setTabPlacement(SwingConstants.RIGHT);
 		_tab.addChangeListener(new ChangeListener(){ @Override public void stateChanged(ChangeEvent e) {

@@ -1,4 +1,4 @@
-package sneer.bricks.snapps.welcomewizard.impl;
+package sneer.bricks.snapps.owninfo.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
@@ -32,13 +32,13 @@ import sneer.bricks.skin.widgets.reactive.NotificationPolicy;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.TextWidget;
 import sneer.bricks.skin.windowboundssetter.WindowBoundsSetter;
-import sneer.bricks.snapps.welcomewizard.UserInfo;
+import sneer.bricks.snapps.owninfo.OwnInfo;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
 import sneer.foundation.lang.ByRef;
 import sneer.foundation.lang.PickyConsumer;
 
-class UserInfoImpl extends JFrame implements UserInfo {
+class OwnInfoImpl extends JFrame implements OwnInfo {
 	
 	private Environment _environment;
 	private TextWidget<JTextField>  _yourOwnName;
@@ -51,7 +51,7 @@ class UserInfoImpl extends JFrame implements UserInfo {
 	private final OwnNameKeeper _nameKeeper = my(OwnNameKeeper.class);
 	private final MainMenu _mainMenu = my(MainMenu.class);	
 	
-	UserInfoImpl() {
+	OwnInfoImpl() {
 		addOpenWindowAction();
 
 		if(hasRequiredUserData()) return;
@@ -88,7 +88,7 @@ class UserInfoImpl extends JFrame implements UserInfo {
 
 	private void initGui() {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setTitle("My Info");
+		setTitle("Own Info");
 		
 		setSize(350, 260);
 		
@@ -101,13 +101,13 @@ class UserInfoImpl extends JFrame implements UserInfo {
 		
 		pnl.setLayout(new GridBagLayout());
 		
-		addWidget(_yourOwnName.getComponent(), "My Name:", 0);
+		addWidget(_yourOwnName.getComponent(), "Own Name:", 0);
 		addWidget(_sneerPort.getComponent(), "Sneer Port:", 1);
 		
 		JPanel pnlDynDns = new JPanel();
 		pnlDynDns.setLayout(new GridBagLayout());
 
-		pnlDynDns.setBorder(new TitledBorder("My DynDns [Optional]"));
+		pnlDynDns.setBorder(new TitledBorder("Own DynDns [Optional]"));
 		getContentPane().add(pnlDynDns,
 				new GridBagConstraints(0, 2, 2, 1, 1.0, 0.0,
 						GridBagConstraints.CENTER,	GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5),0, 0));
@@ -151,7 +151,7 @@ class UserInfoImpl extends JFrame implements UserInfo {
 				storeFieldData();
 				setVisible(false);
 			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(UserInfoImpl.this, ex.getMessage());
+				JOptionPane.showMessageDialog(OwnInfoImpl.this, ex.getMessage());
 				ex.printStackTrace();
 			}
 		}});
@@ -175,7 +175,7 @@ class UserInfoImpl extends JFrame implements UserInfo {
 	
 	private void addOpenWindowAction() {
 		Action cmd = new Action(){
-			@Override public String caption() { return "My Info..."; }
+			@Override public String caption() { return "Own Info..."; }
 			@Override	public void run() { open(); }
 		};
 		_mainMenu.getSneerMenu().addAction(cmd);

@@ -7,17 +7,17 @@
 
 	- [Bamboo and Igor] my(StorageDirectory.class) - Make it work context-based and delete DirectoryConfig.getStorageDirectoryFor(brick).
 
+	- [Sandro] Make all constants in SneerDirectories protected and create a subclass in the installer to access them. Bricks CANNOT have dependencies on main. The have to use the DirectoryConfig brick instead. 
+
+	- [Sandro] Contact crud - persist trivially
+
+	- [Sandro] MyInfo - Persist trivially
+
+	- [Sandro] Make installer create code/own project structure ready to be imported by Eclipse. Talk to Klaus.
+		
 	- [Sandro] Instrument Menu
 		- Add "Show Me The Code > Copy Class Name to Clipboard" menu item. 
 
-	- [Sandro] Make all constants in SneerDirectories protected and create a subclass in the installer to access them. Bricks CANNOT have dependencies on main. The have to use the DirectoryConfig brick instead. 
-
-	- [Sandro] Make installer create code/own project structure ready to be imported by Eclipse. Talk to Klaus.
-
-	- MyInfo
-		- Persist
-		
-	- Contact crud: persist with tuples
         
 ------------------------------------------ "EAT YOUR OWN DOGFOOD" RELEASE
 

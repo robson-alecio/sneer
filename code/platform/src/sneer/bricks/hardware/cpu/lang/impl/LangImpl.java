@@ -1,9 +1,12 @@
 package sneer.bricks.hardware.cpu.lang.impl;
 
+import static sneer.foundation.environments.Environments.my;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -31,6 +34,7 @@ class LangImpl implements Lang {
 		@Override public String trimToNull(String str) {return StringUtils.trimToNull(str);}
 		@Override public String chomp(String str, String separator) { return StringUtils.chomp(str, separator);}
 		@Override public String deleteWhitespace(String str) {return StringUtils.deleteWhitespace(str);}
+		
 		@Override public List<String> readLines(String input) throws IOException {
 	        BufferedReader reader = new BufferedReader(new StringReader(input));
 			List<String> list = new ArrayList<String>();
@@ -41,7 +45,36 @@ class LangImpl implements Lang {
 			}
 			return list;		
 		}
+		
+		@Override	public byte[] toByteArray(String string) { 
+			try {
+				return string.getBytes("UTF8");
+			} catch (UnsupportedEncodingException e) { 
+				throw new IllegalStateException(); 
+			}
+		}
 
+		@Override
+		public String[] splitRight(String line, char separator, int maxParts) {
+			final List<String> parts = new ArrayList<String>(maxParts);
+			int endIndex = line.length();
+			
+			for (int i = maxParts - 1; i > 0; --i) {
+				final int index = line.lastIndexOf(separator, endIndex - 1);
+				if (index < 0) break;
+				parts.add(line.substring(index + 1, endIndex));
+				endIndex = index;
+			}
+			
+			parts.add(line.substring(0, endIndex));
+			return reversedArrayGiven(parts);
+		}			
+
+		private String[] reversedArrayGiven(final List<String> parts) {
+			String[] array = parts.toArray(new String[parts.size()]);
+			my(Lang.class).arrays().reverse(array);
+			return array;
+		}
 	};
 
 	@Override	 public Arrays arrays() { return _arrays; }

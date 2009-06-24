@@ -4,24 +4,24 @@ import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 
+import sneer.bricks.hardware.cpu.lang.Lang;
 import sneer.bricks.hardware.cpu.threads.mocks.ThreadsMock;
 import sneer.bricks.pulp.bandwidth.BandwidthCounter;
 import sneer.bricks.pulp.connection.ByteConnection;
 import sneer.bricks.pulp.connection.ConnectionManager;
 import sneer.bricks.pulp.connection.ByteConnection.PacketScheduler;
 import sneer.bricks.pulp.contacts.Contact;
-import sneer.bricks.pulp.lang.StringUtils;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
-import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.Bind;
+import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.lang.ByRef;
 import sneer.foundation.lang.Consumer;
 
 public class BandwidthReportingTest extends BrickTest {
 
-	private final byte[] _BYTE_ARRAY_OK = my(StringUtils.class).toByteArray("OK");
+	private final byte[] _BYTE_ARRAY_OK = my(Lang.class).strings().toByteArray("OK");
 	private final int _IN_PACKET_SIZE = _BYTE_ARRAY_OK.length;
 	private final int _OUT_PACKET_SIZE = 1024;
 

@@ -30,6 +30,8 @@ public interface Lang {
 		String chomp(String str, String separator);
 		String deleteWhitespace(String str);
 		List<String> readLines(String input) throws IOException;
+		byte[] toByteArray(String string);
+		String[] splitRight(String line, char separator, int maxParts);
 	}
 }
 

@@ -4,7 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 
-import sneer.bricks.pulp.lang.StringUtils;
+import sneer.bricks.hardware.cpu.lang.Lang;
 import sneer.foundation.brickness.testsupport.BrickTest;
 
 public class StringUtilsTest extends BrickTest {
@@ -24,7 +24,7 @@ public class StringUtilsTest extends BrickTest {
 	}
 
 	private static void assertSplitRight(String s, char separator, int maxParts, String... expected) {
-		assertArray(my(StringUtils.class).splitRight(s, separator, maxParts), expected);
+		assertArray(my(Lang.class).strings().splitRight(s, separator, maxParts), expected);
 	}
 
 	private static <T> void assertArray(T[] actual, T... expected) {

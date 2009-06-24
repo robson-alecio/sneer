@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sneer.bricks.hardware.cpu.lang.Lang;
-import sneer.bricks.pulp.lang.StringUtils;
 import sneer.bricks.software.code.compilers.java.CompilationError;
 import sneer.bricks.software.code.compilers.java.CompilerException;
 import sneer.bricks.software.code.compilers.java.Result;
@@ -59,7 +58,7 @@ class CompilationResult implements Result {
 		List<String> lines = my(Lang.class).strings().readLines(string);
 		for (String line : lines) {
 			if(line.indexOf(".java") > 0) {
-				final String[] parts = my(StringUtils.class).splitRight(line, ':', 3);
+				final String[] parts = my(Lang.class).strings().splitRight(line, ':', 3);
 				final String fileName = parts[0];
 				final int lineNumber = Integer.parseInt(parts[1]);
 				final String message = parts[2];

@@ -4,7 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.skin.main.dashboard.Dashboard;
-import sneer.bricks.snapps.blinkinglights.gui.BlinkingLightsGui;
+import sneer.bricks.snapps.system.blinkinglights.gui.BlinkingLightsGui;
 import sneer.foundation.brickness.Brickness;
 import sneer.foundation.environments.Environments;
 

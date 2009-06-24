@@ -7,6 +7,9 @@
 
 	- [Bamboo and Igor] my(StorageDirectory.class) - Make it work context-based and delete DirectoryConfig.getStorageDirectoryFor(brick).
 
+	- [Sandro] sneer.bricks.hardware.io.brickstatestore - Rename to sneer.software.bricks.statestore
+	- [Sandro] sneer.bricks.hardware.log.gui - Rename to sneer.snapps.log.gui
+
 	- [Sandro] Make all constants in SneerDirectories protected and create a subclass in the installer to access them. Bricks CANNOT have dependencies on main. The have to use the DirectoryConfig brick instead. 
 
 	- [Sandro] Contact crud - persist trivially

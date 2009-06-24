@@ -1,4 +1,4 @@
-package sneer.bricks.snapps.meter.memory.gui.impl;
+package sneer.bricks.snapps.system.meter.memory.gui.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
@@ -19,7 +19,7 @@ import sneer.bricks.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.bricks.skin.main.synth.Synth;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.TextWidget;
-import sneer.bricks.snapps.meter.memory.gui.MemoryMeterGui;
+import sneer.bricks.snapps.system.meter.memory.gui.MemoryMeterGui;
 import sneer.foundation.lang.Functor;
 
 class MemoryMeterGuiImpl implements MemoryMeterGui {

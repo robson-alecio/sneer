@@ -33,7 +33,7 @@
 
                      OWN HARDWARE (FREEDOM 6)
                (Clock, Files, Network, GUI support)
-                        (RAM: Collections)
+                  (RAM: Collections, References)
 (CPU: Threads, Natures (Concurrency), Consumers, Signals, Exceptions)
                           (T4T Billing)
 

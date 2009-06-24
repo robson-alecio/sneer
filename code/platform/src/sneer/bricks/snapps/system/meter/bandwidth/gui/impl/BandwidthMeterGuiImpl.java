@@ -1,4 +1,4 @@
-package sneer.bricks.snapps.meter.bandwidth.gui.impl;
+package sneer.bricks.snapps.system.meter.bandwidth.gui.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
@@ -15,7 +15,7 @@ import sneer.bricks.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.bricks.skin.main.synth.Synth;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.TextWidget;
-import sneer.bricks.snapps.meter.bandwidth.gui.BandwidthMeterGui;
+import sneer.bricks.snapps.system.meter.bandwidth.gui.BandwidthMeterGui;
 import sneer.foundation.lang.Functor;
 
 class BandwidthMeterGuiImpl implements BandwidthMeterGui {

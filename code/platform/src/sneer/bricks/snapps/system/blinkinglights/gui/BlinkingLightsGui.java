@@ -1,4 +1,4 @@
-package sneer.bricks.snapps.blinkinglights.gui;
+package sneer.bricks.snapps.system.blinkinglights.gui;
 
 import sneer.bricks.skin.main.instrumentregistry.Instrument;
 import sneer.bricks.software.bricks.snappstarter.Snapp;

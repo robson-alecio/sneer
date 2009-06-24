@@ -1,4 +1,4 @@
-package sneer.bricks.snapps.blinkinglights.gui.impl;
+package sneer.bricks.snapps.system.blinkinglights.gui.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
@@ -42,7 +42,7 @@ import sneer.bricks.skin.widgets.reactive.LabelProvider;
 import sneer.bricks.skin.widgets.reactive.ListWidget;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.windowboundssetter.WindowBoundsSetter;
-import sneer.bricks.snapps.blinkinglights.gui.BlinkingLightsGui;
+import sneer.bricks.snapps.system.blinkinglights.gui.BlinkingLightsGui;
 
 class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	

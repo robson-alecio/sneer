@@ -17,6 +17,6 @@ class MetaClassesImpl implements MetaClasses {
 
 	@Override
 	public MetaClass metaClass(Class<?> clazz) {
-	    return metaClass(my(ClassUtils.class).rootDirectoryFor(clazz), my(ClassUtils.class).toFile(clazz));
+	    return metaClass(my(ClassUtils.class).classpathRootFor(clazz), my(ClassUtils.class).toFile(clazz));
 	}
 }

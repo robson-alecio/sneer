@@ -8,7 +8,7 @@ import sneer.bricks.software.code.classutils.ClassUtils;
 class ClassUtilsImpl implements ClassUtils {
 
 	@Override
-	public File rootDirectoryFor(Class<?> clazz) {
+	public File classpathRootFor(Class<?> clazz) {
 		return rootDirectoryFor(clazz, toFile(clazz));
 	}
 

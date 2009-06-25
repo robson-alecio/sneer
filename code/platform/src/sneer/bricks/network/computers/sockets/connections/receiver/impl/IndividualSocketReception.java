@@ -5,6 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.IOException;
 import java.util.Arrays;
 
+import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
 import sneer.bricks.network.computers.sockets.protocol.ProtocolTokens;
 import sneer.bricks.network.social.Contact;
@@ -31,7 +32,7 @@ class IndividualSocketReception {
 		try {
 			if (!tryToServe()) _socket.crash();
 		} catch (Exception e) {
-			//my(Logger.class).logShort(e, "Exception thrown by incoming socket.");
+			my(Logger.class).logShort(e, "Exception thrown by incoming socket.");
 			_socket.crash();
 		}
 	}

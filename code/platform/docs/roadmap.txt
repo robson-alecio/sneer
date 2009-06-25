@@ -5,6 +5,8 @@
 
 	- [Sandro] <New Contact>
 		bug fix
+		
+	- [Sandro] WindowBoundsSetter - change baseComponent to use absolute location
 	
 	- [Bamboo] BrickTestRunner.environmentWithDirectoryConfigFor() - Make it test-specific.
 

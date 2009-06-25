@@ -68,7 +68,7 @@ class DeleteContactWindowImpl extends JFrame implements DeleteContactWindow {
 	
 	private void open(final Contact contact) {
 		setSize(300, 100);
-		my(WindowBoundsSetter.class).setBestBounds(this);
+		my(WindowBoundsSetter.class).setBestBounds(this, my(ContactActionManager.class).baseComponent());
 		setVisible(true);
 		setTitle("Delete '" + contact + "'?");
 	}

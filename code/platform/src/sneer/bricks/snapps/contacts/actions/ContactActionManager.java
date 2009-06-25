@@ -1,5 +1,6 @@
 package sneer.bricks.snapps.contacts.actions;
 
+import java.awt.Component;
 import java.util.Collection;
 
 import sneer.foundation.brickness.Brick;
@@ -13,5 +14,8 @@ public interface ContactActionManager {
 
 	ContactAction defaultAction();
 	Collection<ContactAction> actions();
+	
+	Component baseComponent();
+	void setBaseComponent(Component baseComponent);
 
 }

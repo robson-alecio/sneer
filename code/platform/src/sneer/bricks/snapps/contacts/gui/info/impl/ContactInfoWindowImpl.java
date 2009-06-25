@@ -139,7 +139,7 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 		addListSelectionListestener();
 
 		this.setSize(400, 310);
-		my(WindowBoundsSetter.class).setBestBounds(this);
+		my(WindowBoundsSetter.class).setBestBounds(this, my(ContactActionManager.class).baseComponent());
 	}
 
 	private void setGridBagLayout(JPanel panel, JLabel labNickname, JLabel labPort, JLabel labHost, JScrollPane scroll, JButton btnNew, JButton btnSave, JButton btnDel) {

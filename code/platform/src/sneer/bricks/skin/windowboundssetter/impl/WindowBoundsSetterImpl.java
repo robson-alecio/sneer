@@ -31,7 +31,7 @@ class WindowBoundsSetterImpl implements WindowBoundsSetter{
 	}
 
 	@Override public void setBestBounds(Window window) { 	setBestBounds(window, _component,  0); }
-	@Override public void setBestBounds(Window window, Component component) { setBestBounds(window, component, 0); }
+	@Override public void setBestBounds(Window window, Component component) { setBestBounds(window, (component!=null)?component:_component, 0); }
 	@Override public void setBestBounds(Window window, Component component, int  horizontalLimit) {
 	
 		int space = 20;

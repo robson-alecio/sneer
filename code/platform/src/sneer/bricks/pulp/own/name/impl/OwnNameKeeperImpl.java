@@ -6,16 +6,22 @@ import sneer.bricks.pulp.own.name.OwnNameKeeper;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
+import sneer.bricks.software.bricks.statestore.BrickStateStore;
 import sneer.foundation.lang.Consumer;
 
 class OwnNameKeeperImpl implements OwnNameKeeper {
 
-//	private final TupleSpace _space = my(TupleSpace.class); {
-//		_space.keep(OwnName.class);
-//		_space.addSubscription(OwnName.class, ownNameSubscriber());
-//	}
+	private final Register<String> _name = my(Signals.class).newRegister("");
 	
-	private Register<String> _name = my(Signals.class).newRegister("");
+	@SuppressWarnings("unused")
+	private final Object _refToAvoidGc;
+	
+	OwnNameKeeperImpl(){
+		restore();
+		_refToAvoidGc = my(Signals.class).receive(name(), new Consumer<String>(){ @Override public void consume(String name) {
+			save(name);
+		}});
+	}
 	
 	@Override
 	public Signal<String> name() {
@@ -32,10 +38,14 @@ class OwnNameKeeperImpl implements OwnNameKeeper {
 		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
 	
-//	private Consumer<? super OwnName> ownNameSubscriber() {
-//		return new Consumer<OwnName>() { @Override public void consume(OwnName value) {
-//			// Implement
-//		}};
-//	}
-
+	private void restore() {
+		String restoredName = (String) my(BrickStateStore.class).readObjectFor(OwnNameKeeper.class, getClass().getClassLoader());
+		
+		if(restoredName!=null)
+			nameSetter().consume(restoredName);
+	}
+	
+	private void save(String name) {
+		my(BrickStateStore.class).writeObjectFor(OwnNameKeeper.class, name);
+	}
 }

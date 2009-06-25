@@ -32,7 +32,7 @@ public class OwnIpDiscovererTest extends BrickTest {
 		int retryTime = 11 * 60 * 1000;
 
 		checking(new Expectations() {{
-			final Sequence seq = sequence("sequence");
+			final Sequence seq = newSequence("sequence");
 			one(receiver).consume(null); inSequence(seq);
 
 			one(checkip).check(); will(returnValue(ip1)); inSequence(seq);

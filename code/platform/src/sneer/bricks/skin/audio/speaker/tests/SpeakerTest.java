@@ -69,7 +69,7 @@ public class SpeakerTest extends BrickTest {
 
 	
 	class SoundExpectations extends Expectations {
-		private final Sequence _mainSequence = sequence("main");
+		private final Sequence _mainSequence = newSequence("main");
 		
 		SoundExpectations() throws Exception {
 			one(_audio).tryToOpenPlaybackLine(); will(returnValue(_line)); inSequence(_mainSequence);

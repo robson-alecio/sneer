@@ -3,8 +3,6 @@
 
 	- [Klaus] Revise entire package structure.  
 
-	- [Sandro] KeyManagerImpl - Trivially persist all changes to _ownKey and _keyByContact.
-
 	- [Sandro] <New Contact>
 		bug fix
 		

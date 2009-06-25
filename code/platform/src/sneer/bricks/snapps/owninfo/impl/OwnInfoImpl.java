@@ -27,7 +27,6 @@ import sneer.bricks.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import sneer.bricks.pulp.own.name.OwnNameKeeper;
 import sneer.bricks.pulp.port.PortKeeper;
 import sneer.bricks.pulp.reactive.Signal;
-import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.main.menu.MainMenu;
 import sneer.bricks.skin.widgets.reactive.NotificationPolicy;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -37,10 +36,7 @@ import sneer.bricks.snapps.owninfo.OwnInfo;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
 import sneer.foundation.lang.ByRef;
-import sneer.foundation.lang.Consumer;
 import sneer.foundation.lang.PickyConsumer;
-import sneer.foundation.lang.exceptions.NotImplementedYet;
-import sneer.foundation.lang.exceptions.Refusal;
 
 class OwnInfoImpl extends JFrame implements OwnInfo {
 	
@@ -55,7 +51,6 @@ class OwnInfoImpl extends JFrame implements OwnInfo {
 	private final OwnNameKeeper _nameKeeper = my(OwnNameKeeper.class);
 	private final PortKeeper _portKeeper = my(PortKeeper.class);
 	private final MainMenu _mainMenu = my(MainMenu.class);	
-	private final Store _store = new Store();
 	
 	@SuppressWarnings("unused")
 	private Object _refToAvoidGC;
@@ -63,8 +58,6 @@ class OwnInfoImpl extends JFrame implements OwnInfo {
 	OwnInfoImpl() {
 		addOpenWindowAction();
 
-		if(hasRequiredUserData()) return;
-		
 		_environment = my(Environment.class);
 		initGui();
 		restoreFieldData();
@@ -72,40 +65,6 @@ class OwnInfoImpl extends JFrame implements OwnInfo {
 		my(WindowBoundsSetter.class).runWhenBaseContainerIsReady(new Runnable(){ @Override public void run() {
 			open();
 		}});
-		
-		restoreStoredData();
-		initPersistenceReceiver();
-	}
-
-	private void restoreStoredData() {
-		if(_store.restoreFail()) return;
-		
-		if( _store.ownName() != null) 
-			_nameKeeper.nameSetter().consume(_store.ownName());
-		
-		if( _store.sneerPort() != null){
-			try {
-				_portKeeper.portSetter().consume(_store.sneerPort());
-			} catch (Refusal e) {
-				throw new NotImplementedYet(e); // Fix Handle this exception.
-			}
-		}
-		
-		if( _store.dynDnsHost()==null 
-		 || _store.dynDnsHost().trim().length()==0) 
-			return;
-		
-		_dynDnsHost.setText(_store.dynDnsHost());
-		_dynDnsUser.setText(_store.dynDnsUser());
-		_dynDnsPassword.setText(_store.dynDnsPassword());
-		
-		submit(true);
-	}
-
-	private void initPersistenceReceiver() {
-		_refToAvoidGC = my(Signals.class).receive(new Consumer<Object>(){ @Override public void consume(Object value) {
-			save();
-		}}, _portKeeper.port(), _nameKeeper.name());
 	}
 
 	private void open() {
@@ -116,12 +75,6 @@ class OwnInfoImpl extends JFrame implements OwnInfo {
 		_yourOwnName.getMainWidget().requestFocus();
 	}
 	
-	private boolean hasRequiredUserData() {
-		String ownName =  _nameKeeper.name().currentValue();
-		if (ownName == null) return false;
-		return !ownName.trim().isEmpty();
-	}
-
 	private void initDynDnsAccount(String dynDnsHost, String dynDnsUserName, String dynDnsPassword) {
 		if (dynDnsUserName == null) return;
 	
@@ -164,7 +117,8 @@ class OwnInfoImpl extends JFrame implements OwnInfo {
 						GridBagConstraints.EAST,	GridBagConstraints.NONE, new Insets(0, 5, 5, 5),0, 0));
 
 		btn.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent ignored) {
-			submit(false);						
+			submit();
+			setVisible(false);
 		}});
 	}
 
@@ -187,11 +141,10 @@ class OwnInfoImpl extends JFrame implements OwnInfo {
 		return result.value;
 	}
 
-	private void submit(final boolean visible) {
+	private void submit() {
 		Environments.runWith(_environment, new Runnable(){ @Override public void run() {
 			try {
 				storeFieldData();
-				setVisible(visible);
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(OwnInfoImpl.this, ex.getMessage());
 				ex.printStackTrace();
@@ -209,19 +162,6 @@ class OwnInfoImpl extends JFrame implements OwnInfo {
 
 	private void storeFieldData() throws Exception {
 		initDynDnsAccount(trim(_dynDnsHost), trim(_dynDnsUser), trim(_dynDnsPassword));
-		save();
-	}
-
-	private void save() {
-		_store.save(name(), port(), trim(_dynDnsHost), trim(_dynDnsUser), trim(_dynDnsPassword));
-	}
-
-	private String name() {
-		return _nameKeeper.name().currentValue();
-	}
-
-	private int port() {
-		return _portKeeper.port().currentValue();
 	}
 
 	private String trim(JTextField field) {

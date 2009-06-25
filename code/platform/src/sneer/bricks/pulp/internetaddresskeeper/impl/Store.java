@@ -3,51 +3,34 @@ package sneer.bricks.pulp.internetaddresskeeper.impl;
 import static sneer.foundation.environments.Environments.my;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-import sneer.bricks.pulp.blinkinglights.BlinkingLights;
-import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddress;
-import sneer.bricks.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.bricks.software.bricks.statestore.BrickStateStore;
+import sneer.bricks.software.bricks.statestore.impl.BrickStateStoreException;
 
-class Store{
+abstract class Store {
 	
-	private final int TIMEOUT = 30*1000;
-	private List<Object[]> _addresses;
-	
-	Store(){
+	static List<Object[]> restore() {
 		try {
-			_addresses  = (List<Object[]>) my(BrickStateStore.class).readObjectFor(InternetAddress.class, getClass().getClassLoader());
-		} catch (Throwable e) {
-			initializeOnError(e);
-		} 
-	 }
-
-	private void initializeOnError(Throwable e) {
-		BlinkingLights bl = my(BlinkingLights.class);
-		bl.  turnOn(LightType.WARN, "Unable to restore Contacts", "Sneer can't restore your contacts, using hardcoded Contacts", e, TIMEOUT);
-		_addresses = new ArrayList<Object[]>();
+			List<Object[]> addresses  = (List<Object[]>) my(BrickStateStore.class).readObjectFor(InternetAddress.class, InternetAddressKeeperImpl.class.getClassLoader());
+			if (addresses != null)	
+				return addresses;
+		} catch (BrickStateStoreException ignore) {} 
+		return new ArrayList<Object[]>();
 	}
-
-	 void save() {
+	
+	static void save(Collection<InternetAddress> currentAddresses) {
 		try {
 			List<Object[]> addresses = new ArrayList<Object[]>();
-			for (InternetAddress address : my(InternetAddressKeeper.class).addresses()) 
+			for (InternetAddress address : currentAddresses) 
 				addresses.add(new Object[]{
 					address.contact().nickname().currentValue(),  
 					address.host(), 
 					address.port()});
 
 			my(BrickStateStore.class).writeObjectFor(InternetAddress.class, addresses);
-			_addresses = addresses;
-		} catch (Exception e) {
-			BlinkingLights bl = my(BlinkingLights.class);
-			bl.turnOn(LightType.ERROR, "Unable to store Contacts", null, e, TIMEOUT);
-		}
+		} catch (BrickStateStoreException ignore) {}
 	 }
-
-	List<Object[]> getRestoredAddresses() {
-		return _addresses;
-	}
 }

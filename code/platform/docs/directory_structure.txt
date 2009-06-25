@@ -1,0 +1,8 @@
+/${user.home}/sneer
+	/code
+		/own (Eclipse project - User's bricks - First in classpath)
+		/platform (Eclipse project - Sneer bricks - Second in classpath)
+	/data
+	/logs
+	/dummydata (Used for testing with SneerDummy)
+	/dummylogs (Used for testing with SneerDummy)

@@ -5,7 +5,10 @@
 
 	- [Sandro] <New Contact>
 		bug fix
-	
+		
+	- [Sandro] "Restore Brick State Warning" -> brick.getSimpleName() + " could not be restored."
+		- FileNotFound - Returns null silently. Does not turn on BL.
+		
 	- [Bamboo] BrickTestRunner.environmentWithDirectoryConfigFor() - Make it test-specific.
 
 	- [Bamboo] Video Tutorial with Jazz :)

@@ -1,6 +1,8 @@
 ﻿TASKS
 =========
 
+	- [Klaus and Igor] Connection Identification
+
 	- [Klaus] Revise entire package structure.  
 
 	- [Sandro] <New Contact>

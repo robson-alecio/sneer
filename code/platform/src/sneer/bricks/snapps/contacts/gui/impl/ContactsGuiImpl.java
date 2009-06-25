@@ -74,6 +74,8 @@ class ContactsGuiImpl implements ContactsGui {
 	@Override
 	public void init(InstrumentPanel window) {
 		_container = window.contentPane();
+		my(ContactActionManager.class).setBaseComponent(_container);
+
 		_contactList.getComponent().setName("ContactList");
 		_synth.attach(_contactList.getComponent());
 		
@@ -122,7 +124,7 @@ class ContactsGuiImpl implements ContactsGui {
 	}
 	
 	private Contact newContact() {
-		return my(ContactManager.class).produceContact("<nickname>");
+		return my(ContactManager.class).produceContact("New Contact");
 	}
 
 	private JList contactList() {

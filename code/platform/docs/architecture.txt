@@ -19,8 +19,11 @@
                         TRUST (FREEDOM 3)
                (Affinity, AccessControl (Sandbox))
 
-                       CONTACTS (FREEDOM 2)
-              (NickNames, Mesh Network, Discovery)
+                    NETWORK.SOCIAL (FREEDOM 2)
+                  (Contacts, Discovery, Queries)
+
+                   NETWORK.COMPUTERS (FREEDOM 2)
+                  (Mesh, Connections, Discovery)
 
                        IDENTITY (FREEDOM 1)
                         (Name, Public Key)

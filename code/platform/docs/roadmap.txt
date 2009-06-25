@@ -3,8 +3,7 @@
 
 	- [Klaus] Revise entire package structure.  
 
-	- [Sandro] <nickname>
-		rename to <New Contact>
+	- [Sandro] <New Contact>
 		bug fix
 	
 	- [Bamboo] BrickTestRunner.environmentWithDirectoryConfigFor() - Make it test-specific.

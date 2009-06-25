@@ -57,7 +57,7 @@ public class WatchMeTest extends BrickTest {
 		final BufferedImage image3 = loadImage("screen3.png");
 		
 		checking(new Expectations() {{
-			final Sequence seq = sequence("sequence");
+			final Sequence seq = newSequence("sequence");
 
 			one(_shotter).takeScreenshot(); will(returnValue(image1)); inSequence(seq);
 			one(_shotter).takeScreenshot(); will(returnValue(image2)); inSequence(seq);

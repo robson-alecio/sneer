@@ -38,7 +38,7 @@ public class SequencerTest extends BrickTest {
 
 	private void sequence(String packet1, int sequence1, String packet2, int sequence2) {
 		checking(new Expectations(){{
-			Sequence main = sequence("main");
+			Sequence main = newSequence("main");
 			one(_consumer).consume("A"); inSequence(main);
 			one(_consumer).consume("B"); inSequence(main);
 			one(_consumer).consume("C"); inSequence(main);

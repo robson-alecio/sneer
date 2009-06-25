@@ -29,7 +29,7 @@ public abstract class BrickTest extends TestThatMightUseResources {
 		my(BrickTestRunner.class).dispose();
 	}
 	
-	protected Sequence sequence(String name) {
+	protected Sequence newSequence(String name) {
 		return _mockery.sequence(name);
 	}
 	

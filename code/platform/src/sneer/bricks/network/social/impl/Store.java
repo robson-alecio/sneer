@@ -7,44 +7,27 @@ import java.util.List;
 
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.network.social.ContactManager;
-import sneer.bricks.pulp.blinkinglights.BlinkingLights;
-import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.software.bricks.statestore.BrickStateStore;
+import sneer.bricks.software.bricks.statestore.impl.BrickStateStoreException;
 
-class Store{
-	
-	private final int TIMEOUT = 30*1000;
-	private List<String> _nicks;
-	
-	Store(){
+abstract class Store{
+
+	static List<String> restore() {
 		try {
-			_nicks  = (List<String>) my(BrickStateStore.class).readObjectFor(ContactManager.class, getClass().getClassLoader());
-		} catch (Throwable e) {
-			initializeOnError(e);
-		} 
-	 }
-
-	private void initializeOnError(Throwable e) {
-		BlinkingLights bl = my(BlinkingLights.class);
-		bl.  turnOn(LightType.WARN, "Unable to restore Contacts", "Sneer can't restore your contacts, using hardcoded Contacts", e, TIMEOUT);
-		_nicks = new ArrayList<String>();
+			List<String> nicks = (List<String>) my(BrickStateStore.class).readObjectFor(ContactManager.class, ContactManagerImpl.class.getClassLoader());
+			if(nicks!=null) 
+				return nicks;
+		} catch (BrickStateStoreException ignore) { } 
+		return new ArrayList<String>();
 	}
-
-	void save() {
+	
+	static void save(List<Contact> currentNicks) {
 		try {
 			List<String> nicks = new ArrayList<String>();
-			for (Contact contact : my(ContactManager.class).contacts().currentElements()) 
+			for (Contact contact : currentNicks) 
 				nicks.add(contact.nickname().currentValue());
 
 			my(BrickStateStore.class).writeObjectFor(ContactManager.class, nicks);
-			_nicks = nicks;
-		} catch (Exception e) {
-			BlinkingLights bl = my(BlinkingLights.class);
-			bl.turnOn(LightType.ERROR, "Unable to store Contacts", null, e, TIMEOUT);
-		}
+		} catch (BrickStateStoreException ignore) { }
 	 }
-
-	List<String> getRestoredNicks() {
-		return _nicks;
-	}
 }

@@ -13,14 +13,13 @@ class InternetAddressKeeperImpl implements InternetAddressKeeper {
 
 	private final ContactManager _contactManager = my(ContactManager.class);
 	private final SetRegister<InternetAddress> _addresses = new SetRegisterImpl<InternetAddress>();
-	private final Store _store = new Store();
 	
 	InternetAddressKeeperImpl(){
 		restore();
 	}
 
 	private void restore() {
-		for (Object[] address : _store.getRestoredAddresses()) {
+		for (Object[] address : Store.restore()) {
 			Contact contact = _contactManager.contactGiven((String)address[0]);
 			if(contact==null) continue;
 			
@@ -31,9 +30,9 @@ class InternetAddressKeeperImpl implements InternetAddressKeeper {
 	@Override
 	public void remove(InternetAddress address) {
 		_addresses.remove(address);
-		_store.save();
-	}	
-	
+		save();
+	}
+
 	@Override
 	public SetSignal<InternetAddress> addresses() {
 		return _addresses.output();
@@ -45,7 +44,7 @@ class InternetAddressKeeperImpl implements InternetAddressKeeper {
 		
 		InternetAddress addr = new InternetAddressImpl(contact, host, port);
 		_addresses.add(addr);
-		_store.save();
+		save();
 	}
 
 	private boolean isNewAddress(Contact contact, String host, int port) {
@@ -57,4 +56,8 @@ class InternetAddressKeeperImpl implements InternetAddressKeeper {
 		
 		return true;
 	}
+
+	private void save() {
+		Store.save(_addresses.output().currentElements());
+	}	
 }

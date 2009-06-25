@@ -13,7 +13,6 @@ import sneer.foundation.lang.exceptions.Refusal;
 class ContactManagerImpl implements ContactManager {
     
     private final ListRegister<Contact> _contacts = my(CollectionSignals.class).newListRegister();
-    private final Store _store = new Store();
     
     ContactManagerImpl(){
 		restore();
@@ -21,7 +20,7 @@ class ContactManagerImpl implements ContactManager {
 
 	private void restore() {
 		try {
-			for (String nick : _store.getRestoredNicks())
+			for (String nick : Store.restore())
 				addContact(nick);
 		} catch (Refusal e) {
 			throw new NotImplementedYet(e); // Fix Handle this exception.
@@ -36,9 +35,13 @@ class ContactManagerImpl implements ContactManager {
 		
 		Contact result = doAddContact(nickname);
 
-		_store.save();
+		save();
 		
 		return result;
+	}
+
+	private void save() {
+		Store.save(_contacts.output().currentElements());
 	}
 
 	private Contact doAddContact(String nickname) {
@@ -74,13 +77,13 @@ class ContactManagerImpl implements ContactManager {
 	synchronized private void changeNickname(Contact contact, String newNickname) throws Refusal {
 		checkAvailability(newNickname);
 		((ContactImpl)contact).nickname(newNickname);
-		_store.save();
+		save();
 	}
 
 	@Override
 	public void removeContact(Contact contact) {
 		_contacts.remove(contact);
-		_store.save();
+		save();
 	}
 	
 	@Override

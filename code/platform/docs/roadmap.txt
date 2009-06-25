@@ -3,9 +3,6 @@
 
 	- [Klaus] Revise entire package structure.  
 
-	- [Sandro] Store - Refactor
-		- BL inside BrickStateStore
-		
 	- [Sandro] <nickname>
 		rename to <New Contact>
 		bug fix

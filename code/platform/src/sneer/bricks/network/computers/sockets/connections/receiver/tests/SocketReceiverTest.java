@@ -3,6 +3,7 @@ package sneer.bricks.network.computers.sockets.connections.receiver.tests;
 import static sneer.foundation.environments.Environments.my;
 
 import org.jmock.Expectations;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.bricks.network.computers.sockets.accepter.SocketAccepter;
@@ -28,6 +29,7 @@ public class SocketReceiverTest extends BrickTest {
 	private final ContactManager contactManager = my(ContactManager.class);
 	
 	@Test
+	@Ignore
 	public void reception() throws Exception {
 		checking(new Expectations() {{
 			exactly(1).of(_socketAccepterMock).lastAcceptedSocket();

@@ -3,8 +3,13 @@
 
 	- [Klaus] Revise entire package structure.  
 
-	- [Sandro] Make installer create code/own project structure ready to be imported by Eclipse. Talk to Klaus.
-
+	- [Sandro] Store - Refactor
+		- BL inside BrickStateStore
+		
+	- [Sandro] <nickname>
+		rename to <New Contact>
+		bug fix
+	
 	- [Bamboo] BrickTestRunner.environmentWithDirectoryConfigFor() - Make it test-specific.
 
 	- [Bamboo] Video Tutorial with Jazz :)

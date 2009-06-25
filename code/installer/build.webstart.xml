@@ -63,6 +63,24 @@
 	</target>
 
 	<target name="makeJars">
+		<mkdir dir="${build.dir}/dist/own"/>
+		<copy todir="${build.dir}/dist/own">
+			<fileset dir="../own-template">
+				<include name='**/*.*' />
+				<exclude name='.project.bak'/>
+				<exclude name='.project'/>
+			</fileset>
+		</copy>
+		<copy file="../own-template/.project.bak" 
+			  tofile="${build.dir}/dist/own/.project"/>
+
+		<jar destfile="build/dist/own.jar">
+			<fileset dir="${build.dir}/dist">
+				<include name='own/**/*.*' />
+			</fileset>
+		</jar>
+		<delete dir="${build.dir}/dist/own"/>
+	
 		<jar destfile="build/dist/sneer-bootstrap.jar">
 			<fileset dir="${bin.dir}">
 				<include name='sneer/installer/*.*' />
@@ -75,6 +93,7 @@
 			</fileset>
 			<fileset dir="build/dist/">
 				<include name='sneer.jar' />
+				<include name='own.jar' />
 			</fileset>
 		</jar>
 	</target>

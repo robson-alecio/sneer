@@ -9,6 +9,8 @@
 	- [Sandro] "Restore Brick State Warning" -> brick.getSimpleName() + " could not be restored."
 		- FileNotFound - Returns null silently. Does not turn on BL.
 		
+	- [Sandro] Wind Autoscroll not working in some cases.
+		
 	- [Bamboo] BrickTestRunner.environmentWithDirectoryConfigFor() - Make it test-specific.
 
 	- [Bamboo] Video Tutorial with Jazz :)

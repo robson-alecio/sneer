@@ -18,9 +18,6 @@ public interface KeyManager {
 
 	EventSource<Contact> keyChanges();
 	
-//	Party partyGiven(PublicKey pk, Functor<PublicKey, Party> factoryToUseIfAbsent);
-//	Party partyGiven(PublicKey pk);
-
 	PublicKey unmarshall(byte[] publicKeyBytes);
 
 	@Deprecated

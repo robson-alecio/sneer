@@ -1,12 +1,9 @@
 package sneer.tests.utils.network;
 
-import static sneer.foundation.environments.Environments.my;
-
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.network.ByteArraySocket;
 
 class InProcessByteArraySocket implements ByteArraySocket {
@@ -46,7 +43,7 @@ class InProcessByteArraySocket implements ByteArraySocket {
 	public synchronized byte[] read() throws IOException {
 		checkIsNotCrashed();
 		
-		if (_receivedObjects.isEmpty()) my(Threads.class).waitWithoutInterruptions(this);
+		if (_receivedObjects.isEmpty()) waitWithoutInterruptions();
 		return _receivedObjects.remove(0);
 	}
 
@@ -63,5 +60,11 @@ class InProcessByteArraySocket implements ByteArraySocket {
 		if (_isCrashed) throw new IOException("This socket was crashed.");
 	}
 
-
+	private void waitWithoutInterruptions() {
+		try {
+			wait();
+		} catch (InterruptedException e) {
+			throw new IllegalStateException(e);
+		}		
+	}
 }

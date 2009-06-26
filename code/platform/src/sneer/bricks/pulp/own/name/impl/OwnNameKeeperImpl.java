@@ -1,7 +1,6 @@
 package sneer.bricks.pulp.own.name.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.network.social.Contact;
 import sneer.bricks.pulp.own.name.OwnNameKeeper;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
@@ -14,15 +13,12 @@ class OwnNameKeeperImpl implements OwnNameKeeper {
 	private final Register<String> _name = my(Signals.class).newRegister("");
 	
 	@SuppressWarnings("unused")
-	private final Object _refToAvoidGc;
+	private Object _refToAvoidGc;
 	
 	OwnNameKeeperImpl(){
-		restore();
-		_refToAvoidGc = my(Signals.class).receive(name(), new Consumer<String>(){ @Override public void consume(String name) {
-			save(name);
-		}});
+		takeCareOfPersistence();
 	}
-	
+
 	@Override
 	public Signal<String> name() {
 		return _name.output();
@@ -33,16 +29,20 @@ class OwnNameKeeperImpl implements OwnNameKeeper {
 		return _name.setter();
 	}
 
-	@Override
-	public Signal<String> nameOf(Contact contact) {
-		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
-	}
 	
+	private void takeCareOfPersistence() {
+		restore();
+		
+		_refToAvoidGc = my(Signals.class).receive(name(), new Consumer<String>(){ @Override public void consume(String name) {
+			save(name);
+		}});
+	}
+
 	private void restore() {
 		String restoredName = (String) my(BrickStateStore.class).readObjectFor(OwnNameKeeper.class, getClass().getClassLoader());
-		
-		if(restoredName!=null)
-			nameSetter().consume(restoredName);
+		if (restoredName == null) return;
+
+		nameSetter().consume(restoredName);
 	}
 	
 	private void save(String name) {

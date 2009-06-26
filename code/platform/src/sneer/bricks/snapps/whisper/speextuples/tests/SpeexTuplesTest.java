@@ -19,8 +19,8 @@ import sneer.bricks.snapps.whisper.speextuples.SpeexPacket;
 import sneer.bricks.snapps.whisper.speextuples.SpeexTuples;
 import sneer.foundation.brickness.PublicKey;
 import sneer.foundation.brickness.Tuple;
-import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.Bind;
+import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.lang.ByRef;
 import sneer.foundation.lang.Consumer;
 
@@ -127,9 +127,8 @@ public class SpeexTuplesTest extends BrickTest {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	private PublicKey contactKey() {
-		return _keyManager.generateMickeyMouseKey("contact");
+		return new PublicKey("anything".getBytes());
 	}
 	
 	private PcmSoundPacket myPacket(byte[] pcm) {

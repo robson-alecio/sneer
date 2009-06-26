@@ -9,11 +9,10 @@ public interface SovereignParty {
 	String ownName();
 	void setOwnName(String newName);
 	
-	void bidirectionalConnectTo(SovereignParty peer);
+	void connectTo(SovereignParty b);
 	boolean isOnline(String string);
 	void giveNicknameTo(SovereignParty peer, String nickname);
 	void navigateAndWaitForName(String nicknamePath, String expectedName);
-	
 
 	void publishBricks(File sourceDirectory);
 	

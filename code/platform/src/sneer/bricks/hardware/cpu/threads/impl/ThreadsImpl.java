@@ -3,13 +3,10 @@ package sneer.bricks.hardware.cpu.threads.impl;
 import static sneer.foundation.environments.Environments.my;
 
 import java.lang.ref.WeakReference;
-import java.util.HashSet;
-import java.util.Set;
 
 import sneer.bricks.hardware.cpu.threads.Latch;
 import sneer.bricks.hardware.cpu.threads.Stepper;
 import sneer.bricks.hardware.cpu.threads.Threads;
-import sneer.bricks.pulp.own.name.OwnNameKeeper;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
 import sneer.foundation.testsupport.Daemon;
@@ -17,8 +14,6 @@ import sneer.foundation.testsupport.Daemon;
 @SuppressWarnings("deprecation")
 class ThreadsImpl implements Threads {
 
-	private static final Set<Object> _reactors = new HashSet<Object>();
-	private final OwnNameKeeper _ownNameKeeper = my(OwnNameKeeper.class);
 	private final Latch _crash = newLatch();
 
 	@Override
@@ -40,11 +35,6 @@ class ThreadsImpl implements Threads {
 		}
 	}
 
-	@Override
-	/** @param reactor An object that listens to others (is weak referenced by them), such as a Signal Receiver, and has to react. It does not need a actual thread of its own but it cannot be garbage collected.*/
-    public void preventFromBeingGarbageCollected(Object reactor) {
-		_reactors.add(reactor);
-	}
 
 	@Override
 	public void joinWithoutInterruptions(Thread thread) {
@@ -85,9 +75,8 @@ class ThreadsImpl implements Threads {
 		StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 		StackTraceElement element = stackTrace[3];
 		String className = toSimpleClassName(element.getClassName());
-		String ownName = _ownNameKeeper.name().currentValue();
 		
-		return ownName + " - " + className + "." + element.getMethodName(); 
+		return className + "." + element.getMethodName() + "(" + Threads.class.getClassLoader() + ")"; 
 	}
 
 	private static String toSimpleClassName(String className) {

@@ -37,15 +37,15 @@ public class SneerCommunity implements SovereignCommunity {
 		File dataDirectory = makeDirectory(sneerHome, "data");
 		
 		Environment container = Brickness.newBrickContainer(_network);
-		URLClassLoader apiClassLoader = apiClassLoader(ownBinDirectory);
+		URLClassLoader apiClassLoader = apiClassLoader(ownBinDirectory, name);
 		
 		Object partyImpl = EnvironmentUtils.retrieveFrom(container, loadProbeClassUsing(apiClassLoader));
 		final SneerParty party = (SneerParty)ProxyInEnvironment.newInstance(container, partyImpl);
 		
+		party.setDataDirectory(dataDirectory);
+		party.setOwnBinDirectory(ownBinDirectory);
 		party.setOwnName(name);
 		party.setSneerPort(_nextPort++);
-		party.setOwnBinDirectory(ownBinDirectory);
-		party.setDataDirectory(dataDirectory);
 		
 		party.startSnapps();
 		return party;
@@ -67,7 +67,7 @@ public class SneerCommunity implements SovereignCommunity {
 		}
 	}
 
-	private URLClassLoader apiClassLoader(File binDir) {
+	private URLClassLoader apiClassLoader(File binDir, final String name) {
 		return new EagerClassLoader(new URL[]{toURL(binDir), toURL(my(ClassUtils.class).classpathRootFor(SneerCommunity.class))}, SneerCommunity.class.getClassLoader()) {
 			@Override
 			protected boolean isEagerToLoad(String className) {
@@ -95,6 +95,11 @@ public class SneerCommunity implements SovereignCommunity {
 			private boolean isPublishedByUser(String className) {
 				return !className.startsWith("sneer");
 			}
+
+			@Override
+			public String toString() {
+				return name;
+			}
 		};
 	}
 
@@ -109,6 +114,12 @@ public class SneerCommunity implements SovereignCommunity {
 	private File rootDirectory(String name) {
 		String home = "sneer-" + name.replace(' ', '_');
 		return makeDirectory(_tmpDirectory, home);
+	}
+
+	@Override
+	public void connect(SovereignParty a, SovereignParty b) {
+		a.connectTo(b);
+		b.connectTo(a);
 	}
 
 }

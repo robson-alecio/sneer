@@ -23,9 +23,8 @@ import sneer.bricks.pulp.propertystore.mocks.TransientPropertyStore;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
-import sneer.foundation.brickness.testsupport.BrickTest;
-import sneer.foundation.brickness.testsupport.BrickTestRunner;
 import sneer.foundation.brickness.testsupport.Bind;
+import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.environments.EnvironmentUtils;
 import sneer.foundation.lang.exceptions.FriendlyException;
 
@@ -82,8 +81,7 @@ Unacceptable Client Behavior
 	}
 
 	private void startDynDnsClientOnNewEnvironment() {
-		EnvironmentUtils.retrieveFrom(my(BrickTestRunner.class).newTestEnvironment(), 
-													  DynDnsClient.class);
+		EnvironmentUtils.retrieveFrom(newTestEnvironment(), DynDnsClient.class);
 	}
 	
 	@Test

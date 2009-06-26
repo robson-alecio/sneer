@@ -80,9 +80,8 @@ public class SpeakerTest extends BrickTest {
 	}
 
 
-	@SuppressWarnings("deprecation")
 	private PublicKey contactKey() {
-		return _keyManager.generateMickeyMouseKey("contact");
+		return new PublicKey("anything".getBytes());
 	}
 	
 	private PcmSoundPacket myPacket(byte[] pcm) {

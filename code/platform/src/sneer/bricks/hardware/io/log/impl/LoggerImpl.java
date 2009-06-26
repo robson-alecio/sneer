@@ -14,7 +14,7 @@ class LoggerImpl implements Logger {
 	
 	@Override
 	public void log(String message, Object... messageInsets) {
-		if(_delegate==null) return;
+		if (_delegate == null) return;
 		_delegate.log(message, messageInsets);
 	}
 
@@ -37,7 +37,7 @@ class LoggerImpl implements Logger {
 	}
 
 	private void leakIfNecessary(Throwable throwable) {
-		if (_delegate!=null) return;
+		if (_delegate != null) return;
 		throw new RuntimeException("Logger not configured for Throwables (Use Logger.setDelegate()).", throwable);
 	}
 }

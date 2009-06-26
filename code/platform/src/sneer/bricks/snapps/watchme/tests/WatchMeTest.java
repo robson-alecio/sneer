@@ -26,9 +26,8 @@ import sneer.bricks.skin.image.ImageFactory;
 import sneer.bricks.skin.screenshotter.Screenshotter;
 import sneer.bricks.snapps.watchme.WatchMe;
 import sneer.foundation.brickness.PublicKey;
-import sneer.foundation.brickness.testsupport.BrickTest;
-import sneer.foundation.brickness.testsupport.BrickTestRunner;
 import sneer.foundation.brickness.testsupport.Bind;
+import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.EnvironmentUtils;
 import sneer.foundation.lang.Consumer;
@@ -64,7 +63,7 @@ public class WatchMeTest extends BrickTest {
 			one(_shotter).takeScreenshot(); will(returnValue(image3)); inSequence(seq);
 		}});
 
-		Environment container2 = my(BrickTestRunner.class).newTestEnvironment(_sharedSpace); 
+		Environment container2 = newTestEnvironment(_sharedSpace); 
 		WatchMe subject2 = EnvironmentUtils.retrieveFrom(container2, WatchMe.class);
 
 		PublicKey key = _keys.ownPublicKey();

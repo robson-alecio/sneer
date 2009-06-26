@@ -32,62 +32,39 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	
 	static private final String MOCK_ADDRESS = "localhost";
 
-	private final Clock _clock = my(Clock.class);
-
-	private final ContactManager _contactManager = my(ContactManager.class);
-
-	private final ConnectionManager _connectionManager = my(ConnectionManager.class);
-	
-	private final PortKeeper _sneerPortKeeper = my(PortKeeper.class);
-	
-	private final OwnNameKeeper _ownNameKeeper = my(OwnNameKeeper.class);
-	
-	private final InternetAddressKeeper _internetAddressKeeper = my(InternetAddressKeeper.class);
-
-	private final KeyManager _keyManager = my(KeyManager.class);
-	
-
 	@Override
 	public void setSneerPort(int port) {
 		try {
-			_sneerPortKeeper.portSetter().consume(port);
+			my(PortKeeper.class).portSetter().consume(port);
 		} catch (Refusal e) {
 			throw new IllegalArgumentException(e);
 		}
 	}
 
 	@Override
-	public void bidirectionalConnectTo(SovereignParty party) {
-		Contact contact = addContact(party.ownName());
+	public void connectTo(SovereignParty party) {
+		Contact contact = my(ContactManager.class).produceContact(party.ownName());
 
 		SneerParty sneerParty = (SneerParty)party;
-		storePublicKey(contact, new PublicKey(sneerParty.publicKey()));
-		_internetAddressKeeper.add(contact, MOCK_ADDRESS, sneerParty.sneerPort());
+		//storePublicKey(contact, new PublicKey(sneerParty.publicKey()));
+		my(InternetAddressKeeper.class).add(contact, MOCK_ADDRESS, sneerParty.sneerPort());
 		
-		sneerParty.giveNicknameTo(this, this.ownName());
 		waitUntilOnline(contact);
 	}
 
-	private void storePublicKey(Contact contact, PublicKey publicKey) {
-		_keyManager.addKey(contact, publicKey);
-	}
+//	private void storePublicKey(Contact contact, PublicKey publicKey) {
+//		_keyManager.addKey(contact, publicKey);
+//	}
 
-	private Contact addContact(String nickname) {
-		try {
-			return _contactManager.addContact(nickname);
-		} catch (Refusal e) {
-			throw new IllegalStateException(e);
-		}
-	}
 
 	@Override
 	public String ownName() {
-		return _ownNameKeeper.name().currentValue();
+		return my(OwnNameKeeper.class).name().currentValue();
 	}
 
 	@Override
 	public void setOwnName(String newName) {
-		_ownNameKeeper.nameSetter().consume(newName);
+		my(OwnNameKeeper.class).nameSetter().consume(newName);
 	}
 	
     @Override
@@ -96,7 +73,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 		Contact contact = waitForContactGiven(publicKey);
 
 		try {
-			_contactManager.nicknameSetterFor(contact).consume(newNickname);
+			my(ContactManager.class).nicknameSetterFor(contact).consume(newNickname);
 		} catch (Refusal e) {
 			throw new IllegalStateException(e);
 		}
@@ -106,24 +83,24 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
     }
 
 	private void waitUntilOnline(Contact contact) {
-		ByteConnection connection = _connectionManager.connectionFor(contact);
+		ByteConnection connection = my(ConnectionManager.class).connectionFor(contact);
 		
 		while (!connection.isOnline().currentValue())
-			my(Threads.class).sleepWithoutInterruptions(1);
+			my(Threads.class).sleepWithoutInterruptions(10);
 	}
 
 	private Contact waitForContactGiven(byte[] publicKey) {
 		while (true) {
-			Contact contact = _keyManager.contactGiven(new PublicKey(publicKey));
+			Contact contact = my(KeyManager.class).contactGiven(new PublicKey(publicKey));
 			if (contact != null) return contact;
-			my(Threads.class).sleepWithoutInterruptions(1);
-			_clock.advanceTime(60 * 1000);
+			my(Threads.class).sleepWithoutInterruptions(10);
+			my(Clock.class).advanceTime(60 * 1000);
 		}
 	}
 
 	@Override
     public byte[] publicKey() {
-		return _keyManager.ownPublicKey().bytes();
+		return my(KeyManager.class).ownPublicKey().bytes();
 	}
 
 	@Override
@@ -136,7 +113,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 	@Override
 	public int sneerPort() {
-        return _sneerPortKeeper.port().currentValue();
+        return my(PortKeeper.class).port().currentValue();
     }
 
 
@@ -190,8 +167,8 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 	@Override
 	public boolean isOnline(String nickname) {
-		Contact contact = _contactManager.contactGiven(nickname);
-		return _connectionManager.connectionFor(contact).isOnline().currentValue();
+		Contact contact = my(ContactManager.class).contactGiven(nickname);
+		return my(ConnectionManager.class).connectionFor(contact).isOnline().currentValue();
 	}
 
 }

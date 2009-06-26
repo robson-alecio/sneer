@@ -33,7 +33,7 @@
 	<target name="makeJnlp">
 		
 		<condition property="jnlp.codebase"
-			value="${env.HUDSON_URL}job/${env.JOB_NAME}/${env.BUILD_NUMBER}/artifact/code/installer/build/dist" 
+			value="${env.HUDSON_URL}job/${env.JOB_NAME}/lastBuild/artifact/code/installer/build/dist" 
 			else="file:///${build.dir}/dist">
 			<equals arg1="${env.JOB_NAME}" arg2="Sneer"/>
 		</condition>
@@ -44,12 +44,20 @@
 			<jnlp spec="1.0+" codebase="${jnlp.codebase}" href="sneer.jnlp">
 				<information>
 					<title>Sneer</title>
+					
+			        <shortcut online="true">
+			            <menu submenu="Sneer - Sovereign Somputing"/>
+			            <desktop/>
+			        </shortcut>
+					
 					<vendor>Sneer</vendor>
 					<description>Sovereign computing is the freedom to share information and hardware resources with your friends, any way you like.:)</description>
 					<description kind="short">Sneer is a java-based, free software platform for sovereign applications.</description>
 					<homepage href="http://sovereigncomputing.net/" />
 				</information>
-				<update check="timeout" policy="always" />
+				
+				<update check="timeout" policy="prompt-update" />
+				
 				<resources>
 					<jar href="sneer-bootstrap.jar" />
 					<j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se" />

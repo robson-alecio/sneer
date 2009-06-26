@@ -15,7 +15,7 @@ public class CachingEnvironment implements Environment {
 	}
 
 	@Override
-	public <T> T provide(Class<T> intrface) {
+	public synchronized <T> T provide(Class<T> intrface) {
 		final Object cachedBinding = _cache.get(intrface);
 		if (null != cachedBinding)
 			return (T) cachedBinding;

@@ -37,8 +37,13 @@ public abstract class SovereignFunctionalTestBase extends BrickTest {
 		_a = _community.createParty("Ana Almeida");
 		_b = _community.createParty("Bruno Barros");
 		
-		_a.bidirectionalConnectTo(_b);
+		connect(_a, _b);
 	}
+
+	protected void connect(SovereignParty a, SovereignParty b) {
+		_community.connect(a, b);
+	}
+
 	
 	@After
 	public void releaseCommunity() {

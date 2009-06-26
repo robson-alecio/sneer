@@ -14,7 +14,7 @@ public class Bindings {
 	private final List<Object> _bindings = Collections.synchronizedList(new ArrayList<Object>());
 	
 	public Environment environment() {
-		return new Environment() { @Override public <T> T provide(Class<T> intrface) {
+		return new Environment() { @Override public synchronized <T> T provide(Class<T> intrface) {
 			for (Object candidate : _bindings.toArray())
 				if (intrface.isInstance(candidate))
 					return (T)candidate;
@@ -22,7 +22,7 @@ public class Bindings {
 		}};
 	}
 
-	public void bind(Object... bindings) {
+	public synchronized void bind(Object... bindings) {
 		for (Object binding : bindings)
 			_bindings.add(binding);
 	}

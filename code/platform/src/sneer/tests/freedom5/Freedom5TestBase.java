@@ -14,9 +14,9 @@ public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 		SovereignParty c = createParty("Cid");
 		SovereignParty d = createParty("Dan");
 		
-		b().bidirectionalConnectTo(c);
-		c  .bidirectionalConnectTo(a());
-		c  .bidirectionalConnectTo(d);
+		connect(b(), c  );
+		connect(c  , a());
+		connect(c  , d  );
 		
 		a().shout("A!!!");
 		b().shout("B!!!");
@@ -44,7 +44,7 @@ public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 		b().shout("B!!!");
 		
 		SovereignParty c = createParty("Cid");
-		c.bidirectionalConnectTo(b());
+		connect(c, b());
 
 		c.waitForShouts("A!!!, B!!!");
 	}

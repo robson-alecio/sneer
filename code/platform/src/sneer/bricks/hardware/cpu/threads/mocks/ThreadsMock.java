@@ -37,10 +37,6 @@ public class ThreadsMock implements Threads {
 		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
-	@Override
-	public void preventFromBeingGarbageCollected(Object reactor) {
-		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
-	}
 
 	@Override
 	public void sleepWithoutInterruptions(long milliseconds) {

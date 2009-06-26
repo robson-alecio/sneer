@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.runner.RunWith;
 
 import sneer.bricks.software.directoryconfig.DirectoryConfig;
+import sneer.foundation.environments.Environment;
 import sneer.foundation.testsupport.TestThatMightUseResources;
 
 @RunWith(BrickTestWithMockRunner.class)
@@ -39,5 +40,9 @@ public abstract class BrickTest extends TestThatMightUseResources {
 	
 	protected void checking(ExpectationBuilder expectations) {
 		_mockery.checking(expectations);
+	}
+
+	protected Environment newTestEnvironment(Object... bindings) {
+		return my(BrickTestRunner.class).newTestEnvironment(bindings);
 	}
 }

@@ -34,16 +34,16 @@ public abstract class Freedom2TestBase extends SovereignFunctionalTestBase {
 		SovereignParty c = createParty("Carla Costa");
 		SovereignParty d = createParty("Denis Dalton");
 
-		a().bidirectionalConnectTo(c);
-		b().bidirectionalConnectTo(c);
-		c.bidirectionalConnectTo(d);
+		connect(a(), c);
+		connect(b(), c);
+		connect(c  , d);
 
 		b().navigateAndWaitForName("Carla Costa", "Carla Costa");
 
 		a().giveNicknameTo(b(), "Bruno");
 		b().giveNicknameTo(a(), "Aninha");
-		a().giveNicknameTo(c, "Carla");
-		c.giveNicknameTo(d, "Dedé");
+		a().giveNicknameTo(c  , "Carla");
+		c.  giveNicknameTo(d  , "Dedé");
 
 		a().navigateAndWaitForName("Bruno", "Bruno Barros");
 		b().navigateAndWaitForName("Carla Costa/Ana Almeida", "Ana Almeida");
@@ -51,8 +51,8 @@ public abstract class Freedom2TestBase extends SovereignFunctionalTestBase {
 		a().navigateAndWaitForName("Bruno/Aninha/Bruno", "Bruno Barros");
 		a().navigateAndWaitForName("Bruno/Carla Costa/Dedé", "Denis Dalton");
 
-		b().giveNicknameTo(c, "Carlinha");
-		c.giveNicknameTo(a(), "Aninha");
+		b().giveNicknameTo(c  , "Carlinha");
+		c  .giveNicknameTo(a(), "Aninha");
 		b().navigateAndWaitForName("Carlinha/Aninha", "Ana Almeida");
 	}
 }

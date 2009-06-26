@@ -12,8 +12,6 @@ public interface Threads {
 	void waitWithoutInterruptions(Object object);
 	void joinWithoutInterruptions(Thread thread);
 
-	void preventFromBeingGarbageCollected(Object reactor);
-
 	void waitUntilCrash();
 	void crashAllThreads();
 	

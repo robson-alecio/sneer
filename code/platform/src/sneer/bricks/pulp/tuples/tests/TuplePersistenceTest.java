@@ -7,9 +7,9 @@ import java.util.List;
 import org.junit.Test;
 
 import sneer.bricks.pulp.tuples.TupleSpace;
+import sneer.bricks.software.directoryconfig.DirectoryConfig;
 import sneer.foundation.brickness.Tuple;
 import sneer.foundation.brickness.testsupport.BrickTest;
-import sneer.foundation.brickness.testsupport.BrickTestRunner;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
 
@@ -46,7 +46,7 @@ public class TuplePersistenceTest extends BrickTest {
 	}
 	
 	private void runInNewEnvironment(Runnable runnable) {
-		final Environment newEnvironment = my(BrickTestRunner.class).newTestEnvironment();
+		Environment newEnvironment = newTestEnvironment(my(DirectoryConfig.class));
 		Environments.runWith(newEnvironment, runnable);
 	}
 	

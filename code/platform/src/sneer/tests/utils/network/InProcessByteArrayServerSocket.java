@@ -1,10 +1,7 @@
 package sneer.tests.utils.network;
 
-import static sneer.foundation.environments.Environments.my;
-
 import java.io.IOException;
 
-import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.network.ByteArrayServerSocket;
 import sneer.bricks.pulp.network.ByteArraySocket;
 
@@ -19,13 +16,14 @@ class InProcessByteArrayServerSocket implements ByteArrayServerSocket {
 		_clientSide = result.counterpart();
 		
 		notifyAll(); //Notifies all client threads.
-		my(Threads.class).waitWithoutInterruptions(this);
+		waitWithoutInterruptions();
 
 		return result;
 	}
 
 	synchronized ByteArraySocket openClientSocket() {
-		while (_clientSide == null) my(Threads.class).waitWithoutInterruptions(this);
+		while (_clientSide == null)
+			waitWithoutInterruptions();
 
 		ByteArraySocket result = _clientSide;
         _clientSide = null;
@@ -37,4 +35,13 @@ class InProcessByteArrayServerSocket implements ByteArrayServerSocket {
 	public void crash() {
 		throw new sneer.foundation.lang.exceptions.NotImplementedYet();
 	}
+	
+	private void waitWithoutInterruptions() {
+		try {
+			wait();
+		} catch (InterruptedException e) {
+			throw new IllegalStateException(e);
+		}		
+	}
+
 }

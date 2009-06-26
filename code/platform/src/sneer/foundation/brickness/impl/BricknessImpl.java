@@ -27,10 +27,11 @@ public class BricknessImpl implements Environment {
 	private final Bindings _bindings;
 	private CachingEnvironment _cache;
 	private final BrickImplLoader _brickImplLoader;
+	private ClassLoader _classLoader;
 
 	
 	@Override
-	public <T> T provide(Class<T> intrface) {
+	public synchronized <T> T provide(Class<T> intrface) {
 		if (my(Environment.class) == null) throw new IllegalStateException("provide() cannot be called outside an environment."); //Delete this line after July 2009 if the exception is never thrown.
 		
 		return _cache.provide(intrface);
@@ -53,6 +54,8 @@ public class BricknessImpl implements Environment {
 	}
 
 	private <T> T tryToLoadBrick(Class<T> brick) throws ClassNotFoundException {
+		checkClassLoader(brick);
+		
 		Class<?> brickImpl = _brickImplLoader.loadImplClassFor(brick);
 		return (T) instantiate(brickImpl);
 	}
@@ -70,6 +73,15 @@ public class BricknessImpl implements Environment {
 		constructor.setAccessible(true);
 		return constructor.newInstance();
 	}
+
+	private void checkClassLoader(Class<?> brick) {
+		if (_classLoader == null)
+			_classLoader = brick.getClassLoader();
+		
+		if (brick.getClassLoader() != _classLoader)
+			throw new IllegalStateException("" + brick + " was loaded with " + brick.getClassLoader() + " instead of " + _classLoader + " like previous bricks.");
+	}
+
 
 }
 

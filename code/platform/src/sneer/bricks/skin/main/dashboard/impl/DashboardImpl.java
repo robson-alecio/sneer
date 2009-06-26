@@ -20,8 +20,6 @@ import javax.swing.JScrollBar;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
-import sneer.bricks.hardware.cpu.threads.Stepper;
-import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.hardware.gui.timebox.TimeboxedEventQueue;
 import sneer.bricks.pulp.own.name.OwnNameKeeper;
@@ -90,17 +88,9 @@ class DashboardImpl implements Dashboard {
 		}
 	};
 
-	private final Stepper _refToAvoidGc;
-
 	DashboardImpl() {
-		_refToAvoidGc = new Stepper() { @Override public boolean step() {
-			initGuiTimebox();
-			initGui();
-			return false;
-		}};
-
-		my(Threads.class).registerStepper(_refToAvoidGc);
-		waitUntilTheGuiThreadStarts();
+		initGuiTimebox();
+		initGui();
 	}
 		
 	private <T>  T synthValue(String key){
@@ -112,15 +102,13 @@ class DashboardImpl implements Dashboard {
 	}
 	
 	private void initGui() {
-		WindowSupport windowSupport = new WindowSupport();
-		windowSupport.open();
-		new TrayIconSupport(windowSupport);
+		my(GuiThread.class).strictInvokeAndWait(new Runnable() { @Override public void run() {
+			WindowSupport windowSupport = new WindowSupport();
+			windowSupport.open();
+			new TrayIconSupport(windowSupport);
+		}});
 	}
 	
-	private void waitUntilTheGuiThreadStarts() {
-		my(GuiThread.class).strictInvokeAndWait(new Runnable(){@Override public void run() {}});
-	}
-
    class WindowSupport{
 		private Widget<JFrame> _rwindow;
 		private JFrame _frame;
@@ -143,16 +131,13 @@ class DashboardImpl implements Dashboard {
 		}
 
 		private void initWindow() {
-			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
-				_rwindow = my(ReactiveWidgetFactory.class).newFrame(reactiveTitle());
-			}});
+			_rwindow = my(ReactiveWidgetFactory.class).newFrame(reactiveTitle());
 			_frame = _rwindow.getMainWidget();
 			_frame.setIconImage(IconUtil.getLogo());
 			
-			_frame.addWindowListener(new WindowAdapter(){
-				@Override public void windowDeactivated(WindowEvent e) {
-					_dashboardPanel.hideAllToolbars();
-				}});
+			_frame.addWindowListener(new WindowAdapter() { @Override public void windowDeactivated(WindowEvent e) {
+				_dashboardPanel.hideAllToolbars();
+			}});
 		}
 
 		private void initRootPanel() {

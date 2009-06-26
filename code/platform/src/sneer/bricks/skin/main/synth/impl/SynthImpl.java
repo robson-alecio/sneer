@@ -20,6 +20,7 @@ class SynthImpl implements Synth {
 	private final MetalLookAndFeel _default = new MetalLookAndFeel();
 	
 	SynthImpl(){
+		if (1 == 1) throw new RuntimeException("Remove this line to see Sneer freeze here.");
 		my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
 			try {
 				UIManager.setLookAndFeel(_synth);

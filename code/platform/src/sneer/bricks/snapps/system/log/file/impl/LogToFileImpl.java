@@ -20,7 +20,7 @@ class LogToFileImpl implements LogToFile {
 
 	@SuppressWarnings("unused")	private final Object _referenceToAvoidGc;
 
-	private LogToFileImpl(){
+	private LogToFileImpl() {
 		_referenceToAvoidGc = my(Signals.class).receive(my(LogNotifier.class).loggedMessages(), new Consumer<String>(){ @Override public void consume(String msg) {
 			log(msg);
 		}});
@@ -33,9 +33,11 @@ class LogToFileImpl implements LogToFile {
 			fileWriter.write(msg);
 			fileWriter.flush();
 		} catch (IOException e) {
+			//Implement: "Put a BL here instead of this.");
 			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e);
 		} finally{
 			try { fileWriter.close(); } catch (Exception ignore) {}
 		}
 	}
+
 }

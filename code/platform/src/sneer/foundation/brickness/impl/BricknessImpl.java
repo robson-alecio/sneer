@@ -31,7 +31,7 @@ public class BricknessImpl implements Environment {
 
 	
 	@Override
-	public synchronized <T> T provide(Class<T> intrface) {
+	public <T> T provide(Class<T> intrface) {
 		if (my(Environment.class) == null) throw new IllegalStateException("provide() cannot be called outside an environment."); //Delete this line after July 2009 if the exception is never thrown.
 		
 		return _cache.provide(intrface);

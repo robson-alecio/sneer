@@ -14,15 +14,15 @@ import sneer.foundation.environments.Environments;
 class GuiThreadImpl implements GuiThread {
 	
 	@Override
-	public void invokeAndWait(final Runnable runnable) { //Fix This method is called sometimes from swing's thread and other times from aplication's thread. Split the caller method (if it is possible), and delete this method.
+	public void invokeAndWaitForWussies(final Runnable runnable) { //Fix This method is called sometimes from swing's thread and other times from aplication's thread. Split the caller method (if it is possible), and delete this method.
 		if(SwingUtilities.isEventDispatchThread())
 			runnable.run();
 		else
-			strictInvokeAndWait(runnable);
+			invokeAndWait(runnable);
 	}
 
 	@Override
-	public void strictInvokeAndWait(final Environment environment, final Runnable runnable) { //Fix Calling this from brick code is no longer necessary after the container is calling gui brick code only in the Swing thread.
+	public void invokeAndWait(final Environment environment, final Runnable runnable) { //Fix Calling this from brick code is no longer necessary after the container is calling gui brick code only in the Swing thread.
 		assertNotInGuiThread();
 		try {
 			SwingUtilities.invokeAndWait(envolve(environment, runnable));
@@ -34,12 +34,12 @@ class GuiThreadImpl implements GuiThread {
 	}
 	
 	@Override
-	public void strictInvokeAndWait(final Runnable runnable) { //Fix Calling this from brick code is no longer necessary after the container is calling gui brick code only in the Swing thread.
-		strictInvokeAndWait(my(Environment.class), runnable);
+	public void invokeAndWait(final Runnable runnable) { //Fix Calling this from brick code is no longer necessary after the container is calling gui brick code only in the Swing thread.
+		invokeAndWait(my(Environment.class), runnable);
 	}
 
 	@Override
-	public void strictInvokeLater(Runnable runnable) { //Fix Calling this from brick code is no longer necessary after the container is calling gui brick code only in the Swing thread.
+	public void invokeLater(Runnable runnable) { //Fix Calling this from brick code is no longer necessary after the container is calling gui brick code only in the Swing thread.
 		assertNotInGuiThread();
 		SwingUtilities.invokeLater(envolve(runnable));
 	}
@@ -54,7 +54,7 @@ class GuiThreadImpl implements GuiThread {
 	}
 
 	@Override
-	public void invokeLater(Runnable runnable) {
+	public void invokeLaterForWussies(Runnable runnable) {
 		SwingUtilities.invokeLater(envolve(runnable));
 	}
 

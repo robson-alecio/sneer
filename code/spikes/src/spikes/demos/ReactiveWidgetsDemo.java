@@ -23,7 +23,7 @@ public class ReactiveWidgetsDemo {
 
 		my(TimeboxedEventQueue.class).startQueueing(500000);
 		
-		my(GuiThread.class).strictInvokeAndWait(new Runnable(){ @Override public void run() {
+		my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
 
 			final ReactiveWidgetFactory rfactory = my(ReactiveWidgetFactory.class);
 			final Register<String> register = my(Signals.class).newRegister("Jose das Coves");

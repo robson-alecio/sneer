@@ -361,7 +361,7 @@ class DashboardPanel extends JPanel {
 			
 			final InstrumentPanelImpl instrumentPanel = new InstrumentPanelImpl(instrument);
 			
-			my(GuiThread.class).strictInvokeAndWait(new Runnable(){	
+			my(GuiThread.class).invokeAndWait(new Runnable(){	
 				@Override 
 				public void run() {
 					instrument.init(instrumentPanel);

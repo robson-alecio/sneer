@@ -159,7 +159,7 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		}
 
 		private void placeScrollAtTheBegining() {
-			my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
+			my(GuiThread.class).invokeLaterForWussies(new Runnable(){ @Override public void run() {
 				scrollModel().setValue(scrollModel().getMinimum()-scrollModel().getExtent());
 			}});
 		}

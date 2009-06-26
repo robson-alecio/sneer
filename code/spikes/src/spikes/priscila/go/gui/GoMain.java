@@ -25,7 +25,7 @@ public class GoMain {
 	}
 
 	public static void main(String[] args){
-		my(GuiThread.class).invokeAndWait(new Runnable(){@Override public void run() {
+		my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){@Override public void run() {
 			new GoMain();
 		}});
 	}

@@ -222,7 +222,7 @@ public class UserImpl implements User {
 
 	@Override
 	public void saveAs(final String title, final String buttonTitle, final String[] suffixes, final String description, final Consumer<File> callback) {
-		my(GuiThread.class).strictInvokeLater(new Runnable(){ public void run(){
+		my(GuiThread.class).invokeLater(new Runnable(){ public void run(){
 			final JFileChooser fc = new JFileChooser(); 
 			fc.setDialogTitle(title);
 			fc.setApproveButtonText(buttonTitle);
@@ -247,7 +247,7 @@ public class UserImpl implements User {
 	
 	@Override
 	public void chooseDirectory(final String title, final String buttonTitle, final Consumer<File> callback) {
-		my(GuiThread.class).strictInvokeLater(new Runnable(){ public void run(){
+		my(GuiThread.class).invokeLater(new Runnable(){ public void run(){
 			final JFileChooser fc = new JFileChooser();
 			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			fc.setApproveButtonText(buttonTitle);

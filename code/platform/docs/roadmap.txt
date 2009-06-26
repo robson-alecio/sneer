@@ -1,9 +1,21 @@
 ﻿TASKS
 =========
 
+	- [Klaus] Brickness.provide() synchronization - Consider
+
 	- [Klaus and Igor] Connection Identification
 
 	- [Klaus] Revise entire package structure.  
+
+	- [Sandro] Gui Thread - Revise:
+		- invokeAndWaitForWussies -> invokeAndWait
+		- invokeLaterForWussies -> invokeLater
+		- invokeAndWait -> invokeLater
+		- invokeAndWaitForWussies -> invokeLaterForWussies
+
+	- [Sandro] LogToFileImpl
+		- Create file if it does not exist (This happens for Dummy, for example)
+		- BL if IOException is thrown when writing to the file.
 
 	- [Sandro] <New Contact>
 		bug fix

@@ -34,7 +34,7 @@ class RLabelImpl extends RPanel<JLabel> implements TextWidget<JLabel>{
 		_source = source;
 
 		_referenceToAvoidGc = my(Signals.class).receive(source, new Consumer<Object>() {@Override public void consume(final Object value) {
-			my(GuiThread.class).invokeAndWait(new Runnable() {@Override public void run() {
+			my(GuiThread.class).invokeAndWaitForWussies(new Runnable() {@Override public void run() {
 				textComponent().setText(valueToString(value));
 			}});
 		}});

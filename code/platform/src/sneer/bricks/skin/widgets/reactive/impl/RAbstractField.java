@@ -98,7 +98,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends RPanel<WIDG
 		}
 
 		private void commitIfNecessary() {
-			my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
+			my(GuiThread.class).invokeLaterForWussies(new Runnable(){ @Override public void run() {
 				_textComponent.invalidate();
 				_textComponent.getParent().validate();
 				if ( _notificationPolicy == NotificationPolicy.OnTyping ) commitTextChanges();
@@ -121,7 +121,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends RPanel<WIDG
 		} catch (Exception ex) {
 			_textComponent.addKeyListener(new KeyAdapter() { @Override public void keyTyped(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
-					my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
+					my(GuiThread.class).invokeLaterForWussies(new Runnable(){ @Override public void run() {
 						commitTextChanges();		
 					}});
 			}});
@@ -216,7 +216,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends RPanel<WIDG
 	
 	private void startReceiving() {
 		_referenceToAvoidGc = my(Signals.class).receive(_source, new Consumer<Object>() {@Override public void consume(final Object text) {
-			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
+			my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {
 				if (!_notified) return;
 				setText(valueToString(text));
 			}});

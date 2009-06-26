@@ -61,16 +61,16 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 		Contact contact = addContact(party.ownName());
 
 		SneerParty sneerParty = (SneerParty)party;
-		storePublicKey(contact, new PublicKey(sneerParty.publicKey()));
+		//storePublicKey(contact, new PublicKey(sneerParty.publicKey()));
 		_internetAddressKeeper.add(contact, MOCK_ADDRESS, sneerParty.sneerPort());
 		
 		sneerParty.giveNicknameTo(this, this.ownName());
 		waitUntilOnline(contact);
 	}
 
-	private void storePublicKey(Contact contact, PublicKey publicKey) {
-		_keyManager.addKey(contact, publicKey);
-	}
+//	private void storePublicKey(Contact contact, PublicKey publicKey) {
+//		_keyManager.addKey(contact, publicKey);
+//	}
 
 	private Contact addContact(String nickname) {
 		try {

@@ -69,7 +69,7 @@ public class SpeakerTest extends BrickTest {
 
 	
 	class SoundExpectations extends Expectations {
-		private final Sequence _mainSequence = sequence("main");
+		private final Sequence _mainSequence = newSequence("main");
 		
 		SoundExpectations() throws Exception {
 			one(_audio).tryToOpenPlaybackLine(); will(returnValue(_line)); inSequence(_mainSequence);
@@ -80,9 +80,8 @@ public class SpeakerTest extends BrickTest {
 	}
 
 
-	@SuppressWarnings("deprecation")
 	private PublicKey contactKey() {
-		return _keyManager.generateMickeyMouseKey("contact");
+		return new PublicKey("anything".getBytes());
 	}
 	
 	private PcmSoundPacket myPacket(byte[] pcm) {

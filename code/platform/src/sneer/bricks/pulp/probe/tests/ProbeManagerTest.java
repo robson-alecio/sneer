@@ -12,17 +12,15 @@ import sneer.bricks.network.computers.sockets.connections.ByteConnection;
 import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
 import sneer.bricks.network.computers.sockets.connections.ByteConnection.PacketScheduler;
 import sneer.bricks.network.social.Contact;
-import sneer.bricks.network.social.ContactManager;
 import sneer.bricks.pulp.bandwidth.BandwidthCounter;
 import sneer.bricks.pulp.distribution.filtering.TupleFilterManager;
-import sneer.bricks.pulp.keymanager.KeyManager;
 import sneer.bricks.pulp.probe.ProbeManager;
 import sneer.bricks.pulp.reactive.SignalUtils;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.serialization.Serializer;
 import sneer.bricks.pulp.tuples.TupleSpace;
-import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.Bind;
+import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.lang.Consumer;
 
 public class ProbeManagerTest extends BrickTest {
@@ -34,16 +32,15 @@ public class ProbeManagerTest extends BrickTest {
 	@SuppressWarnings("unused")
 	private final ProbeManager _subject = my(ProbeManager.class);
 	private final TupleFilterManager _filter = my(TupleFilterManager.class);
-	private final ContactManager _contactManager = my(ContactManager.class);
+	//private final ContactManager _contactManager = my(ContactManager.class);
 	private final TupleSpace _tuples = my(TupleSpace.class);
-	private final KeyManager _keys = my(KeyManager.class);
+	//private final KeyManager _keys = my(KeyManager.class);
 	
 	private final ByteConnection _connection = mock(ByteConnection.class);
 	private PacketScheduler _scheduler;
 	@SuppressWarnings("unused")
 	private Consumer<byte[]> _packetReceiver;
 
-	@SuppressWarnings("deprecation") //mickeyMouseKey()
 	@Test (timeout = 1000)
 	public void testTupleBlocking() {
 		checking(new Expectations(){{
@@ -62,8 +59,8 @@ public class ProbeManagerTest extends BrickTest {
 
 		}});
 
-		Contact neide = _contactManager.produceContact("Neide");
-		_keys.addKey(neide, _keys.generateMickeyMouseKey("foo"));
+		//Contact neide = _contactManager.produceContact("Neide");
+		//_keys.addKey(neide, _keys.generateMickeyMouseKey("foo"));
 
 		_tuples.acquire(new TupleTypeA(1));
 		assertPacketToSend(1);
@@ -86,7 +83,6 @@ public class ProbeManagerTest extends BrickTest {
 		assertEquals(id, packet[0]);
 	}
 
-	@SuppressWarnings("deprecation") //mickeyMouseKey()
 	@Test (timeout = 1000)
 	@Ignore
 	public void testBandwidthReporting() {
@@ -107,8 +103,8 @@ public class ProbeManagerTest extends BrickTest {
 
 		}});
 
-		Contact neide = _contactManager.produceContact("Neide");
-		_keys.addKey(neide, _keys.generateMickeyMouseKey("foo"));
+		//Contact neide = _contactManager.produceContact("Neide");
+		//_keys.addKey(neide, _keys.generateMickeyMouseKey("foo"));
 
 		_tuples.acquire(new TupleTypeA(1));
 		my(SignalUtils.class).waitForValue(1, _bandwidthCounter.uploadSpeed());

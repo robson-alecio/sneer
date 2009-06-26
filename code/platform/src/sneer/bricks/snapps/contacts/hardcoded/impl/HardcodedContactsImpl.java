@@ -4,9 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.network.social.ContactManager;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddressKeeper;
-import sneer.bricks.pulp.keymanager.KeyManager;
 import sneer.bricks.snapps.contacts.hardcoded.HardcodedContacts;
-import sneer.foundation.brickness.PublicKey;
 
 public class HardcodedContactsImpl implements HardcodedContacts {
 
@@ -49,7 +47,6 @@ public class HardcodedContactsImpl implements HardcodedContacts {
 			new ContactInfo("Nell", "anelisedaux.dyndns.org", 5924),
 			new ContactInfo("Priscila Vriesman", "priscilavriesman.dyndns.org", 7770),
 			new ContactInfo("Ramon Tramontini", "ramontramontini.dyndns.org", 7770),
-			new ContactInfo("Sneer Team", "sovereigncomputing.net", 7711),
 			new ContactInfo("Vitor Pamplona", "vfpamp.dyndns.org", 5923),
 		};
 	}
@@ -67,25 +64,8 @@ public class HardcodedContactsImpl implements HardcodedContacts {
 	}
 
 	private void addAddress(String nick, String host, int port) {
-		Contact contact = produceContact(nick);
+		Contact contact = _contactManager.produceContact(nick);
 		my(InternetAddressKeeper.class).add(contact, host, port);
 	}
 
-	@SuppressWarnings("deprecation")
-	private PublicKey mickeyMouseKey(String nick) {
-		return keyManager().generateMickeyMouseKey(nick);
-	}
-
-	private Contact produceContact(String nick) {
-		Contact result = _contactManager.contactGiven(nick);
-		if (result != null) return result;
-		
-		result = _contactManager.produceContact(nick);
-		keyManager().addKey(result, mickeyMouseKey(nick));
-		return result;
-	}
-
-	private KeyManager keyManager() {
-		return my(KeyManager.class);
-	}
 }

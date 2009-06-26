@@ -9,20 +9,11 @@ import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
 import sneer.bricks.network.computers.sockets.protocol.ProtocolTokens;
 import sneer.bricks.network.social.Contact;
-import sneer.bricks.network.social.ContactManager;
 import sneer.bricks.pulp.keymanager.KeyManager;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.foundation.brickness.PublicKey;
-import sneer.foundation.lang.Producer;
-import sneer.foundation.lang.exceptions.Refusal;
 
 class IndividualSocketReception {
-
-	private final KeyManager _keyManager = my(KeyManager.class);
-	
-	private final ContactManager _contactManager = my(ContactManager.class);
-	
-	private final ConnectionManager _connectionManager = my(ConnectionManager.class);
 	
 	private final ByteArraySocket _socket;
 
@@ -42,7 +33,7 @@ class IndividualSocketReception {
 
 		PublicKey peersPublicKey = peersPublicKey();	
 
-		if (peersPublicKey.equals(_keyManager.ownPublicKey()))
+		if (peersPublicKey.equals(my(KeyManager.class).ownPublicKey()))
 			return false;
 			
 		//Implement: Challenge pk.
@@ -50,42 +41,43 @@ class IndividualSocketReception {
 		_socket.write(ProtocolTokens.OK);
 
 		Contact contact = produceContact(peersPublicKey);
-		_connectionManager.manageIncomingSocket(contact, _socket);
+		my(ConnectionManager.class).manageIncomingSocket(contact, _socket);
 		return true;
 	}
 
 	private PublicKey peersPublicKey() throws IOException {
-		byte[] publicKeyBytes = _socket.read();
-		PublicKey peersPublicKey = _keyManager.unmarshall(publicKeyBytes);
-		return peersPublicKey;
+		byte[] bytes = _socket.read();
+		return my(KeyManager.class).unmarshall(bytes);
 	}
 
 	private Contact produceContact(PublicKey peersPublicKey) {
-		return _keyManager.contactGiven(peersPublicKey, new Producer<Contact>(){@Override public Contact produce() {
-			return createUnconfirmedContact();
-		}});
+//		return my(KeyManager.class).contactGiven(peersPublicKey, new Producer<Contact>(){@Override public Contact produce() {
+//			return createUnconfirmedContact();
+//		}});
+		
+		return my(KeyManager.class).contactGiven(peersPublicKey);
 	}
 
-	private Contact createUnconfirmedContact() {
-		String baseNick = "Unconfirmed";   //"Unconfirmed (2)", "Unconfirmed (3)", etc.
-		
-		Contact result = tryToCreate(baseNick);
-		if (result != null) return result;
-		
-		int i = 2;
-		while (tryToCreate(baseNick + " (" + i + ")") == null)
-			i++;
-		
-		return result;
-	}
-
-	private Contact tryToCreate(String nickname) {
-		try {
-			return _contactManager.addContact(nickname);
-		} catch (Refusal e) {
-			return null;
-		}
-	}
+//	private Contact createUnconfirmedContact() {
+//		String baseNick = "Unconfirmed";   //"Unconfirmed (2)", "Unconfirmed (3)", etc.
+//		
+//		Contact result = tryToCreate(baseNick);
+//		if (result != null) return result;
+//		
+//		int i = 2;
+//		while (tryToCreate(baseNick + " (" + i + ")") == null)
+//			i++;
+//		
+//		return result;
+//	}
+//
+//	private Contact tryToCreate(String nickname) {
+//		try {
+//			return my(ContactManager.class).addContact(nickname);
+//		} catch (Refusal e) {
+//			return null;
+//		}
+//	}
 
 
 	private void shakeHands() throws IOException {

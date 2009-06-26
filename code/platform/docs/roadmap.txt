@@ -1,9 +1,17 @@
 ﻿TASKS
 =========
 
+	- [Klaus] Brickness.provide() synchronization - Consider
+
 	- [Klaus and Igor] Connection Identification
 
 	- [Klaus] Revise entire package structure.  
+
+	- [Sandro] Gui Thread - Revise:
+		- invokeAndWaitForWussies -> invokeAndWait
+		- invokeLaterForWussies -> invokeLater
+		- invokeAndWait -> invokeLater
+		- invokeAndWaitForWussies -> invokeLaterForWussies
 
 	- [Sandro] <New Contact>
 		bug fix

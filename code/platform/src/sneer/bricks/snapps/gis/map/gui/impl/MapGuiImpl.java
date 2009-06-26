@@ -88,7 +88,7 @@ class MapGuiImpl implements MapGui{
 		
 		_mapHolder.setIcon(new ImageIcon(image));
 
-		my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
+		my(GuiThread.class).invokeLaterForWussies(new Runnable(){ @Override public void run() {
 			centerScrollBar(_scroll.getVerticalScrollBar(), _scroll.getSize().height/2);
 			centerScrollBar(_scroll.getHorizontalScrollBar(), _scroll.getSize().width/2);
 			_address.setEnabled(true);

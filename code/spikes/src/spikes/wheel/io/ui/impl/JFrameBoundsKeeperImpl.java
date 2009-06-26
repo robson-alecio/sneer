@@ -28,7 +28,7 @@ public class JFrameBoundsKeeperImpl implements JFrameBoundsKeeper {
 			return;
 		}
 		
-		my(GuiThread.class).strictInvokeAndWait(keepBoundsRunnable);
+		my(GuiThread.class).invokeAndWait(keepBoundsRunnable);
 	}
 
 	private Runnable keepBoundsRunnable(final JFrame frame, final String id) {

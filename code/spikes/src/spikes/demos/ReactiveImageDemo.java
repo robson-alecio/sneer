@@ -28,7 +28,7 @@ public class ReactiveImageDemo {
 	private ReactiveImageDemo(){
 		my(TimeboxedEventQueue.class).startQueueing(5000);
 		
-		my(GuiThread.class).strictInvokeAndWait(new Runnable(){@Override public void run() {
+		my(GuiThread.class).invokeAndWait(new Runnable(){@Override public void run() {
 			ReactiveWidgetFactory rfactory = Environments.my(ReactiveWidgetFactory.class);
 			
 			Signal<Boolean> isOnline = new RandomBoolean().output();

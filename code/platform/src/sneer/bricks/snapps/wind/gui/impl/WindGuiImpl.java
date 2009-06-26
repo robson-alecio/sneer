@@ -57,7 +57,7 @@ class WindGuiImpl implements WindGui {
 
 	private final TextWidget<JTextPane> _myShout; {
 		final Object ref[] = new Object[1];
-		my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {//Fix Use GUI Nature
+		my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {//Fix Use GUI Nature
 			ref[0] = _rfactory.newTextPane(my(Signals.class).newRegister("").output(),  _wind.megaphone(), NotificationPolicy.OnEnterPressed);
 		}});
 		_myShout = (TextWidget<JTextPane>) ref[0];

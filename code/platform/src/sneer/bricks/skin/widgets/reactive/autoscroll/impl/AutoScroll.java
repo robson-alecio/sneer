@@ -50,14 +50,14 @@ class AutoScroll<T> {
 	
 	private boolean isAtEnd() {
 		final ByRef<Boolean> result = ByRef.newInstance();
-		my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
+		my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {
 			result.value =  scrollModel().getValue() + scrollModel().getExtent() == scrollModel().getMaximum();
 		}});
 		return result.value;
 	}		
 	
 	private void placeAtEnd() {
-		my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
+		my(GuiThread.class).invokeLaterForWussies(new Runnable(){ @Override public void run() {
 			scrollModel().setValue(scrollModel().getMaximum()-scrollModel().getExtent());
 		}});
 	}

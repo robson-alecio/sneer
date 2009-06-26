@@ -20,7 +20,7 @@ class SynthImpl implements Synth {
 	private final MetalLookAndFeel _default = new MetalLookAndFeel();
 	
 	SynthImpl(){
-		my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
+		my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {
 			try {
 				UIManager.setLookAndFeel(_synth);
 				load(SynthImpl.class);
@@ -43,7 +43,7 @@ class SynthImpl implements Synth {
 	
 	@Override
 	public void load(final Class<?> resourceBase){
-		my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
+		my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {
 			InputStream is = null;
 			try {
 				is = resourceBase.getResourceAsStream("synth.xml");
@@ -58,7 +58,7 @@ class SynthImpl implements Synth {
 
 	@Override
 	public void attach(final JComponent component) {
-		my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
+		my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {
 			try {
 				UIManager.setLookAndFeel(_synth);
 				SwingUtilities.updateComponentTreeUI(component);

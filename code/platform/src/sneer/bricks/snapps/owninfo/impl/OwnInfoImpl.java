@@ -135,7 +135,7 @@ class OwnInfoImpl extends JFrame implements OwnInfo {
 
 	private TextWidget<JTextField> newTextField(final Signal<?> signal, final PickyConsumer<String> setter) {
 		final ByRef<TextWidget<JTextField>> result = ByRef.newInstance();
-		my(GuiThread.class).strictInvokeAndWait(new Runnable() { @Override public void run() {
+		my(GuiThread.class).invokeAndWait(new Runnable() { @Override public void run() {
 			result.value = my(ReactiveWidgetFactory.class).newTextField(signal, setter, NotificationPolicy.OnEnterPressedOrLostFocus);
 		}});
 		return result.value;

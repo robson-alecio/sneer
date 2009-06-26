@@ -102,7 +102,7 @@ class DashboardImpl implements Dashboard {
 	}
 	
 	private void initGui() {
-		my(GuiThread.class).strictInvokeAndWait(new Runnable() { @Override public void run() {
+		my(GuiThread.class).invokeAndWait(new Runnable() { @Override public void run() {
 			WindowSupport windowSupport = new WindowSupport();
 			windowSupport.open();
 			new TrayIconSupport(windowSupport);
@@ -185,7 +185,7 @@ class DashboardImpl implements Dashboard {
 			_frame.setVisible(true);
 			_frame.requestFocusInWindow();
 
-			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
+			my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {
 				my(WindowBoundsSetter.class).setDefaultBaseComponet(_rootPanel);
 			}});
 		}

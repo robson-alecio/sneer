@@ -69,7 +69,7 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 
 	LogConsoleImpl(){
 		addMenuAction();
-		my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
+		my(GuiThread.class).invokeLaterForWussies(new Runnable(){ @Override public void run() {
 			initGui();
 		}});
 	}
@@ -198,7 +198,7 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 		private WidgetLogger(){
 			_referenceToAvoidGc = my(Signals.class).receive(my(LogNotifier.class).loggedMessages(), 
 				new Consumer<String>(){ @Override public void consume(final String msg) {
-					my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
+					my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {
 						_txtLog.append(msg);
 					}});
 				}});

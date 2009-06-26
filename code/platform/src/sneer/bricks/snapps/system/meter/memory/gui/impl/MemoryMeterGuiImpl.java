@@ -68,7 +68,7 @@ class MemoryMeterGuiImpl implements MemoryMeterGui {
 	
 	private TextWidget<JLabel> newLabel(final Signal<Integer> source, final String prefix, final String synthName) {
 		final Object ref[] = new Object[1];
-		my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {//Fix Use GUI Nature
+		my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {//Fix Use GUI Nature
 			ref[0] = _factory.newLabel(my(Signals.class).adapt(source, 	new Functor<Integer, String>(){@Override public String evaluate(Integer value) {
 				return prefix + value;
 			}}), synthName);

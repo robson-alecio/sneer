@@ -99,7 +99,7 @@ public class TreeModelExample extends JFrame {
 		return new Runnable() { @Override public void run() {
 			while (true) {
 				try {
-					my(GuiThread.class).strictInvokeAndWait(new Runnable(){@Override public void run() {
+					my(GuiThread.class).invokeAndWait(new Runnable(){@Override public void run() {
 						addNode();
 					}});
 				} catch (Exception e) {
@@ -113,7 +113,7 @@ public class TreeModelExample extends JFrame {
 		return new Runnable() { @Override public void run() {
 			while (true) {
 				try {
-					my(GuiThread.class).strictInvokeAndWait(new Runnable(){@Override public void run() {
+					my(GuiThread.class).invokeAndWait(new Runnable(){@Override public void run() {
 						removeNode();
 					}});
 				} catch (Exception e) {

@@ -45,7 +45,7 @@ class RImageImpl extends JPanel implements ImageWidget{
 		_referenceToAvoidGc = my(Signals.class).receive(signal, new Consumer<Image>() { @Override public void consume(final Image image) {
 			_image.setter().consume(image);
 
-			my(GuiThread.class).invokeAndWait(new Runnable() { @Override public void run() {
+			my(GuiThread.class).invokeAndWaitForWussies(new Runnable() { @Override public void run() {
 				revalidate();
 				repaint();
 			}});

@@ -17,8 +17,7 @@
 		- Create file if it does not exist (This happens for Dummy, for example)
 		- BL if IOException is thrown when writing to the file.
 
-	- [Sandro] <New Contact>
-		bug fix
+	- [Sandro] bug fix - <New Contact>
 		
 	- [Sandro] WindowBoundsSetter - change baseComponent to use absolute location
 

@@ -66,9 +66,10 @@
 		<mkdir dir="${build.dir}/dist/own"/>
 		<copy todir="${build.dir}/dist/own">
 			<fileset dir="../own-template">
-				<include name='**/*.*' />
+				<include name='**' />
 				<exclude name='.project.bak'/>
 				<exclude name='.project'/>
+				<exclude name='bin/**'/>
 			</fileset>
 		</copy>
 		<copy file="../own-template/.project.bak" 
@@ -76,11 +77,12 @@
 
 		<jar destfile="build/dist/own.jar">
 			<fileset dir="${build.dir}/dist">
-				<include name='own/**/*.*' />
+				<include name='own/**' />
 			</fileset>
 		</jar>
-		<delete dir="${build.dir}/dist/own"/>
 	
+		<delete dir="${build.dir}/dist/own"/>
+		
 		<jar destfile="build/dist/sneer-bootstrap.jar">
 			<fileset dir="${bin.dir}">
 				<include name='sneer/installer/*.*' />

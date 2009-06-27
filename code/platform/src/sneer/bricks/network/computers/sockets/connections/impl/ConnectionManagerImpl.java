@@ -24,7 +24,7 @@ class ConnectionManagerImpl implements ConnectionManager {
 
 	@Override
 	public boolean isConnectedTo(Contact contact) {
-		return _connectionsByContact.containsValue(contact);
+		return _connectionsByContact.get(contact) != null;
 	}
 
 	@Override

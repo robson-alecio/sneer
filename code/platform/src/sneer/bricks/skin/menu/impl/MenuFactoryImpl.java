@@ -1,17 +1,15 @@
 package sneer.bricks.skin.menu.impl;
 
-import javax.swing.JComponent;
-
 import sneer.bricks.skin.menu.Menu;
 import sneer.bricks.skin.menu.MenuFactory;
 
-class MenuFactoryImpl implements MenuFactory<JComponent> {
+class MenuFactoryImpl implements MenuFactory {
 
-	public Menu<JComponent> createMenuBar(){
+	public Menu createMenuBar(){
 		return new MenuBar();
 	}
 	
-	public Menu<JComponent> createMenuGroup(String name){
+	public Menu createMenuGroup(String name){
 		return new MenuGroup(name);
 	}
 	

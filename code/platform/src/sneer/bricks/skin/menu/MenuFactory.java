@@ -3,9 +3,9 @@ package sneer.bricks.skin.menu;
 import sneer.foundation.brickness.Brick;
 
 @Brick
-public interface MenuFactory<WIDGET> {
+public interface MenuFactory {
 
-	Menu<WIDGET> createMenuBar();
+	Menu createMenuBar();
 
-	Menu<WIDGET> createMenuGroup(String name);
+	Menu createMenuGroup(String name);
 }

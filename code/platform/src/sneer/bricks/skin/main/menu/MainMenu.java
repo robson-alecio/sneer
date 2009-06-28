@@ -10,7 +10,7 @@ import sneer.foundation.brickness.Brick;
 @Brick
 public interface MainMenu{
 
-	Menu<JComponent> getSneerMenu();
+	Menu getSneerMenu();
 
 	JComponent getWidget();
 

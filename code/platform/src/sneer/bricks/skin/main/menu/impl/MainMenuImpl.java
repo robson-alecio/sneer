@@ -8,16 +8,16 @@ import sneer.bricks.skin.main.menu.MainMenu;
 import sneer.bricks.skin.menu.Menu;
 import sneer.bricks.skin.menu.MenuFactory;
 
-class MainMenuImpl implements MainMenu{
+class MainMenuImpl implements MainMenu {
 
 	private static final long serialVersionUID = 1L;
 
-	private MenuFactory<JComponent> menuFactory = my(MenuFactory.class);
+	private MenuFactory menuFactory = my(MenuFactory.class);
 	
-	private static transient Menu<JComponent> sneerMenu;
+	private static transient Menu sneerMenu;
 	private static boolean initializaded = false;
 
-	private final Menu<JComponent> _delegate;
+	private final Menu _delegate;
 	
 	MainMenuImpl(){
 		_delegate = menuFactory.createMenuBar();
@@ -29,7 +29,7 @@ class MainMenuImpl implements MainMenu{
 		_delegate.addGroup(sneerMenu);
 	}
 
-	public Menu<JComponent> getSneerMenu() {
+	public Menu getSneerMenu() {
 		synchronized (this) {
 			if(!initializaded){
 				initialize();

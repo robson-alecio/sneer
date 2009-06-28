@@ -3,13 +3,27 @@ package sneer.bricks.skin.menu.impl;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 
 import sneer.bricks.hardware.gui.Action;
 import sneer.bricks.skin.menu.Menu;
 
-abstract class AbstractSwingMenu implements Menu<JComponent> {
+abstract class AbstractSwingMenu implements Menu {
+
+	@Override
+	public void addAction(final String caption, final Runnable delegate) {
+		addAction(new Action(){
+			@Override
+			public String caption() {
+				return caption;
+			}
+
+			@Override
+			public void run() {
+				delegate.run();
+			}
+		});
+	}
 
 	@Override
 	public void addAction(final Action action) {
@@ -26,7 +40,7 @@ abstract class AbstractSwingMenu implements Menu<JComponent> {
 	}
 
 	@Override
-	public void addGroup(Menu<JComponent> group) {
+	public void addGroup(Menu group) {
 		getWidget().add(group.getWidget());
 	}
 

@@ -5,12 +5,10 @@ import static sneer.foundation.environments.Environments.my;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import sneer.bricks.hardware.cpu.threads.Threads;
-import sneer.bricks.network.computers.sockets.connections.originator.SocketOriginator;
-import sneer.bricks.network.computers.sockets.connections.receiver.SocketReceiver;
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.network.social.ContactManager;
-import sneer.bricks.pulp.internetaddresskeeper.InternetAddressKeeper;
+import sneer.bricks.pulp.reactive.Signal;
+import sneer.bricks.pulp.reactive.SignalUtils;
 import sneer.foundation.brickness.testsupport.BrickTest;
 
 public class ConnectionManagerTest extends BrickTest {
@@ -18,26 +16,17 @@ public class ConnectionManagerTest extends BrickTest {
 	private final ConnectionManager _subject = my(ConnectionManager.class);
 
 	private final ContactManager _contactManager = my(ContactManager.class);
-	private final InternetAddressKeeper _addressKeeper = my(InternetAddressKeeper.class);
-
-	@SuppressWarnings("unused") private SocketOriginator _socketOriginator;
-	@SuppressWarnings("unused") private SocketReceiver _socketReceiver;
 
 	@Ignore
 	@Test (timeout = 2000)
 	public void turnOnline() {
-		_socketReceiver = my(SocketReceiver.class);
-		_socketOriginator = my(SocketOriginator.class);
-
 		final Contact neide = _contactManager.produceContact("Neide");
-		assertFalse(_subject.isConnectedTo(neide));
 
-		_addressKeeper.add(neide, "neide.selfip.net", 6789);
+		Signal<Boolean> isOnline = _subject.connectionFor(neide).isOnline();
+		assertFalse(isOnline.currentValue());
+		
+		//Implement: MOCK THE INCOMING OR OUTGOING CONNECTIONS TO NEIDE. 
 
-		while (!_subject.isConnectedTo(neide)) {
-			my(Threads.class).sleepWithoutInterruptions(10);
-		}
-
-		assertTrue(_subject.connectionFor(neide).isOnline().currentValue());	
+		my(SignalUtils.class).waitForValue(true, isOnline);
 	}
 }

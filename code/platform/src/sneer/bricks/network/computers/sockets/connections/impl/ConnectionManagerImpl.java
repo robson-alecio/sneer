@@ -23,11 +23,6 @@ class ConnectionManagerImpl implements ConnectionManager {
 	}
 
 	@Override
-	public boolean isConnectedTo(Contact contact) {
-		return _connectionsByContact.get(contact) != null;
-	}
-
-	@Override
 	public void manageIncomingSocket(Contact contact, ByteArraySocket socket) {
 		ByteConnectionImpl connection = connectionFor(contact);
 		connection.manageIncomingSocket(socket);

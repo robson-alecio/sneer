@@ -73,7 +73,6 @@ class ConnectionManagerMock implements ConnectionManager{
 	@Override public void manageIncomingSocket(Contact contact, ByteArraySocket socket) { throw new sneer.foundation.lang.exceptions.NotImplementedYet(); }
 	@Override public void manageOutgoingSocket(Contact contact, ByteArraySocket socket) { throw new sneer.foundation.lang.exceptions.NotImplementedYet(); }
 	@Override public void closeConnectionFor(Contact contact) {	throw new sneer.foundation.lang.exceptions.NotImplementedYet(); }
-	@Override public boolean isConnectedTo(Contact contact) { throw new sneer.foundation.lang.exceptions.NotImplementedYet(); }
 }
 
 class ContactMock implements Contact{

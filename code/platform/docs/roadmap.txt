@@ -3,9 +3,11 @@
 
 	- [Klaus] Revise entire package structure.  
 
-	- [Sandro] Remove the webstart message: "There is a newer version. Do you want to update?"
+	- [Sandro] Remove the webstart message: "There is a newer version. Do you want to update?" - Update without asking.
 
 	- [Sandro] Sneer Update - Make faster. Separate all libs in their own jar, so that webstart will only download the changed ones.
+
+	- [Sandro] Make Hudson run the functional tests too.
 
 	- [Sandro] LogConsoleWindow -> The Title does not appear in Linux. See screenshot in email.
 
@@ -23,8 +25,6 @@
 		
 	- [Sandro] WindowBoundsSetter - change baseComponent to use absolute location
 
-	- [Sandro] Make Hudson run the functional tests too.
-		
 	- [Sandro] Wind Autoscroll not working in some cases.
 
 	- [Bamboo] Video Tutorial with Jazz :)

@@ -18,8 +18,8 @@ import sneer.bricks.pulp.reactive.collections.ListSignal;
 import sneer.bricks.pulp.reactive.collections.listsorter.ListSorter;
 import sneer.bricks.pulp.reactive.signalchooser.SignalChooser;
 import sneer.bricks.snapps.contacts.gui.comparator.ContactComparator;
-import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.Bind;
+import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.lang.Consumer;
 import sneer.foundation.testsupport.AssertUtils;
 
@@ -73,6 +73,7 @@ class ConnectionManagerMock implements ConnectionManager{
 	@Override public void manageIncomingSocket(Contact contact, ByteArraySocket socket) { throw new sneer.foundation.lang.exceptions.NotImplementedYet(); }
 	@Override public void manageOutgoingSocket(Contact contact, ByteArraySocket socket) { throw new sneer.foundation.lang.exceptions.NotImplementedYet(); }
 	@Override public void closeConnectionFor(Contact contact) {	throw new sneer.foundation.lang.exceptions.NotImplementedYet(); }
+	@Override public boolean isConnectedTo(Contact contact) { throw new sneer.foundation.lang.exceptions.NotImplementedYet(); }
 }
 
 class ContactMock implements Contact{

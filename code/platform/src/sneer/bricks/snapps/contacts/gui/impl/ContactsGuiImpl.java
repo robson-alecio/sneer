@@ -124,7 +124,7 @@ class ContactsGuiImpl implements ContactsGui {
 	}
 	
 	private Contact newContact() {
-		return my(ContactManager.class).produceContact("New Contact");
+		return my(ContactManager.class).produceContact("<New Contact>");
 	}
 
 	private JList contactList() {

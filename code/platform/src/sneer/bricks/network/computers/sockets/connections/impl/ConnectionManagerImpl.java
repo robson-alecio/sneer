@@ -12,7 +12,7 @@ import sneer.foundation.lang.Producer;
 class ConnectionManagerImpl implements ConnectionManager {
 
 	private final OwnNameKeeper _nameKeeper = my(OwnNameKeeper.class);
-	
+
 	private final CacheMap<Contact, ByteConnectionImpl> _connectionsByContact = my(CacheMaps.class).newInstance();
 
 	@Override
@@ -20,6 +20,11 @@ class ConnectionManagerImpl implements ConnectionManager {
 		return _connectionsByContact.get(contact, new Producer<ByteConnectionImpl>() { @Override public ByteConnectionImpl produce() {
 			return new ByteConnectionImpl("" + _nameKeeper.name(), contact);
 		}});
+	}
+
+	@Override
+	public boolean isConnectedTo(Contact contact) {
+		return _connectionsByContact.get(contact) != null;
 	}
 
 	@Override

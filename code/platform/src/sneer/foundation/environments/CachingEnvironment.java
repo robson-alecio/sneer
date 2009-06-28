@@ -1,30 +1,24 @@
 package sneer.foundation.environments;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import sneer.foundation.lang.Functor;
 
 
 
 public class CachingEnvironment implements Environment {
 
+	private final ResolvingCache<Class<?>, Object> _cache = new ResolvingCache<Class<?>, Object>(new Functor<Class<?>, Object>(){ @Override public Object evaluate(Class<?> need) {
+		return _delegate.provide(need);
+	}});
+	
 	private final Environment _delegate;
-	private final Map<Class<?>, Object> _cache = new ConcurrentHashMap<Class<?>, Object>();
 
 	public CachingEnvironment(Environment delegate) {
 		_delegate = delegate;
 	}
 
 	@Override
-	public <T> T provide(Class<T> intrface) {
-		final Object cachedBinding = _cache.get(intrface);
-		if (null != cachedBinding)
-			return (T) cachedBinding;
-		
-		final T newBinding = _delegate.provide(intrface);
-		if (null != newBinding)
-			_cache.put(intrface, newBinding);
-		
-		return newBinding;
+	public <T> T provide(Class<T> need) {
+		return (T)_cache.produce(need);
 	}
 
 	public void clear() {

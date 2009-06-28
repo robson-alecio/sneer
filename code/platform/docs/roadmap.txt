@@ -1,17 +1,13 @@
 ﻿TASKS
 =========
 
-	- [Klaus] Brickness.provide() synchronization - Consider
-
-	- [Igor] Test Intermittence - Fix all. Coordinate with Kalecser. Talk to Klaus about making the TestRunner run failing tests several times before actually failing.
-
 	- [Klaus] Revise entire package structure.  
 
-	- [Sandro] LogConsoleWindow -> Give it a Title.
-
-	- [Sandro] Remove the silly webstart message: "There is a newer version. Do you want to update?" :P
+	- [Sandro] Remove the webstart message: "There is a newer version. Do you want to update?"
 
 	- [Sandro] Sneer Update - Make faster. Separate all libs in their own jar, so that webstart will only download the changed ones.
+
+	- [Sandro] LogConsoleWindow -> The Title does not appear in Linux. See screenshot in email.
 
 	- [Sandro] Gui Thread - Revise:
 		- invokeAndWaitForWussies -> invokeAndWait
@@ -32,6 +28,8 @@
 	- [Sandro] Wind Autoscroll not working in some cases.
 
 	- [Bamboo] Video Tutorial with Jazz :)
+
+	- [Igor] Test Intermittence - Fix all. Coordinate with Kalecser. Talk to Klaus about making the TestRunner run failing tests several times before actually failing.
 
 	- [Igor] ConnectionManager - tests
 

@@ -20,7 +20,6 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import sneer.bricks.hardware.cpu.utils.consumers.parsers.integer.IntegerParsers;
-import sneer.bricks.hardware.gui.Action;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.pulp.dyndns.ownaccount.DynDnsAccount;
 import sneer.bricks.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
@@ -169,10 +168,8 @@ class OwnInfoImpl extends JFrame implements OwnInfo {
 	}
 	
 	private void addOpenWindowAction() {
-		Action cmd = new Action(){
-			@Override public String caption() { return "Own Info..."; }
-			@Override	public void run() { open(); }
-		};
-		_mainMenu.getSneerMenu().addAction(cmd);
+		_mainMenu.addAction("Own Info...", new Runnable() {	@Override public void run() {
+			open();
+		}});
 	}
 }

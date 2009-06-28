@@ -27,7 +27,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import sneer.bricks.hardware.gui.Action;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.hardware.io.log.filter.LogFilter;
 import sneer.bricks.hardware.io.log.workers.notifier.LogNotifier;
@@ -75,11 +74,9 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	}
 
 	private void addMenuAction() {
-		Action cmd = new Action(){
-			@Override public String caption() {	return "Open Log Console"; }
-			@Override public void run() { open(); }
-		};
-		_mainMenu.getSneerMenu().addAction(cmd);
+		_mainMenu.addAction("Open Log Console", new Runnable() { @Override public void run() {
+			open();
+		}});
 	}
 
 	private void open() {

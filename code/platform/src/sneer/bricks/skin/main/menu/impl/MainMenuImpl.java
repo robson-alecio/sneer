@@ -4,42 +4,36 @@ import static sneer.foundation.environments.Environments.my;
 
 import javax.swing.JComponent;
 
+import sneer.bricks.hardware.gui.Action;
 import sneer.bricks.skin.main.menu.MainMenu;
 import sneer.bricks.skin.menu.Menu;
 import sneer.bricks.skin.menu.MenuFactory;
 
 class MainMenuImpl implements MainMenu {
 
-	private static final long serialVersionUID = 1L;
+	private final Menu _menuBar = my(MenuFactory.class).createMenuBar();
+	private Menu _delegate;
 
-	private MenuFactory menuFactory = my(MenuFactory.class);
 	
-	private static transient Menu sneerMenu;
-	private static boolean initializaded = false;
-
-	private final Menu _delegate;
-	
-	MainMenuImpl(){
-		_delegate = menuFactory.createMenuBar();
+	@Override public JComponent getMenuBarWidget() {
+		return _menuBar.getWidget();
 	}
 	
-	public void initialize() {
-		initializaded = true;
-		sneerMenu = menuFactory.createMenuGroup("Menu");
-		_delegate.addGroup(sneerMenu);
+	@Override public void addAction(Action action) { delegate().addAction(action); }
+	@Override public void addAction(String caption, Runnable action) { delegate().addAction(caption, action); }
+	@Override public void addGroup(Menu group) { delegate().addGroup(group); }
+	@Override public JComponent getWidget() { return delegate().getWidget(); }
+	
+
+	private synchronized Menu delegate() {
+		if (_delegate == null) initMenu();
+		return _delegate;
 	}
 
-	public Menu getSneerMenu() {
-		synchronized (this) {
-			if(!initializaded){
-				initialize();
-			}
-			return sneerMenu;
-		}
+	private void initMenu() {
+		_delegate = my(MenuFactory.class).createMenuGroup("Menu");
+		_menuBar.addGroup(_delegate);
 	}
 
-	@Override
-	public JComponent getWidget() {
-		return _delegate.getWidget();
-	}
+
 }

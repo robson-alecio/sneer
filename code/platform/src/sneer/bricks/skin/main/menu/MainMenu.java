@@ -8,10 +8,8 @@ import sneer.foundation.brickness.Brick;
 
 @Snapp
 @Brick
-public interface MainMenu{
+public interface MainMenu extends Menu {
 
-	Menu getSneerMenu();
-
-	JComponent getWidget();
+	JComponent getMenuBarWidget();
 
 }

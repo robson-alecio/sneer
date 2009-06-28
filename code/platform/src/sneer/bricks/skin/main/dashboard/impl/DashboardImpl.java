@@ -142,7 +142,7 @@ class DashboardImpl implements Dashboard {
 
 		private void initRootPanel() {
 			_rootPanel.setLayout(new BorderLayout());
-			_rootPanel.add(_mainMenu.getWidget(), BorderLayout.NORTH);
+			_rootPanel.add(_mainMenu.getMenuBarWidget(), BorderLayout.NORTH);
 			_rootPanel.add(_dashboardPanel, BorderLayout.CENTER);
 			_rootPanel.add(_scrollBar, BorderLayout.EAST);
 			

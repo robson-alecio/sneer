@@ -35,7 +35,7 @@ class BlinkingLightsImpl implements BlinkingLights {
 
 	@Override
 	public Light turnOn(LightType type, String caption, String helpMessage) {
-		return turnOn(type, caption, helpMessage);
+		return turnOn(type, caption, helpMessage, LightImpl.NEVER);
 	}
 	
 	@Override

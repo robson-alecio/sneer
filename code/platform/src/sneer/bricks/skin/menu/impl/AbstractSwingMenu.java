@@ -30,8 +30,4 @@ abstract class AbstractSwingMenu implements Menu<JComponent> {
 		getWidget().add(group.getWidget());
 	}
 
-	@Override
-	public void clearAll() {
-		getWidget().removeAll();
-	}
 }

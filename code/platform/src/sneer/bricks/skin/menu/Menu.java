@@ -10,8 +10,5 @@ public interface Menu<WIDGET> {
 
 	void addGroup(Menu<WIDGET> group);
 	
-	void addSeparator();
-	
-	void clearAll();
 
 }

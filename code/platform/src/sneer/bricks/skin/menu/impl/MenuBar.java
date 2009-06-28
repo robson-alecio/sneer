@@ -11,11 +11,6 @@ class MenuBar extends AbstractSwingMenu {
 	protected MenuBar() {}
 
 	@Override
-	public void addSeparator() {
-		//ignore
-	}
-
-	@Override
 	public JComponent getWidget() {
 		return bar;
 	}

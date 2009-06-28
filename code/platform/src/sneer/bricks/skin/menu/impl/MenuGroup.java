@@ -13,11 +13,6 @@ class MenuGroup extends AbstractSwingMenu {
 	}
 
 	@Override
-	public void addSeparator() {
-		menu.addSeparator();
-	}
-
-	@Override
 	public JComponent getWidget() {
 		return menu;
 	}

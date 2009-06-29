@@ -36,35 +36,35 @@ class ListSignalModel<T> extends AbstractListModel {
 
 		@Override
 		public void elementAdded(final int index, T value) {
-			my(GuiThread.class).invokeLaterForWussies(new Runnable(){ @Override public void run() {
+			my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {
 				fireIntervalAdded(ListSignalModel.this, index, index);
 			}});		
 		}
 
 		@Override
 		public void elementRemoved(final int index, T value) {
-			my(GuiThread.class).invokeLaterForWussies(new Runnable(){ @Override public void run() {
+			my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {
 				fireIntervalRemoved(ListSignalModel.this, index, index);
 			}});		
 		}
 
 		@Override
 		public void elementReplaced(final int index, T oldValue, T newValue) {
-			my(GuiThread.class).invokeLaterForWussies(new Runnable(){ @Override public void run() {
+			my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {
 				contentsChanged(index);
 			}});
 		}
 
 		@Override
 		public void elementSignalChanged(final T value) {
-			my(GuiThread.class).invokeLaterForWussies(new Runnable(){ @Override public void run() {
+			my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {
 				elementChanged(value);
 			}});			
 		}
 		
 		@Override
 		public void elementMoved(final int index, final int newIndex, T newElement) {
-			my(GuiThread.class).invokeLaterForWussies(new Runnable(){ @Override public void run() {
+			my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {
 				fireContentsChanged(ListSignalModel.this, index, newIndex);
 			}});
 		}

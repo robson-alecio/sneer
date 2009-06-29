@@ -36,7 +36,6 @@ import sneer.bricks.snapps.contacts.actions.ContactAction;
 import sneer.bricks.snapps.contacts.actions.ContactActionManager;
 import sneer.bricks.snapps.contacts.gui.ContactsGui;
 import sneer.bricks.snapps.contacts.gui.comparator.ContactComparator;
-import sneer.bricks.snapps.contacts.gui.info.ContactInfoWindow;
 import sneer.foundation.lang.ByRef;
 import sneer.foundation.lang.Functor;
 
@@ -119,7 +118,6 @@ class ContactsGuiImpl implements ContactsGui {
 		
 		add.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			contactList().setSelectedValue(newContact(), true);
-			my(ContactInfoWindow.class).open();
 		}});
 	}
 	

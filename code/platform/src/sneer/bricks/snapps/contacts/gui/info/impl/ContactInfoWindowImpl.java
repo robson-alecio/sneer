@@ -255,4 +255,9 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 	private Contact contact() {
 		return my(ContactsGui.class).selectedContact().currentValue();
 	}
+
+	@Override
+	public void close() {
+		setVisible(false);
+	}
 }

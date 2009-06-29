@@ -7,9 +7,6 @@
 
 	- [Klaus] Revise entire package structure.  
 
-	- [Sandro] <New Contact>
-		bug fix
-		
 	- [Sandro] Wind Autoscroll not working in some cases. Klaus, talk to Sandro.
 
 	- [Bamboo] Video Tutorial with Jazz :)

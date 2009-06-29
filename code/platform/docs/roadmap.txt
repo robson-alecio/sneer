@@ -7,12 +7,6 @@
 
 	- [Klaus] Revise entire package structure.  
 
-	- [Sandro] Gui Thread - Revise:
-		- invokeAndWaitForWussies -> invokeAndWait
-		- invokeLaterForWussies -> invokeLater
-		- invokeAndWait -> invokeLater
-		- invokeAndWaitForWussies -> invokeLaterForWussies
-
 	- [Sandro] LogToFileImpl
 		- Create file if it does not exist (This happens for Dummy, for example)
 		- BL if IOException is thrown when writing to the file.

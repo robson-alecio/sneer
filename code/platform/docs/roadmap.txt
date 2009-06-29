@@ -16,8 +16,6 @@
 		
 	- [Sandro] WindowBoundsSetter - change baseComponent to use absolute location
 
-	- [Sandro] Make Hudson run the functional tests too.
-		
 	- [Sandro] Wind Autoscroll not working in some cases.
 
 	- [Bamboo] Video Tutorial with Jazz :)

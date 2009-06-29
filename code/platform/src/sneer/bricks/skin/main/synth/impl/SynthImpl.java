@@ -45,6 +45,13 @@ class SynthImpl implements Synth {
 	}
 
 	@Override
+	public void loadForWussies(final Class<?> resourceBase){
+		my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {
+			load(resourceBase);
+		}});	
+	}
+	
+	@Override
 	public void load(final Class<?> resourceBase){
 		my(GuiThread.class).assertInGuiThread();
 		InputStream is = null;

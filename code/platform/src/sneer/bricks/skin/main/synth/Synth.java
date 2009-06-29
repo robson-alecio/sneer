@@ -8,6 +8,7 @@ import sneer.foundation.brickness.Brick;
 public interface Synth {
 
 	void load(Class<?> resourceBase) ;
+	void loadForWussies(Class<?> resourceBase) ;
 	void notInGuiThreadLoad(Class<?> resourceBase);
 	
 	void attach(JComponent component);

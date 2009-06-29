@@ -9,7 +9,7 @@ import static sneer.foundation.environments.Environments.my;
 public class SynthScrollsImpl implements SynthScrolls {
 
 	SynthScrollsImpl(){
-		my(Synth.class).notInGuiThreadLoad(this.getClass());
+		my(Synth.class).loadForWussies(this.getClass());
 	}
 	
 	@Override

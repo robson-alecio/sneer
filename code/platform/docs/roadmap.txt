@@ -16,6 +16,7 @@
 	- [Bamboo] Video Tutorial with Jazz :)
 
 	- [Igor] Test Intermittence - Fix all. Coordinate with Kalecser. Talk to Klaus about making the TestRunner run failing tests several times before actually failing.
+		- Start with Hudson failures, then Eclipse failures.
 
 	- [Igor] ConnectionManager - tests
 

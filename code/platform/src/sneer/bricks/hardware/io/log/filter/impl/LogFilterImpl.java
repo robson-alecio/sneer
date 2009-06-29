@@ -12,8 +12,7 @@ class LogFilterImpl implements LogFilter {
 
 	private final ListRegister<String> _phrases = my(CollectionSignals.class).newListRegister();
 	{
-		_phrases.add("[");
-		_phrases.add("NotImplementedYet");
+		_phrases.add("Exception");
 	}
 	
 	@Override

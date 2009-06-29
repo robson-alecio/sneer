@@ -40,13 +40,9 @@ class MemoryMeterGuiImpl implements MemoryMeterGui {
 	} 
 
 	private void initSynth() {
-		_synth.load(this);
-		
-		gc.setName("GCButton");
-		_totalMemory.setName("TotalMemoryLabel");
-		
-		_synth.attach(gc);
-		_synth.attach(_totalMemory);
+		_synth.notInGuiThreadLoad(this.getClass());
+		_synth.notInGuiThreadAttach(gc, "GCButton");
+		_synth.notInGuiThreadAttach(_totalMemory, "TotalMemoryLabel");
 	}
 	
 	@Override
@@ -68,7 +64,7 @@ class MemoryMeterGuiImpl implements MemoryMeterGui {
 	
 	private TextWidget<JLabel> newLabel(final Signal<Integer> source, final String prefix, final String synthName) {
 		final Object ref[] = new Object[1];
-		my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {//Fix Use GUI Nature
+		my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {//Fix Use GUI Nature
 			ref[0] = _factory.newLabel(my(Signals.class).adapt(source, 	new Functor<Integer, String>(){@Override public String evaluate(Integer value) {
 				return prefix + value;
 			}}), synthName);

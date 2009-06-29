@@ -16,11 +16,11 @@ import sneer.bricks.skin.windowboundssetter.WindowBoundsSetter;
 class WindowBoundsSetterImpl implements WindowBoundsSetter{
 
 	private List<Runnable> _toRunWhenBaseComponentIsReady = new ArrayList<Runnable>();
-	private Component _component;
+	private Component _defaultBaseComponent;
 
 	@Override
-	public void setDefaultBaseComponet(Component container) {
-		_component = container;
+	public void setDefaultBaseComponet(Component defaultBaseComponent) {
+		_defaultBaseComponent = defaultBaseComponent;
 		notifyRunnables();
 	}
 
@@ -30,17 +30,17 @@ class WindowBoundsSetterImpl implements WindowBoundsSetter{
 		_toRunWhenBaseComponentIsReady.clear();
 	}
 
-	@Override public void setBestBounds(Window window) { 	setBestBounds(window, _component,  0); }
-	@Override public void setBestBounds(Window window, Component component) { setBestBounds(window, (component!=null)?component:_component, 0); }
-	@Override public void setBestBounds(Window window, Component component, int  horizontalLimit) {
+	@Override public void setBestBounds(Window window) { 	setBestBounds(window, _defaultBaseComponent,  0); }
+	@Override public void setBestBounds(Window window, Component baseComponent) { setBestBounds(window, (baseComponent!=null)?baseComponent:_defaultBaseComponent, 0); }
+	@Override public void setBestBounds(Window window, Component baseComponent, int  horizontalLimit) {
 	
 		int space = 20;
 		
 		Point location = defaultLocation(window);
-		if(component!=null){
+		if(baseComponent!=null){
 			try{
-				location = component.getLocationOnScreen();
-			}catch (IllegalComponentStateException e) {
+				location = baseComponent.getLocationOnScreen();
+			}catch (IllegalComponentStateException ignore) {
 				//ignore, using default location
 			}
 		}
@@ -69,10 +69,10 @@ class WindowBoundsSetterImpl implements WindowBoundsSetter{
 	@Override
 	public Rectangle unusedArea() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); 
-		if(_component==null)
+		if(_defaultBaseComponent==null)
 			return defaultUnusedArea(screenSize);
 
-		Window windowAncestor = SwingUtilities.getWindowAncestor(_component);
+		Window windowAncestor = SwingUtilities.getWindowAncestor(_defaultBaseComponent);
 		if(windowAncestor==null)
 			return defaultUnusedArea(screenSize);
 		
@@ -86,7 +86,7 @@ class WindowBoundsSetterImpl implements WindowBoundsSetter{
 
 	@Override
 	public void runWhenBaseContainerIsReady(Runnable runnable) {
-		if(_component == null) {
+		if(_defaultBaseComponent == null) {
 			_toRunWhenBaseComponentIsReady.add(runnable);
 			return;
 		}

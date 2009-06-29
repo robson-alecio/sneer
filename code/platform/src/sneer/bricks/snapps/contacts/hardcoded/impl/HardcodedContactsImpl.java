@@ -36,7 +36,7 @@ public class HardcodedContactsImpl implements HardcodedContacts {
 		return new ContactInfo[] {
 			new ContactInfo("Agnaldo4j", "agnaldo4j.selfip.com", 5923),
 			new ContactInfo("Bamboo", "rodrigobamboo.dyndns.org", 5923),
-			new ContactInfo("Bihaiko", "bihaiko.dyndns.org", 5923),
+			new ContactInfo("Bihaiko", "bihaiko.dyndns.org", 6789),
 			new ContactInfo("Daniel Santos", "dfcsantos.homelinux.com", 7777),
 			new ContactInfo("Douglas Giacomini", "dtgiacomini.dyndns.org", 5923),
 			new ContactInfo("Dummy", "localhost", 7777),

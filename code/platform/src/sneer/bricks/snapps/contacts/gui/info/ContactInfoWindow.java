@@ -8,5 +8,6 @@ import sneer.foundation.brickness.Brick;
 public interface ContactInfoWindow {
 
 	void open();
+	void close();
 
 }

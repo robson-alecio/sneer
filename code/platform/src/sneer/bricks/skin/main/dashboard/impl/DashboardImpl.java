@@ -39,8 +39,8 @@ import sneer.foundation.lang.Functor;
 class DashboardImpl implements Dashboard {
 
 	private final Synth _synth = my(Synth.class);
+	{ _synth.notInGuiThreadLoad(this.getClass()); }
 	
-	{ _synth.load(this.getClass()); }
 	private final int WIDTH = (Integer) synthValue("Dashboard.WIDTH");
 	private final int OFFSET = (Integer) synthValue("Dashboard.OFFSET");
 	private final int HORIZONTAL_MARGIN = (Integer) synthValue("Dashboard.HORIZONTAL_MARGIN");  
@@ -70,7 +70,7 @@ class DashboardImpl implements Dashboard {
 				return size;
 			}
 		};
-		my(Synth.class).attach(_scrollBar, "DashboardScrollBar");
+		my(Synth.class).notInGuiThreadAttach(_scrollBar, "DashboardScrollBar");
 	}
 	
 	private final DashboardPanel _dashboardPanel = new DashboardPanel(_scrollBar);
@@ -102,7 +102,7 @@ class DashboardImpl implements Dashboard {
 	}
 	
 	private void initGui() {
-		my(GuiThread.class).invokeAndWait(new Runnable() { @Override public void run() {
+		my(GuiThread.class).invokeLater(new Runnable() { @Override public void run() {
 			WindowSupport windowSupport = new WindowSupport();
 			windowSupport.open();
 			new TrayIconSupport(windowSupport);
@@ -122,8 +122,7 @@ class DashboardImpl implements Dashboard {
 		
 		private void initSynth() {
 			Container contentPane = _frame.getContentPane();
-			contentPane.setName("DashboarContentPane");
-			_synth.attach((JPanel)contentPane);
+			_synth.attach((JPanel)contentPane, "DashboarContentPane");
 			
 //			JComponent menu = _mainMenu.getWidget(); Fix: Add Layout to Menu.
 //			menu.setName("DashboarMenuBar");
@@ -184,10 +183,7 @@ class DashboardImpl implements Dashboard {
 			_frame.setState(Frame.NORMAL);
 			_frame.setVisible(true);
 			_frame.requestFocusInWindow();
-
-			my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {
-				my(WindowBoundsSetter.class).setDefaultBaseComponet(_rootPanel);
-			}});
+			my(WindowBoundsSetter.class).setDefaultBaseComponet(_rootPanel);
 		}
 
 		private Signal<String> reactiveTitle() {

@@ -95,10 +95,8 @@ class DashboardPanel extends JPanel {
 	}
 
 	private void initSynth() {
-		setName("DashboardPanel");
-		_instrumentsContainer.setName("InstrumentsContainer");
-		_synth.attach(this);
-		_synth.attach(_instrumentsContainer);
+		_synth.notInGuiThreadAttach(this, "DashboardPanel");
+		_synth.notInGuiThreadAttach(_instrumentsContainer, "InstrumentsContainer");
 	}
 	
 	void hideAllToolbars() {
@@ -148,7 +146,7 @@ class DashboardPanel extends JPanel {
 		private final Instrument _instrument;
 		
 		InstrumentPanelImpl(Instrument instrument) {
-			initSynth();
+			_synth.notInGuiThreadAttach(this, "InstrumentPanel");
 			_instrument = instrument;
 			_toolbar = new Toolbar(_instrument.title());
 			_instrumentGlasspane = new InstrumentGlasspane();
@@ -158,11 +156,6 @@ class DashboardPanel extends JPanel {
 			_toolbar.setVisible(false); 
 		}
 
-		private void initSynth() {
-			setName("InstrumentPanel");
-			_synth.attach(this);
-		}
-		
 		private void hideAndShow(Point mousePoint) {
 			for (InstrumentPanelImpl instrument : _instrumentPanels) {
 				instrument._toolbar.setVisible(isMouseOverInstrument(mousePoint, instrument));
@@ -246,14 +239,10 @@ class DashboardPanel extends JPanel {
 			}
 
 			private void initSynth() {
-				_toolbarPanel.setName("InstrumentToolbar");
-				_title.setName("InstrumentTitle");
-				_menu.setName("InstrumentMenuButton");
-				_menu.setName("InstrumentMenuBlockButton");
-				_synth.attach(_toolbarPanel);
-				_synth.attach(_title);
-				_synth.attach(_menu);
-				_synth.attach(_mouseBlockButton);
+				_synth.notInGuiThreadAttach(_toolbarPanel, "InstrumentToolbar");
+				_synth.notInGuiThreadAttach(_title, "InstrumentTitle");
+				_synth.notInGuiThreadAttach(_menu, "InstrumentMenuButton");
+				_synth.notInGuiThreadAttach(_mouseBlockButton);
 			}
 			
 			private void initGui(String title) {

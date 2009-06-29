@@ -1,10 +1,11 @@
-package sneer.bricks.network.computers.sockets.connections;
+package sneer.bricks.network.computers.sockets.connections.tests;
 
 import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
+import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.network.social.ContactManager;
 import sneer.bricks.pulp.reactive.Signal;

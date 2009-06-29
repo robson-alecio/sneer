@@ -9,21 +9,7 @@
 
 	- [Sandro] LogConsoleWindow -> The Title does not appear in Linux. See screenshot in email.
 
-	- [Sandro] Gui Thread - Revise:
-		- invokeAndWaitForWussies -> invokeAndWait
-		- invokeLaterForWussies -> invokeLater
-		- invokeAndWait -> invokeLater
-		- invokeAndWaitForWussies -> invokeLaterForWussies
-
-	- [Sandro] LogToFileImpl
-		- Create file if it does not exist (This happens for Dummy, for example)
-		- BL if IOException is thrown when writing to the file.
-
-	- [Sandro] bug fix - <New Contact>
-		
-	- [Sandro] WindowBoundsSetter - change baseComponent to use absolute location
-
-	- [Sandro] Wind Autoscroll not working in some cases.
+	- [Sandro] Wind Autoscroll not working in some cases. Klaus, talk to Sandro.
 
 	- [Bamboo] Video Tutorial with Jazz :)
 

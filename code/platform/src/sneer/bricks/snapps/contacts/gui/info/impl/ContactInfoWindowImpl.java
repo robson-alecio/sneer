@@ -51,7 +51,7 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 	
 	private final ListWidget<InternetAddress> _lstAddresses; {
 		final Object ref[] = new Object[1];
-		my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {//Fix Use GUI Nature
+		my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {//Fix Use GUI Nature
 			ref[0] = my(ReactiveWidgetFactory.class).newList(_contactAddresses.addresses(), 
 			new LabelProvider<InternetAddress>(){
 				@Override public Signal<? extends Image> imageFor(InternetAddress element) {
@@ -91,6 +91,7 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 			_isGuiInitialized = true;
 			initGui();
 		}
+		my(WindowBoundsSetter.class).setBestBounds(this, my(ContactActionManager.class).baseComponent());
 		setVisible(true);
 	}
 	
@@ -139,7 +140,6 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 		addListSelectionListestener();
 
 		this.setSize(400, 310);
-		my(WindowBoundsSetter.class).setBestBounds(this, my(ContactActionManager.class).baseComponent());
 	}
 
 	private void setGridBagLayout(JPanel panel, JLabel labNickname, JLabel labPort, JLabel labHost, JScrollPane scroll, JButton btnNew, JButton btnSave, JButton btnDel) {
@@ -254,5 +254,10 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 	
 	private Contact contact() {
 		return my(ContactsGui.class).selectedContact().currentValue();
+	}
+
+	@Override
+	public void close() {
+		setVisible(false);
 	}
 }

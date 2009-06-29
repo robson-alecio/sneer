@@ -21,8 +21,7 @@ class GuiThreadImpl implements GuiThread {
 			invokeAndWait(runnable);
 	}
 
-	@Override
-	public void invokeAndWait(final Environment environment, final Runnable runnable) { //Fix Calling this from brick code is no longer necessary after the container is calling gui brick code only in the Swing thread.
+	private void invokeAndWait(final Environment environment, final Runnable runnable) { //Fix Calling this from brick code is no longer necessary after the container is calling gui brick code only in the Swing thread.
 		assertNotInGuiThread();
 		try {
 			SwingUtilities.invokeAndWait(envolve(environment, runnable));
@@ -49,10 +48,11 @@ class GuiThreadImpl implements GuiThread {
 		if (!SwingUtilities.isEventDispatchThread()) throw new IllegalStateException("Should be running in the GUI thread."); 
 	}
 
-	private void assertNotInGuiThread() {
+	@Override
+	public void assertNotInGuiThread() {
 		if (SwingUtilities.isEventDispatchThread()) throw new IllegalStateException("Should NOT be running in the GUI thread."); 
 	}
-
+	
 	@Override
 	public void invokeLaterForWussies(Runnable runnable) {
 		SwingUtilities.invokeLater(envolve(runnable));

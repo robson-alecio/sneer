@@ -46,8 +46,8 @@ import sneer.foundation.lang.Consumer;
 class LogConsoleImpl extends JFrame implements LogConsole {
 
 	private final Synth _synth = my(Synth.class);
+	{_synth.notInGuiThreadLoad(this.getClass());}
 	
-	{_synth.load(this.getClass());}
 	private final Integer _OFFSET_X = (Integer) _synth.getDefaultProperty("LodConsoleImpl.offsetX");
 	private final Integer _OFFSET_Y = (Integer) _synth.getDefaultProperty("LodConsoleImpl.offsetY");
 	private final Integer _HEIGHT = (Integer) _synth.getDefaultProperty("LodConsoleImpl.height");
@@ -68,7 +68,7 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 
 	LogConsoleImpl(){
 		addMenuAction();
-		my(GuiThread.class).invokeLaterForWussies(new Runnable(){ @Override public void run() {
+		my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
 			initGui();
 		}});
 	}
@@ -195,7 +195,7 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 		private WidgetLogger(){
 			_referenceToAvoidGc = my(Signals.class).receive(my(LogNotifier.class).loggedMessages(), 
 				new Consumer<String>(){ @Override public void consume(final String msg) {
-					my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {
+					my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
 						_txtLog.append(msg);
 					}});
 				}});

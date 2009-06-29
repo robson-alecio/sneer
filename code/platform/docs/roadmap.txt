@@ -10,8 +10,6 @@
 	- [Sandro] <New Contact>
 		bug fix
 		
-	- [Sandro] WindowBoundsSetter - change baseComponent to use absolute location
-
 	- [Sandro] Wind Autoscroll not working in some cases. Klaus, talk to Sandro.
 
 	- [Bamboo] Video Tutorial with Jazz :)

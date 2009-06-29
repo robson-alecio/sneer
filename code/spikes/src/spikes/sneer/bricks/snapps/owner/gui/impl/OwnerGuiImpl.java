@@ -1,4 +1,4 @@
-package sneer.bricks.snapps.owner.gui.impl;
+package spikes.sneer.bricks.snapps.owner.gui.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
@@ -22,7 +22,7 @@ import sneer.bricks.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.bricks.skin.widgets.reactive.ImageWidget;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.TextWidget;
-import sneer.bricks.snapps.owner.gui.OwnerGui;
+import spikes.sneer.bricks.snapps.owner.gui.OwnerGui;
 
 class OwnerGuiImpl implements OwnerGui {
 

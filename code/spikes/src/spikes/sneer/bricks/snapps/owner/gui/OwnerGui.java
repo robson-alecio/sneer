@@ -1,4 +1,4 @@
-package sneer.bricks.snapps.owner.gui;
+package spikes.sneer.bricks.snapps.owner.gui;
 
 import sneer.bricks.skin.main.instrumentregistry.Instrument;
 

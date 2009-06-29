@@ -1,4 +1,4 @@
-package sneer.bricks.network.computers.sockets.connections;
+package sneer.bricks.network.computers.sockets.connections.tests;
 
 import static sneer.foundation.environments.Environments.my;
 
@@ -6,6 +6,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.bricks.hardware.cpu.threads.Threads;
+import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
 import sneer.bricks.network.computers.sockets.connections.originator.SocketOriginator;
 import sneer.bricks.network.computers.sockets.connections.receiver.SocketReceiver;
 import sneer.bricks.network.social.Contact;

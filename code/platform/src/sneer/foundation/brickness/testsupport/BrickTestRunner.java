@@ -170,9 +170,18 @@ public class BrickTestRunner extends JUnit4ClassRunner {
 	}
 
 	@Override
-	protected void invokeTestMethod(final Method arg0, final RunNotifier arg1) {
+	protected void invokeTestMethod(final Method method, final RunNotifier notifier) {
+		final Intermittent annotation = method.getAnnotation (Intermittent.class);
+		int numberOfExecutions = 1;
+
+		if (annotation != null) numberOfExecutions = annotation.executions();
+
+		invokeTestMethodMoreThanOnceIfNecessary(method, notifier, numberOfExecutions);
+	}
+
+	private void invokeTestMethodMoreThanOnceIfNecessary(final Method method, final RunNotifier notifier, @SuppressWarnings("unused") final int numberOfExecutions) {
 		Environments.runWith(newEnvironment(), new Runnable() { @Override public void run() {
-			superInvokeTestMethod(arg0, arg1);
+			superInvokeTestMethod(method, notifier);
 		}});
 	}
 
@@ -181,8 +190,8 @@ public class BrickTestRunner extends JUnit4ClassRunner {
 		return new TestMethodWithEnvironment(method, getTestClass());
 	}
 
-	protected void superInvokeTestMethod(Method arg0, RunNotifier arg1) {
-		super.invokeTestMethod(arg0, arg1);
+	protected void superInvokeTestMethod(Method method, RunNotifier notifier) {
+		super.invokeTestMethod(method, notifier);
 	}
 
 

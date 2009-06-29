@@ -14,5 +14,6 @@ public interface GuiThread {
 	void invokeLaterForWussies(Runnable runnable);
 
 	void assertInGuiThread();
+	void assertNotInGuiThread();
 
 }

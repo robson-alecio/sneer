@@ -49,10 +49,11 @@ class GuiThreadImpl implements GuiThread {
 		if (!SwingUtilities.isEventDispatchThread()) throw new IllegalStateException("Should be running in the GUI thread."); 
 	}
 
-	private void assertNotInGuiThread() {
+	@Override
+	public void assertNotInGuiThread() {
 		if (SwingUtilities.isEventDispatchThread()) throw new IllegalStateException("Should NOT be running in the GUI thread."); 
 	}
-
+	
 	@Override
 	public void invokeLaterForWussies(Runnable runnable) {
 		SwingUtilities.invokeLater(envolve(runnable));

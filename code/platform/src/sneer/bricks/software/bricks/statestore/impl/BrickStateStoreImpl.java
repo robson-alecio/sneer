@@ -21,6 +21,7 @@ public class BrickStateStoreImpl implements BrickStateStore {
 
 	private static final String FILE_NAME = "BrickState.xml";
 	
+	private final Map<Class<?>, Light> _warningLights = new HashMap<Class<?>, Light>(); 
 	private final Map<Class<?>, Light> _restoreLights = new HashMap<Class<?>, Light>(); 
 	private final Map<Class<?>, Light> _saveLights = new HashMap<Class<?>, Light>(); 
 
@@ -33,6 +34,10 @@ public class BrickStateStoreImpl implements BrickStateStore {
 		try {
 			stream = new FileInputStream(new File(file, FILE_NAME));
 		} catch (FileNotFoundException e) {
+			if(!_warningLights.containsKey(brick))
+				_warningLights.put(brick, my(BlinkingLights.class).prepare(LightType.WARN));
+			
+			my(BlinkingLights.class).turnOnIfNecessary(_warningLights.get(brick), "Restore Brick State Warning", "Data file not found. Unable to restore state for brick '" + brick.getName() + "'", e);
 			return null;
 		}
 		

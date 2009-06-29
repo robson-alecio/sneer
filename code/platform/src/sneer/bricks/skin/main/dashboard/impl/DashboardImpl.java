@@ -102,7 +102,7 @@ class DashboardImpl implements Dashboard {
 	}
 	
 	private void initGui() {
-		my(GuiThread.class).invokeAndWait(new Runnable() { @Override public void run() {
+		my(GuiThread.class).invokeLater(new Runnable() { @Override public void run() {
 			WindowSupport windowSupport = new WindowSupport();
 			windowSupport.open();
 			new TrayIconSupport(windowSupport);

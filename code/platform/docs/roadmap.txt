@@ -5,18 +5,29 @@
 
 	- [Sandro] Remove the webstart message: "There is a newer version. Do you want to update?" - Update without asking.
 
-	- [Sandro] Make Hudson run the functional tests too.
-
 	- [Sandro] Own Info - Do not open by default when name is already set.
+
+	- [Sandro] RapidShare Killer
+		- Help Célio
+		- Focus. Keep it simple. Zero sofistication. Simplest possible solution. No crash-recovery, for example. No bugs. Decent design.
+		- BL need "OK" and "Cancel" buttons.
+
+	- [Sandro] Wind Autoscroll.
 
 	- [Sandro] LogConsoleWindow -> The Title does not appear in Linux. See screenshot in email.
 
-	- [Sandro] Wind Autoscroll not working in some cases. Klaus, talk to Sandro.
-
 	- [Bamboo] Video Tutorial with Jazz :)
 
+	- [Igor] Test Intermittence - @Intermittent annotation to run test N times.
+	
+	- [Igor] Mic and Speaker bricks - Stop using tuples. Instead do:
+		- EventSource<PcmSoundPacket> Mic.sound()
+		- Speaker.Line Speaker.acquireLine() - Speaker.Line extends Consumer<PcmSoundPacket>, Closeable;
+	
 	- [Igor] Test Intermittence - Fix all. Coordinate with Kalecser. Talk to Klaus about making the TestRunner run failing tests several times before actually failing.
 		- Start with Hudson failures, then Eclipse failures.
+	
+	- [Igor] Thread leaks in tests - Fix
 
 	- [Igor] ConnectionManager - tests
 

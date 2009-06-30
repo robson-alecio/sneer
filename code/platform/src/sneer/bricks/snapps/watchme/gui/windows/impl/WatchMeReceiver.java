@@ -17,34 +17,30 @@ import javax.swing.WindowConstants;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.pulp.events.EventSource;
-import sneer.bricks.pulp.keymanager.KeyManager;
+import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.reactive.Reception;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.Widget;
 import sneer.bricks.snapps.watchme.WatchMe;
-import sneer.foundation.brickness.PublicKey;
+import sneer.foundation.brickness.Seal;
 import sneer.foundation.lang.Consumer;
 
 class WatchMeReceiver{
 
 	private final WatchMe _watchMe = my(WatchMe.class);
-	private final KeyManager _keyManager = my(KeyManager.class);
+	private final Seals _keyManager = my(Seals.class);
 	private final ReactiveWidgetFactory _factory = my(ReactiveWidgetFactory.class);
 	private final Contact _contact;
 
 	private Widget<JFrame> _windowWidget;
 	private JLabel _imageLabel = new JLabel();
 
-	@SuppressWarnings("unused") private final Object _refToAvoidGc;
 	private Reception _screensReception;
 
 	WatchMeReceiver(Contact contact) {
 		_contact = contact;
-		_refToAvoidGc = my(Signals.class).receive(_keyManager.keyChanges(), new Consumer<Contact>() {@Override public void consume(Contact contactWithNewKey) {
-			if(contactWithNewKey != _contact) return;
-			startWindowPaint(_keyManager.keyGiven(_contact));
-		}});
+		startWindowPaint(_keyManager.keyGiven(_contact));
 	}
 
 	private void initGui() {
@@ -72,7 +68,7 @@ class WatchMeReceiver{
 	}
 
 
-	private void startWindowPaint(PublicKey key) {
+	private void startWindowPaint(Seal key) {
 		if (_screensReception != null) _screensReception.dispose();
 		
 		final EventSource<BufferedImage> screens = _watchMe.screenStreamFor(key);

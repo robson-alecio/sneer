@@ -8,8 +8,6 @@ import sneer.tests.SovereignParty;
 @Brick
 public interface SneerParty extends SovereignParty {
 
-	byte[] publicKey();
-
 	void setSneerPort(int port);
 	int sneerPort();
 

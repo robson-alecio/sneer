@@ -14,14 +14,14 @@ import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.network.social.ContactManager;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddressKeeper;
-import sneer.bricks.pulp.keymanager.KeyManager;
+import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.own.name.OwnNameKeeper;
 import sneer.bricks.pulp.port.PortKeeper;
 import sneer.bricks.snapps.wind.Shout;
 import sneer.bricks.snapps.wind.Wind;
 import sneer.bricks.software.bricks.Bricks;
 import sneer.bricks.software.directoryconfig.DirectoryConfig;
-import sneer.foundation.brickness.PublicKey;
+import sneer.foundation.brickness.Seal;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
 import sneer.foundation.lang.exceptions.Refusal;
 import sneer.tests.SovereignParty;
@@ -69,7 +69,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	
     @Override
     public void giveNicknameTo(SovereignParty peer, String newNickname) {
-    	byte[] publicKey = ((SneerParty)peer).publicKey();
+    	byte[] publicKey = peer.seal();
 		Contact contact = waitForContactGiven(publicKey);
 
 		try {
@@ -91,7 +91,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 	private Contact waitForContactGiven(byte[] publicKey) {
 		while (true) {
-			Contact contact = my(KeyManager.class).contactGiven(new PublicKey(publicKey));
+			Contact contact = my(Seals.class).contactGiven(new Seal(publicKey));
 			if (contact != null) return contact;
 			my(Threads.class).sleepWithoutInterruptions(10);
 			my(Clock.class).advanceTime(60 * 1000);
@@ -99,8 +99,8 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	}
 
 	@Override
-    public byte[] publicKey() {
-		return my(KeyManager.class).ownPublicKey().bytes();
+    public byte[] seal() {
+		return my(Seals.class).ownSeal().bytes();
 	}
 
 	@Override

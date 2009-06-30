@@ -11,7 +11,7 @@ import javax.sound.sampled.SourceDataLine;
 
 import sneer.bricks.skin.audio.PcmSoundPacket;
 import sneer.bricks.skin.audio.kernel.Audio;
-import sneer.foundation.brickness.PublicKey;
+import sneer.foundation.brickness.Seal;
 import sneer.foundation.lang.Consumer;
 
 class PacketPlayer implements Consumer<PcmSoundPacket> {
@@ -19,7 +19,7 @@ class PacketPlayer implements Consumer<PcmSoundPacket> {
 	private final Audio _audio = my(Audio.class);
 	
 	private boolean _isRunning = true;
-	private final Map<PublicKey, SourceDataLine> _lines = new HashMap<PublicKey, SourceDataLine>();
+	private final Map<Seal, SourceDataLine> _lines = new HashMap<Seal, SourceDataLine>();
 	
 	synchronized void crash() {
 		_isRunning = false;
@@ -51,7 +51,7 @@ class PacketPlayer implements Consumer<PcmSoundPacket> {
 	}
 	
 	private SourceDataLine ensureLineIsOpen(PcmSoundPacket packet) {
-		PublicKey publisher = packet.publisher();
+		Seal publisher = packet.publisher();
 		
 		if(!_lines.containsKey(publisher))
 			_lines.put(publisher, tryToOpenPlaybackLine());

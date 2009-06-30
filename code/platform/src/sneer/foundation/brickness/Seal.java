@@ -2,13 +2,13 @@ package sneer.foundation.brickness;
 
 import java.util.Arrays;
 
-public class PublicKey {
+public class Seal {
 
 	private static final long serialVersionUID = 1L;
 
 	private byte[] _bytes;
 	
-	public PublicKey(byte[] bytes) {
+	public Seal(byte[] bytes) {
 		_bytes = bytes;
 	}
 
@@ -30,7 +30,7 @@ public class PublicKey {
 	public boolean equals(Object other) {
 		if (this == other) return true;
 		if (other == null) return false;
-		if (!(other instanceof PublicKey)) return false;
-		return Arrays.equals(_bytes, ((PublicKey)other)._bytes);
+		if (!(other instanceof Seal)) return false;
+		return Arrays.equals(_bytes, ((Seal)other)._bytes);
 	}
 }

@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import sneer.bricks.network.social.Contact;
-import sneer.bricks.pulp.keymanager.KeyManager;
+import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.own.name.OwnNameKeeper;
 import sneer.bricks.skin.main.synth.Synth;
 import sneer.bricks.snapps.wind.Shout;
@@ -19,8 +19,8 @@ abstract class ShoutUtils {
 		return my(OwnNameKeeper.class);
 	}
 	
-	private static KeyManager keyManager() {
-		return my(KeyManager.class);
+	private static Seals keyManager() {
+		return my(Seals.class);
 	}
 
 	static String publisherNick(Shout shout) {
@@ -36,6 +36,6 @@ abstract class ShoutUtils {
 	}
 
 	static boolean isMyOwnShout(Shout shout) {
-		return keyManager().ownPublicKey().equals(shout.publisher());
+		return keyManager().ownSeal().equals(shout.publisher());
 	}
 }

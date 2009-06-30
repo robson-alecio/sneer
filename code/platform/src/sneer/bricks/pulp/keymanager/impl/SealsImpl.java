@@ -6,14 +6,11 @@ import java.io.UnsupportedEncodingException;
 
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.network.social.ContactManager;
-import sneer.bricks.pulp.events.EventNotifier;
-import sneer.bricks.pulp.events.EventNotifiers;
-import sneer.bricks.pulp.events.EventSource;
-import sneer.bricks.pulp.keymanager.KeyManager;
+import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.own.name.OwnNameKeeper;
-import sneer.foundation.brickness.PublicKey;
+import sneer.foundation.brickness.Seal;
 
-class KeyManagerImpl implements KeyManager {
+class SealsImpl implements Seals {
 
 //	private PublicKey _ownKey;
 //	
@@ -22,16 +19,15 @@ class KeyManagerImpl implements KeyManager {
 //	private final Crypto _crypto = my(Crypto.class);
 
 	private static final String UTF_8 = "UTF-8";
-	private EventNotifier<Contact> _keyChanges = my(EventNotifiers.class).create();
 
 
 	@Override
-	public synchronized PublicKey ownPublicKey() {
+	public synchronized Seal ownSeal() {
 		return generateMickeyMouseKey(ownName());
 	}
 
 	@Override
-	public PublicKey keyGiven(Contact contact) {
+	public Seal keyGiven(Contact contact) {
 		//return _keyByContact.get(contact);
 		return generateMickeyMouseKey(contact.nickname().currentValue());
 	}
@@ -41,12 +37,11 @@ class KeyManagerImpl implements KeyManager {
 //	public synchronized void addKey(Contact contact, PublicKey publicKey) {
 //		if(keyGiven(contact) != null) throw new IllegalArgumentException("There already was a public key registered for contact: " + contact.nickname().currentValue());
 //		_keyByContact.put(contact, publicKey);
-//		_keyChanges.notifyReceivers(contact);
 //	}
 
 
 	@Override
-	public synchronized Contact contactGiven(PublicKey peersPublicKey) {
+	public synchronized Contact contactGiven(Seal peersPublicKey) {
 //		for (Contact candidate : _keyByContact.keySet())
 //			if(_keyByContact.get(candidate).equals(peersPublicKey))
 //				return candidate;
@@ -56,7 +51,7 @@ class KeyManagerImpl implements KeyManager {
 		return my(ContactManager.class).produceContact(nameFor(peersPublicKey));
 	}
 
-	private String nameFor(PublicKey publicKey) {
+	private String nameFor(Seal publicKey) {
 		try {
 			return new String(publicKey.bytes(), UTF_8);
 		} catch (UnsupportedEncodingException e) {
@@ -65,11 +60,11 @@ class KeyManagerImpl implements KeyManager {
 	}
 
 	@Override
-	public PublicKey unmarshall(byte[] bytes) {
-		return new PublicKey(bytes);
+	public Seal unmarshall(byte[] bytes) {
+		return new Seal(bytes);
 	}
 
-	private PublicKey generateMickeyMouseKey(String name) {
+	private Seal generateMickeyMouseKey(String name) {
 //		Sneer1024 sneer1024 = _crypto.digest(string.getBytes());
 //		return new PublicKey(sneer1024.bytes());
 		
@@ -80,11 +75,6 @@ class KeyManagerImpl implements KeyManager {
 			throw new IllegalStateException(e);
 		} 
 		return unmarshall(bytes);
-	}
-
-	@Override
-	public EventSource<Contact> keyChanges() {
-		return _keyChanges.output();
 	}
 
 //	@Override

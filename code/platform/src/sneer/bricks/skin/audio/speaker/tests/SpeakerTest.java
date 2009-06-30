@@ -9,19 +9,19 @@ import org.jmock.Sequence;
 import org.junit.Test;
 
 import sneer.bricks.hardware.ram.arrays.ImmutableArrays;
-import sneer.bricks.pulp.keymanager.KeyManager;
+import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.bricks.skin.audio.PcmSoundPacket;
 import sneer.bricks.skin.audio.kernel.Audio;
 import sneer.bricks.skin.audio.speaker.Speaker;
-import sneer.foundation.brickness.PublicKey;
+import sneer.foundation.brickness.Seal;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.Bind;
 
 public class SpeakerTest extends BrickTest {
 	
 	private final Speaker _subject = my(Speaker.class);
-	private final KeyManager _keyManager = my(KeyManager.class);
+	private final Seals _keyManager = my(Seals.class);
 	private final TupleSpace _tupleSpace = my(TupleSpace.class);
 
 	@Bind private final Audio _audio = mock(Audio.class);
@@ -80,19 +80,19 @@ public class SpeakerTest extends BrickTest {
 	}
 
 
-	private PublicKey contactKey() {
-		return new PublicKey("anything".getBytes());
+	private Seal contactKey() {
+		return new Seal("anything".getBytes());
 	}
 	
 	private PcmSoundPacket myPacket(byte[] pcm) {
-		return pcmSoundPacketFor(_keyManager.ownPublicKey(), pcm);
+		return pcmSoundPacketFor(_keyManager.ownSeal(), pcm);
 	}
 
 	private PcmSoundPacket contactPacket(byte[] pcm) {
 		return pcmSoundPacketFor(contactKey(), pcm);
 	}
 	
-	private PcmSoundPacket pcmSoundPacketFor(PublicKey publicKey, final byte[] pcmPayload) {
+	private PcmSoundPacket pcmSoundPacketFor(Seal publicKey, final byte[] pcmPayload) {
 		return new PcmSoundPacket(publicKey, 0, my(ImmutableArrays.class).newImmutableByteArray(pcmPayload));
 	}
 	

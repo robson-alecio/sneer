@@ -19,13 +19,13 @@ import sneer.bricks.hardware.cpu.exceptions.Hiccup;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.gui.images.Images;
 import sneer.bricks.pulp.events.EventSource;
-import sneer.bricks.pulp.keymanager.KeyManager;
+import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.bricks.skin.image.ImageFactory;
 import sneer.bricks.skin.screenshotter.Screenshotter;
 import sneer.bricks.snapps.watchme.WatchMe;
-import sneer.foundation.brickness.PublicKey;
+import sneer.foundation.brickness.Seal;
 import sneer.foundation.brickness.testsupport.Bind;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.environments.Environment;
@@ -39,7 +39,7 @@ public class WatchMeTest extends BrickTest {
 	private final TupleSpace _sharedSpace = my(TupleSpace.class);
 	
 	private final ImageFactory _imageFactory = my(ImageFactory.class);
-	private final KeyManager _keys = my(KeyManager.class);
+	private final Seals _keys = my(Seals.class);
 	private final Clock _clock = my(Clock.class);
 	private final WatchMe _subject = my(WatchMe.class);
 	
@@ -66,7 +66,7 @@ public class WatchMeTest extends BrickTest {
 		Environment container2 = newTestEnvironment(_sharedSpace); 
 		WatchMe subject2 = EnvironmentUtils.retrieveFrom(container2, WatchMe.class);
 
-		PublicKey key = _keys.ownPublicKey();
+		Seal key = _keys.ownSeal();
 		
 		EventSource<BufferedImage> screens = subject2.screenStreamFor(key);
 

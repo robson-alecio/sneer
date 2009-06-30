@@ -6,23 +6,23 @@ package sneer.bricks.pulp.probe.impl;
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.pulp.distribution.filtering.TupleFilterManager;
-import sneer.bricks.pulp.keymanager.KeyManager;
+import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.tuples.TupleSpace;
-import sneer.foundation.brickness.PublicKey;
+import sneer.foundation.brickness.Seal;
 import sneer.foundation.brickness.Tuple;
 import sneer.foundation.lang.Consumer;
 
 final class ProbeImpl implements Consumer<Tuple> {
 
 	private final TupleSpace _tuples = my(TupleSpace.class);
-	private final KeyManager _keyManager = my(KeyManager.class);
+	private final Seals _keyManager = my(Seals.class);
 	private final TupleFilterManager _filter = my(TupleFilterManager.class);
 
 	
 	private final Contact _contact;
-	private PublicKey _contactsPK;
+	private Seal _contactsPK;
 	
 	private final Object _isOnlineMonitor = new Object();
 	private boolean _isOnline = false;

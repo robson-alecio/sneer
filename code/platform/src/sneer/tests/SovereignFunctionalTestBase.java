@@ -30,7 +30,7 @@ public abstract class SovereignFunctionalTestBase extends BrickTest {
 		return _community.createParty(name);
 	}
 
-	private void init() { //This is done lazily because it has to run as part of the test and not during the constructor or even during the @Before method because JUnit will not count those as part of the test's timeout.
+	private void init() { //This is done lazily because it has to run as part of the test and not during the constructor or even during the @Before method because JUnit will not count those as part of the test's timeout. :(
 		if (_community != null) return;
 		_community = createNewCommunity();
 		

@@ -27,7 +27,7 @@ import sneer.bricks.snapps.watchme.codec.ImageCodec;
 import sneer.bricks.snapps.watchme.codec.ImageDelta;
 import sneer.bricks.snapps.watchme.codec.ImageCodec.Decoder;
 import sneer.bricks.snapps.watchme.codec.ImageCodec.Encoder;
-import sneer.foundation.brickness.PublicKey;
+import sneer.foundation.brickness.Seal;
 import sneer.foundation.lang.Consumer;
 import sneer.foundation.lang.exceptions.FriendlyException;
 
@@ -57,7 +57,7 @@ class WatchMeImpl implements WatchMe {
 	private Stepper _refToAvoidGc;
 
 	@Override
-	public EventSource<BufferedImage> screenStreamFor(final PublicKey publisher) {
+	public EventSource<BufferedImage> screenStreamFor(final Seal publisher) {
 		if (publisher == null)
 			throw new IllegalArgumentException("The publisher argument can't be null.");
 		
@@ -69,7 +69,7 @@ class WatchMeImpl implements WatchMe {
 		return result.output();
 	}
 
-	private Consumer<ImageDeltaPacket> imageDeltaPacketConsumer(final PublicKey publisher,	final EventNotifier<BufferedImage> notifier) {
+	private Consumer<ImageDeltaPacket> imageDeltaPacketConsumer(final Seal publisher,	final EventNotifier<BufferedImage> notifier) {
 		final Decoder decoder = _codec.createDecoder();
 		final Cache<ImmutableByteArray> cache = _cacheFactory.createWithCapacity(CACHE_CAPACITY);
 		

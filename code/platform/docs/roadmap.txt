@@ -24,11 +24,11 @@
 		- EventSource<PcmSoundPacket> Mic.sound()
 		- Speaker.Line Speaker.acquireLine() - Speaker.Line extends Consumer<PcmSoundPacket>, Closeable;
 	
+	- [Igor] Thread leaks in tests - Fix
+
 	- [Igor] Test Intermittence - Fix all. Coordinate with Kalecser. Talk to Klaus about making the TestRunner run failing tests several times before actually failing.
 		- Start with Hudson failures, then Eclipse failures.
 	
-	- [Igor] Thread leaks in tests - Fix
-
 	- [Igor] ConnectionManager - tests
 
         

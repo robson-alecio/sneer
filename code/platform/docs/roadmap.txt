@@ -10,9 +10,9 @@
 	- [Sandro] RapidShare Killer
 		- Help Célio - Find him on skype.
 		- Focus. Keep it simple. Zero sofistication. Simplest possible solution. No crash-recovery, for example. No bugs. Decent design.
-		- BL need "OK" and "Cancel" buttons.
+		- BLs - "OK" and "Cancel" buttons.
 
-	- [Sandro] Wind Autoscroll.
+	- [Sandro] Wind Autoscroll - Fix definitively
 
 	- [Sandro] LogConsoleWindow -> The Title does not appear in Linux. See screenshot in email.
 

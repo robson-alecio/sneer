@@ -13,15 +13,15 @@ import java.awt.event.MouseEvent;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
-import sneer.bricks.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.bricks.pulp.own.name.OwnNameKeeper;
-import sneer.bricks.pulp.own.tagline.OwnTaglineKeeper;
 import sneer.bricks.skin.imgselector.ImageSelector;
 import sneer.bricks.skin.main.dashboard.InstrumentPanel;
 import sneer.bricks.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.bricks.skin.widgets.reactive.ImageWidget;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.TextWidget;
+import spikes.sneer.bricks.pulp.own.avatar.OwnAvatarKeeper;
+import spikes.sneer.bricks.pulp.own.tagline.OwnTaglineKeeper;
 import spikes.sneer.bricks.snapps.owner.gui.OwnerGui;
 
 class OwnerGuiImpl implements OwnerGui {

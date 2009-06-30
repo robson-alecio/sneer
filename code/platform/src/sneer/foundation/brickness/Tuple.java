@@ -11,12 +11,12 @@ public abstract class Tuple {
 
 	protected Tuple() {}
 	
-	protected Tuple(PublicKey publisher, long publicationTime) {
+	protected Tuple(Seal publisher, long publicationTime) {
 		_publisher = publisher;
 		_publicationTime = publicationTime;
 	}
 
-	private PublicKey _publisher;
+	private Seal _publisher;
 	private long _publicationTime;
 	
 	@Override
@@ -102,7 +102,7 @@ public abstract class Tuple {
 	}
 
 
-	public PublicKey publisher() {
+	public Seal publisher() {
 		return _publisher;
 	}
 
@@ -111,7 +111,7 @@ public abstract class Tuple {
 		return _publicationTime;
 	}
 
-	public void stamp(PublicKey publisher, long time) {
+	public void stamp(Seal publisher, long time) {
 		if (_publisher != null)
 			throw new IllegalStateException("Tuple was already stamped.");
 		

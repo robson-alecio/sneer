@@ -9,9 +9,9 @@ import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
 import sneer.bricks.network.computers.sockets.protocol.ProtocolTokens;
 import sneer.bricks.network.social.Contact;
-import sneer.bricks.pulp.keymanager.KeyManager;
+import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.network.ByteArraySocket;
-import sneer.foundation.brickness.PublicKey;
+import sneer.foundation.brickness.Seal;
 
 class IndividualSocketReception {
 	
@@ -31,9 +31,9 @@ class IndividualSocketReception {
 	private boolean tryToServe() throws IOException {
 		shakeHands();
 
-		PublicKey peersPublicKey = peersPublicKey();	
+		Seal peersPublicKey = peersPublicKey();	
 
-		if (peersPublicKey.equals(my(KeyManager.class).ownPublicKey()))
+		if (peersPublicKey.equals(my(Seals.class).ownSeal()))
 			return false;
 			
 		//Implement: Challenge pk.
@@ -45,17 +45,17 @@ class IndividualSocketReception {
 		return true;
 	}
 
-	private PublicKey peersPublicKey() throws IOException {
+	private Seal peersPublicKey() throws IOException {
 		byte[] bytes = _socket.read();
-		return my(KeyManager.class).unmarshall(bytes);
+		return my(Seals.class).unmarshall(bytes);
 	}
 
-	private Contact produceContact(PublicKey peersPublicKey) {
+	private Contact produceContact(Seal peersPublicKey) {
 //		return my(KeyManager.class).contactGiven(peersPublicKey, new Producer<Contact>(){@Override public Contact produce() {
 //			return createUnconfirmedContact();
 //		}});
 		
-		return my(KeyManager.class).contactGiven(peersPublicKey);
+		return my(Seals.class).contactGiven(peersPublicKey);
 	}
 
 //	private Contact createUnconfirmedContact() {

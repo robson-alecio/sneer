@@ -25,7 +25,7 @@ import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.threads.Stepper;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
-import sneer.bricks.pulp.keymanager.KeyManager;
+import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.reactive.collections.CollectionSignals;
 import sneer.bricks.pulp.reactive.collections.ListRegister;
 import sneer.bricks.pulp.tuples.TupleSpace;
@@ -104,7 +104,7 @@ class TupleSpaceImpl implements TupleSpace {
 	private static final int TRANSIENT_CACHE_SIZE = 1000;
 	private static final Subscription[] SUBSCRIPTION_ARRAY = new Subscription[0];
 
-	private final KeyManager _keyManager = my(KeyManager.class);
+	private final Seals _keyManager = my(Seals.class);
 	private final Clock _clock = my(Clock.class);
 	private final Threads _threads = my(Threads.class);
 	private final ExceptionHandler _exceptionHandler = my(ExceptionHandler.class);
@@ -217,7 +217,7 @@ class TupleSpaceImpl implements TupleSpace {
 
 	
 	private void stamp(Tuple tuple) {
-		tuple.stamp(_keyManager.ownPublicKey(), _clock.time());
+		tuple.stamp(_keyManager.ownSeal(), _clock.time());
 	}
 
 	private void capTransientTuples() {

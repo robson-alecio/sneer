@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import sneer.bricks.hardware.ram.arrays.ImmutableArrays;
 import sneer.bricks.hardware.ram.arrays.ImmutableByteArray2D;
 import sneer.bricks.pulp.distribution.filtering.TupleFilterManager;
-import sneer.bricks.pulp.keymanager.KeyManager;
+import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.streams.sequencer.Sequencer;
 import sneer.bricks.pulp.streams.sequencer.Sequencers;
@@ -21,15 +21,15 @@ import sneer.bricks.snapps.whisper.speex.Encoder;
 import sneer.bricks.snapps.whisper.speex.Speex;
 import sneer.bricks.snapps.whisper.speextuples.SpeexPacket;
 import sneer.bricks.snapps.whisper.speextuples.SpeexTuples;
-import sneer.foundation.brickness.PublicKey;
+import sneer.foundation.brickness.Seal;
 import sneer.foundation.brickness.Tuple;
 import sneer.foundation.lang.Consumer;
 
 class SpeexTuplesImpl implements SpeexTuples {
 
-	private final Map<PublicKey, Sequencer<SpeexPacket>> _sequencers = new HashMap<PublicKey, Sequencer<SpeexPacket>>();
+	private final Map<Seal, Sequencer<SpeexPacket>> _sequencers = new HashMap<Seal, Sequencer<SpeexPacket>>();
 	private final TupleSpace _tupleSpace = my(TupleSpace.class);
-	private final KeyManager _keyManager = my(KeyManager.class);
+	private final Seals _keyManager = my(Seals.class);
 	private final TupleFilterManager _filter = my(TupleFilterManager.class); {
 		_filter.block(PcmSoundPacket.class);
 	}
@@ -63,7 +63,7 @@ class SpeexTuplesImpl implements SpeexTuples {
 			if (isMine(packet))	return;
 			if (!_room.currentValue().equals(packet.room)) return;
 
-			PublicKey publisher = packet.publisher();
+			Seal publisher = packet.publisher();
 			if(!_sequencers.containsKey(publisher)) 
 				_sequencers.put(publisher, my(Sequencers.class).createSequencerFor(consumer, (short)15, (short)150));
 			
@@ -81,7 +81,7 @@ class SpeexTuplesImpl implements SpeexTuples {
 	}
 	
 	private boolean isMine(Tuple packet) {
-		return _keyManager.ownPublicKey().equals(packet.publisher());
+		return _keyManager.ownSeal().equals(packet.publisher());
 	}
 	
 	private static byte[][] newFramesArray() {

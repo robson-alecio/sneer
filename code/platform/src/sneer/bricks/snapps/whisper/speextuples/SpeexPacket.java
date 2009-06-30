@@ -1,7 +1,7 @@
 package sneer.bricks.snapps.whisper.speextuples;
 
 import sneer.bricks.hardware.ram.arrays.ImmutableByteArray2D;
-import sneer.foundation.brickness.PublicKey;
+import sneer.foundation.brickness.Seal;
 import sneer.foundation.brickness.Tuple;
 
 public class SpeexPacket extends Tuple {
@@ -16,7 +16,7 @@ public class SpeexPacket extends Tuple {
 		sequence = sequence_;
 	}
 
-	public SpeexPacket(PublicKey contactKey, ImmutableByteArray2D frames_, String room_, short sequence_) {
+	public SpeexPacket(Seal contactKey, ImmutableByteArray2D frames_, String room_, short sequence_) {
 		super(contactKey, 0);
 		frames = frames_;
 		room = room_;

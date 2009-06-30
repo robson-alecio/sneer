@@ -12,7 +12,7 @@ import sneer.bricks.network.computers.sockets.connections.ByteConnection;
 import sneer.bricks.network.computers.sockets.protocol.ProtocolTokens;
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.pulp.bandwidth.BandwidthCounter;
-import sneer.bricks.pulp.keymanager.KeyManager;
+import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
@@ -21,7 +21,7 @@ import sneer.foundation.lang.Consumer;
 
 class ByteConnectionImpl implements ByteConnection {
 
-	private final KeyManager _keyManager = my(KeyManager.class);
+	private final Seals _keyManager = my(Seals.class);
 	private final Threads _threads = my(Threads.class);
 	private final BandwidthCounter _bandwidthCounter = my(BandwidthCounter.class);
 
@@ -79,7 +79,7 @@ class ByteConnectionImpl implements ByteConnection {
 
 	private boolean tryToShakeHands(ByteArraySocket socket) throws IOException {
 		socket.write(ProtocolTokens.SNEER_WIRE_PROTOCOL_1);
-		socket.write(_keyManager.ownPublicKey().bytes());
+		socket.write(_keyManager.ownSeal().bytes());
 		byte[] response = socket.read();
 		return Arrays.equals(ProtocolTokens.OK, response);
 	}

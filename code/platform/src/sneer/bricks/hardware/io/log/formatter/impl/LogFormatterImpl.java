@@ -1,8 +1,10 @@
 package sneer.bricks.hardware.io.log.formatter.impl;
 
+import static sneer.foundation.environments.Environments.my;
+
 import java.text.SimpleDateFormat;
 
-import static sneer.foundation.environments.Environments.my;
+import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.io.log.formatter.LogFormatter;
 import sneer.bricks.hardware.io.log.stacktrace.StackTraceLogger;
 
@@ -59,6 +61,6 @@ public class LogFormatterImpl implements LogFormatter {
 	}	
 	
 	private void appendTime(StringBuilder builder) {
-		builder.append(SIMPLE_DATE_FORMAT.format(new java.util.Date()));
+		builder.append(SIMPLE_DATE_FORMAT.format(my(Clock.class).time()));
 	}
 }

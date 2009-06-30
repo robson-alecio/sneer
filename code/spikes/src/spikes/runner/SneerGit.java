@@ -15,7 +15,6 @@ public class SneerGit {
 	private static String gitHome() {
 		File result = ClassFiles.classpathRootFor(SneerGit.class); // repository/code/spikes/bin
 		result = result.getParentFile().getParentFile().getParentFile();
-		System.out.println(result);
 		return result.getAbsolutePath();
 	}
 

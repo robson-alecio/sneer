@@ -1,4 +1,4 @@
-package sneer.bricks.pulp.own.avatar.tests;
+package spikes.sneer.bricks.pulp.own.avatar.tests;
 
 import static sneer.foundation.environments.Environments.my;
 
@@ -9,9 +9,9 @@ import org.junit.Test;
 
 import sneer.bricks.hardware.cpu.exceptions.Hiccup;
 import sneer.bricks.hardware.gui.images.Images;
-import sneer.bricks.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.bricks.skin.image.ImageFactory;
 import sneer.foundation.brickness.testsupport.BrickTest;
+import spikes.sneer.bricks.pulp.own.avatar.OwnAvatarKeeper;
 
 public class OwnAvatarKeeperTest extends BrickTest {
 

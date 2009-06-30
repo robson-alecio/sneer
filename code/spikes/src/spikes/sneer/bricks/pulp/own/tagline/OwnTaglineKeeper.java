@@ -1,4 +1,4 @@
-package sneer.bricks.pulp.own.tagline;
+package spikes.sneer.bricks.pulp.own.tagline;
 
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.foundation.brickness.Brick;

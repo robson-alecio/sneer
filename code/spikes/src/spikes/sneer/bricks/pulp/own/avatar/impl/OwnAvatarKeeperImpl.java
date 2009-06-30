@@ -1,17 +1,17 @@
-package sneer.bricks.pulp.own.avatar.impl;
+package spikes.sneer.bricks.pulp.own.avatar.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
 import java.awt.Image;
 
 import sneer.bricks.hardware.cpu.exceptions.Hiccup;
-import sneer.bricks.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.image.ImageFactory;
 import sneer.foundation.lang.Consumer;
 import sneer.foundation.lang.Functor;
+import spikes.sneer.bricks.pulp.own.avatar.OwnAvatarKeeper;
 
 class OwnAvatarKeeperImpl implements OwnAvatarKeeper {
 

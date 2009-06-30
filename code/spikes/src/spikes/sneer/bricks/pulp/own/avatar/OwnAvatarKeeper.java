@@ -1,4 +1,4 @@
-package sneer.bricks.pulp.own.avatar;
+package spikes.sneer.bricks.pulp.own.avatar;
 
 import java.awt.Image;
 

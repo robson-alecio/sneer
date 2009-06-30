@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Intermittent {
 
-	int executions() default 5;
+	int attempts() default 5;
 
 }

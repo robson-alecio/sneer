@@ -172,18 +172,33 @@ public class BrickTestRunner extends JUnit4ClassRunner {
 	@Override
 	protected void invokeTestMethod(final Method method, final RunNotifier notifier) {
 		final Intermittent annotation = method.getAnnotation (Intermittent.class);
-		int numberOfExecutions = 1;
-
-		if (annotation != null) numberOfExecutions = annotation.executions();
-
-		invokeTestMethodMoreThanOnceIfNecessary(method, notifier, numberOfExecutions);
+		int maxNumberOfExecutions = (annotation == null ? 1 : annotation.executions());
+		invokeTestMethodMoreThanOnceIfNecessary(method, notifier, maxNumberOfExecutions);
 	}
 
-	private void invokeTestMethodMoreThanOnceIfNecessary(final Method method, final RunNotifier notifier, @SuppressWarnings("unused") final int numberOfExecutions) {
-		Environments.runWith(newEnvironment(), new Runnable() { @Override public void run() {
-			superInvokeTestMethod(method, notifier);
-		}});
+	private void invokeTestMethodMoreThanOnceIfNecessary(final Method method, final RunNotifier notifier, int maxNumberOfExecutions) {
+		Exception originalException = null;
+
+		for (int execution = 1; execution <= maxNumberOfExecutions; ++execution) {
+			try {
+				Environments.runWith(newEnvironment(), new Runnable() { @Override public void run() {
+					superInvokeTestMethod(method, notifier);
+				}});
+				assessIntermittence(method.getName(), execution, maxNumberOfExecutions);
+				break; // Leave immediately if no exception is thrown
+
+			} catch (Exception e) {
+				if (originalException == null) originalException = e;
+				System.err.println("Execution " + execution + " of " + method.getName() + " failed. Error: " + e.getMessage());
+			}
+		}
 	}
+
+	private void assessIntermittence(final String methodName, final int execution, final int maxNumberOfExecutions) {
+		if (maxNumberOfExecutions > 1 && execution == 1)
+			System.out.println(">>> " + methodName + " may not need to use @Intermittent anymore");
+	}
+
 
 	@Override
 	protected TestMethod wrapMethod(Method method) {

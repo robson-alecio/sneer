@@ -45,4 +45,8 @@ public class BrickTestRunnerTest {
 		assertSame(_bar, my(FooBrick.class).bar());
 	}
 
+	@Test
+	public void testIntermittentAnnotation() {
+		// TODO Implement 
+	}
 }

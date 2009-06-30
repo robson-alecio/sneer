@@ -8,7 +8,7 @@
 	- [Sandro] Own Info - Do not open by default when name is already set.
 
 	- [Sandro] RapidShare Killer
-		- Help Célio
+		- Help Célio - Find him on skype.
 		- Focus. Keep it simple. Zero sofistication. Simplest possible solution. No crash-recovery, for example. No bugs. Decent design.
 		- BL need "OK" and "Cancel" buttons.
 

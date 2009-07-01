@@ -52,11 +52,13 @@ class ListRegisterImpl<VO> implements ListRegister<VO> {
 
 	@Override
 	public void add(VO element) {
+		int index = -1;		
 		synchronized (_list) {
 			_list.add(element);
 			_size.setter().consume(_list.size());
+			index = _list.size() - 1;
 		}
-		_output.notifyReceivers(new ListElementAdded<VO>(_list.size() - 1, element));
+		_output.notifyReceivers(new ListElementAdded<VO>(index, element));
 	}
 	
 	@Override

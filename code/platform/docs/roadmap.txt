@@ -19,12 +19,17 @@
 	- [Bamboo] Video Tutorial with Jazz :)
 
 	- [Igor] Test Intermittence - @Intermittent annotation to run test N times.
-	
+		- Write on the board 500 times: "I shall write all my non-GUI code test-first."
+		- Unignore IntermittentTestRunnerTest.testIntermittentAnnotation()
+		- Move Intermittence logic up from BrickTestRunner to IntermittentTestRunner.
+		- Refactor: Clean BrickTestRunner. Are all methods really used?
+		- Monitor Hudson for a few builds to see if build becomes stable. If it does, ask Sandro to point webstart to STABLE build instead of merely successful.
+			
 	- [Igor] Mic and Speaker bricks - Stop using tuples. Instead do:
 		- EventSource<PcmSoundPacket> Mic.sound()
 		- Speaker.Line Speaker.acquireLine() - Speaker.Line extends Consumer<PcmSoundPacket>, Closeable;
 	
-	- [Igor] Thread leaks in tests - Fix
+	- [Igor] Thread leaks in sneer (not spikes) tests - Fix
 
 	- [Igor] Test Intermittence - Fix all. Coordinate with Kalecser. Talk to Klaus about making the TestRunner run failing tests several times before actually failing.
 		- Start with Hudson failures, then Eclipse failures.

@@ -8,7 +8,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import org.junit.internal.runners.InitializationError;
-import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.internal.runners.TestClass;
 import org.junit.internal.runners.TestMethod;
 import org.junit.runner.notification.RunNotifier;
@@ -20,7 +19,7 @@ import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.EnvironmentUtils;
 import sneer.foundation.environments.Environments;
 
-public class BrickTestRunner extends JUnit4ClassRunner {
+public class BrickTestRunner extends IntermittentTestRunner {
 
 	protected static class TestMethodWithEnvironment extends TestMethod {
 
@@ -55,7 +54,7 @@ public class BrickTestRunner extends JUnit4ClassRunner {
 				} catch (InvocationTargetException e) {
 					throw new InvocationTargetExceptionEnvelope(e);
 				}
-			}}, numberOfExecutionAttemptsFor(_method), _method.getName());
+			}}, maxAttemptsFor(_method), _method.getName());
 		}
 
 		protected void doInvoke(Object test) throws InvocationTargetException {
@@ -173,20 +172,19 @@ public class BrickTestRunner extends JUnit4ClassRunner {
 	protected void invokeTestMethod(final Method testMethod, final RunNotifier notifier) {
 		tryToRunTestMethodWith(newEnvironment(), new Runnable() { @Override public void run() {
 			superInvokeTestMethod(testMethod, notifier);
-		}}, numberOfExecutionAttemptsFor(testMethod), testMethod.getName());
+		}}, maxAttemptsFor(testMethod), testMethod.getName());
 	}
 
-	private static int numberOfExecutionAttemptsFor(final Method testMethod) {
+	private static int maxAttemptsFor(final Method testMethod) {
 		final Intermittent annotation = testMethod.getAnnotation(Intermittent.class);
-		int numberOfAttempts = (annotation == null ? 1 : annotation.attempts());
-		return numberOfAttempts;
+		return (annotation == null ? 1 : annotation.maxAttempts());
 	}
 
 	// TODO: Removed this method
 	private static void tryToRunTestMethodWith(final Environment environment, 
 			final Runnable testMethodRunnable, final int maxNumberOfExecutions, final String methodName) {
 
-		if(maxNumberOfExecutions == 1) {
+		if (maxNumberOfExecutions == 1) {
 			runTestMethodWith(environment, testMethodRunnable);
 		} else {
 			tryToRunIntermittentTestMethodWith(environment, testMethodRunnable, maxNumberOfExecutions, methodName);

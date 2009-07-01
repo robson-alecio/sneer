@@ -7,8 +7,8 @@ import static sneer.foundation.environments.Environments.my;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import sneer.foundation.brickness.testsupport.BrickTestRunner;
 import sneer.foundation.brickness.testsupport.Bind;
+import sneer.foundation.brickness.testsupport.BrickTestRunner;
 import sneer.foundation.brickness.testsupport.tests.bar.BarBrick;
 import sneer.foundation.brickness.testsupport.tests.foo.FooBrick;
 
@@ -20,8 +20,7 @@ public class BrickTestRunnerTest {
 	}
 	
 	@Bind
-	final BarBrick _bar = new BarBrick() {
-	};
+	final BarBrick _bar = new BarBrick() {};
 	
 	final FooBrick _foo = new FooBrick() {
 		@Override
@@ -45,8 +44,4 @@ public class BrickTestRunnerTest {
 		assertSame(_bar, my(FooBrick.class).bar());
 	}
 
-	@Test
-	public void testIntermittentAnnotation() {
-		// TODO Implement 
-	}
 }

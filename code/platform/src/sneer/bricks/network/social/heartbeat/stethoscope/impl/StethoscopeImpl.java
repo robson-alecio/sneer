@@ -26,6 +26,7 @@ class StethoscopeImpl implements Stethoscope, Consumer<HeartBeat>, Stepper {
 	private CacheMap<Contact, Register<Boolean>> _registersByContact = my(CacheMaps.class).newInstance();
 	
 	{
+		System.out.println("STETHOSCOPE SUBSCRIBING");
 		my(TupleSpace.class).addSubscription(HeartBeat.class, this);
 		
 		my(Clock.class).wakeUpEvery(TIME_TO_DIE, this);
@@ -78,7 +79,7 @@ class StethoscopeImpl implements Stethoscope, Consumer<HeartBeat>, Stepper {
 
 	@Override
 	public void consume(HeartBeat beat) {
-//		System.out.println("STETHOSCOPE CONSUMING " + contact(beat).nickname().currentValue() + "    " + Thread.currentThread());
+		System.out.println("STETHOSCOPE CONSUMING " + contact(beat).nickname().currentValue() + "    " + Thread.currentThread());
 
 		if (my(Seals.class).ownSeal().equals(beat.publisher())) return;
 		if (isTooOld(beat)) return;
@@ -87,7 +88,7 @@ class StethoscopeImpl implements Stethoscope, Consumer<HeartBeat>, Stepper {
 		if (beat.publicationTime() < lastBeatTime(contact)) return;
 		_lastBeatTimesByContact.put(contact, beat.publicationTime());
 
-//		System.out.println("ALIVE!!! " + contact);
+		System.out.println("ALIVE!!! " + contact);
 		isAliveRegister(contact).setter().consume(true);
 	}
 

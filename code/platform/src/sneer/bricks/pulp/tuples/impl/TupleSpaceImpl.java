@@ -61,11 +61,7 @@ class TupleSpaceImpl implements TupleSpace {
 				if (tuple == null) return true; //Is testing for null really necessary?
 				
 				Consumer<? super Tuple> subscriber = _subscriber.get();
-				if (subscriber == null) {
-					System.out.println("Subscriber gc'd for tupleType: " + _tupleType);
-					my(Logger.class).log("Subscriber gc'd for tupleType: " + _tupleType);
-					return false;
-				}
+				if (subscriber == null) return false;
 				
 				notifySubscriber(subscriber, tuple);
 				return true;
@@ -190,7 +186,12 @@ class TupleSpaceImpl implements TupleSpace {
 
 	private void notifySubscriptions(Tuple tuple) {
 		for (Subscription subscription : _subscriptions.toArray(SUBSCRIPTION_ARRAY)) {
-			if (subscription.wasGcd()) _subscriptions.remove(subscription);
+			if (subscription.wasGcd()) {
+				_subscriptions.remove(subscription);
+				System.out.println("Subscriber gc'd for tupleType: " + subscription._tupleType);
+				my(Logger.class).log("Subscriber gc'd for tupleType: " + subscription._tupleType);
+				continue;
+			}
 			subscription.filterAndNotify(tuple);
 		}
 	}

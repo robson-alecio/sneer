@@ -95,8 +95,7 @@ class OwnInfoImpl extends JFrame implements OwnInfo {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setTitle("Own Info");
 		
-//		setSize(350, 260);
-		setSize(350, 140);
+		setSize(350, 260);
 		
 		java.awt.Container pnl = getContentPane();
 		
@@ -113,9 +112,9 @@ class OwnInfoImpl extends JFrame implements OwnInfo {
 		pnlDynDns.setLayout(new GridBagLayout());
 
 		pnlDynDns.setBorder(new TitledBorder("Own DynDns [Optional]"));
-//		getContentPane().add(pnlDynDns,
-//				new GridBagConstraints(0, 2, 2, 1, 1.0, 0.0,
-//						GridBagConstraints.CENTER,	GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5),0, 0));
+		getContentPane().add(pnlDynDns,
+				new GridBagConstraints(0, 2, 2, 1, 1.0, 0.0,
+						GridBagConstraints.CENTER,	GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5),0, 0));
 		
 		addWidget(pnlDynDns, _dynDnsHost, "Host:", 0);
 		addWidget(pnlDynDns, _dynDnsUser, "User:", 1);

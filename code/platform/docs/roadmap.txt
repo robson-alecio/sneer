@@ -3,12 +3,17 @@
 
 	- [Klaus] Revise entire package structure.  
 
+	- [Sandro] Gui Test Framework
+
 	- [Sandro] RapidShare Killer
 		- Help Célio - Find him on skype.
 		- Focus. Keep it simple. Zero sofistication. Simplest possible solution. No crash-recovery, for example. No bugs. Decent design.
 		- Use BLs - Add "OK" and "Cancel" buttons.
 
-	- [Sandro] Wind Autoscroll - Fix definitively
+	- [Sandro] Wind 
+		- Autoscroll - Fix definitively
+		- Dock/Undock
+		- dd/MM hh:mm
 
 	- [Sandro] LogConsoleWindow -> The Title does not appear in Linux. See screenshot in email.
 

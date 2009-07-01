@@ -40,6 +40,7 @@ class DashboardImpl implements Dashboard {
 
 	private final Synth _synth = my(Synth.class);
 	{ _synth.notInGuiThreadLoad(this.getClass()); }
+	private final Synth _synth = my(Synth.class);
 	
 	private final int WIDTH = (Integer) synthValue("Dashboard.WIDTH");
 	private final int OFFSET = (Integer) synthValue("Dashboard.OFFSET");

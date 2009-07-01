@@ -3,6 +3,8 @@ package sneer.tests.adapters.impl;
 import static sneer.foundation.environments.Environments.my;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import sneer.bricks.hardware.clock.Clock;
@@ -33,6 +35,7 @@ import sneer.tests.adapters.SneerPartyProbe;
 class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	
 	static private final String MOCK_ADDRESS = "localhost";
+	private Collection<Object> _referenceToAvoidGc = new ArrayList<Object>();
 
 	@Override
 	public void setSneerPort(int port) {
@@ -161,11 +164,15 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 	@Override
 	public void startSnapps() {
-		my(sneer.bricks.snapps.system.log.sysout.LogToSysout.class);
-		my(sneer.bricks.network.computers.sockets.connections.originator.SocketOriginator.class);
-		my(sneer.bricks.network.computers.sockets.connections.receiver.SocketReceiver.class);
-		my(sneer.bricks.pulp.probe.ProbeManager.class);
-		my(sneer.bricks.network.social.heartbeat.Heart.class);
+		startAndKeep(sneer.bricks.snapps.system.log.sysout.LogToSysout.class);
+		startAndKeep(sneer.bricks.network.computers.sockets.connections.originator.SocketOriginator.class);
+		startAndKeep(sneer.bricks.network.computers.sockets.connections.receiver.SocketReceiver.class);
+		startAndKeep(sneer.bricks.pulp.probe.ProbeManager.class);
+		startAndKeep(sneer.bricks.network.social.heartbeat.Heart.class);
+	}
+
+	private void startAndKeep(Class<?> snapp) {
+		_referenceToAvoidGc.add(my(snapp));
 	}
 
 	@Override

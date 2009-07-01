@@ -15,6 +15,7 @@ import sneer.bricks.software.directoryconfig.DirectoryConfig;
 class SnappStarterImpl implements SnappStarter {
 
 	private final ClassLoader _apiClassLoader = SnappStarter.class.getClassLoader();
+	private final Collection<Object> _referenceToAvoidGC = new ArrayList<Object>();
 
 	@Override
 	public void startSnapps() {
@@ -28,12 +29,12 @@ class SnappStarterImpl implements SnappStarter {
 	private void tryToStartSnapps() throws IOException, ClassNotFoundException {
 		for (String brickName : brickNames()) {
 			Class<?> brick = _apiClassLoader.loadClass(brickName);
-			if (isSnapp(brick)) start(brick);
+			if (isSnapp(brick)) startAndKeep(brick);
 		}
 	}
 
-	private void start(Class<?> brick) {
-		my(brick);
+	private void startAndKeep(Class<?> brick) {
+		_referenceToAvoidGC.add(my(brick));
 	}
 
 	private boolean isSnapp(Class<?> brick) {

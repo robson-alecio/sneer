@@ -10,7 +10,7 @@
 	- [Sandro] RapidShare Killer
 		- Help Célio - Find him on skype.
 		- Focus. Keep it simple. Zero sofistication. Simplest possible solution. No crash-recovery, for example. No bugs. Decent design.
-		- BLs - "OK" and "Cancel" buttons.
+		- Use BLs - Add "OK" and "Cancel" buttons.
 
 	- [Sandro] Wind Autoscroll - Fix definitively
 

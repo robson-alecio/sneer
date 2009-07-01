@@ -67,7 +67,7 @@ final class ProbeImpl implements Consumer<Tuple> {
 		if (_contactsPK == null)
 			return false;
 
-		if (_filter.isBlocked(tuple)) return false;
+		if (!_filter.canBePublished(tuple)) return false;
 		
 		return !isEcho(tuple);
 	}

@@ -62,8 +62,18 @@ class OwnInfoImpl extends JFrame implements OwnInfo {
 		restoreFieldData();
 		
 		my(WindowBoundsSetter.class).runWhenBaseContainerIsReady(new Runnable(){ @Override public void run() {
-			open();
+			openIfNeedConfig();
 		}});
+	}
+
+	protected void openIfNeedConfig() {
+		if(_nameKeeper.name().currentValue().trim().isEmpty()) {
+			open();
+			return;
+		}
+		
+		if(_portKeeper.port().currentValue()==0)
+			open();
 	}
 
 	private void open() {

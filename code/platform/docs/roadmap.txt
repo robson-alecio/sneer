@@ -1,6 +1,8 @@
 ﻿TASKS
 =========
 
+	- [Klaus] Unignore ProbeManagerTest
+
 	- [Klaus] Revise entire package structure.  
 
 	- [Sandro] RapidShare Killer

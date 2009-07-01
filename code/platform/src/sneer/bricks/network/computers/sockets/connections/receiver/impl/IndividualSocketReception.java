@@ -2,6 +2,7 @@ package sneer.bricks.network.computers.sockets.connections.receiver.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -17,11 +18,15 @@ class IndividualSocketReception {
 	
 	private final ByteArraySocket _socket;
 
+	
 	IndividualSocketReception(ByteArraySocket socket) {
 		_socket = socket;
 
 		try {
 			if (!tryToServe()) _socket.crash();
+		} catch (EOFException e) {
+			my(Logger.class).log("Incoming Socket Closed by Peer");
+			_socket.crash();
 		} catch (Exception e) {
 			my(Logger.class).logShort(e, "Exception thrown by incoming socket.");
 			_socket.crash();

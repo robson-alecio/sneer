@@ -32,7 +32,7 @@ class ReachabilitySentinelImpl implements ReachabilitySentinel {
 
 		_clock.wakeUpEvery(THIRTY_SECONDS, new Stepper() { @Override public boolean step() {
 			if (_clock.time() - _lastIncomingSocketTime >= THIRTY_SECONDS)
-				_lights.turnOnIfNecessary(unreachableLight(), "Unreachable", "You have not received any incoming sockets recently. Either none of your contacts are online or your machine is unreachable from the internet on Sneer TCP Port " + my(PortKeeper.class).port().currentValue() + ". You can change your Sneer TCP Port using the Menu > Own Info dialog.");
+				_lights.turnOnIfNecessary(unreachableLight(), "Unreachable", "You have not received any incoming sockets recently. Either none of your contacts are online or your machine is unreachable from the internet on your current Sneer TCP Port: " + my(PortKeeper.class).port().currentValue() + ". You can change your Sneer TCP Port using the Menu > Own Info dialog.");
 			return true;
 		}});		
 	}

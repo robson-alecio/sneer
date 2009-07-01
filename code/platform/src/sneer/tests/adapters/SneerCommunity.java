@@ -48,6 +48,7 @@ public class SneerCommunity implements SovereignCommunity {
 		party.setSneerPort(_nextPort++);
 		
 		party.startSnapps();
+		party.accelerateHeartbeat();
 		return party;
 	}
 

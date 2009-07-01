@@ -8,7 +8,7 @@ import sneer.tests.SovereignParty;
 
 public abstract class Freedom2TestBase extends SovereignFunctionalTestBase {
 
-	@Test (timeout = 3000)
+	@Test (timeout = 4000)
 	public void isOnline() {
 		assertTrue(a().isOnline("Bruno Barros"));
 		assertTrue(b().isOnline("Ana Almeida"));

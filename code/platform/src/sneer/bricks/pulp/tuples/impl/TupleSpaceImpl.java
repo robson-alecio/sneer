@@ -24,6 +24,7 @@ import org.prevayler.foundation.serialization.Serializer;
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.threads.Stepper;
 import sneer.bricks.hardware.cpu.threads.Threads;
+import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
 import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.reactive.collections.CollectionSignals;
@@ -60,7 +61,11 @@ class TupleSpaceImpl implements TupleSpace {
 				if (tuple == null) return true; //Is testing for null really necessary?
 				
 				Consumer<? super Tuple> subscriber = _subscriber.get();
-				if (subscriber == null) return false;
+				if (subscriber == null) {
+					System.out.println("Subscriber gc'd for tupleType: " + _tupleType);
+					my(Logger.class).log("Subscriber gc'd for tupleType: " + _tupleType);
+					return false;
+				}
 				
 				notifySubscriber(subscriber, tuple);
 				return true;
@@ -105,7 +110,6 @@ class TupleSpaceImpl implements TupleSpace {
 	private static final Subscription[] SUBSCRIPTION_ARRAY = new Subscription[0];
 
 	private final Seals _keyManager = my(Seals.class);
-	private final Clock _clock = my(Clock.class);
 	private final Threads _threads = my(Threads.class);
 	private final ExceptionHandler _exceptionHandler = my(ExceptionHandler.class);
 
@@ -217,7 +221,7 @@ class TupleSpaceImpl implements TupleSpace {
 
 	
 	private void stamp(Tuple tuple) {
-		tuple.stamp(_keyManager.ownSeal(), _clock.time());
+		tuple.stamp(_keyManager.ownSeal(), my(Clock.class).time());
 	}
 
 	private void capTransientTuples() {

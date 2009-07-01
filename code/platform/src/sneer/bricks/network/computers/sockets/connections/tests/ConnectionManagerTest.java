@@ -20,14 +20,14 @@ public class ConnectionManagerTest extends BrickTest {
 
 	@Ignore
 	@Test (timeout = 2000)
-	public void turnOnline() {
+	public void connection() {
 		final Contact neide = _contactManager.produceContact("Neide");
 
-		Signal<Boolean> isOnline = _subject.connectionFor(neide).isOnline();
-		assertFalse(isOnline.currentValue());
+		Signal<Boolean> isConnected = _subject.connectionFor(neide).isConnected();
+		assertFalse(isConnected.currentValue());
 		
 		//Implement: MOCK THE INCOMING OR OUTGOING CONNECTIONS TO NEIDE. 
 
-		my(SignalUtils.class).waitForValue(true, isOnline);
+		my(SignalUtils.class).waitForValue(true, isConnected);
 	}
 }

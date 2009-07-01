@@ -10,8 +10,9 @@ public interface ByteConnection {
 		void previousPacketWasSent();
 	}
 	
-	Signal<Boolean> isOnline();
+	Signal<Boolean> isConnected();
 
 	void initCommunications(PacketScheduler sender, Consumer<byte[]> receiver);
+
 	
 }

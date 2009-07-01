@@ -6,7 +6,7 @@ import sneer.foundation.brickness.testsupport.BrickTest;
 
 public abstract class SovereignFunctionalTestBase extends BrickTest {
 
-	private SovereignCommunity _community;
+	private SovereignCommunity _community = createNewCommunity();
 	
 	private SovereignParty _a;
 	private SovereignParty _b;
@@ -26,13 +26,11 @@ public abstract class SovereignFunctionalTestBase extends BrickTest {
 	}
 
 	protected SovereignParty createParty(String name) {
-		init();
 		return _community.createParty(name);
 	}
 
 	private void init() { //This is done lazily because it has to run as part of the test and not during the constructor or even during the @Before method because JUnit will not count those as part of the test's timeout. :(
-		if (_community != null) return;
-		_community = createNewCommunity();
+		if (_a != null) return;
 		
 		_a = _community.createParty("Ana Almeida");
 		_b = _community.createParty("Bruno Barros");

@@ -22,7 +22,7 @@ public class MicTest extends BrickTest {
 	private final AudioFormat _format = new AudioFormat(8000, 16, 1, true, false);
 	@Bind	private final Audio _audio = mock(Audio.class);
 
-	@Test
+	@Test (timeout = 3000)
 	public void testIsRunningSignal() throws LineUnavailableException {
 
 		checking(soundExpectations());

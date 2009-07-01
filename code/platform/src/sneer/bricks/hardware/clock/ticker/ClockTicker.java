@@ -5,6 +5,4 @@ import sneer.foundation.brickness.Brick;
 
 @Snapp
 @Brick
-public interface ClockTicker {
-
-}
+public interface ClockTicker {}

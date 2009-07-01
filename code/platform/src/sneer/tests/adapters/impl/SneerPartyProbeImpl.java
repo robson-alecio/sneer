@@ -7,16 +7,18 @@ import java.util.List;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.lang.Lang;
+import sneer.bricks.hardware.cpu.threads.Stepper;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.ram.iterables.Iterables;
-import sneer.bricks.network.computers.sockets.connections.ByteConnection;
-import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.network.social.ContactManager;
+import sneer.bricks.network.social.heartbeat.stethoscope.Stethoscope;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.own.name.OwnNameKeeper;
 import sneer.bricks.pulp.port.PortKeeper;
+import sneer.bricks.pulp.reactive.Signal;
+import sneer.bricks.pulp.reactive.SignalUtils;
 import sneer.bricks.snapps.wind.Shout;
 import sneer.bricks.snapps.wind.Wind;
 import sneer.bricks.software.bricks.Bricks;
@@ -48,7 +50,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 		SneerParty sneerParty = (SneerParty)party;
 		//storePublicKey(contact, new PublicKey(sneerParty.publicKey()));
 		my(InternetAddressKeeper.class).add(contact, MOCK_ADDRESS, sneerParty.sneerPort());
-		
+
 		waitUntilOnline(contact);
 	}
 
@@ -79,14 +81,15 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 		}
 		
 		waitUntilOnline(contact);
-
     }
 
 	private void waitUntilOnline(Contact contact) {
-		ByteConnection connection = my(ConnectionManager.class).connectionFor(contact);
-		
-		while (!connection.isOnline().currentValue())
-			my(Threads.class).sleepWithoutInterruptions(10);
+		//System.out.println("WAITING FOR ONLINE: " + contact.nickname().currentValue() + " " + contact);
+		my(SignalUtils.class).waitForValue(true, isAlive(contact));
+	}
+
+	private Signal<Boolean> isAlive(Contact contact) {
+		return my(Stethoscope.class).isAlive(contact);
 	}
 
 	private Contact waitForContactGiven(byte[] publicKey) {
@@ -162,13 +165,22 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 		my(sneer.bricks.network.computers.sockets.connections.originator.SocketOriginator.class);
 		my(sneer.bricks.network.computers.sockets.connections.receiver.SocketReceiver.class);
 		my(sneer.bricks.pulp.probe.ProbeManager.class);
-		my(sneer.bricks.hardware.clock.ticker.ClockTicker.class);
+		my(sneer.bricks.network.social.heartbeat.Heart.class);
 	}
 
 	@Override
 	public boolean isOnline(String nickname) {
 		Contact contact = my(ContactManager.class).contactGiven(nickname);
-		return my(ConnectionManager.class).connectionFor(contact).isOnline().currentValue();
+		return isAlive(contact).currentValue();
+	}
+
+	@Override
+	public void accelerateHeartbeat() {
+		my(Threads.class).registerStepper(new Stepper() { @Override public boolean step() {
+			my(Clock.class).advanceTime(20 * 1000);
+			my(Threads.class).sleepWithoutInterruptions(500);
+			return true;
+		}});
 	}
 
 }

@@ -11,8 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
 import sneer.bricks.network.social.Contact;
+import sneer.bricks.network.social.heartbeat.stethoscope.Stethoscope;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.snapps.contacts.gui.impl.ContactsGuiImpl.ContactLabelProvider;
 
@@ -20,7 +20,6 @@ class ContactsGuiCellRenderer implements ListCellRenderer {
 
 	private final DefaultListCellRenderer renderer = new DefaultListCellRenderer();
 	private final ContactLabelProvider _labelProvider;
-	private final ConnectionManager _connections = my(ConnectionManager.class);
 
 	ContactsGuiCellRenderer(ContactLabelProvider labelProvider) {
 		_labelProvider = labelProvider;
@@ -39,7 +38,7 @@ class ContactsGuiCellRenderer implements ListCellRenderer {
 		label.setIcon(icon);
 		label.setText(slabel.currentValue());
 		
-		Signal<Boolean> isOnline = _connections.connectionFor(contact).isOnline();
+		Signal<Boolean> isOnline = my(Stethoscope.class).isAlive(contact);
 		label.setEnabled(isOnline.currentValue());
 
 		return label;

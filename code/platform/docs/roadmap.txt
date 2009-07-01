@@ -1,6 +1,8 @@
 ﻿TASKS
 =========
 
+	- [Klaus] Unignore ProbeManagerTest
+
 	- [Klaus] Revise entire package structure.  
 
 	- [Sandro] Gui Test Framework
@@ -13,7 +15,8 @@
 	- [Sandro] Wind 
 		- Autoscroll - Fix definitively
 		- Dock/Undock
-		- dd/MM hh:mm
+
+	- [Sandro] Sneer Port: -> Sneer TCP Port:
 
 	- [Sandro] LogConsoleWindow -> The Title does not appear in Linux. See screenshot in email.
 

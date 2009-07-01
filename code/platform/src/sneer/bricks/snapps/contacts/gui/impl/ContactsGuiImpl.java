@@ -17,9 +17,9 @@ import javax.swing.JScrollPane;
 
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.hardware.gui.images.Images;
-import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.network.social.ContactManager;
+import sneer.bricks.network.social.heartbeat.stethoscope.Stethoscope;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
@@ -47,8 +47,8 @@ class ContactsGuiImpl implements ContactsGui {
 	private final Image ONLINE = getImage("ContactsGuiImpl.onlineIconName");
 	private final Image OFFLINE = getImage("ContactsGuiImpl.offlineIconName");
 	
-	private final SignalChooser<Contact> _chooser = new SignalChooser<Contact>(){ @Override public Signal<?>[] signalsToReceiveFrom(Contact element) {
-		return new Signal<?>[]{my(ConnectionManager.class).connectionFor(element).isOnline(), element.nickname()};
+	private final SignalChooser<Contact> _chooser = new SignalChooser<Contact>(){ @Override public Signal<?>[] signalsToReceiveFrom(Contact contact) {
+		return new Signal<?>[]{my(Stethoscope.class).isAlive(contact), contact.nickname()};
 	}};
 
 	private final ListSignal<Contact> _sortedList = my(ListSorter.class).sort( my(ContactManager.class).contacts() , my(ContactComparator.class), _chooser);
@@ -139,7 +139,7 @@ class ContactsGuiImpl implements ContactsGui {
 				return value?ONLINE:OFFLINE;
 			}};
 			
-			Signal<Boolean> isOnline = my(ConnectionManager.class).connectionFor(contact).isOnline();
+			Signal<Boolean> isOnline = my(Stethoscope.class).isAlive(contact);
 			return my(Signals.class).adapt(isOnline, functor);
 		}
 	}

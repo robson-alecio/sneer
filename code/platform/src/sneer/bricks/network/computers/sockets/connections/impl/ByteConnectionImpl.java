@@ -28,8 +28,8 @@ class ByteConnectionImpl implements ByteConnection {
 	private final String _label;
 	private final Contact _contact;
 
-	private final Register<Boolean> _isOnline = my(Signals.class).newRegister(false);
-	private final SocketHolder _socketHolder = new SocketHolder(_isOnline.setter());
+	private final Register<Boolean> _isConnected = my(Signals.class).newRegister(false);
+	private final SocketHolder _socketHolder = new SocketHolder(_isConnected.setter());
 	
 	private PacketScheduler _scheduler;
 	private Consumer<byte[]> _receiver;
@@ -50,10 +50,10 @@ class ByteConnectionImpl implements ByteConnection {
 
 	
 	@Override
-	public Signal<Boolean> isOnline() {
-		return _isOnline.output();
+	public Signal<Boolean> isConnected() {
+		return _isConnected.output();
 	}
-	
+
 
 	void manageOutgoingSocket(ByteArraySocket newSocket) {
 		if (!tryToManageOutgoingSocket(newSocket))

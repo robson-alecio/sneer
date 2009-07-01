@@ -15,5 +15,6 @@ public interface SneerParty extends SovereignParty {
 	void setDataDirectory(File dataDirectory);
 
 	void startSnapps();
+	void accelerateHeartbeat();
 
 }

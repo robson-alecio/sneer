@@ -16,7 +16,7 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	
 	private final JavaCompiler _compiler = my(JavaCompiler.class);
 	
-	@Test
+	@Test (timeout = 4000)
 	public void testPublishSingleBrick() throws Exception {
 		System.clearProperty("freedom7.y.Y.installed");
 		publisher().publishBricks(generateY());

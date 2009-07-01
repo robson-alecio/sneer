@@ -33,11 +33,7 @@ class ContactManagerImpl implements ContactManager {
 		
 		checkAvailability(nickname);
 		
-		Contact result = doAddContact(nickname);
-
-		save();
-		
-		return result;
+		return doAddContact(nickname);
 	}
 
 	private void save() {
@@ -47,6 +43,7 @@ class ContactManagerImpl implements ContactManager {
 	private Contact doAddContact(String nickname) {
 		Contact result = new ContactImpl(nickname); 
 		_contacts.add(result);
+		save();
 		return result;
 	}
 
@@ -94,7 +91,7 @@ class ContactManagerImpl implements ContactManager {
 	}
 
 	@Override
-	public Contact produceContact(String nickname) {
+	public synchronized Contact produceContact(String nickname) {
 		if (contactGiven(nickname) == null) doAddContact(nickname);
 		return contactGiven(nickname);
 	}

@@ -24,27 +24,27 @@ final class ProbeImpl implements Consumer<Tuple> {
 	private final Contact _contact;
 	private Seal _contactsPK;
 	
-	private final Object _isOnlineMonitor = new Object();
-	private boolean _isOnline = false;
+	private final Object _isConnectedMonitor = new Object();
+	private boolean _isConnected = false;
 	final SchedulerImpl _scheduler = new SchedulerImpl();
 
 	@SuppressWarnings("unused") private final Object _referenceToAvoidGc;
 
-	ProbeImpl(Contact contact, Signal<Boolean> isOnlineSignal) {
+	ProbeImpl(Contact contact, Signal<Boolean> isConnectedSignal) {
 		_contact = contact;
-		_referenceToAvoidGc = my(Signals.class).receive(isOnlineSignal, new Consumer<Boolean>(){ @Override public void consume(Boolean isOnline) {
-			dealWithIsOnline(isOnline);
+		_referenceToAvoidGc = my(Signals.class).receive(isConnectedSignal, new Consumer<Boolean>(){ @Override public void consume(Boolean isConnected) {
+			dealWithIsConnected(isConnected);
 		}});
 	}
 
-	private void dealWithIsOnline(boolean isOnline) {
-		synchronized (_isOnlineMonitor) {
-			boolean wasOnline = _isOnline;
-			_isOnline = isOnline;
+	private void dealWithIsConnected(boolean isConnected) {
+		synchronized (_isConnectedMonitor) {
+			boolean wasConnected = _isConnected;
+			_isConnected = isConnected;
 
-			if (isOnline) {
+			if (isConnected) {
 				_tuples.addSubscription(Tuple.class, this);
-			} else if (wasOnline) {
+			} else if (wasConnected) {
 				_tuples.removeSubscriptionAsync(this);
 				_scheduler.drain();
 			}
@@ -54,10 +54,11 @@ final class ProbeImpl implements Consumer<Tuple> {
 
 	@Override
 	public void consume(Tuple tuple) {
+		System.out.println("PROBE CONSUMING " + my(Seals.class).contactGiven(tuple.publisher()).nickname().currentValue() + " - " + Thread.currentThread());
 		if (!isClearToSend(tuple)) return;
 		
-		synchronized (_isOnlineMonitor) {
-			if (!_isOnline)	return;
+		synchronized (_isConnectedMonitor) {
+			if (!_isConnected)	return;
 			_scheduler.add(tuple);
 		}
 	}
@@ -81,5 +82,4 @@ final class ProbeImpl implements Consumer<Tuple> {
 		_contactsPK = _keyManager.keyGiven(_contact);
 	}
 
-	
 }

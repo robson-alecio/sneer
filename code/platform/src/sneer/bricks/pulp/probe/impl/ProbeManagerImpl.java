@@ -65,7 +65,7 @@ class ProbeManagerImpl implements ProbeManager {
 	}
 
 	private ProbeImpl createProbe(Contact contact, ByteConnection connection) {
-		ProbeImpl result = new ProbeImpl(contact, connection.isOnline());
+		ProbeImpl result = new ProbeImpl(contact, connection.isConnected());
 		_probesByContact.put(contact, result);
 		return result;
 	}

@@ -11,7 +11,7 @@ import sneer.foundation.brickness.testsupport.BrickTest;
 
 public class BandwidthConsolidationTest extends BrickTest {
 	
-	@Test
+	@Test (timeout = 3000)
 	public void test() throws Exception {
 		final SignalUtils signalsUtils = my(SignalUtils.class);
 		final Clock clock = my(Clock.class);		

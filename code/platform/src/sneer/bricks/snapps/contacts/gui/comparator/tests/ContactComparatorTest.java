@@ -5,10 +5,8 @@ import static sneer.foundation.environments.Environments.my;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import sneer.bricks.network.computers.sockets.connections.ByteConnection;
-import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
 import sneer.bricks.network.social.Contact;
-import sneer.bricks.pulp.network.ByteArraySocket;
+import sneer.bricks.network.social.heartbeat.stethoscope.Stethoscope;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
@@ -20,12 +18,11 @@ import sneer.bricks.pulp.reactive.signalchooser.SignalChooser;
 import sneer.bricks.snapps.contacts.gui.comparator.ContactComparator;
 import sneer.foundation.brickness.testsupport.Bind;
 import sneer.foundation.brickness.testsupport.BrickTest;
-import sneer.foundation.lang.Consumer;
 import sneer.foundation.testsupport.AssertUtils;
 
 public class ContactComparatorTest extends BrickTest {
 	
-	@Bind final ConnectionManager _connectionsMock = new ConnectionManagerMock();
+	@Bind final Stethoscope _stethoscopeMock = new StethoscopeMock();
 	
 	private ListSorter _sorter;
 	private final ListRegister<Contact> _contacts = my(CollectionSignals.class).newListRegister();
@@ -59,23 +56,13 @@ public class ContactComparatorTest extends BrickTest {
 	}
 }
 
-class ConnectionManagerMock implements ConnectionManager{
-	@Override 
-	public ByteConnection connectionFor(final Contact contact) {
-		return new ByteConnection(){
-			@Override 
-			public Signal<Boolean> isOnline() {
-				return ((ContactMock)contact)._isOnline;
-			}
-			@Override public void initCommunications(PacketScheduler sender, Consumer<byte[]> receiver) { throw new sneer.foundation.lang.exceptions.NotImplementedYet();}
-		};
+class StethoscopeMock implements Stethoscope {
+	public Signal<Boolean> isAlive(final Contact contact) {
+		return ((ContactMock)contact)._isOnline;
 	}
-	@Override public void manageIncomingSocket(Contact contact, ByteArraySocket socket) { throw new sneer.foundation.lang.exceptions.NotImplementedYet(); }
-	@Override public void manageOutgoingSocket(Contact contact, ByteArraySocket socket) { throw new sneer.foundation.lang.exceptions.NotImplementedYet(); }
-	@Override public void closeConnectionFor(Contact contact) {	throw new sneer.foundation.lang.exceptions.NotImplementedYet(); }
 }
 
-class ContactMock implements Contact{
+class ContactMock implements Contact {
 
 	final Signal<Boolean> _isOnline;
 	final Register<String> _nick = my(Signals.class).newRegister("");

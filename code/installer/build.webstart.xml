@@ -56,7 +56,7 @@
 					<homepage href="http://sovereigncomputing.net/" />
 				</information>
 				
-				<update check="timeout" policy="prompt-update" />
+				<update check="timeout" policy="always" />
 				
 				<resources>
 					<jar href="sneer-bootstrap.jar" />

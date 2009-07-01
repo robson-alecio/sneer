@@ -3,8 +3,6 @@
 
 	- [Klaus] Revise entire package structure.  
 
-	- [Sandro] Remove the webstart message: "There is a newer version. Do you want to update?" - Update without asking.
-
 	- [Sandro] Own Info - Do not open by default when name is already set.
 
 	- [Sandro] RapidShare Killer

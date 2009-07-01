@@ -5,6 +5,8 @@
 
 	- [Klaus] Revise entire package structure.  
 
+	- [Sandro] Gui Test Framework
+
 	- [Sandro] RapidShare Killer
 		- Help Célio - Find him on skype.
 		- Focus. Keep it simple. Zero sofistication. Simplest possible solution. No crash-recovery, for example. No bugs. Decent design.

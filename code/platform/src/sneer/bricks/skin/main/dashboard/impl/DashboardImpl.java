@@ -31,6 +31,7 @@ import sneer.bricks.skin.main.instrumentregistry.Instrument;
 import sneer.bricks.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.bricks.skin.main.menu.MainMenu;
 import sneer.bricks.skin.main.synth.Synth;
+import sneer.bricks.skin.main.synth.scroll.SynthScrolls;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.Widget;
 import sneer.bricks.skin.windowboundssetter.WindowBoundsSetter;
@@ -48,6 +49,7 @@ class DashboardImpl implements Dashboard {
 	
 	private final  MainMenu _mainMenu = my(MainMenu.class);
 	private final JScrollBar _scrollBar;{ 
+		my(SynthScrolls.class);
 		_scrollBar = new JScrollBar(Adjustable.VERTICAL){
 			@Override public void setBounds(int x, int y, int width, int height) {
 				super.setBounds(x, y, 10, height);

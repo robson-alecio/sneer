@@ -181,10 +181,10 @@ class TupleSpaceImpl implements TupleSpace {
 
 	@Override
 	public synchronized void acquire(Tuple tuple) {
+		if (isWeird(tuple)) return; //Filter out those weird shouts that appeared in the beginning.
+
 		if (!_transientTupleCache.add(tuple)) return;
 		capTransientTuples();
-		
-		if (isWeird(tuple)) return; //Filter out those weird shouts that appeared in the beginning.
 		
 		if (isAlreadyKept(tuple)) return;
 		keepIfNecessary(tuple);

@@ -5,8 +5,6 @@
 
 	- [Klaus] Revise entire package structure.  
 
-	- [Sandro] Own Info - Do not open it if the name is already set. Ignore port.
-
 	- [Sandro] Auto Update - Delete the code/platform directory before unzipping code. 
 
 	- [Sandro] RapidShare Killer

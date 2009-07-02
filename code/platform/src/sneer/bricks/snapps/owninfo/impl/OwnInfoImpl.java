@@ -67,12 +67,7 @@ class OwnInfoImpl extends JFrame implements OwnInfo {
 	}
 
 	protected void openIfNeedConfig() {
-		if(_nameKeeper.name().currentValue().trim().isEmpty()) {
-			open();
-			return;
-		}
-		
-		if(_portKeeper.port().currentValue()==0)
+		if(_nameKeeper.name().currentValue().trim().isEmpty()) 
 			open();
 	}
 

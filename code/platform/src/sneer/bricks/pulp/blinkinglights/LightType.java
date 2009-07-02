@@ -4,5 +4,6 @@ public enum LightType {
 	GOOD_NEWS,
 	INFO,
 	WARN,
-	ERROR;
+	ERROR,
+	CONFIRMATION;
 }

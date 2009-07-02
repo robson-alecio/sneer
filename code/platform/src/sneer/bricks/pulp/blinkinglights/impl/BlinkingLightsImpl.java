@@ -3,11 +3,13 @@ package sneer.bricks.pulp.blinkinglights.impl;
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
+import sneer.bricks.pulp.blinkinglights.ConfirmationLight;
 import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.pulp.reactive.collections.CollectionSignals;
 import sneer.bricks.pulp.reactive.collections.ListRegister;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
+import sneer.foundation.lang.Consumer;
 import sneer.foundation.lang.exceptions.FriendlyException;
 
 class BlinkingLightsImpl implements BlinkingLights {
@@ -104,4 +106,12 @@ class BlinkingLightsImpl implements BlinkingLights {
 			turnOffIn(light, timeout);
 	}
 
+	@Override
+	public ConfirmationLight askForConfirmation(String caption, String helpMessage, Consumer<Boolean> responseReceiver) {
+		ConfirmationLightImpl light = new ConfirmationLightImpl(responseReceiver);
+		light._caption = caption;
+		light._helpMessage = helpMessage;
+		turnOffIfNecessary(light);
+		return light;
+	}
 }

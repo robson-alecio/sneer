@@ -5,6 +5,8 @@
 
 	- [Klaus] Revise entire package structure.  
 
+	- [Sandro] Auto-scroll - Talk to Klaus about the new auto-scroll.
+
 	- [Sandro] RapidShare Killer
 		- Help Célio - Find him on skype.
 		- Focus. Keep it simple. Zero sofistication. Simplest possible solution. No crash-recovery, for example. No bugs. Decent design.

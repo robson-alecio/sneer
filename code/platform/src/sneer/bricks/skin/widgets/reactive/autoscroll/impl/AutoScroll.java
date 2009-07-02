@@ -66,14 +66,13 @@ class AutoScroll<T> {
 	}	
 	
 	private void initReceivers(ListSignal<T> inputSignal, Consumer<CollectionChange<T>> consumer) {
-		_reception = my(Signals.class).receive(wrapper(consumer), inputSignal);
+		_reception = my(Signals.class).receive(inputSignal, wrapper(consumer));
 	}
 	
 	private Consumer<CollectionChange<T>> wrapper(final	Consumer<CollectionChange<T>> consumer) {
-		Consumer<CollectionChange<T>> wrapper = new Consumer<CollectionChange<T>>(){ @Override public void consume(CollectionChange<T> value){
+		return new Consumer<CollectionChange<T>>(){ @Override public void consume(CollectionChange<T> value){
 			doAutoScroll(consumer, value);
 		}};
-		return wrapper;
 	}
 	
 	private void doAutoScroll( final Consumer<CollectionChange<T>> consumer, CollectionChange<T> value) {
@@ -88,9 +87,9 @@ class AutoScroll<T> {
 	}
 	
 	private void initReceivers(EventSource<T> eventSource) {
-		_reception = my(Signals.class).receive(new Consumer<T>(){ @Override public void consume(T value) {
+		_reception = my(Signals.class).receive(eventSource, new Consumer<T>(){ @Override public void consume(T value) {
 			doAutoScroll();
-		}}, eventSource);
+		}});
 	}
 	
 	@Override

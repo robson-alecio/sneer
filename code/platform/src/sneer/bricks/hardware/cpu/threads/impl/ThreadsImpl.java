@@ -47,12 +47,16 @@ class ThreadsImpl implements Threads {
 	}
 
 	@Override
-	public void startDaemon(String threadName, final Runnable runnable) {
+	public void startDaemon(final String threadName, final Runnable runnable) {
 		final Environment environment = my(Environment.class);
+		final Latch hasStarted = newLatch();
 
 		new Daemon(threadName) { @Override public void run() {
+			hasStarted.trip();
 			Environments.runWith(environment, runnable);
 		}};
+		
+		hasStarted.await();
 	}
 
 	@Override

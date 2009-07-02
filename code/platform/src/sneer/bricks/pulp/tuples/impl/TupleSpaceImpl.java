@@ -6,16 +6,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
@@ -25,12 +25,15 @@ import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.threads.Stepper;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
+import sneer.bricks.pulp.blinkinglights.BlinkingLights;
+import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
 import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.reactive.collections.CollectionSignals;
 import sneer.bricks.pulp.reactive.collections.ListRegister;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.bricks.software.directoryconfig.DirectoryConfig;
+import sneer.foundation.brickness.Seal;
 import sneer.foundation.brickness.Tuple;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
@@ -44,7 +47,7 @@ class TupleSpaceImpl implements TupleSpace {
 		private final WeakReference<Consumer<? super Tuple>> _subscriber;
 		private final Class<? extends Tuple> _tupleType;
 		private final Environment _environment;
-		private final BlockingQueue<Tuple> _tuplesToNotify = new LinkedBlockingQueue<Tuple>(); 
+		private final List<Tuple> _tuplesToNotify = new LinkedList<Tuple>(); 
 
 		<T extends Tuple> Subscription(Consumer<? super T> subscriber, Class<T> tupleType) {
 			_subscriber = new WeakReference<Consumer<? super Tuple>>((Consumer<? super Tuple>) subscriber);
@@ -77,23 +80,27 @@ class TupleSpaceImpl implements TupleSpace {
 			dispatchCounterDecrement();
 		}
 
-		private Tuple waitToPopTuple() {
-			try {
-				return _tuplesToNotify.take();
-			} catch (InterruptedException e) {
-				throw new IllegalStateException(e);
-			}
-		}
-
 		void filterAndNotify(final Tuple tuple) {
 			if (!_tupleType.isInstance(tuple))
 				return;
-
+			
 			dispatchCounterIncrement();
-			try {
-				_tuplesToNotify.put(tuple);
-			} catch (InterruptedException e) {
-				throw new IllegalStateException();
+			pushTuple(tuple);
+		}
+		
+		private Tuple waitToPopTuple() {
+			synchronized (_tuplesToNotify) {
+				if (_tuplesToNotify.isEmpty())
+					my(Threads.class).waitWithoutInterruptions(_tuplesToNotify);
+				
+				return _tuplesToNotify.remove(0);
+			}
+		}
+
+		private void pushTuple(Tuple tuple) {
+			synchronized (_tuplesToNotify) {
+				_tuplesToNotify.add(tuple);
+				_tuplesToNotify.notify();
 			}
 		}
 
@@ -177,6 +184,8 @@ class TupleSpaceImpl implements TupleSpace {
 		if (!_transientTupleCache.add(tuple)) return;
 		capTransientTuples();
 		
+		if (isWeird(tuple)) return; //Filter out those weird shouts that appeared in the beginning.
+		
 		if (isAlreadyKept(tuple)) return;
 		keepIfNecessary(tuple);
 				
@@ -184,11 +193,26 @@ class TupleSpaceImpl implements TupleSpace {
 	}
 
 
+	private boolean isWeird(Tuple tuple) {
+		if (nameFor(tuple.publisher()).length() < 60) return false;
+		
+		my(BlinkingLights.class).turnOn(LightType.ERROR, "Weird Tuple", "Tuples with weird publishers are being filtered out.", 30000);
+		return true;
+	}
+
+	private String nameFor(Seal seal) {
+		try {
+			return new String(seal.bytes(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
+
 	private void notifySubscriptions(Tuple tuple) {
 		for (Subscription subscription : _subscriptions.toArray(SUBSCRIPTION_ARRAY)) {
 			if (subscription.wasGcd()) {
 				_subscriptions.remove(subscription);
-				System.out.println("Subscriber gc'd for tupleType: " + subscription._tupleType);
 				my(Logger.class).log("Subscriber gc'd for tupleType: " + subscription._tupleType);
 				continue;
 			}
@@ -275,7 +299,7 @@ class TupleSpaceImpl implements TupleSpace {
 	@Override	
 	public void waitForAllDispatchingToFinish() {
 		synchronized (_dispatchCounterMonitor ) {
-			if (_dispatchCounter != 0)
+			while (_dispatchCounter != 0)
 				_threads.waitWithoutInterruptions(_dispatchCounterMonitor);
 		}
 		

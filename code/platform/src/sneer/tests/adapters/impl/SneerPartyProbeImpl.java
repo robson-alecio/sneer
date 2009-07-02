@@ -169,6 +169,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 		startAndKeep(sneer.bricks.network.computers.sockets.connections.receiver.SocketReceiver.class);
 		startAndKeep(sneer.bricks.pulp.probe.ProbeManager.class);
 		startAndKeep(sneer.bricks.snapps.wind.Wind.class);
+		startAndKeep(sneer.bricks.network.social.heartbeat.stethoscope.Stethoscope.class);
 		startAndKeep(sneer.bricks.network.social.heartbeat.Heart.class);
 	}
 

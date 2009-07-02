@@ -35,7 +35,7 @@ public class SpeakerTest extends BrickTest {
 		_subject.close();
 	}
 	
-	@Test
+	@Test (timeout = 3000)
 	public void testOnlyTuplesFromContactsGetPlayed() throws Exception {
 		checking(new SoundExpectations());
 

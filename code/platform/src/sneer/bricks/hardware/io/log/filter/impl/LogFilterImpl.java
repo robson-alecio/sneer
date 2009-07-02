@@ -13,6 +13,10 @@ class LogFilterImpl implements LogFilter {
 	private final ListRegister<String> _phrases = my(CollectionSignals.class).newListRegister();
 	{
 		_phrases.add("Exception");
+		_phrases.add("online");
+		_phrases.add("offline");
+		_phrases.add("Tuple");
+		_phrases.add("Shout");
 	}
 	
 	@Override

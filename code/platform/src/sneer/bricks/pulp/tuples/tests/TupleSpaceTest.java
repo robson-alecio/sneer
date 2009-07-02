@@ -15,7 +15,7 @@ public class TupleSpaceTest extends BrickTest {
 
 	private final TupleSpace _subject = my(TupleSpace.class);
 	
-	@Test
+	@Test (timeout = 2000)
 	public void subscriptionRemoval() {
 		final ArrayList<Tuple> tuples = new ArrayList<Tuple>();
 		final Consumer<TestTuple> consumer = new Consumer<TestTuple>() { @Override public void consume(TestTuple value) {
@@ -25,7 +25,9 @@ public class TupleSpaceTest extends BrickTest {
 		
 		final TestTuple tuple = new TestTuple(42);
 		_subject.publish(tuple);
+		my(TupleSpace.class).waitForAllDispatchingToFinish();
 		_subject.removeSubscriptionAsync(consumer);
+		
 		_subject.publish(new TestTuple(-1));
 		my(TupleSpace.class).waitForAllDispatchingToFinish();
 		assertArrayEquals(new Object[] { tuple }, tuples.toArray());

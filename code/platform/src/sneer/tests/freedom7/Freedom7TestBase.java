@@ -15,8 +15,9 @@ import sneer.tests.SovereignParty;
 public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	
 	private final JavaCompiler _compiler = my(JavaCompiler.class);
+	private SovereignParty _publisher;
 	
-	@Test (timeout = 4000)
+	@Test (timeout = 6000)
 	public void testPublishSingleBrick() throws Exception {
 		System.clearProperty("freedom7.y.Y.installed");
 		publisher().publishBricks(generateY());
@@ -175,7 +176,8 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 
 
 	private SovereignParty publisher() {
-		return a();
+		if (_publisher == null) _publisher = createParty("Mr. Publiser");
+		return _publisher;
 	}
 	
 	private File sourceFolder(String sourceFolder) {

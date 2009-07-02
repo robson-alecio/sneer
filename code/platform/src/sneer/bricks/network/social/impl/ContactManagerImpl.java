@@ -7,7 +7,6 @@ import sneer.bricks.pulp.reactive.collections.CollectionSignals;
 import sneer.bricks.pulp.reactive.collections.ListRegister;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
 import sneer.foundation.lang.PickyConsumer;
-import sneer.foundation.lang.exceptions.NotImplementedYet;
 import sneer.foundation.lang.exceptions.Refusal;
 
 class ContactManagerImpl implements ContactManager {
@@ -19,14 +18,16 @@ class ContactManagerImpl implements ContactManager {
     }
 
 	private void restore() {
-		try {
 			for (String nick : Store.restore())
-				addContact(nick);
-		} catch (Refusal e) {
-			throw new NotImplementedYet(e); // Fix Handle this exception.
-		}
+				if (!isWeird(nick)) //Filter out those weird nicknames that appeared in the beginning.
+					produceContact(nick);
 	}
     
+	private boolean isWeird(String nick) {
+		return nick.length() > 60;
+	}
+
+	
 	@Override
 	synchronized public Contact addContact(String nickname) throws Refusal {
 		nickname.toString();

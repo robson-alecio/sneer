@@ -1,16 +1,22 @@
 ﻿TASKS
 =========
 
-	- [Klaus] Unignore ProbeManagerTest
+	- [Klaus] Weird Contacts - Talk to Sandro.
 
 	- [Klaus] Revise entire package structure.  
 
-	- [Sandro] Gui Test Framework
+	- [Sandro] Own Info - Do not open it if the name is already set. Ignore port.
+
+	- [Sandro] Auto Update - Delete the code/platform directory before unzipping code. 
 
 	- [Sandro] RapidShare Killer
 		- Help Célio - Find him on skype.
 		- Focus. Keep it simple. Zero sofistication. Simplest possible solution. No crash-recovery, for example. No bugs. Decent design.
 		- Use BLs - Add "OK" and "Cancel" buttons.
+
+	- [Sandro] Wind 
+		- Auto Scroll - DO NOT make a framework. Make a test SPECIFIC for auto-scroll using screen image comparisons.
+		- Dock/Undock
 
 	- [Bamboo] Video Tutorial with Jazz :)
 

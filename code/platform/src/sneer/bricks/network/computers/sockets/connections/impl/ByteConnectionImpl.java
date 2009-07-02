@@ -95,7 +95,7 @@ class ByteConnectionImpl implements ByteConnection {
 		try {
 			mySocket.write(array);
 		} catch (IOException iox) {
-			crash(mySocket, iox, "Error trying to send packet. ");
+			crash(mySocket, "Error trying to send packet. ");
 			return false;
 		}
 
@@ -133,7 +133,7 @@ class ByteConnectionImpl implements ByteConnection {
 		try {
 			array = mySocket.read();
 		} catch (Exception e) {
-			crash(mySocket, e, "Error trying to receive packet.");
+			crash(mySocket, "Error trying to receive packet.");
 			return false;
 		}
 
@@ -142,8 +142,8 @@ class ByteConnectionImpl implements ByteConnection {
 		return true;
 	}
 
-	private void crash(ByteArraySocket mySocket, Exception e, final String message) {
-		my(Logger.class).logShort(e, message);
+	private void crash(ByteArraySocket mySocket, final String message) {
+		my(Logger.class).log("Closing socket. {}", message);
 		_socketHolder.crash(mySocket);
 	}
 
@@ -162,7 +162,7 @@ class ByteConnectionImpl implements ByteConnection {
 		
 		ByteArraySocket socket = _socketHolder.socket();
 		if (socket == null) return;
-		crash(socket, null, "Connection closed");
+		crash(socket, "");
 	}
 
 }

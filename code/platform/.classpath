@@ -6,7 +6,7 @@
 	<classpathentry exported="true" kind="lib" path="src/sneer/foundation/testsupport/lib/hamcrest-library-1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="src/sneer/foundation/testsupport/lib/jmock-2.5.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="src/sneer/foundation/testsupport/lib/jmock-junit4-2.5.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="src/sneer/foundation/testsupport/lib/junit-4.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="src/sneer/foundation/testsupport/lib/junit-4.4.jar" sourcepath="src/sneer/foundation/testsupport/lib/junit-4.4-src.jar"/>
 	<classpathentry kind="lib" path="src/sneer/bricks/snapps/whisper/speex/impl/lib/speex.jar"/>
 	<classpathentry kind="lib" path="src/sneer/bricks/software/code/compilers/java/impl/lib/compiler-7-ea-b17-02_aug_2007.jar"/>
 	<classpathentry kind="lib" path="src/sneer/bricks/pulp/tuples/impl/lib/prevayler-2.3.jar" sourcepath="src/sneer/bricks/pulp/tuples/impl/lib/prevayler-2.3-src.zip"/>

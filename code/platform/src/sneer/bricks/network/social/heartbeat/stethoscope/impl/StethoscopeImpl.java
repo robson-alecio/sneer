@@ -3,6 +3,7 @@ package sneer.bricks.network.social.heartbeat.stethoscope.impl;
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.hardware.ram.maps.cachemaps.CacheMap;
 import sneer.bricks.hardware.ram.maps.cachemaps.CacheMaps;
 import sneer.bricks.network.social.Contact;
@@ -18,7 +19,7 @@ import sneer.foundation.lang.Producer;
 
 class StethoscopeImpl implements Stethoscope, Consumer<HeartBeat>, Stepper {
 
-	private static final int TIME_TO_DIE = 60 * 1000;
+	private static final int TIME_TILL_DEATH = 60 * 1000;
 	private static final int MAX_BEAT_AGE = 10 * 60 * 1000;
 	private static final Contact[] CONTACT_ARRAY_TYPE = new Contact[0];
 	
@@ -27,7 +28,7 @@ class StethoscopeImpl implements Stethoscope, Consumer<HeartBeat>, Stepper {
 	
 	{
 		my(TupleSpace.class).addSubscription(HeartBeat.class, this);
-		my(Clock.class).wakeUpEvery(TIME_TO_DIE, this);
+		my(Clock.class).wakeUpEvery(TIME_TILL_DEATH, this);
 	}
 	
 	
@@ -40,8 +41,8 @@ class StethoscopeImpl implements Stethoscope, Consumer<HeartBeat>, Stepper {
 	private void notifyDeathOfStaleContacts() {
 		long now = now();
 		for (Contact contact : _registersByContact.keySet().toArray(CONTACT_ARRAY_TYPE))
-			if (now - lastBeatTime(contact) > TIME_TO_DIE)
-				isAliveRegister(contact).setter().consume(false);
+			if (now - lastBeatTime(contact) > TIME_TILL_DEATH)
+				setDead(contact);
 	}
 
 
@@ -81,11 +82,25 @@ class StethoscopeImpl implements Stethoscope, Consumer<HeartBeat>, Stepper {
 		if (isTooOld(beat)) return;
 		
 		Contact contact = contact(beat);
-		if (beat.publicationTime() < lastBeatTime(contact)) return;
-		_lastBeatTimesByContact.put(contact, beat.publicationTime());
+		_lastBeatTimesByContact.put(contact, now());
 
-		isAliveRegister(contact).setter().consume(true);
+		setAlive(contact);
 	}
+
+
+	private void setAlive(Contact contact) {
+		if (isAlive(contact).currentValue()) return;
+		isAliveRegister(contact).setter().consume(true);
+		my(Logger.class).log("Contact {} is online.", contact);
+	}
+
+	private void setDead(Contact contact) {
+		if (!isAlive(contact).currentValue()) return;
+		isAliveRegister(contact).setter().consume(false);
+		my(Logger.class).log("Contact {} is offline.", contact);
+	}
+
+
 
 
 	@Override

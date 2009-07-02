@@ -9,6 +9,8 @@ import sneer.bricks.hardware.ram.maps.cachemaps.CacheMaps;
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.network.social.heartbeat.HeartBeat;
 import sneer.bricks.network.social.heartbeat.stethoscope.Stethoscope;
+import sneer.bricks.pulp.blinkinglights.BlinkingLights;
+import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
@@ -61,7 +63,10 @@ class StethoscopeImpl implements Stethoscope, Consumer<HeartBeat>, Stepper {
 
 
 	private boolean isTooOld(HeartBeat beat) {
-		return now() - beat.publicationTime() > MAX_BEAT_AGE;
+		if (now() - beat.publicationTime() < MAX_BEAT_AGE) return false;
+		
+		my(BlinkingLights.class).turnOn(LightType.WARN, "Time mismatch with " + contact(beat), "You have received an old Heartbeat from " + contact(beat) + ". This can happen if your clock and his are set to different times or to same times but different timezones.");
+		return true;
 	}
 
 

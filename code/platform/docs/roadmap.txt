@@ -5,7 +5,9 @@
 
 	- [Klaus] Revise entire package structure.  
 
-	- [Sandro] Gui Test Framework
+	- [Sandro] Own Info - Fix - It is still opening even if own name is set.
+
+	- [Sandro] Auto Scroll - DO NOT make a framework. Make a test SPECIFIC for auto-scroll using screen image comparisons.
 
 	- [Sandro] RapidShare Killer
 		- Help Célio - Find him on skype.

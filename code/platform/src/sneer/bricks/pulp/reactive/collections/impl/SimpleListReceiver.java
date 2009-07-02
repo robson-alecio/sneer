@@ -6,7 +6,7 @@ public abstract class SimpleListReceiver<T> extends VisitingListReceiver<T> {
 	
 	public SimpleListReceiver(ListSignal<T> listSignal) {
 		super(listSignal);
-		for (T element : _input) elementPresent(element);
+		for (T element : listSignal) elementPresent(element);
 	}
 	
 	protected abstract void elementPresent(T element);

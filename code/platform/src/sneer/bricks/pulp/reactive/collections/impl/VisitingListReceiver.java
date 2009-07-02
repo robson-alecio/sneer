@@ -7,10 +7,11 @@ import sneer.foundation.lang.Consumer;
 
 public abstract class VisitingListReceiver<T> implements Consumer<ListChange<T>>, Visitor<T> {
 
-	protected final ListSignal<T> _input;
+	@SuppressWarnings("unused")
+	private final ListSignal<T> _refToAvoidGc;
 
 	public VisitingListReceiver(ListSignal<T> input) {
-		_input = input;
+		_refToAvoidGc = input;
 		input.addListReceiver(this);
 	}
 

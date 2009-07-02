@@ -10,6 +10,7 @@ import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.bricks.pulp.reactive.collections.CollectionChange;
@@ -26,6 +27,7 @@ public class AutoScrollTest extends BrickTest {
 	private final JTextPane _field = new JTextPane();
 	
 	@Test
+	@Ignore
 	public void testScroll() throws Exception {
 		
 		JScrollPane subject = my(AutoScrolls.class).create( _field, _register.output(),

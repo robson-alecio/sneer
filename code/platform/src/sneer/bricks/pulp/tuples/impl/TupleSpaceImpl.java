@@ -12,10 +12,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
@@ -44,7 +43,7 @@ class TupleSpaceImpl implements TupleSpace {
 		private final WeakReference<Consumer<? super Tuple>> _subscriber;
 		private final Class<? extends Tuple> _tupleType;
 		private final Environment _environment;
-		private final BlockingQueue<Tuple> _tuplesToNotify = new LinkedBlockingQueue<Tuple>(); 
+		private final List<Tuple> _tuplesToNotify = new LinkedList<Tuple>(); 
 
 		<T extends Tuple> Subscription(Consumer<? super T> subscriber, Class<T> tupleType) {
 			_subscriber = new WeakReference<Consumer<? super Tuple>>((Consumer<? super Tuple>) subscriber);
@@ -77,23 +76,27 @@ class TupleSpaceImpl implements TupleSpace {
 			dispatchCounterDecrement();
 		}
 
-		private Tuple waitToPopTuple() {
-			try {
-				return _tuplesToNotify.take();
-			} catch (InterruptedException e) {
-				throw new IllegalStateException(e);
-			}
-		}
-
 		void filterAndNotify(final Tuple tuple) {
 			if (!_tupleType.isInstance(tuple))
 				return;
-
+			
 			dispatchCounterIncrement();
-			try {
-				_tuplesToNotify.put(tuple);
-			} catch (InterruptedException e) {
-				throw new IllegalStateException();
+			pushTuple(tuple);
+		}
+		
+		private Tuple waitToPopTuple() {
+			synchronized (_tuplesToNotify) {
+				if (_tuplesToNotify.isEmpty())
+					my(Threads.class).waitWithoutInterruptions(_tuplesToNotify);
+				
+				return _tuplesToNotify.remove(0);
+			}
+		}
+
+		private void pushTuple(Tuple tuple) {
+			synchronized (_tuplesToNotify) {
+				_tuplesToNotify.add(tuple);
+				_tuplesToNotify.notify();
 			}
 		}
 
@@ -166,6 +169,8 @@ class TupleSpaceImpl implements TupleSpace {
 	
 	@Override
 	public void publish(Tuple tuple) {
+//		System.out.println("PUBLISHING TUPLE " + tuple.getClass().getSimpleName() + " - " + Thread.currentThread());
+		
 		synchronized (_publicationMonitor ) {
 			stamp(tuple);
 			acquire(tuple);
@@ -188,7 +193,6 @@ class TupleSpaceImpl implements TupleSpace {
 		for (Subscription subscription : _subscriptions.toArray(SUBSCRIPTION_ARRAY)) {
 			if (subscription.wasGcd()) {
 				_subscriptions.remove(subscription);
-				System.out.println("Subscriber gc'd for tupleType: " + subscription._tupleType);
 				my(Logger.class).log("Subscriber gc'd for tupleType: " + subscription._tupleType);
 				continue;
 			}

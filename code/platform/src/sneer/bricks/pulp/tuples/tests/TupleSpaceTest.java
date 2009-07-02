@@ -15,7 +15,7 @@ public class TupleSpaceTest extends BrickTest {
 
 	private final TupleSpace _subject = my(TupleSpace.class);
 	
-	@Test
+	@Test (timeout = 3000)
 	public void subscriptionRemoval() {
 		final ArrayList<Tuple> tuples = new ArrayList<Tuple>();
 		final Consumer<TestTuple> consumer = new Consumer<TestTuple>() { @Override public void consume(TestTuple value) {

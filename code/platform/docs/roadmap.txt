@@ -1,13 +1,13 @@
 ﻿TASKS
 =========
 
-	- [Klaus] Unignore ProbeManagerTest
+	- [Klaus] Weird Contacts - Talk to Sandro.
 
 	- [Klaus] Revise entire package structure.  
 
 	- [Sandro] Own Info - Do not open it if the name is already set. Ignore port.
 
-	- [Sandro] Auto Scroll - DO NOT make a framework. Make a test SPECIFIC for auto-scroll using screen image comparisons.
+	- [Sandro] Auto Update - Delete the code/platform directory before unzipping code. 
 
 	- [Sandro] RapidShare Killer
 		- Help Célio - Find him on skype.
@@ -15,7 +15,7 @@
 		- Use BLs - Add "OK" and "Cancel" buttons.
 
 	- [Sandro] Wind 
-		- Autoscroll - Fix definitively
+		- Auto Scroll - DO NOT make a framework. Make a test SPECIFIC for auto-scroll using screen image comparisons.
 		- Dock/Undock
 
 	- [Sandro] Sneer Port: -> Sneer TCP Port:

@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import org.junit.internal.runners.InitializationError;
+import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.internal.runners.TestClass;
 import org.junit.internal.runners.TestMethod;
 import org.junit.runner.notification.RunNotifier;
@@ -19,19 +20,17 @@ import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.EnvironmentUtils;
 import sneer.foundation.environments.Environments;
 
-public class BrickTestRunner extends IntermittentTestRunner {
+public class BrickTestRunner extends JUnit4ClassRunner {
 
 	protected static class TestMethodWithEnvironment extends TestMethod {
-
+		
 		private final Environment _environment;
-		private final Method _method;
 
-		public TestMethodWithEnvironment(Method test, TestClass testClass) {
-			super(test, testClass);
+		public TestMethodWithEnvironment(Method method, TestClass testClass) {
+			super(method, testClass);
 			_environment = my(Environment.class);
-			_method = test;
 		}
-
+		
 		static class InvocationTargetExceptionEnvelope extends RuntimeException {
 			public InvocationTargetExceptionEnvelope(InvocationTargetException e) {
 				super(e);
@@ -48,13 +47,13 @@ public class BrickTestRunner extends IntermittentTestRunner {
 		}
 
 		private void invokeInEnvironment(final Object test) {
-			tryToRunTestMethodWith(_environment, new Runnable() { @Override public void run() {
+			Environments.runWith(_environment, new Runnable() { @Override public void run() {
 				try {
 					doInvoke(test);
 				} catch (InvocationTargetException e) {
 					throw new InvocationTargetExceptionEnvelope(e);
 				}
-			}}, maxAttemptsFor(_method), _method.getName());
+			}});
 		}
 
 		protected void doInvoke(Object test) throws InvocationTargetException {
@@ -67,7 +66,8 @@ public class BrickTestRunner extends IntermittentTestRunner {
 			}
 		}
 
-		private void superInvoke(Object test) throws IllegalAccessException, InvocationTargetException {
+		private void superInvoke(Object test) throws IllegalAccessException,
+				InvocationTargetException {
 			super.invoke(test);
 		}
 	}
@@ -87,7 +87,7 @@ public class BrickTestRunner extends IntermittentTestRunner {
 
 		private <T> T provideContribution(Class<T> intrface) {
 			if (_testInstance == null) throw new IllegalStateException();
-
+				
 			for (Field field : _contributedFields) {
 				final Object value = fieldValueFor(field, _testInstance);
 				if (null == value) {
@@ -105,20 +105,21 @@ public class BrickTestRunner extends IntermittentTestRunner {
 				throw new IllegalStateException(field + " has not been initialized. You might have to move its declaration up, before it is used indirectly by other declarations.");
 			}
 		}
-
+		
 		public void instanceBeingInitialized(Object testInstance) {
 			if (_testInstance != null) throw new IllegalStateException();
 			_testInstance = testInstance;
 		}
 	}
 
+	
 	private final Field[] _contributedFields; 
-
+	
 	public BrickTestRunner(Class<?> testClass) throws InitializationError {
 		super(testClass);
 		_contributedFields = contributedFields(testClass);
 	}
-
+	
 	
 	private static Field[] contributedFields(Class<? extends Object> klass) {
 		final ArrayList<Field> result = new ArrayList<Field>();
@@ -132,7 +133,7 @@ public class BrickTestRunner extends IntermittentTestRunner {
 	private static void collectContributedFields(
 			final ArrayList<Field> collector,
 			final Class<? extends Object> klass) {
-
+		
 		for (Field field : klass.getDeclaredFields()) {
 			if (field.getAnnotation(Bind.class) == null)
 				continue;
@@ -169,59 +170,10 @@ public class BrickTestRunner extends IntermittentTestRunner {
 	}
 
 	@Override
-	protected void invokeTestMethod(final Method testMethod, final RunNotifier notifier) {
-		tryToRunTestMethodWith(newEnvironment(), new Runnable() { @Override public void run() {
-			superInvokeTestMethod(testMethod, notifier);
-		}}, maxAttemptsFor(testMethod), testMethod.getName());
-	}
-
-	private static int maxAttemptsFor(final Method testMethod) {
-		final Intermittent annotation = testMethod.getAnnotation(Intermittent.class);
-		return (annotation == null ? 1 : annotation.maxAttempts());
-	}
-
-	// TODO: Removed this method
-	private static void tryToRunTestMethodWith(final Environment environment, 
-			final Runnable testMethodRunnable, final int maxNumberOfExecutions, final String methodName) {
-
-		if (maxNumberOfExecutions == 1) {
-			runTestMethodWith(environment, testMethodRunnable);
-		} else {
-			tryToRunIntermittentTestMethodWith(environment, testMethodRunnable, maxNumberOfExecutions, methodName);
-		}
-	}
-
-	private static void tryToRunIntermittentTestMethodWith(final Environment environment,
-			final Runnable testMethodRunnable, final int maxNumberOfExecutions, final String methodName) {
-
-		Exception originalException = null;
-
-		for (int attempt = 1; attempt <= maxNumberOfExecutions; ++attempt) {
-			try {
-				runTestMethodWith(environment, testMethodRunnable);
-				assessIntermittence(methodName, attempt, maxNumberOfExecutions);
-				break; // If no exception is thrown, leave loop immediately
-
-			} catch (Exception e) {
-				if (originalException == null) originalException = e;
-				System.err.println("Execution " + attempt + " of " + methodName + " failed. Error: " + e.getMessage());
-				if (attempt == maxNumberOfExecutions) throw new RuntimeException(e);
-			}
-		}
-	}
-
-	// TODO: Remove this method and use in-line instead (caller above).
-	private static void runTestMethodWith(final Environment environment,
-			final Runnable testMethodRunnable) {
-
-		Environments.runWith(environment, testMethodRunnable);
-	}
-
-	private static void assessIntermittence(final String methodName,
-			final int actualNumberOfExecutions, final int maxNumberOfExecutions) {
-
-		if (maxNumberOfExecutions > 1 && actualNumberOfExecutions == 1)
-			System.out.println(">>> " + methodName + " may not need to use @Intermittent anymore");
+	protected void invokeTestMethod(final Method arg0, final RunNotifier arg1) {
+		Environments.runWith(newEnvironment(), new Runnable() { @Override public void run() {
+			superInvokeTestMethod(arg0, arg1);
+		}});
 	}
 
 	@Override
@@ -229,11 +181,13 @@ public class BrickTestRunner extends IntermittentTestRunner {
 		return new TestMethodWithEnvironment(method, getTestClass());
 	}
 
-	protected void superInvokeTestMethod(Method method, RunNotifier notifier) {
-		super.invokeTestMethod(method, notifier);
+	protected void superInvokeTestMethod(Method arg0, RunNotifier arg1) {
+		super.invokeTestMethod(arg0, arg1);
 	}
+
 
 	void dispose() {
 		((CachingEnvironment)my(Environment.class)).clear();
 	}
+	
 }

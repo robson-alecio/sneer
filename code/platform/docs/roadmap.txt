@@ -14,8 +14,6 @@
 
 	- [Sandro] DynDns fields - Comment out in OwnInfo because DynDns is not yet working.
 
-	- [Sandro] Sneer Port: -> Sneer TCP Port:
-
 	- [Sandro] LogConsoleWindow -> The Title does not appear in Linux. See screenshot in email.
 
 	- [Bamboo] Video Tutorial with Jazz :)

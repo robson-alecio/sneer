@@ -106,7 +106,7 @@ class OwnInfoImpl extends JFrame implements OwnInfo {
 		pnl.setLayout(new GridBagLayout());
 		
 		addWidget(_yourOwnName.getComponent(), "Own Name:", 0);
-		addWidget(_sneerPort.getComponent(), "Sneer Port:", 1);
+		addWidget(_sneerPort.getComponent(), "Sneer TCP Port:", 1);
 		
 		JPanel pnlDynDns = new JPanel();
 		pnlDynDns.setLayout(new GridBagLayout());

@@ -5,8 +5,6 @@
 
 	- [Klaus] Revise entire package structure.  
 
-	- [Sandro] Auto Update - Delete the code/platform directory before unzipping code. 
-
 	- [Sandro] RapidShare Killer
 		- Help Célio - Find him on skype.
 		- Focus. Keep it simple. Zero sofistication. Simplest possible solution. No crash-recovery, for example. No bugs. Decent design.

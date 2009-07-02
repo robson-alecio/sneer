@@ -21,7 +21,7 @@ import sneer.foundation.lang.Producer;
 
 class StethoscopeImpl implements Stethoscope, Consumer<HeartBeat>, Stepper {
 
-	private static final int TIME_TILL_DEATH = 60 * 1000;
+	private static final int TIME_TILL_DEATH = 30 * 1000;
 	private static final int MAX_BEAT_AGE = 10 * 60 * 1000;
 	private static final Contact[] CONTACT_ARRAY_TYPE = new Contact[0];
 	

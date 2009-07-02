@@ -16,8 +16,6 @@
 
 	- [Sandro] Sneer Port: -> Sneer TCP Port:
 
-	- [Sandro] Wind Autoscroll - Fix definitively
-
 	- [Sandro] LogConsoleWindow -> The Title does not appear in Linux. See screenshot in email.
 
 	- [Bamboo] Video Tutorial with Jazz :)

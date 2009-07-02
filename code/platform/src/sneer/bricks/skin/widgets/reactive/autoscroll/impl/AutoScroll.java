@@ -16,7 +16,6 @@ import sneer.bricks.pulp.reactive.Reception;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.reactive.collections.CollectionChange;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
-import sneer.bricks.pulp.reactive.collections.impl.SimpleListReceiver;
 import sneer.bricks.skin.main.synth.scroll.SynthScrolls;
 import sneer.foundation.lang.ByRef;
 import sneer.foundation.lang.Consumer;
@@ -32,11 +31,11 @@ class AutoScroll<T> {
 	}
 
 	AutoScroll(JComponent keyTypeSource, ListSignal<T> inputSignal, Consumer<CollectionChange<T>> receiver) {
+		initReceivers(inputSignal, receiver);
 		keyTypeSource.addKeyListener(new KeyAdapter(){@Override public void keyReleased(KeyEvent e) {
 			if(_shouldAutoscroll) 
 				placeAtEnd();
 		}});
-		initReceivers(inputSignal, receiver);
 		
 		_scroll.addFocusListener(new FocusAdapter(){
 			@SuppressWarnings({ "unchecked", "unused" })
@@ -67,41 +66,31 @@ class AutoScroll<T> {
 	}	
 	
 	private void initReceivers(ListSignal<T> inputSignal, Consumer<CollectionChange<T>> consumer) {
-		initPreChangeReceiver(inputSignal);		
-		_reception = my(Signals.class).receive(consumer, inputSignal);
-		initPosChangeReceiver(inputSignal);
+		_reception = my(Signals.class).receive(wrapper(consumer), inputSignal);
+	}
+	
+	private Consumer<CollectionChange<T>> wrapper(final	Consumer<CollectionChange<T>> consumer) {
+		Consumer<CollectionChange<T>> wrapper = new Consumer<CollectionChange<T>>(){ @Override public void consume(CollectionChange<T> value){
+			doAutoScroll(consumer, value);
+		}};
+		return wrapper;
+	}
+	
+	private void doAutoScroll( final Consumer<CollectionChange<T>> consumer, CollectionChange<T> value) {
+		_shouldAutoscroll = isAtEnd();
+		consumer.consume(value);
+		doAutoScroll();
+	}
+	
+	private void doAutoScroll() {
+		if(_shouldAutoscroll) 
+			placeAtEnd();
 	}
 	
 	private void initReceivers(EventSource<T> eventSource) {
 		_reception = my(Signals.class).receive(new Consumer<T>(){ @Override public void consume(T value) {
-			if(_shouldAutoscroll) 
-				placeAtEnd();
+			doAutoScroll();
 		}}, eventSource);
-	}
-
-	@SuppressWarnings("unused")
-	private SimpleListReceiver<T> _preChangeReceiverAvoidGc;
-	private void initPreChangeReceiver(ListSignal<T> inputSignal) {
-		_preChangeReceiverAvoidGc = new MySimpleListReceiver(inputSignal){ @Override protected void fire() {
-			_shouldAutoscroll = isAtEnd();
-		}};
-	}
-	
-	@SuppressWarnings("unused")
-	private SimpleListReceiver<T> _posChangeReceiverAvoidGc;
-	private void initPosChangeReceiver(ListSignal<T> inputSignal) {
-		_posChangeReceiverAvoidGc = new MySimpleListReceiver(inputSignal){ @Override protected void fire() {
-			if(_shouldAutoscroll) placeAtEnd();
-		}};
-	}
-	
-	private abstract class MySimpleListReceiver extends SimpleListReceiver<T>{
-		public MySimpleListReceiver(ListSignal<T> inputSignal) { super(inputSignal); }
-		@Override protected void elementAdded(T newElement) { fire();}
-		@Override protected void elementPresent(T element) 		{ fire();}
-		@Override protected void elementRemoved(T element) 	{ fire();}
-
-		protected abstract void fire();
 	}
 	
 	@Override

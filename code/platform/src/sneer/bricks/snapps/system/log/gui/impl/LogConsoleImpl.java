@@ -45,6 +45,7 @@ import sneer.foundation.lang.Consumer;
 
 class LogConsoleImpl extends JFrame implements LogConsole {
 
+	private static final String SNEER_LOG_CONSOLE = "Sneer Log Console";
 	private final Synth _synth = my(Synth.class);
 	{_synth.notInGuiThreadLoad(this.getClass());}
 	
@@ -57,16 +58,15 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	private final MainMenu _mainMenu = my(MainMenu.class);
 
 	private final JTabbedPane _tab = new JTabbedPane();
-	
 	private final JTextArea _txtLog = new JTextArea();
 	
 	@SuppressWarnings("unused")
 	private final WidgetLogger _logger = new WidgetLogger();
 	private final JScrollPane _autoScroll = AutoScroll();
 	
-	{my(Dashboard.class);}
-
 	LogConsoleImpl(){
+		super(SNEER_LOG_CONSOLE);
+		my(Dashboard.class);
 		addMenuAction();
 		my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
 			initGui();
@@ -95,7 +95,7 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 		_tab.setTabPlacement(SwingConstants.RIGHT);
 		_tab.addChangeListener(new ChangeListener(){ @Override public void stateChanged(ChangeEvent e) {
 			if(_tab.getSelectedIndex()==0)
-				setTitle("Sneer Log Console");
+				setTitle(SNEER_LOG_CONSOLE);
 			else
 				setTitle("Sneer Log Console (Filter)");
 		}});

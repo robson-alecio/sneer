@@ -12,8 +12,6 @@
 		- Focus. Keep it simple. Zero sofistication. Simplest possible solution. No crash-recovery, for example. No bugs. Decent design.
 		- Use BLs - Add "OK" and "Cancel" buttons.
 
-	- [Sandro] LogConsoleWindow -> The Title does not appear in Linux. See screenshot in email.
-
 	- [Bamboo] Video Tutorial with Jazz :)
 
 	- [Igor] Test Intermittence - @Intermittent annotation to run test N times.

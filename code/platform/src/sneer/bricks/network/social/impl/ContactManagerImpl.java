@@ -24,7 +24,7 @@ class ContactManagerImpl implements ContactManager {
 	}
     
 	private boolean isWeird(String nick) {
-		return nick.length() > 100;
+		return nick.length() > 60;
 	}
 
 	

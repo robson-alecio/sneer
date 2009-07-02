@@ -194,7 +194,7 @@ class TupleSpaceImpl implements TupleSpace {
 
 
 	private boolean isWeird(Tuple tuple) {
-		if (nameFor(tuple.publisher()).length() < 100) return false;
+		if (nameFor(tuple.publisher()).length() < 60) return false;
 		
 		my(BlinkingLights.class).turnOn(LightType.ERROR, "Weird Tuple", "Tuples with weird publishers are being filtered out.", 30000);
 		return true;

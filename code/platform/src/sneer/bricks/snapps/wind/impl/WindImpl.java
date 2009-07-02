@@ -5,9 +5,6 @@ import static sneer.foundation.environments.Environments.my;
 import java.util.Comparator;
 
 import sneer.bricks.hardware.clock.Clock;
-import sneer.bricks.hardware.io.log.Logger;
-import sneer.bricks.network.social.Contact;
-import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.reactive.collections.CollectionSignals;
 import sneer.bricks.pulp.reactive.collections.ListRegister;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
@@ -40,12 +37,7 @@ class WindImpl implements Wind, Consumer<Shout> {
 	@Override
 	public void consume(Shout shout) {
 		if (my(Clock.class).time() - shout.publicationTime() > 1000 * 60 * 60 * 24) return;
-		my(Logger.class).log("Shout by {} heard in the wind: {}", contact(shout), shout.phrase);
 		_shoutsHeard.adder().consume(shout);
-	}
-
-	private Contact contact(Shout shout) {
-		return my(Seals.class).contactGiven(shout.publisher());
 	}
 
 	@Override

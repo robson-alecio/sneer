@@ -15,6 +15,7 @@ class LogFilterImpl implements LogFilter {
 		_phrases.add("Exception");
 		_phrases.add("online");
 		_phrases.add("offline");
+		_phrases.add("Tuple");
 		_phrases.add("Shout");
 	}
 	

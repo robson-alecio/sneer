@@ -169,8 +169,6 @@ class TupleSpaceImpl implements TupleSpace {
 	
 	@Override
 	public void publish(Tuple tuple) {
-//		System.out.println("PUBLISHING TUPLE " + tuple.getClass().getSimpleName() + " - " + Thread.currentThread());
-		
 		synchronized (_publicationMonitor ) {
 			stamp(tuple);
 			acquire(tuple);

@@ -5,6 +5,8 @@
 
 	- [Klaus] Revise entire package structure.  
 
+	- [Sandro] Auto-scroll - Talk to Klaus about the new auto-scroll.
+
 	- [Sandro] Auto Update - Delete the code/platform directory before unzipping code. 
 
 	- [Sandro] RapidShare Killer

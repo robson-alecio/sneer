@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,12 +25,15 @@ import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.threads.Stepper;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
+import sneer.bricks.pulp.blinkinglights.BlinkingLights;
+import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
 import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.reactive.collections.CollectionSignals;
 import sneer.bricks.pulp.reactive.collections.ListRegister;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.bricks.software.directoryconfig.DirectoryConfig;
+import sneer.foundation.brickness.Seal;
 import sneer.foundation.brickness.Tuple;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
@@ -180,10 +184,28 @@ class TupleSpaceImpl implements TupleSpace {
 		if (!_transientTupleCache.add(tuple)) return;
 		capTransientTuples();
 		
+		if (isWeird(tuple)) return; //Filter out those weird shouts that appeared in the beginning.
+		
 		if (isAlreadyKept(tuple)) return;
 		keepIfNecessary(tuple);
 				
 		notifySubscriptions(tuple);
+	}
+
+
+	private boolean isWeird(Tuple tuple) {
+		if (nameFor(tuple.publisher()).length() < 100) return false;
+		
+		my(BlinkingLights.class).turnOn(LightType.ERROR, "Weird Tuple", "Tuples with weird publishers are being filtered out.", 30000);
+		return true;
+	}
+
+	private String nameFor(Seal seal) {
+		try {
+			return new String(seal.bytes(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 
@@ -277,7 +299,7 @@ class TupleSpaceImpl implements TupleSpace {
 	@Override	
 	public void waitForAllDispatchingToFinish() {
 		synchronized (_dispatchCounterMonitor ) {
-			if (_dispatchCounter != 0)
+			while (_dispatchCounter != 0)
 				_threads.waitWithoutInterruptions(_dispatchCounterMonitor);
 		}
 		

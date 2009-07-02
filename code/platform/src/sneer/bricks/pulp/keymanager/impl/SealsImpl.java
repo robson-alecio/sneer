@@ -41,19 +41,19 @@ class SealsImpl implements Seals {
 
 
 	@Override
-	public synchronized Contact contactGiven(Seal peersPublicKey) {
+	public synchronized Contact contactGiven(Seal peersSeal) {
 //		for (Contact candidate : _keyByContact.keySet())
 //			if(_keyByContact.get(candidate).equals(peersPublicKey))
 //				return candidate;
 //		
 //		return null;
 		
-		return my(ContactManager.class).produceContact(nameFor(peersPublicKey));
+		return my(ContactManager.class).produceContact(nameFor(peersSeal));
 	}
 
-	private String nameFor(Seal publicKey) {
+	private String nameFor(Seal seal) {
 		try {
-			return new String(publicKey.bytes(), UTF_8);
+			return new String(seal.bytes(), UTF_8);
 		} catch (UnsupportedEncodingException e) {
 			throw new IllegalStateException(e);
 		}

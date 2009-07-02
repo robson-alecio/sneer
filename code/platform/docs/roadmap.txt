@@ -5,7 +5,7 @@
 
 	- [Klaus] Revise entire package structure.  
 
-	- [Sandro] Own Info - Fix - It is still opening even if own name is set.
+	- [Sandro] Own Info - Do not open it if the name is already set. Ignore port.
 
 	- [Sandro] Auto Scroll - DO NOT make a framework. Make a test SPECIFIC for auto-scroll using screen image comparisons.
 

@@ -30,6 +30,8 @@ public class IntermittentTestRunnerTest {
 	@Intermittent
 	@Test
 	public void testIntermittentAnnotation() {
+		// DEBUG: System.err.println(_intermittenceCounter);
+
 		checkBeforeAndAfter();
 
 		if (_intermittenceCounter++ == MAX_INTERMITTENCES) return;

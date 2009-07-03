@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.internal.runners.InitializationError;
 import org.junit.internal.runners.JUnit4ClassRunner;
+import org.junit.runner.Description;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 import org.junit.runner.notification.RunNotifier;
@@ -19,20 +20,29 @@ public class IntermittentTestRunner extends JUnit4ClassRunner {
 	protected void invokeTestMethod(final Method method, final RunNotifier notifier) {
 		final AtomicInteger attempt = new AtomicInteger(1);
 
-		notifier.addListener(new RunListener() { @Override public void testFailure(Failure failure) throws Exception {
+		notifier.addListener(new RunListener() {
+
+			private boolean _needToRunAgain = false;
+
+			@Override
+			public void testFinished(Description description) throws Exception {
+				if(_needToRunAgain) superInvokeTestMethod(method, notifier);
+			}
+
+			@Override
+			public void testFailure(Failure failure) throws Exception {
 				System.err.println("Execution " + attempt + " of " + method.getName() + " failed.");
 				System.err.println(failure.getTrace());
-				doInvokeTestMethod(method, notifier, attempt.incrementAndGet());
-		}});
+				_needToRunAgain = attempt.incrementAndGet() <= maxAttemptsFor(method);
+			}
+		});
 
-		doInvokeTestMethod(method, notifier, attempt.get());
+		superInvokeTestMethod(method, notifier);
 		assessIntermittence(method.getName(), attempt.get(), maxAttemptsFor(method));
 	}
 
-	private void doInvokeTestMethod(Method method, RunNotifier notifier, int attempt) {
-		if (attempt <= maxAttemptsFor(method)) {
-			super.invokeTestMethod(method, notifier);
-		}
+	private void superInvokeTestMethod(Method method, RunNotifier notifier) {
+		super.invokeTestMethod(method, notifier);
 	}
 
 	private static int maxAttemptsFor(final Method method) {
@@ -41,6 +51,7 @@ public class IntermittentTestRunner extends JUnit4ClassRunner {
 	}
 
 	private static void assessIntermittence(final String methodName, final int numberOfAttempts, final int maxAttempts) {
+		System.out.println("Test " + methodName + " was run " + numberOfAttempts + (numberOfAttempts > 1 ? " times." : " time."));
 		if (maxAttempts > 1 && numberOfAttempts == 1)
 			System.out.println(">>> " + methodName + " may not need to use @Intermittent anymore");
 	}

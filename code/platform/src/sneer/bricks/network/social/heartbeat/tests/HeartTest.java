@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.network.social.heartbeat.Heart;
-import sneer.bricks.network.social.heartbeat.HeartBeat;
+import sneer.bricks.network.social.heartbeat.Heartbeat;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.brickness.testsupport.Bind;
 import sneer.foundation.brickness.testsupport.BrickTest;
@@ -19,7 +19,7 @@ public class HeartTest extends BrickTest {
 	@Test
 	public void heartIsBeating() {
 		checking(new Expectations() {{
-			exactly(4).of(_tupleSpace).publish(with(any(HeartBeat.class)));
+			exactly(4).of(_tupleSpace).publish(with(any(Heartbeat.class)));
 		}});
 
 		my(Heart.class);

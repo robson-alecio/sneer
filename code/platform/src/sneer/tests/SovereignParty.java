@@ -12,9 +12,8 @@ public interface SovereignParty {
 	byte[] seal();
 
 	//Freedom2
-	void connectTo(SovereignParty b);
-	boolean isOnline(String string);
 	void giveNicknameTo(SovereignParty peer, String nickname);
+	boolean isOnline(String nickname);
 	void navigateAndWaitForName(String nicknamePath, String expectedName);
 
 	//Freedom5

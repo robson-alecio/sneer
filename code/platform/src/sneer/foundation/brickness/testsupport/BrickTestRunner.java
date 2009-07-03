@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import org.junit.internal.runners.InitializationError;
+import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.internal.runners.TestClass;
 import org.junit.internal.runners.TestMethod;
 import org.junit.runner.notification.RunNotifier;
@@ -19,7 +20,7 @@ import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.EnvironmentUtils;
 import sneer.foundation.environments.Environments;
 
-public class BrickTestRunner extends IntermittentTestRunner {
+public class BrickTestRunner extends JUnit4ClassRunner {
 
 	protected static class TestMethodWithEnvironment extends TestMethod {
 

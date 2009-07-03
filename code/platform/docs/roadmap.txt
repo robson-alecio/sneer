@@ -5,7 +5,10 @@
 
 	- [Klaus] Revise entire package structure.  
 
-	- [Sandro] Auto-scroll - Talk to Klaus about the new auto-scroll.
+	- [Sandro] Auto-scroll
+		- Delete the OldAutoScroll class.
+		- Delete the create(...) methods.
+		- Use the new runWithAutoscroll() method. Must be called inside the GUI Thread!!! (I did not test it!!!)
 
 	- [Sandro] RapidShare Killer
 		- Help Célio - Find him on skype.

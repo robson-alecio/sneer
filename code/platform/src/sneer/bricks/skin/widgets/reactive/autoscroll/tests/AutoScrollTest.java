@@ -16,7 +16,7 @@ import org.junit.Test;
 import sneer.bricks.pulp.reactive.collections.CollectionChange;
 import sneer.bricks.pulp.reactive.collections.CollectionSignals;
 import sneer.bricks.pulp.reactive.collections.ListRegister;
-import sneer.bricks.skin.widgets.reactive.autoscroll.AutoScrolls;
+import sneer.bricks.skin.widgets.reactive.autoscroll.AutoScroll;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.lang.Consumer;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
@@ -30,7 +30,7 @@ public class AutoScrollTest extends BrickTest {
 	@Ignore
 	public void testScroll() throws Exception {
 		
-		JScrollPane subject = my(AutoScrolls.class).create( _field, _register.output(),
+		JScrollPane subject = my(AutoScroll.class).create( _field, _register.output(),
 				new Consumer<CollectionChange<String>>() { @Override public void consume(CollectionChange<String> change) {
 						Document document = _field.getDocument();
 						try {

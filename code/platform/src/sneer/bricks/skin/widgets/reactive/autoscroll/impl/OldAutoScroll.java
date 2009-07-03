@@ -20,7 +20,7 @@ import sneer.bricks.skin.main.synth.scroll.SynthScrolls;
 import sneer.foundation.lang.ByRef;
 import sneer.foundation.lang.Consumer;
 
-class AutoScroll<T> {
+class OldAutoScroll<T> {
 	
 	private final JScrollPane _scroll = my(SynthScrolls.class).create();
 	private boolean _shouldAutoscroll = true;
@@ -30,7 +30,7 @@ class AutoScroll<T> {
 		return _scroll;
 	}
 
-	AutoScroll(JComponent keyTypeSource, ListSignal<T> inputSignal, Consumer<CollectionChange<T>> receiver) {
+	OldAutoScroll(JComponent keyTypeSource, ListSignal<T> inputSignal, Consumer<CollectionChange<T>> receiver) {
 		initReceivers(inputSignal, receiver);
 		keyTypeSource.addKeyListener(new KeyAdapter(){@Override public void keyReleased(KeyEvent e) {
 			if(_shouldAutoscroll) 
@@ -39,11 +39,11 @@ class AutoScroll<T> {
 		
 		_scroll.addFocusListener(new FocusAdapter(){
 			@SuppressWarnings({ "unchecked", "unused" })
-			AutoScroll _refToAvoidGc = AutoScroll.this;
+			OldAutoScroll _refToAvoidGc = OldAutoScroll.this;
 		});
 	}
 	
-	public AutoScroll(EventSource<T> eventSource) {
+	public OldAutoScroll(EventSource<T> eventSource) {
 		initReceivers(eventSource);
 	}
 	

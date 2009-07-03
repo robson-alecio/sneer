@@ -37,7 +37,7 @@ import sneer.bricks.skin.main.synth.scroll.SynthScrolls;
 import sneer.bricks.skin.widgets.reactive.NotificationPolicy;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.TextWidget;
-import sneer.bricks.skin.widgets.reactive.autoscroll.AutoScrolls;
+import sneer.bricks.skin.widgets.reactive.autoscroll.AutoScroll;
 import sneer.bricks.snapps.wind.Shout;
 import sneer.bricks.snapps.wind.Wind;
 import sneer.bricks.snapps.wind.gui.WindGui;
@@ -63,7 +63,7 @@ class WindGuiImpl implements WindGui {
 		_myShout = (TextWidget<JTextPane>) ref[0];
 	}
 	
-	private final JScrollPane _scrollPane = my(AutoScrolls.class).create( _myShout.getMainWidget(), _wind.shoutsHeard(),
+	private final JScrollPane _scrollPane = my(AutoScroll.class).create( _myShout.getMainWidget(), _wind.shoutsHeard(),
 		new Consumer<CollectionChange<Shout>>() { @Override public void consume(CollectionChange<Shout> change) {
 				for (Shout shout : change.elementsAdded())
 					ShoutPainter.appendShout(shout, _shoutsList);

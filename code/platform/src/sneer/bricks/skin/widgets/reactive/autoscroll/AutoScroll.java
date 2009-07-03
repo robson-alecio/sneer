@@ -10,8 +10,10 @@ import sneer.foundation.brickness.Brick;
 import sneer.foundation.lang.Consumer;
 
 @Brick
-public interface AutoScrolls {
+public interface AutoScroll {
 	
+	void runWithAutoscroll(JScrollPane scrollPane, Runnable runnable);
+
 	<T> JScrollPane create(JTextPane component, ListSignal<T> inputSignal, Consumer<CollectionChange<T>> receiver);
 	<T> JScrollPane create(EventSource<T> eventSource);
 

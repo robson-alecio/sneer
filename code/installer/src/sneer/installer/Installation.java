@@ -36,6 +36,10 @@ class Installation {
 	private void createDirectories() throws IOException {
 		if(!sneerHome().exists())
 			sneerHome().mkdirs();
+		
+		if(platformCode().exists())
+			platformCode().delete();
+		
 		platformCode().mkdirs();
 	}
 

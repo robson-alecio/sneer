@@ -4,7 +4,10 @@ import static sneer.foundation.environments.Environments.my;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.FlowLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.ByteArrayOutputStream;
@@ -13,9 +16,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.BoundedRangeModel;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
@@ -30,6 +35,7 @@ import javax.swing.text.StyledDocument;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.hardware.gui.images.Images;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
+import sneer.bricks.pulp.blinkinglights.ConfirmationLight;
 import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.pulp.reactive.Signal;
@@ -59,6 +65,7 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		_images.put(LightType.INFO, constant(loadImage("info.png")));
 		_images.put(LightType.WARN, constant(loadImage("warn.png")));
 		_images.put(LightType.ERROR, constant(loadImage("error.png")));
+		_images.put(LightType.CONFIRMATION, constant(loadImage("confirmation.png")));
 	}
 	
 	BlinkingLightsGuiImpl(){
@@ -113,8 +120,16 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		private JDialog _window;
 		private JTextPane _textPane;
 		private JScrollPane _scroll;
+
+		private JPanel _confirmationPanel;
+		
+		private ActionListener _yesListener;
+		private ActionListener _noListener;
+
+		protected Light _light;
 		
 		private AlertWindowSupport(){
+			initListener();
 			initGui();
 			initMouseListener();
 		}
@@ -132,30 +147,72 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 			_scroll.setOpaque(false);
 			
 			Container panel = _window.getContentPane();
-			panel.setLayout(new BorderLayout());		panel.add(_scroll, BorderLayout.CENTER);
+			panel.setLayout(new BorderLayout());		
+			panel.add(_scroll, BorderLayout.CENTER);
 			_scroll.setBorder(new EmptyBorder(5,5,5,5));
+
+			_confirmationPanel = new JPanel();
+			_confirmationPanel.setLayout(new FlowLayout());
+			
+			JButton btnNo = new JButton("No");
+			JButton btnYes = new JButton("Yes");
+
+			_confirmationPanel.add(btnYes);
+			_confirmationPanel.add(btnNo);
+
+			btnYes.addActionListener(_yesListener);
+			btnNo.addActionListener(_noListener);
+		}
+
+		private void initListener() {
+			_yesListener = new ActionListener(){ @Override public void actionPerformed(ActionEvent arg0) {
+				if(_light==null) return;
+				if(_light.type() != LightType.CONFIRMATION) return;
+				
+				((ConfirmationLight)_light).sayYes();
+				_window.setVisible(false);
+			}};
+
+			_noListener = new ActionListener(){ @Override public void actionPerformed(ActionEvent arg0) {
+				if(_light==null) return;
+				if(_light.type() != LightType.CONFIRMATION) return;
+				
+				((ConfirmationLight)_light).sayNo();
+				_window.setVisible(false);
+			}};
 		}
 		
 		private void initMouseListener() {
 			_lightsList.getComponent().addMouseListener(new MouseAdapter(){ @Override public void mouseReleased(final MouseEvent event) {
-				Light light = getClickedLight(event);
-				if(light!=null)	show(light);
+				_light = getClickedLight(event);
+				
+				if(_light!=null)	
+					show(_light);
 			}});
 		}		
 
 		private Light getClickedLight(final MouseEvent event) {
 			JList list = (JList)event.getSource();
 			list.setSelectedIndex(list.locationToIndex(event.getPoint()));
-			Light light = (Light)list.getSelectedValue();
-			return light;
+			return (Light)list.getSelectedValue();
 		}
 		
 		private void show(final Light light){
-				setWindowTitle(light);
-				setWindowsMessage(light);
-				setWindowBounds();
-				_window.setVisible(true);
-				placeScrollAtTheBegining();
+			setWindowType(light);
+			setWindowTitle(light);
+			setWindowsMessage(light);
+			setWindowBounds();
+			_window.setVisible(true);
+			placeScrollAtTheBegining();
+		}
+
+		private void setWindowType(Light light) {
+			if(!isConfirmationLight(light))
+				_confirmationPanel.setVisible(false);
+		}
+
+		private boolean isConfirmationLight(Light light) {
+			return light.type() == LightType.CONFIRMATION;
 		}
 
 		private void placeScrollAtTheBegining() {
@@ -216,7 +273,6 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	}
 	
 	private final class BlinkingLightsLabelProvider implements LabelProvider<Light> {
-				
 		@Override
 		public Signal<String> labelFor(Light light) {
 			return my(Signals.class).constant(light.caption());

@@ -8,7 +8,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import org.junit.internal.runners.InitializationError;
-import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.internal.runners.TestClass;
 import org.junit.internal.runners.TestMethod;
 import org.junit.runner.notification.RunNotifier;
@@ -20,17 +19,17 @@ import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.EnvironmentUtils;
 import sneer.foundation.environments.Environments;
 
-public class BrickTestRunner extends JUnit4ClassRunner {
+public class BrickTestRunner extends IntermittentTestRunner {
 
 	protected static class TestMethodWithEnvironment extends TestMethod {
-		
+
 		private final Environment _environment;
 
 		public TestMethodWithEnvironment(Method method, TestClass testClass) {
 			super(method, testClass);
 			_environment = my(Environment.class);
 		}
-		
+
 		static class InvocationTargetExceptionEnvelope extends RuntimeException {
 			public InvocationTargetExceptionEnvelope(InvocationTargetException e) {
 				super(e);
@@ -170,9 +169,9 @@ public class BrickTestRunner extends JUnit4ClassRunner {
 	}
 
 	@Override
-	protected void invokeTestMethod(final Method arg0, final RunNotifier arg1) {
+	protected void invokeTestMethod(final Method method, final RunNotifier notifier) {
 		Environments.runWith(newEnvironment(), new Runnable() { @Override public void run() {
-			superInvokeTestMethod(arg0, arg1);
+			superInvokeTestMethod(method, notifier);
 		}});
 	}
 
@@ -181,13 +180,11 @@ public class BrickTestRunner extends JUnit4ClassRunner {
 		return new TestMethodWithEnvironment(method, getTestClass());
 	}
 
-	protected void superInvokeTestMethod(Method arg0, RunNotifier arg1) {
-		super.invokeTestMethod(arg0, arg1);
+	protected void superInvokeTestMethod(Method method, RunNotifier notifier) {
+		super.invokeTestMethod(method, notifier);
 	}
-
 
 	void dispose() {
 		((CachingEnvironment)my(Environment.class)).clear();
 	}
-	
 }

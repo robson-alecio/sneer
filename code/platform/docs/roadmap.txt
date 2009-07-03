@@ -3,6 +3,11 @@
 
 	- [Klaus] Revise entire package structure.  
 
+	- [Sandro] Translucent Windows Disabled BL
+		- ERROR -> WARNING
+		- Timeout: 30 seconds
+		- Message: Translucent windows are supported only on JavaSE release 6u10 or superior.
+
 	- [Sandro] Auto-scroll
 		- Delete the OldAutoScroll class.
 		- Delete the create(...) methods.
@@ -17,6 +22,8 @@
 		- FORGET THIS FOR NOW: Auto Scroll - DO NOT make a framework. Make a test SPECIFIC for auto-scroll using screen image comparisons.
 		- Dock/Undock
 		- Work with HTML Document - Simple. No sophistication. No template.
+
+	- [Sandro] Right-click doesn't work In LogConsole - Revise all code and encapsulate to work for Windows and Linux.
 
 	- [Bamboo] Video Tutorial with Jazz :)
 

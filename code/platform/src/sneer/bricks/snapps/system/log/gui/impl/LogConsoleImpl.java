@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -36,6 +38,7 @@ import sneer.bricks.skin.main.dashboard.Dashboard;
 import sneer.bricks.skin.main.menu.MainMenu;
 import sneer.bricks.skin.main.synth.Synth;
 import sneer.bricks.skin.main.synth.scroll.SynthScrolls;
+import sneer.bricks.skin.main.translucentsupport.TranslucentSupport;
 import sneer.bricks.skin.widgets.reactive.ListWidget;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.autoscroll.AutoScroll;
@@ -70,9 +73,21 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 		addMenuAction();
 		my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
 			initGui();
+			initTranslucentWindow();
 		}});
 	}
-
+	
+	private void initTranslucentWindow() {
+		addWindowFocusListener(new WindowFocusListener(){
+			{ 	setOpacity(0.3f); }
+			@Override public void windowGainedFocus(WindowEvent e) { setOpacity(1f); }
+			@Override public void windowLostFocus(WindowEvent e) { 	setOpacity(0.3f); }
+			private void setOpacity(float opacity) {
+				my(TranslucentSupport.class).setWindowOpacity(LogConsoleImpl.this, opacity);
+			}
+		});
+	}
+	
 	private void addMenuAction() {
 		_mainMenu.addAction("Open Log Console", new Runnable() { @Override public void run() {
 			open();

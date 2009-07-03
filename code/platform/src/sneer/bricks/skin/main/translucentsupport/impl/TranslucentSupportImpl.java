@@ -7,14 +7,17 @@ import java.awt.Shape;
 import java.awt.Window;
 import java.lang.reflect.Method;
 
-import sneer.bricks.hardware.io.log.Logger;
+import sneer.bricks.pulp.blinkinglights.BlinkingLights;
+import sneer.bricks.pulp.blinkinglights.Light;
+import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.skin.main.translucentsupport.TranslucentSupport;
 
 public class TranslucentSupportImpl implements TranslucentSupport {
 	
-    public Object _perpixelTransparent; 
-    public Object _perpixelTranslucent;
-    public Object _translucent;
+	private Object _perpixelTransparent; 
+    private Object _perpixelTranslucent;
+    private Object _translucent;
+	private Light _light;
     
     TranslucentSupportImpl(){
     	Class<?> awtUtilitiesClass = utilitiesClass();
@@ -31,6 +34,8 @@ public class TranslucentSupportImpl implements TranslucentSupport {
     			_perpixelTranslucent = constants[2];
     		}
     	}
+    	
+    	_light = my(BlinkingLights.class).prepare(LightType.ERROR);
     }
     
     @Override public Object perpixelTransparent() { return _perpixelTransparent; }
@@ -74,8 +79,9 @@ public class TranslucentSupportImpl implements TranslucentSupport {
 		try {
 			method = utilitiesClass().getMethod(methodName, types);
             method.invoke(null, window, value);
-        } catch (Exception ex) {
-        	my(Logger.class).log(ex, "Error when trying invoke method '{}'.", methodName);
+        } catch (Throwable ignore) {
+        	my(BlinkingLights.class).turnOnIfNecessary(_light, "Translucent Windows Disabled", 
+        			"Check your JMV. Only Java SE 6u10 release or supperior has support to translucent windows.");
         } 
     }
 

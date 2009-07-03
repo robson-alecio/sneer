@@ -102,6 +102,13 @@ class ListRegisterImpl<VO> implements ListRegister<VO> {
 	}
 
 	@Override
+	public Consumer<VO> remover() {
+		return new Consumer<VO>() { @Override public void consume(VO valueObject) {
+			remove(valueObject);
+		}};
+	}
+
+	@Override
 	public void replace(int index, VO newElement) {
 		VO old;
 		synchronized (_list) {
@@ -130,4 +137,5 @@ class ListRegisterImpl<VO> implements ListRegister<VO> {
 	}
 	
 	private static final long serialVersionUID = 1L;
+
 }

@@ -134,7 +134,7 @@ class TupleSpaceImpl implements TupleSpace {
 		_keptTuples = Bubble.wrapStateMachine(prevayler(my(CollectionSignals.class).newListRegister()));
 		
 		for (Tuple tuple : _keptTuples.output().currentElements())
-			if (isWeird(tuple)) _keptTuples.remove(tuple);
+			if (isWeird(tuple)) _keptTuples.remover().consume(tuple);
 	}
 
 

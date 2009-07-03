@@ -5,6 +5,7 @@ import sneer.foundation.lang.Consumer;
 public interface ListRegister<T> extends CollectionRegister<T> {
 
 	Consumer<T> adder();
+	Consumer<T> remover();
 	ListSignal<T> output();
 
 	void add(T element);

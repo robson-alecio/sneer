@@ -1,8 +1,6 @@
 ﻿TASKS
 =========
 
-	- [Klaus] Weird Contacts - Talk to Sandro.
-
 	- [Klaus] Revise entire package structure.  
 
 	- [Sandro] Auto-scroll
@@ -16,8 +14,9 @@
 		- Use BLs - Add "OK" and "Cancel" buttons.
 
 	- [Sandro] Wind 
-		- Auto Scroll - DO NOT make a framework. Make a test SPECIFIC for auto-scroll using screen image comparisons.
+		- FORGET THIS FOR NOW: Auto Scroll - DO NOT make a framework. Make a test SPECIFIC for auto-scroll using screen image comparisons.
 		- Dock/Undock
+		- Work with HTML Document - Simple. No sophistication. No template.
 
 	- [Bamboo] Video Tutorial with Jazz :)
 

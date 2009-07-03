@@ -13,6 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -32,6 +33,7 @@ import sneer.bricks.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.bricks.skin.main.menu.MainMenu;
 import sneer.bricks.skin.main.synth.Synth;
 import sneer.bricks.skin.main.synth.scroll.SynthScrolls;
+import sneer.bricks.skin.main.translucentsupport.TranslucentSupport;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.Widget;
 import sneer.bricks.skin.windowboundssetter.WindowBoundsSetter;
@@ -117,6 +119,7 @@ class DashboardImpl implements Dashboard {
 
 		WindowSupport() {
 			initWindow();
+			initTranslucentWindow();
 			initSynth();
 			initRootPanel();	
 			resizeWindow();
@@ -139,6 +142,30 @@ class DashboardImpl implements Dashboard {
 			_frame.addWindowListener(new WindowAdapter() { @Override public void windowDeactivated(WindowEvent e) {
 				_dashboardPanel.hideAllToolbars();
 			}});
+			
+		}
+
+		private void initTranslucentWindow() {
+			_frame.addWindowFocusListener(new WindowFocusListener(){
+
+				@Override
+				public void windowGainedFocus(WindowEvent e) {
+					setOpacity(1f);
+				}
+
+				@Override
+				public void windowLostFocus(WindowEvent e) {
+					setOpacity(0.2f);
+				}
+				
+				private void setOpacity(float opacity) {
+					TranslucentSupport translucent = my(TranslucentSupport.class);
+					if(!translucent.isTranslucencySupported(translucent.perpixelTranslucent()))
+						return;
+					
+					translucent.setWindowOpacity(_frame, opacity);
+				}			
+			});
 		}
 
 		private void initRootPanel() {

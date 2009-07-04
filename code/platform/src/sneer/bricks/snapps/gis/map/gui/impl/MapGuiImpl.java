@@ -18,8 +18,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import sneer.bricks.hardware.gui.guithread.GuiThread;
-import sneer.bricks.pulp.reactive.Reception;
-import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.main.dashboard.InstrumentPanel;
 import sneer.bricks.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.bricks.skin.main.synth.scroll.SynthScrolls;
@@ -31,14 +29,14 @@ import sneer.foundation.lang.Consumer;
 
 class MapGuiImpl implements MapGui{
 
-	private String _defaultAddress = "Florianópolis";
+	private static final int MIN_ZOOM = 0;
+	private static final int MAX_ZOOM = 17;
+	private static final String DEFAULT_ADDRESS = "Florianópolis";
 
 	private final JLabel _mapHolder = new JLabel();
-	private final JTextField _address = new JTextField(_defaultAddress);
+	private final JTextField _address = new JTextField(DEFAULT_ADDRESS);
 	private final JScrollPane _scroll = my(SynthScrolls.class).create();
 	
-	private Reception _locationReception;
-	private Reception _imageReception;
 	private int _zoom = 10;
 
 	MapGuiImpl() {
@@ -49,43 +47,27 @@ class MapGuiImpl implements MapGui{
 		_address.setEnabled(false);
 		_address.update(_address.getGraphics());
 		
-		if(_locationReception!=null)
-			_locationReception.dispose();
-		
-		_locationReception = my(Signals.class).receive(my(Locations.class).find(address), 
-			new Consumer<Location>(){ @Override public void consume(Location value) {
-				renderLocation(value, zoom);
+		my(Locations.class).find(address, 
+			new Consumer<Location>(){ @Override public void consume(Location location) {
+				renderLocation(location, zoom);
 			}});
 	}
 
 	protected void renderLocation(Location location, int zoom) {
-
-		if(zoom>17){
-			zoom=17;
-			_zoom=17;
-		}
-		
-		if(zoom<0){
-			zoom=0;
-			_zoom=0;
-		}
+		if(zoom>MAX_ZOOM)  zoom=MAX_ZOOM;
+		if(zoom<MIN_ZOOM)  zoom=MIN_ZOOM;
+		_zoom=zoom;
 		
 		if(location==null) return;
 		
-		if(_imageReception!=null)
-			_imageReception.dispose();
-	
-		_imageReception = my(Signals.class).receive(my(MapRenderer.class).render(location, zoom), 
-			new Consumer<Image>(){ @Override public void consume(Image value) {
-				paintImage(value);
-			}});
+		my(MapRenderer.class).render(
+			new Consumer<Image>(){ @Override public void consume(Image image) {
+				paintImage(image);
+			}}, location, _zoom);
 	}
 
 	protected void paintImage(Image image) {
-
-		if(image==null) 
-			return;
-		
+		if(image==null) return;
 		_mapHolder.setIcon(new ImageIcon(image));
 
 		my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
@@ -113,7 +95,7 @@ class MapGuiImpl implements MapGui{
 		container.contentPane().add(_scroll, BorderLayout.CENTER);
 
 		_scroll.getViewport().add(_mapHolder);
-		updateAddress(_defaultAddress, _zoom);
+		updateAddress(DEFAULT_ADDRESS, _zoom);
 		
 		JMenuItem zoomIn = new JMenuItem("Zoom In");
 		container.actions().add(zoomIn);

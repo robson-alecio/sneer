@@ -3,12 +3,6 @@
 
 	- [Klaus] Revise entire package structure.  
 
-	- [Sandro] Translucent Windows Disabled BL
-		- Turn on only on Windows, not on Linux.
-		- ERROR -> WARNING
-		- Timeout: 30 seconds
-		- Help Message: Translucent windows are supported only on JavaSE release 6u10 or superior.
-
 	- [Sandro] Auto-scroll
 		- Delete the OldAutoScroll class.
 		- Delete the create(...) methods.

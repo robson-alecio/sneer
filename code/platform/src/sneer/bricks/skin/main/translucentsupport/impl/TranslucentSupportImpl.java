@@ -35,7 +35,7 @@ public class TranslucentSupportImpl implements TranslucentSupport {
     		}
     	}
     	
-    	_light = my(BlinkingLights.class).prepare(LightType.ERROR);
+    	_light = my(BlinkingLights.class).prepare(LightType.WARN);
     }
     
     @Override public Object perpixelTransparent() { return _perpixelTransparent; }
@@ -79,9 +79,10 @@ public class TranslucentSupportImpl implements TranslucentSupport {
 		try {
 			method = utilitiesClass().getMethod(methodName, types);
             method.invoke(null, window, value);
-        } catch (Throwable ignore) {
+        } catch (Throwable throwable) {
         	my(BlinkingLights.class).turnOnIfNecessary(_light, "Translucent Windows Disabled", 
-        			"Check your JMV. Only Java SE 6u10 release or supperior has support to translucent windows.");
+        		   "Translucent windows are supported only on JavaSE release 6u10 or superior." +
+        		   " Check your JVM and your video aceleration.", throwable, 30000);
         } 
     }
 

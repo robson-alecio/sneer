@@ -1,11 +1,11 @@
 package sneer.bricks.snapps.gis.location;
 
-import sneer.bricks.pulp.reactive.Signal;
 import sneer.foundation.brickness.Brick;
+import sneer.foundation.lang.Consumer;
 
 @Brick
 public interface Locations {
 
-	Signal<Location> find(String address);
+	void find(String address, Consumer<Location> receiver);
 	
 }

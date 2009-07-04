@@ -2,7 +2,6 @@ package sneer.bricks.snapps.gis.location.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -46,11 +45,7 @@ class LocationImpl implements Location {
 			my(HttpGateway.class).get(url, 
 				new Consumer<byte[]>(){ @Override public void consume(byte[] value) {
 					parseAndSetLocation(value);
-				}}, 
-				new Consumer<IOException>(){ @Override public void consume(IOException value) {
-					my(Logger.class).log(value);
-				}}
-			);
+				}});
 	}
 	
 	private void parseAndSetLocation(byte[] value) {

@@ -39,9 +39,6 @@ class MapRendererImpl implements MapRenderer{
 				} catch (IOException e) {
 					my(Logger.class).log(e);
 				}
-			}}, 
-			new Consumer<IOException>(){ @Override public void consume(IOException e) {
-				my(Logger.class).log(e);
 			}});
 	}
 

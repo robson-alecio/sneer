@@ -8,6 +8,7 @@ import sneer.foundation.lang.Consumer;
 @Brick
 public interface HttpGateway {
 
-	void get(final String httpUrl, final Consumer<byte[]> response, final Consumer<IOException> exception);
+	void get(String httpUrl, Consumer<byte[]> response);
+	void get(String httpUrl, Consumer<byte[]> response, Consumer<IOException> exception);
 	
 }

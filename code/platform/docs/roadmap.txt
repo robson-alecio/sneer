@@ -7,7 +7,7 @@
 		- Turn on only on Windows, not on Linux.
 		- ERROR -> WARNING
 		- Timeout: 30 seconds
-		- Message: Translucent windows are supported only on JavaSE release 6u10 or superior.
+		- Help Message: Translucent windows are supported only on JavaSE release 6u10 or superior.
 
 	- [Sandro] Auto-scroll
 		- Delete the OldAutoScroll class.
@@ -28,14 +28,22 @@
 
 	- [Bamboo] Video Tutorial with Jazz :)
 
-	- [Igor] FORGET ABOUT THIS: @Intermittent annotation. Lets fix the problems instead of hiding them.
-			
 	- [Igor] Mic and Speaker bricks - Stop using tuples. Instead do:
 		- EventSource<PcmSoundPacket> Mic.sound()
 		- Speaker.Line Speaker.acquireLine() - Speaker.Line extends Consumer<PcmSoundPacket>, Closeable;
 	
 	- [Igor] Test Intermittence - Fix all. Coordinate with Kalecser.
 		- Start with Hudson failures, then Eclipse failures.
+	
+	- [Igor] Log Filter
+		- By default, nothing is logged. For each event, process lines from a "filter text", from top to bottom:
+			- Lines starting with # are ignored
+			- Blank lines are ignored
+			- All other lines are matched (ignore case) and the event is logged if it matches a line.
+			- Lines starting with - (minus sign) are filtered out of the log if they match.
+			- Conflicting match and exclusion: last one wins.
+		- Gui become a text field (ask Sandro for help)
+		- Make persistent (ask Sandro for help).
 	
 	- [Igor] Thread leaks in sneer (not spikes) tests - Fix
 

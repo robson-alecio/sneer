@@ -13,9 +13,10 @@ import javax.swing.text.Document;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import sneer.bricks.pulp.reactive.collections.CollectionChange;
-import sneer.bricks.pulp.reactive.collections.CollectionSignals;
-import sneer.bricks.pulp.reactive.collections.ListRegister;
+import sneer.bricks.hardware.gui.guithread.GuiThread;
+import sneer.bricks.pulp.reactive.Reception;
+import sneer.bricks.pulp.reactive.Register;
+import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.widgets.reactive.autoscroll.AutoScroll;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.lang.Consumer;
@@ -23,31 +24,29 @@ import sneer.foundation.lang.exceptions.NotImplementedYet;
 
 public class AutoScrollTest extends BrickTest {
 	
-	private final ListRegister<String> _register = my(CollectionSignals.class).newListRegister();
+	private final Register<String> _register = my(Signals.class).newRegister("");
 	private final JTextPane _field = new JTextPane();
 	
-	@Test
 	@Ignore
+	@Test
 	public void testScroll() throws Exception {
 		
-		JScrollPane subject = my(AutoScroll.class).create( _field, _register.output(),
-				new Consumer<CollectionChange<String>>() { @Override public void consume(CollectionChange<String> change) {
+		final JScrollPane subject = new JScrollPane();
+		
+		@SuppressWarnings("unused")
+		Reception reception = my(Signals.class).receive(_register.output(), new Consumer<String>() { @Override public void consume(final String change) {
+			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
+				my(AutoScroll.class).runWithAutoscroll(subject, new Runnable(){
+					@Override public void run() {
 						Document document = _field.getDocument();
 						try {
-							for (String element : change.elementsAdded())
-								document.insertString(document.getLength(), element, null);
+							document.insertString(document.getLength(), change, null);
 						} catch (BadLocationException e) {
 							throw new NotImplementedYet(e); // Fix Handle this exception.
 						}
-
-						if (!change.elementsRemoved().isEmpty()){
-							StringBuilder builder = new StringBuilder();
-							for (String element : _register.output().currentElements()) 
-								builder.append(element);
-							_field.setText(builder.toString());
-						}
-					}
-				});
+					}});
+			}});
+		}});
 		
 		subject.getViewport().add(_field);
 		
@@ -60,7 +59,7 @@ public class AutoScrollTest extends BrickTest {
 		
 		int i = 0;
 		while(true){
-			_register.adder().consume("\n" + i++);
+			_register.setter().consume("\n" + i++);
 			Thread.sleep(100);
 		}
 	}

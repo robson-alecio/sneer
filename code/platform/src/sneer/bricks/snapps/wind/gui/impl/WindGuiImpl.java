@@ -63,7 +63,7 @@ class WindGuiImpl implements WindGui {
 		_myShout = (TextWidget<JTextPane>) ref[0];
 	}
 	
-	private final JScrollPane _scrollPane = my(AutoScroll.class).create( _myShout.getMainWidget(), _wind.shoutsHeard(),
+	private final JScrollPane _scrollPane = my(AutoScroll.class).create(_wind.shoutsHeard(),
 		new Consumer<CollectionChange<Shout>>() { @Override public void consume(CollectionChange<Shout> change) {
 				for (Shout shout : change.elementsAdded())
 					ShoutPainter.appendShout(shout, _shoutsList);

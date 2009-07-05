@@ -3,11 +3,8 @@ package sneer.bricks.skin.widgets.reactive.autoscroll.impl;
 import static sneer.foundation.environments.Environments.my;
 
 import java.awt.event.FocusAdapter;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 import javax.swing.BoundedRangeModel;
-import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 
 import sneer.bricks.hardware.gui.guithread.GuiThread;
@@ -15,7 +12,7 @@ import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.reactive.Reception;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.reactive.collections.CollectionChange;
-import sneer.bricks.pulp.reactive.collections.ListSignal;
+import sneer.bricks.pulp.reactive.collections.CollectionSignal;
 import sneer.bricks.skin.main.synth.scroll.SynthScrolls;
 import sneer.foundation.lang.ByRef;
 import sneer.foundation.lang.Consumer;
@@ -29,24 +26,29 @@ class OldAutoScroll<T> {
 	JScrollPane scrollPane() {
 		return _scroll;
 	}
+	
+	OldAutoScroll(EventSource<T> eventSource, Consumer<T> receiver) {
+		initReceivers(eventSource, receiver);
+		holdReceivers();
+	}
 
-	OldAutoScroll(JComponent keyTypeSource, ListSignal<T> inputSignal, Consumer<CollectionChange<T>> receiver) {
+	OldAutoScroll(CollectionSignal<T> inputSignal, Consumer<CollectionChange<T>> receiver) {
 		initReceivers(inputSignal, receiver);
-		keyTypeSource.addKeyListener(new KeyAdapter(){@Override public void keyReleased(KeyEvent e) {
-			if(_shouldAutoscroll) 
-				placeAtEnd();
-		}});
-		
+		holdReceivers();
+	}
+	
+	OldAutoScroll(EventSource<T> eventSource) {
+		initReceivers(eventSource);
+		holdReceivers();
+	}
+
+	private void holdReceivers() {
 		_scroll.addFocusListener(new FocusAdapter(){
 			@SuppressWarnings({ "unchecked", "unused" })
 			OldAutoScroll _refToAvoidGc = OldAutoScroll.this;
 		});
 	}
-	
-	public OldAutoScroll(EventSource<T> eventSource) {
-		initReceivers(eventSource);
-	}
-	
+
 	private boolean isAtEnd() {
 		final ByRef<Boolean> result = ByRef.newInstance();
 		my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {
@@ -65,31 +67,39 @@ class OldAutoScroll<T> {
 		return _scroll.getVerticalScrollBar().getModel();
 	}	
 	
-	private void initReceivers(ListSignal<T> inputSignal, Consumer<CollectionChange<T>> consumer) {
-		_reception = my(Signals.class).receive(inputSignal, wrapper(consumer));
+	private void initReceivers(EventSource<T> eventSource) {
+		_reception = my(Signals.class).receive(eventSource, new Consumer<T>(){ @Override public void consume(T value) {
+			doAutoScroll();
+		}});
 	}
 	
-	private Consumer<CollectionChange<T>> wrapper(final	Consumer<CollectionChange<T>> consumer) {
+	private void initReceivers(EventSource<T> eventSource, Consumer<T> consumer) {
+		_reception = my(Signals.class).receive(eventSource, wrapper(consumer));
+	}
+	
+	private void initReceivers(CollectionSignal<T> inputSignal, Consumer<CollectionChange<T>> consumer) {
+		_reception = my(Signals.class).receive(inputSignal, wrapperCollectionChange(consumer));
+	}
+	
+	private Consumer<CollectionChange<T>> wrapperCollectionChange(final Consumer<CollectionChange<T>> consumer) {
 		return new Consumer<CollectionChange<T>>(){ @Override public void consume(CollectionChange<T> value){
-			doAutoScroll(consumer, value);
+			_shouldAutoscroll = isAtEnd();
+			consumer.consume(value);
+			doAutoScroll();
 		}};
 	}
-	
-	private void doAutoScroll( final Consumer<CollectionChange<T>> consumer, CollectionChange<T> value) {
-		_shouldAutoscroll = isAtEnd();
-		consumer.consume(value);
-		doAutoScroll();
+
+	private Consumer<T> wrapper(final	Consumer<T> consumer) {
+		return new Consumer<T>(){ @Override public void consume(T value){
+			_shouldAutoscroll = isAtEnd();
+			consumer.consume(value);
+			doAutoScroll();
+		}};
 	}
 	
 	private void doAutoScroll() {
 		if(_shouldAutoscroll) 
 			placeAtEnd();
-	}
-	
-	private void initReceivers(EventSource<T> eventSource) {
-		_reception = my(Signals.class).receive(eventSource, new Consumer<T>(){ @Override public void consume(T value) {
-			doAutoScroll();
-		}});
 	}
 	
 	@Override

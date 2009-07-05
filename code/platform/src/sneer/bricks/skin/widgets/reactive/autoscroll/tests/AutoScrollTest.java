@@ -22,21 +22,38 @@ import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.lang.Consumer;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
 
-public class AutoScrollTest extends BrickTest {
-	
+public class AutoScrollTest extends BrickTest {	
 	private final Register<String> _register = my(Signals.class).newRegister("");
 	private final JTextPane _field = new JTextPane();
 	
-	@Ignore
+	private JFrame _window;
+	private JScrollPane _subject;
+	
 	@Test
-	public void testScroll() throws Exception {
+	@Ignore
+	public void testOldAutoScroll() throws Exception {
 		
-		final JScrollPane subject = new JScrollPane();
+		_subject = my(AutoScroll.class).create(_register.output(), new Consumer<String>() { @Override public void consume(String change) {
+			Document document = _field.getDocument();
+			try {
+				document.insertString(document.getLength(), change, null);
+			} catch (BadLocationException e) {
+				throw new NotImplementedYet(e); // Fix Handle this exception.
+			}
+		}});
+
+		doAutoScrollTest();
+	}
+	
+	@Test
+	@Ignore
+	public void testNewAutoScroll() throws Exception {
 		
+		_subject = new JScrollPane();
 		@SuppressWarnings("unused")
 		Reception reception = my(Signals.class).receive(_register.output(), new Consumer<String>() { @Override public void consume(final String change) {
 			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
-				my(AutoScroll.class).runWithAutoscroll(subject, new Runnable(){
+				my(AutoScroll.class).runWithAutoscroll(_subject, new Runnable(){
 					@Override public void run() {
 						Document document = _field.getDocument();
 						try {
@@ -47,20 +64,26 @@ public class AutoScrollTest extends BrickTest {
 					}});
 			}});
 		}});
+
+		doAutoScrollTest();
+	}
+
+	private void doAutoScrollTest() throws InterruptedException {
+		_subject.getViewport().add(_field);
+		_window = new JFrame();
+		_window.setLayout(new BorderLayout());
 		
-		subject.getViewport().add(_field);
-		
-		JFrame frm = new JFrame();
-		frm.setLayout(new BorderLayout());
-		
-		frm.getContentPane().add(subject, BorderLayout.CENTER);
-		frm.setBounds(10, 10, 100, 200);
-		frm.setVisible(true);
+		_window.getContentPane().add(_subject, BorderLayout.CENTER);
+		_window.setBounds(10, 10, 100, 200);
+		_window.setVisible(true);
 		
 		int i = 0;
-		while(true){
+		while(i<1000){
 			_register.setter().consume("\n" + i++);
 			Thread.sleep(100);
 		}
+		
+		_window.setVisible(false);
+		_window.dispose();
 	}
 }

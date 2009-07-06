@@ -390,7 +390,7 @@ class DashboardPanel extends JPanel {
 		private void resizeInstrumentPanel() {
 			_toolbar.resizeToolbar();
 			int width = _instrumentsContainer.getWidth() - VERTICAL_MARGIN*2;
-			Dimension size = new Dimension(width,  (_isDocked)?_instrument.defaultHeight():0);
+			Dimension size = new Dimension(width,  (_isDocked)?_instrument.defaultHeight():10);
 			setMinimumSize(size);
 			setPreferredSize(size);
 			setSize(size);

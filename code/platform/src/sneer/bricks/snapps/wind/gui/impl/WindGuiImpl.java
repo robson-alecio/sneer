@@ -29,7 +29,6 @@ import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.reactive.collections.CollectionChange;
-import sneer.bricks.skin.audio.player.SoundPlayer;
 import sneer.bricks.skin.main.dashboard.InstrumentPanel;
 import sneer.bricks.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.bricks.skin.main.synth.Synth;
@@ -49,7 +48,7 @@ class WindGuiImpl implements WindGui {
 
 	private Container _container;
 	private final Wind _wind = my(Wind.class);
-	private final SoundPlayer _player = my(SoundPlayer.class);
+//	private final SoundPlayer _player = my(SoundPlayer.class);
 	private final ReactiveWidgetFactory _rfactory = my(ReactiveWidgetFactory.class);
 	private final JTextPane _shoutsList = new JTextPane();
 
@@ -132,7 +131,7 @@ class WindGuiImpl implements WindGui {
 
 	private void alertUser(Window window) {
 		window.toFront();
-		_player.play(this.getClass().getResource("alert.wav"));
+//		_player.play(this.getClass().getResource("alert.wav"));
 	}
 
 	@Override

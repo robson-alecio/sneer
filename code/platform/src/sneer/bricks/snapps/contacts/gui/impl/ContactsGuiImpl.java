@@ -5,8 +5,6 @@ import static sneer.foundation.environments.Environments.my;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -15,6 +13,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 
+import sneer.bricks.hardware.gui.Action;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.hardware.gui.images.Images;
 import sneer.bricks.network.social.Contact;
@@ -29,6 +28,7 @@ import sneer.bricks.skin.main.dashboard.InstrumentPanel;
 import sneer.bricks.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.bricks.skin.main.synth.Synth;
 import sneer.bricks.skin.main.synth.scroll.SynthScrolls;
+import sneer.bricks.skin.menu.MenuGroup;
 import sneer.bricks.skin.widgets.reactive.LabelProvider;
 import sneer.bricks.skin.widgets.reactive.ListWidget;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -112,13 +112,12 @@ class ContactsGuiImpl implements ContactsGui {
 		return _contactList.selectedElement();
 	}
 	
-	private void addContactActions(JPopupMenu popupMenu) {
-		JMenuItem add = new JMenuItem("New Contact...");
-		popupMenu.add(add);
-		
-		add.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
-			contactList().setSelectedValue(newContact(), true);
-		}});
+	private void addContactActions(MenuGroup<JPopupMenu> menuGroup) {
+		menuGroup.addAction(new Action(){
+			@Override public String caption() {return "New Contact...";}
+			@Override public void run() {
+				contactList().setSelectedValue(newContact(), true);
+			}});
 	}
 	
 	private Contact newContact() {

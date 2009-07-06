@@ -13,13 +13,38 @@ class Installation {
 
 	private final URL jarFileName = this.getClass().getResource("/sneer.jar");
 	private final URL ownFileName = this.getClass().getResource("/own.jar");
+//	private JWindow _window;
 	
 	Installation() throws IOException {
+//		showWaitWindow();
 		cleanup();
 		createDirectories();
 		addBinaries();
 		createOwnProjectIfNecessary();
+//		closeWaitWindow();
 	}
+
+//	private void closeWaitWindow() {
+//		_window.setVisible(false);
+//		_window.dispose();
+//	}
+//
+//	private void showWaitWindow() {
+//		_window = new JWindow();
+//		Image image = Toolkit.getDefaultToolkit().createImage(Installation.class.getResource("dogfood.png"));
+//		ImageIcon icon = new ImageIcon(image);
+//		_window.setLayout(new BorderLayout());
+//		_window.add(new JLabel(icon), BorderLayout.CENTER);
+//
+//		int imgWidth = 450;
+//		int imgHeight = 250;
+//		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); 
+//		Point basePoint = new Point((int) ((screenSize.getWidth()-imgWidth)/2), 
+//								 				(int) ((screenSize.getHeight()-imgHeight)/2));
+//		
+//		_window.setBounds(basePoint.x, basePoint.y, imgWidth, imgHeight);
+//		_window.setVisible(true);
+//	}
 
 	private void createOwnProjectIfNecessary() throws IOException {
 		if(ownCode().exists()) return;
@@ -89,4 +114,8 @@ class Installation {
 	private File platformCode() { return Directories.PLATFORM_CODE(); }
 	private File sneerHome() { return Directories.SNEER_HOME(); }
 	private File logFile() { return Directories.LOG_FILE(); }
+	
+	public static void main(String[] args) throws IOException {
+		new Installation();
+	}
 }

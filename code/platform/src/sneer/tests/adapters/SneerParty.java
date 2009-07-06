@@ -17,4 +17,6 @@ public interface SneerParty extends SovereignParty {
 	void startSnapps();
 	void accelerateHeartbeat();
 
+	void connectTo(SneerParty b);
+
 }

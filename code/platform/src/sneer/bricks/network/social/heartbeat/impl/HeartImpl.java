@@ -4,7 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.threads.Stepper;
 import sneer.bricks.network.social.heartbeat.Heart;
-import sneer.bricks.network.social.heartbeat.HeartBeat;
+import sneer.bricks.network.social.heartbeat.Heartbeat;
 import sneer.bricks.pulp.tuples.TupleSpace;
 
 public class HeartImpl implements Heart {
@@ -17,7 +17,7 @@ public class HeartImpl implements Heart {
 	}
 
 	private void beat() {
-		my(TupleSpace.class).publish(new HeartBeat());
+		my(TupleSpace.class).publish(new Heartbeat());
 	}
 
 }

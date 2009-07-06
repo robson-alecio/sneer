@@ -79,7 +79,7 @@ public class SneerCommunity implements SovereignCommunity {
 				if (isNetworkClass(className)) return true;
 				if (className.equals(SneerPartyProbe.class.getName())) return false;
 				if (isPublishedByUser(className)) return false;
-				return !isBrick(className); //Foundation classes such as Environments and functional tests classes such as SovereignParty mush be shared by all SneerParties.
+				return !isBrick(className); //Foundation classes such as Environments and functional tests classes such as SovereignParty must be shared by all SneerParties.
 			}
 
 			private boolean isBrick(String className) {
@@ -119,8 +119,10 @@ public class SneerCommunity implements SovereignCommunity {
 
 	@Override
 	public void connect(SovereignParty a, SovereignParty b) {
-		a.connectTo(b);
-		b.connectTo(a);
+		SneerParty partyA = (SneerParty)a;
+		SneerParty partyB = (SneerParty)b;
+		partyA.connectTo(partyB);
+		partyB.connectTo(partyA);
 	}
 
 }

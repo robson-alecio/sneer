@@ -7,7 +7,7 @@ import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.hardware.ram.maps.cachemaps.CacheMap;
 import sneer.bricks.hardware.ram.maps.cachemaps.CacheMaps;
 import sneer.bricks.network.social.Contact;
-import sneer.bricks.network.social.heartbeat.HeartBeat;
+import sneer.bricks.network.social.heartbeat.Heartbeat;
 import sneer.bricks.network.social.heartbeat.stethoscope.Stethoscope;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.LightType;
@@ -19,7 +19,7 @@ import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.lang.Consumer;
 import sneer.foundation.lang.Producer;
 
-class StethoscopeImpl implements Stethoscope, Consumer<HeartBeat>, Stepper {
+class StethoscopeImpl implements Stethoscope, Consumer<Heartbeat>, Stepper {
 
 	private static final int TIME_TILL_DEATH = 30 * 1000;
 	private static final int MAX_BEAT_AGE = 10 * 60 * 1000;
@@ -29,7 +29,7 @@ class StethoscopeImpl implements Stethoscope, Consumer<HeartBeat>, Stepper {
 	private CacheMap<Contact, Register<Boolean>> _registersByContact = my(CacheMaps.class).newInstance();
 	
 	{
-		my(TupleSpace.class).addSubscription(HeartBeat.class, this);
+		my(TupleSpace.class).addSubscription(Heartbeat.class, this);
 		my(Clock.class).wakeUpEvery(TIME_TILL_DEATH, this);
 	}
 	
@@ -62,7 +62,7 @@ class StethoscopeImpl implements Stethoscope, Consumer<HeartBeat>, Stepper {
 	}
 
 
-	private boolean isTooOld(HeartBeat beat) {
+	private boolean isTooOld(Heartbeat beat) {
 		if (now() - beat.publicationTime() < MAX_BEAT_AGE) return false;
 		
 		my(BlinkingLights.class).turnOn(LightType.WARN, "Time mismatch with " + contact(beat), "You have received an old Heartbeat from " + contact(beat) + ". This can happen if your clock and his are set to different times or to same times but different timezones.");
@@ -76,13 +76,13 @@ class StethoscopeImpl implements Stethoscope, Consumer<HeartBeat>, Stepper {
 
 
 
-	private Contact contact(HeartBeat beat) {
+	private Contact contact(Heartbeat beat) {
 		return my(Seals.class).contactGiven(beat.publisher());
 	}
 
 
 	@Override
-	public void consume(HeartBeat beat) {
+	public void consume(Heartbeat beat) {
 		if (my(Seals.class).ownSeal().equals(beat.publisher())) return;
 		if (isTooOld(beat)) return;
 		

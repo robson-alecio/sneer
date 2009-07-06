@@ -8,18 +8,14 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.URL;
 
 import javax.imageio.ImageIO;
 
-import sneer.bricks.hardware.cpu.threads.Threads;
-import sneer.bricks.hardware.io.IO;
 import sneer.bricks.hardware.io.log.Logger;
-import sneer.bricks.pulp.reactive.Register;
-import sneer.bricks.pulp.reactive.Signal;
-import sneer.bricks.pulp.reactive.Signals;
+import sneer.bricks.network.httpgateway.HttpGateway;
 import sneer.bricks.snapps.gis.location.Location;
 import sneer.bricks.snapps.gis.map.MapRenderer;
+import sneer.foundation.lang.Consumer;
 
 class MapRendererImpl implements MapRenderer{
 
@@ -27,29 +23,27 @@ class MapRendererImpl implements MapRenderer{
 	private int _mapSize = 600;
 
 	@Override
-	public Signal<Image> render(Location location) {
-		return render(location, _zoom);
+	public void render(Consumer<Image> receiver, Location location) {
+		render(receiver, location, _zoom);
 	}
 	
 	@Override
-	public Signal<Image> render(final Location location, final int zoom) {
-		final Register<Image> register = my(Signals.class).newRegister(null);
-		my(Threads.class).startDaemon("MapLoader",  new Runnable(){ @Override public void run() {
-			try {
-				map(location, register, zoom);
-			} catch (IOException e) {
-				my(Logger.class).log(e);
-			}
-		}});
-		return register.output();
+	public void render(final Consumer<Image> receiver, final Location location, final int zoom) {
+		String httpUrl = "http://maps.google.com/staticmap?center=" + location.latitude() + "," + location.longitude() + "&zoom=" + zoom + "&size=" + _mapSize + "x" + _mapSize
+						  + "&key=ABQIAAAAipu2vgwNjShyGzhINGjXvRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxTKgtleBywtdYBkXFEBvmkPMqvBzg";
+		
+		my(HttpGateway.class).get(httpUrl, 
+			new Consumer<byte[]>(){ @Override public void consume(byte[] bytes) {
+				try {
+					receiver.consume(bytesToImage(bytes));
+				} catch (IOException e) {
+					my(Logger.class).log(e);
+				}
+			}});
 	}
 
-	private void map(Location location, Register<Image> register, int zoom) throws IOException {
+	private Image bytesToImage(byte[] imageData) throws IOException {
 		BufferedImage image = null;
-		String data = "center=" + location.latitude() + "," + location.longitude() + "&zoom=" + zoom + "&size=" + _mapSize + "x" + _mapSize
-						  + "&key=ABQIAAAAipu2vgwNjShyGzhINGjXvRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxTKgtleBywtdYBkXFEBvmkPMqvBzg";
-		URL url = new URL("http://maps.google.com/staticmap?" + data);
-		byte[] imageData = my(IO.class).streams().readBytesAndClose(url.openStream());
 		ByteArrayInputStream imageIn = new ByteArrayInputStream(imageData);
 		image = ImageIO.read(imageIn);
 		Graphics2D g2d=((Graphics2D)image.getGraphics());
@@ -58,7 +52,6 @@ class MapRendererImpl implements MapRenderer{
 		g2d.fillOval(_mapSize/2-5, _mapSize/2-5,10,10);
 		g2d.setColor(Color.black);
 		g2d.drawOval(_mapSize/2-5, _mapSize/2-5,10,10);
-		
-		register.setter().consume(image);
+		return image;
 	}
 }

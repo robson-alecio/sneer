@@ -2,37 +2,23 @@ package sneer.bricks.snapps.gis.location.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
-import java.io.IOException;
-import java.net.URL;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import sneer.bricks.hardware.cpu.threads.Threads;
-import sneer.bricks.hardware.io.IO;
 import sneer.bricks.hardware.io.log.Logger;
-import sneer.bricks.pulp.reactive.Register;
-import sneer.bricks.pulp.reactive.Signal;
-import sneer.bricks.pulp.reactive.Signals;
+import sneer.bricks.network.httpgateway.HttpGateway;
 import sneer.bricks.snapps.gis.location.Location;
+import sneer.foundation.lang.Consumer;
 
 class LocationImpl implements Location {
 
-	private final Register<Location> _register = my(Signals.class).newRegister(null);
-
 	private String _latitude;
 	private String _longitude;
+	private Consumer<Location> _receiver;
 	
-	public LocationImpl(final String address) {
-		my(Threads.class).startDaemon("LocationFinder", new Runnable(){ @Override public void run() {
-			String geocodeInfo[];
-			try {
-				geocodeInfo = geocode(address).split(",");
-				_latitude = geocodeInfo[2];
-				_longitude = geocodeInfo[3];
-				_register.setter().consume(LocationImpl.this);
-			} catch (IOException e) {
-				my(Logger.class).log(e);
-			}
-		}});
+	public LocationImpl(final String address, Consumer<Location> receiver) {
+		_receiver = receiver;
+		getDataForLocation(address);
 	}
 
 	@Override
@@ -45,15 +31,27 @@ class LocationImpl implements Location {
 		return _longitude;
 	}
 	
-	private String geocode(String location) throws IOException {
-			String data = "http://maps.google.com/maps/geo?" +
-								"output=csv&key=ABQIAAAAipu2vgwNjShyGzhINGjXvRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxTKgtleBywtdYBkXFEBvmkPMqvBzg&q=" 
-								+ URLEncoder.encode(location, "UTF-8") + "";
-			byte[] bytes = my(IO.class).streams().readBytesAndClose(new URL(data).openStream());
-			return new String(bytes);
+	private void getDataForLocation(String location)  {
+			String url;
+			try {
+				url = "http://maps.google.com/maps/geo?" +
+						"output=csv&key=ABQIAAAAipu2vgwNjShyGzhINGjXvRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxTKgtleBywtdYBkXFEBvmkPMqvBzg&q=" 
+						+ URLEncoder.encode(location, "UTF-8") + "";
+			} catch (UnsupportedEncodingException e) {
+				my(Logger.class).log(e);
+				return;
+			}
+			
+			my(HttpGateway.class).get(url, 
+				new Consumer<byte[]>(){ @Override public void consume(byte[] value) {
+					parseAndSetLocation(value);
+				}});
 	}
 	
-	Signal<Location> location(){
-		return _register.output();
+	private void parseAndSetLocation(byte[] value) {
+		String geocodeInfo[] = new String(value).split(",");
+		_latitude = geocodeInfo[2];
+		_longitude = geocodeInfo[3];
+		_receiver.consume(LocationImpl.this);
 	}
 }

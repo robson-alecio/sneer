@@ -47,10 +47,10 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	}
 
 	@Override
-	public void connectTo(SovereignParty party) {
+	public void connectTo(SneerParty party) {
 		Contact contact = my(ContactManager.class).produceContact(party.ownName());
 
-		SneerParty sneerParty = (SneerParty)party;
+		SneerParty sneerParty = party;
 		//storePublicKey(contact, new PublicKey(sneerParty.publicKey()));
 		my(InternetAddressKeeper.class).add(contact, MOCK_ADDRESS, sneerParty.sneerPort());
 

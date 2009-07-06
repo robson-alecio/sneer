@@ -341,7 +341,7 @@ class DashboardPanel extends JPanel {
 			setSize(size);
 		}
 
-		@Override public JPopupMenu actions() { return _toolbar._menuActions.getWidget(); }
+		@Override public MenuGroup<JPopupMenu> actions() { return _toolbar._menuActions; }
 		@Override public Container contentPane() {	return this; }
 	}
 	

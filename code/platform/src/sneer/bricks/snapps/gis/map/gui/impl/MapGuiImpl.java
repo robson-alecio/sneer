@@ -12,11 +12,11 @@ import java.awt.event.MouseWheelListener;
 import javax.swing.BoundedRangeModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import sneer.bricks.hardware.gui.Action;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.skin.main.dashboard.InstrumentPanel;
 import sneer.bricks.skin.main.instrumentregistry.InstrumentRegistry;
@@ -97,20 +97,22 @@ class MapGuiImpl implements MapGui{
 		_scroll.getViewport().add(_mapHolder);
 		updateAddress(DEFAULT_ADDRESS, _zoom);
 		
-		JMenuItem zoomIn = new JMenuItem("Zoom In");
-		container.actions().add(zoomIn);
-		zoomIn.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
-			_zoom=_zoom+1;
-			updateAddress(_address.getText(), _zoom);
-		}});
+		container.actions().addAction(new Action(){
+			@Override public String caption() { return "Zoom In";}
+			@Override public void run() { 
+				_zoom=_zoom+1;
+				updateAddress(_address.getText(), _zoom);
+			}
+		});
 		
-		JMenuItem zoomOut = new JMenuItem("Zoom Out");
-		container.actions().add(zoomOut);
-		zoomOut.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
-			_zoom=_zoom-1;
-			updateAddress(_address.getText(), _zoom);
-		}});
-
+		container.actions().addAction(new Action(){
+			@Override public String caption() { return "Zoom Out";}
+			@Override public void run() { 
+				_zoom=_zoom-1;
+				updateAddress(_address.getText(), _zoom);
+			}
+		});
+		
 		_address.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) {
 			updateAddress(_address.getText(), _zoom);
 		}});

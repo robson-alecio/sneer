@@ -4,6 +4,8 @@ import static sneer.foundation.environments.Environments.my;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
@@ -31,9 +33,12 @@ public abstract class AbstractMenuGroup<T extends JComponent> implements MenuGro
 
 	@Override
 	public void addAction(final Action action) {
-		JMenuItem menuItem = my(SynthMenus.class).createMenuItem();
-		menuItem.setText(action.caption());
+		final JMenuItem menuItem = my(SynthMenus.class).createMenuItem();
 		addMenuItem(action, menuItem);
+		menuItem.setText(action.caption());
+		menuItem.addPropertyChangeListener(new PropertyChangeListener(){ @Override public void propertyChange(PropertyChangeEvent evt) {
+			menuItem.setText(action.caption());
+		}});
 	}
 
 	@Override
@@ -44,7 +49,6 @@ public abstract class AbstractMenuGroup<T extends JComponent> implements MenuGro
 	private void addMenuItem(final Action action, final JMenuItem menuItem) {
 		menuItem.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent ignored) {
 			action.run();
-			menuItem.setText(action.caption());
 		}});
 		getWidget().add(menuItem);
 	}

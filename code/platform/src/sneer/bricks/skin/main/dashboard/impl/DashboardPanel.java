@@ -23,11 +23,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -141,26 +144,79 @@ class DashboardPanel extends JPanel {
 	
 	private class InstrumentPanelImpl extends JPanel implements InstrumentPanel{
 		
+		private boolean _isDocked=true;
+		
 		private final AbstractLayerUI<JPanel> _instrumentGlasspane;
 		private final JXLayer<JPanel> _instrumentJXLayer ;
 		private final Toolbar _toolbar;
 		private final Instrument _instrument;
+
+		private JPanel _contentPane = new JPanel();
+		private JFrame _undockWindow;
 		
 		InstrumentPanelImpl(Instrument instrument) {
+			setLayout(new BorderLayout());
+			add(_contentPane, BorderLayout.CENTER);
+			
 			_synth.notInGuiThreadAttach(this, "InstrumentPanel");
 			_instrument = instrument;
 			_toolbar = new Toolbar(_instrument.title());
+			
 			_instrumentGlasspane = new InstrumentGlasspane();
 			_instrumentJXLayer = new JXLayer<JPanel>(this, _instrumentGlasspane);
 			_instrumentsContainer.add(_instrumentJXLayer);
 			_instrumentPanels.add(this);
 			_toolbar.setVisible(false); 
+			
+			initUndockAction();
 		}
 
+		private void initUndockAction() {
+			_toolbar._menuActions.addAction(new Action(){
+				@Override public String caption() { return (_isDocked)?"Undock":"Dock";}
+				@Override public void run() { 
+					if(_isDocked) undock();
+					else dock();
+					resizeInstrumentPanel();
+				}
+			});
+		}
+
+		private void dock(){
+			_undockWindow.setVisible(false);
+			remove(_contentPane);
+			add(_contentPane, BorderLayout.CENTER);
+			_undockWindow.dispose();			
+			_undockWindow = null;
+			_isDocked = true;
+		}
+		
+		private void undock(){
+			_undockWindow = new JFrame(_instrument.title());
+			_undockWindow.setLayout(new BorderLayout());
+			
+			Rectangle bounds = _contentPane.getBounds();
+			Point location = _contentPane.getLocationOnScreen();
+			int offset_x = 26;
+			int offset_y = 40;
+			_undockWindow.setBounds(location.x-offset_x/2, location.y,  bounds.width + offset_x, bounds.height + offset_y);
+			
+			remove(_contentPane);
+			_undockWindow.add(_contentPane, BorderLayout.CENTER);
+
+			_undockWindow.setVisible(true);
+			_undockWindow.addWindowListener(new WindowAdapter(){ @Override public void windowClosed(WindowEvent arg0) {
+				dock();
+				resizeInstrumentPanel();
+			}});
+			
+			_isDocked = false;
+		}
+		
 		private void hideAndShow(Point mousePoint) {
-			for (InstrumentPanelImpl instrument : _instrumentPanels) {
+			for (InstrumentPanelImpl instrument : _instrumentPanels) 
 				instrument._toolbar.setVisible(isMouseOverInstrument(mousePoint, instrument));
-			}
+
 			_instrumentsContainer.repaint();
 		}
 		
@@ -328,21 +384,20 @@ class DashboardPanel extends JPanel {
 				gp = new GradientPaint(0, SHADOW_HEIGHT-TOOLBAR_HEIGHT , color1, 0,  SHADOW_HEIGHT +TOOLBAR_HEIGHT, color2);  
 				g2.setPaint(gp);  
 				g2.fillRect(VERTICAL_MARGIN-INSTRUMENT_BORDER, SHADOW_HEIGHT, _toolbarShadow.getWidth()- 2*(VERTICAL_MARGIN-INSTRUMENT_BORDER), TOOLBAR_HEIGHT);		
-				
 			}
 		}
 		
 		private void resizeInstrumentPanel() {
 			_toolbar.resizeToolbar();
 			int width = _instrumentsContainer.getWidth() - VERTICAL_MARGIN*2;
-			Dimension size = new Dimension(width, _instrument.defaultHeight());
+			Dimension size = new Dimension(width,  (_isDocked)?_instrument.defaultHeight():0);
 			setMinimumSize(size);
 			setPreferredSize(size);
 			setSize(size);
 		}
 
 		@Override public MenuGroup<JPopupMenu> actions() { return _toolbar._menuActions; }
-		@Override public Container contentPane() {	return this; }
+		@Override public Container contentPane() {	return _contentPane ; }
 	}
 	
 	private class InstrumentInstaller{

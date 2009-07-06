@@ -17,7 +17,6 @@ import java.awt.event.WindowFocusListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -29,6 +28,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import sneer.bricks.hardware.gui.Action;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.hardware.io.log.filter.LogFilter;
 import sneer.bricks.hardware.io.log.workers.notifier.LogNotifier;
@@ -39,6 +39,8 @@ import sneer.bricks.skin.main.menu.MainMenu;
 import sneer.bricks.skin.main.synth.Synth;
 import sneer.bricks.skin.main.synth.scroll.SynthScrolls;
 import sneer.bricks.skin.main.translucentsupport.TranslucentSupport;
+import sneer.bricks.skin.menu.MenuFactory;
+import sneer.bricks.skin.menu.MenuGroup;
 import sneer.bricks.skin.widgets.reactive.ListWidget;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.autoscroll.AutoScroll;
@@ -57,7 +59,7 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	private final Integer _HEIGHT = (Integer) _synth.getDefaultProperty("LodConsoleImpl.height");
 	private final Integer _X = (Integer) _synth.getDefaultProperty("LodConsoleImpl.x");
 		
-	private final JPopupMenu _popupMenu = new JPopupMenu();
+	private final MenuGroup<JPopupMenu> _popupMenu = my(MenuFactory.class).createPopupMenu();
 	private final MainMenu _mainMenu = my(MainMenu.class);
 
 	private final JTabbedPane _tab = new JTabbedPane();
@@ -183,18 +185,17 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	}
 
 	private void initClearLogAction() {
+		
+		_popupMenu.addAction(new Action(){
+			@Override public String caption() { return "Clear Log";	}
+			@Override public void run() { _txtLog.setText("");}
+		});
+		
 		_txtLog.addMouseListener(new MouseAdapter(){ 
-			JMenuItem clear = new JMenuItem("Clear Log");{
-				_popupMenu.add(clear);
-				clear.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent ae) {
-					_txtLog.setText("");
-				}});			
-			}
-
 			@Override 
 			public void mouseReleased(MouseEvent e) {
 				if(e.isPopupTrigger())
-					_popupMenu.show(e.getComponent(),e.getX(),e.getY());
+					_popupMenu.getWidget().show(e.getComponent(),e.getX(),e.getY());
 			}
 		});
 	}

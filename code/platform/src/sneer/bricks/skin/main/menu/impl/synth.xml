@@ -1,0 +1,14 @@
+<synth>
+	<style id="Menu">
+        <opaque value="false"/>
+        <insets top="2" left="2" bottom="2" right="2" />
+        <state>
+            <color value="BLACK" type="FOREGROUND"/>
+            <font name="Verdana" size="11"/>
+        </state>
+        <state value="MOUSE_OVER">
+            <color value="#8EB2C7" type="BACKGROUND"/>
+        </state>
+	</style>
+	<bind style="Menu" type="name" key="MainMenu"/>
+</synth>

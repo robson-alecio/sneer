@@ -1,16 +1,26 @@
 package sneer.bricks.skin.menu.impl;
 
-import sneer.bricks.skin.menu.Menu;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JPopupMenu;
+
 import sneer.bricks.skin.menu.MenuFactory;
+import sneer.bricks.skin.menu.MenuGroup;
 
 class MenuFactoryImpl implements MenuFactory {
 
-	public Menu createMenuBar(){
-		return new MenuBar();
+	@Override
+	public MenuGroup<JMenuBar> createMenuBar(){
+		return new MenuBarImpl();
 	}
 	
-	public Menu createMenuGroup(String name){
-		return new MenuGroup(name);
+	@Override
+	public MenuGroup<JMenu> createMenuGroup(String name){
+		return new MenuGroupImpl(name);
 	}
-	
+
+	@Override
+	public MenuGroup<JPopupMenu> createPopupMenu() {
+		return new MenuPopupImpl();
+	}
 }

@@ -1,0 +1,16 @@
+<synth>
+	<style id="Menu">
+        <opaque value="true"/>
+        <insets top="2" left="2" bottom="2" right="2" />
+        <state>
+            <imagePainter method="popupMenuBorder" path="background.png" sourceInsets="3 3 3 3" destinationInsets="3 3 3 3" paintCenter="true" stretch="true" center="false"/>
+            <font name="Verdana" size="10"/>
+        </state>
+        <state value="MOUSE_OVER">
+            <color value="#8EB2C7" type="BACKGROUND"/>
+        </state>
+	</style>
+	<bind style="Menu" type="region" key="Menu"/>
+	<bind style="Menu" type="region" key="MenuItem"/>
+	<bind style="Menu" type="region" key="PopupMenu" />
+</synth>

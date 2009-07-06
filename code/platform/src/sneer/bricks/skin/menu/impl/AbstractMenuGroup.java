@@ -1,14 +1,18 @@
 package sneer.bricks.skin.menu.impl;
 
+import static sneer.foundation.environments.Environments.my;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 
 import sneer.bricks.hardware.gui.Action;
-import sneer.bricks.skin.menu.Menu;
+import sneer.bricks.skin.main.synth.menu.SynthMenus;
+import sneer.bricks.skin.menu.MenuGroup;
 
-abstract class AbstractSwingMenu implements Menu {
+public abstract class AbstractMenuGroup<T extends JComponent> implements MenuGroup<T> {
 
 	@Override
 	public void addAction(final String caption, final Runnable delegate) {
@@ -27,10 +31,16 @@ abstract class AbstractSwingMenu implements Menu {
 
 	@Override
 	public void addAction(final Action action) {
-		addMenuItem(action, new JMenuItem(action.caption()));
+		JMenuItem menuItem = my(SynthMenus.class).createMenuItem();
+		menuItem.setText(action.caption());
+		addMenuItem(action, menuItem);
 	}
 
-
+	@Override
+	public void addGroup(MenuGroup<? extends JComponent> group) {
+		getWidget().add(group.getWidget());
+	}
+	
 	private void addMenuItem(final Action action, final JMenuItem menuItem) {
 		menuItem.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent ignored) {
 			action.run();
@@ -38,10 +48,4 @@ abstract class AbstractSwingMenu implements Menu {
 		}});
 		getWidget().add(menuItem);
 	}
-
-	@Override
-	public void addGroup(Menu group) {
-		getWidget().add(group.getWidget());
-	}
-
 }

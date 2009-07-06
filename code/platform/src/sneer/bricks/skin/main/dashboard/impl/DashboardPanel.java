@@ -30,8 +30,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollBar;
@@ -43,10 +41,13 @@ import javax.swing.event.ChangeListener;
 import org.jdesktop.jxlayer.JXLayer;
 import org.jdesktop.jxlayer.plaf.AbstractLayerUI;
 
+import sneer.bricks.hardware.gui.Action;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.skin.main.dashboard.InstrumentPanel;
 import sneer.bricks.skin.main.instrumentregistry.Instrument;
 import sneer.bricks.skin.main.synth.Synth;
+import sneer.bricks.skin.menu.MenuFactory;
+import sneer.bricks.skin.menu.MenuGroup;
 
 class DashboardPanel extends JPanel {
 
@@ -202,7 +203,7 @@ class DashboardPanel extends JPanel {
 		}
 		
 		private class Toolbar{
-			private final JPopupMenu _menuActions = new JPopupMenu();
+			private final MenuGroup<JPopupMenu> _menuActions = my(MenuFactory.class).createPopupMenu();
 			private final JPanel _toolbarPanel = new JPanel();
 			private final JPanel _toolbarShadow = new JPanel(){ @Override public void paint(Graphics g) {
 				paintShadows(g);
@@ -225,17 +226,16 @@ class DashboardPanel extends JPanel {
 			}
 
 			private void initCopyClassNameToClipboardAction() {
-				JMenu showMeTheCode = new JMenu("Show Me The Code");
-				_menuActions.add(showMeTheCode);
-				
-				String name = "Copy Class Name to Clipboard (" +_instrument.getClass().getSimpleName() + ")";
-				JMenuItem copyClassName = new JMenuItem(name);
-				showMeTheCode.add(copyClassName);
-				copyClassName.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
-					StringSelection stringSelection = new StringSelection(_instrument.getClass().getName());
-				    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-				    clipboard.setContents(stringSelection, new ClipboardOwner(){ @Override public void lostOwnership(Clipboard clipboard_, Transferable contents) {}});
-				}});
+				_menuActions.addAction(new Action(){
+					@Override public String caption() { 
+						return "Copy Class Name (" +_instrument.getClass().getSimpleName() + ")";
+					}
+
+					@Override public void run() {
+						StringSelection stringSelection = new StringSelection(_instrument.getClass().getName());
+						Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+						clipboard.setContents(stringSelection, new ClipboardOwner(){ @Override public void lostOwnership(Clipboard clipboard_, Transferable contents) {}});
+					}});
 			}
 
 			private void initSynth() {
@@ -269,11 +269,11 @@ class DashboardPanel extends JPanel {
 				if(isVisible) resizeToolbar();
 				_toolbarPanel.setVisible(isVisible); 	
 				_mouseBlockButton.setVisible(isVisible);
-				_menu.setVisible(_menuActions.getSubElements().length>0);
+				_menu.setVisible(_menuActions.getWidget().getSubElements().length>0);
 				_toolbarShadow.setVisible(isVisible);
 			}
 			
-			private void showActionsPopUp() {	_menuActions.show(_menu, 0, 15);	}
+			private void showActionsPopUp() {	_menuActions.getWidget().show(_menu, 0, 15);	}
 			private boolean isVisible() { 	return _toolbarPanel.isVisible(); 	}
 			
 			private void resizeToolbar() {
@@ -341,7 +341,7 @@ class DashboardPanel extends JPanel {
 			setSize(size);
 		}
 
-		@Override public JPopupMenu actions() { return _toolbar._menuActions; }
+		@Override public JPopupMenu actions() { return _toolbar._menuActions.getWidget(); }
 		@Override public Container contentPane() {	return this; }
 	}
 	

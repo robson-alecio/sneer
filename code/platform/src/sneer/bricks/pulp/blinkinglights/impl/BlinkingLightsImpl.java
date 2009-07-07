@@ -3,7 +3,6 @@ package sneer.bricks.pulp.blinkinglights.impl;
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
-import sneer.bricks.pulp.blinkinglights.ConfirmationLight;
 import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.pulp.reactive.collections.CollectionSignals;
@@ -63,6 +62,11 @@ class BlinkingLightsImpl implements BlinkingLights {
 	public Light prepare(LightType type) {
 		return new LightImpl(type);
 	}
+
+	@Override
+	public Light prepare(LightType type, Consumer<Boolean> confirmationReceiver) {
+		return new LightImpl(type, confirmationReceiver);
+	}
 	
 	@Override
 	public void turnOnIfNecessary(Light light, FriendlyException e) {
@@ -107,11 +111,10 @@ class BlinkingLightsImpl implements BlinkingLights {
 	}
 
 	@Override
-	public ConfirmationLight askForConfirmation(String caption, String helpMessage, Consumer<Boolean> responseReceiver) {
-		ConfirmationLightImpl light = new ConfirmationLightImpl(responseReceiver);
+	public void askForConfirmation(LightType type, String caption, String helpMessage, Consumer<Boolean> confirmationReceiver) {
+		LightImpl light = new LightImpl(type, confirmationReceiver);
 		light._caption = caption;
 		light._helpMessage = helpMessage;
-		turnOffIfNecessary(light);
-		return light;
+		turnOnIfNecessary(light, caption, helpMessage);
 	}
 }

@@ -8,4 +8,8 @@ public interface Light {
 	String caption();
 	Throwable error();
 	String helpMessage();
+	
+	boolean hasConfirmation();
+	void sayYes();
+	void sayNo();
 }

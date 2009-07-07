@@ -3,20 +3,18 @@
 
 	- [Klaus] Revise entire package structure.  
 
+	- [Sandro] RapidShare Killer
+		- Help Célio - Find him on skype.
+		- Focus. Keep it simple. Zero sofistication. Simplest possible solution. No crash-recovery, for example. No bugs. Decent design.
+
+	- [Sandro] Wind 
+		- FORGET THIS FOR NOW: Auto Scroll - DO NOT make a framework. Make a test SPECIFIC for auto-scroll using screen image comparisons.
+		- Work with HTML Document - Simple. No sophistication. No template.
+
 	- [Sandro] Auto-scroll
 		- Delete the OldAutoScroll class.
 		- Delete the create(...) methods.
 		- Use the new runWithAutoscroll() method. Must be called inside the GUI Thread!!! (I did not test it!!!)
-
-	- [Sandro] RapidShare Killer
-		- Help Célio - Find him on skype.
-		- Focus. Keep it simple. Zero sofistication. Simplest possible solution. No crash-recovery, for example. No bugs. Decent design.
-		- Use BLs - Add "OK" and "Cancel" buttons.
-
-	- [Sandro] Wind 
-		- FORGET THIS FOR NOW: Auto Scroll - DO NOT make a framework. Make a test SPECIFIC for auto-scroll using screen image comparisons.
-		- Dock/Undock
-		- Work with HTML Document - Simple. No sophistication. No template.
 
 	- [Sandro] Right-click doesn't work In LogConsole - Revise all code and encapsulate to work for Windows and Linux.
 

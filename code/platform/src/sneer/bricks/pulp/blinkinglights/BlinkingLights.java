@@ -8,7 +8,9 @@ import sneer.foundation.lang.exceptions.FriendlyException;
 @Brick
 public interface BlinkingLights {
 
+	ListSignal<Light> lights();
 	Light prepare(LightType type);
+	Light prepare(LightType type, Consumer<Boolean> confirmationReceiver);
 
 	void turnOnIfNecessary(Light light, FriendlyException e);
 	void turnOnIfNecessary(Light light, FriendlyException e, int timeout);
@@ -22,10 +24,9 @@ public interface BlinkingLights {
 	Light turnOn(LightType type, String caption, String helpMessage, Throwable t);
 	Light turnOn(LightType type, String caption, String helpMessage, Throwable t, int timeToLive);
 
-	Light askForConfirmation(String caption, String helpMessage, Consumer<Boolean> responseReceiver);
+	void askForConfirmation(LightType type, String caption, String helpMessage, Consumer<Boolean> confirmationReceiver);
 	
 	void turnOffIfNecessary(Light light);
 
-	ListSignal<Light> lights();
 
 }

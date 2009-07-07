@@ -35,7 +35,6 @@ import javax.swing.text.StyledDocument;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.hardware.gui.images.Images;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
-import sneer.bricks.pulp.blinkinglights.ConfirmationLight;
 import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.pulp.reactive.Signal;
@@ -55,33 +54,33 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	private final InstrumentRegistry _instrumentManager = my(InstrumentRegistry.class);
 	private final BlinkingLights _blinkingLights = my(BlinkingLights.class);
 	private final ReactiveWidgetFactory _rfactory = my(ReactiveWidgetFactory.class);
+	private final Map<LightType, Signal<Image>> _images = new HashMap<LightType, Signal<Image>>();
 
 	private ListWidget<Light> _lightsList;
 	private Container _container;
 	
-	private final static Map<LightType, Signal<Image>> _images = new HashMap<LightType, Signal<Image>>();
-	static {
-		_images.put(LightType.GOOD_NEWS, constant(loadImage("good_news.png")));
-		_images.put(LightType.INFO, constant(loadImage("info.png")));
-		_images.put(LightType.WARN, constant(loadImage("warn.png")));
-		_images.put(LightType.ERROR, constant(loadImage("error.png")));
-		_images.put(LightType.CONFIRMATION, constant(loadImage("confirmation.png")));
-	}
-	
 	BlinkingLightsGuiImpl(){
 		_instrumentManager.registerInstrument(this);
-	} 
-	
-	private static Signal<Image> constant(Image image) {
-		return my(Signals.class).constant(image);
+				
+		loadImage("good_news.png", LightType.GOOD_NEWS);
+		loadImage("info.png", LightType.INFO);
+		loadImage("warn.png", LightType.WARN);
+		loadImage("error.png", LightType.ERROR);
 	}
 
-	@Override
-	public void init(InstrumentPanel window) {
+	@Override public void init(InstrumentPanel window) {
 		_container = window.contentPane();
 		_lightsList = _rfactory.newList(_blinkingLights.lights(), new BlinkingLightsLabelProvider());
 		iniGui();
 		new AlertWindowSupport();
+	}
+
+	@Override public int defaultHeight() {return 100;}
+	@Override public String title() { return "Blinking Lights"; }	
+	
+	private final class BlinkingLightsLabelProvider implements LabelProvider<Light> {
+		@Override public Signal<String> labelFor(Light light) {  return my(Signals.class).constant(light.caption()); }
+		@Override public Signal<Image> imageFor(Light light) { return _images.get(light.type()); }
 	}
 
 	private void iniGui() {
@@ -98,18 +97,12 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		_container.add(scrollPane, BorderLayout.CENTER);
 	}
 
-	@Override
-	public int defaultHeight() {
-		return 100;
-	}
-	
-	private static Image loadImage(String fileName) {
-		return my(Images.class).getImage(BlinkingLightsGuiImpl.class.getResource(fileName));
-	}
-
-	private Signal<Image> image(Light light) {
-		return _images.get(light.type());
-	}
+	private void loadImage(String fileName, LightType type) {
+		_images.put(type, 
+			my(Signals.class).constant(
+				my(Images.class).getImage(BlinkingLightsGuiImpl.class.getResource(fileName))
+			));
+	} 
 	
 	private final class AlertWindowSupport{
 		private static final int HORIZONTAL_LIMIT = 600;
@@ -129,7 +122,7 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		protected Light _light;
 		
 		private AlertWindowSupport(){
-			initListener();
+			initConfirmationListener();
 			initGui();
 			initMouseListener();
 		}
@@ -153,9 +146,10 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 
 			_confirmationPanel = new JPanel();
 			_confirmationPanel.setLayout(new FlowLayout());
-			
-			JButton btnNo = new JButton("No");
-			JButton btnYes = new JButton("Yes");
+			panel.add(_confirmationPanel, BorderLayout.SOUTH);
+
+			JButton btnNo = new JButton("Cancel");
+			JButton btnYes = new JButton("Ok");
 
 			_confirmationPanel.add(btnYes);
 			_confirmationPanel.add(btnNo);
@@ -164,21 +158,23 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 			btnNo.addActionListener(_noListener);
 		}
 
-		private void initListener() {
+		private void initConfirmationListener() {
 			_yesListener = new ActionListener(){ @Override public void actionPerformed(ActionEvent arg0) {
 				if(_light==null) return;
-				if(_light.type() != LightType.CONFIRMATION) return;
+				if(!_light.hasConfirmation()) return;
 				
-				((ConfirmationLight)_light).sayYes();
 				_window.setVisible(false);
+				my(BlinkingLights.class).turnOffIfNecessary(_light);
+				_light.sayYes();
 			}};
 
 			_noListener = new ActionListener(){ @Override public void actionPerformed(ActionEvent arg0) {
 				if(_light==null) return;
-				if(_light.type() != LightType.CONFIRMATION) return;
+				if(!_light.hasConfirmation()) return;
 				
-				((ConfirmationLight)_light).sayNo();
 				_window.setVisible(false);
+				my(BlinkingLights.class).turnOffIfNecessary(_light);
+				_light.sayNo();
 			}};
 		}
 		
@@ -198,7 +194,7 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		}
 		
 		private void show(final Light light){
-			setWindowType(light);
+			checkForConfirmations(light);
 			setWindowTitle(light);
 			setWindowsMessage(light);
 			setWindowBounds();
@@ -206,13 +202,8 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 			placeScrollAtTheBegining();
 		}
 
-		private void setWindowType(Light light) {
-			if(!isConfirmationLight(light))
-				_confirmationPanel.setVisible(false);
-		}
-
-		private boolean isConfirmationLight(Light light) {
-			return light.type() == LightType.CONFIRMATION;
+		private void checkForConfirmations(Light light) {
+			_confirmationPanel.setVisible(light.hasConfirmation());
 		}
 
 		private void placeScrollAtTheBegining() {
@@ -227,7 +218,7 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 
 		private void setWindowTitle(Light light) {
 			_window.setTitle(light.caption());
-			_window.setIconImage(image(light).currentValue());
+			_window.setIconImage(_images.get(light.type()).currentValue());
 		}
 		
 		private void setWindowsMessage(Light light) {
@@ -270,22 +261,5 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		    StyleConstants.setFontSize( stack, 11 );
 		    doc.addStyle(STACK_TRACE, stack);
 		}
-	}
-	
-	private final class BlinkingLightsLabelProvider implements LabelProvider<Light> {
-		@Override
-		public Signal<String> labelFor(Light light) {
-			return my(Signals.class).constant(light.caption());
-		}
-
-		@Override
-		public Signal<Image> imageFor(Light light) {
-			return image(light);
-		}
-	}
-
-	@Override
-	public String title() {
-		return "Blinking Lights";
 	}
 }

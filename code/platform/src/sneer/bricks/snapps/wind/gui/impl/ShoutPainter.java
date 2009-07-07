@@ -31,12 +31,13 @@ class ShoutPainter {
 		StyleConstants.setFontSize(_space, 4);
 
 		_time = _document.addStyle("time", def);
-		StyleConstants.setFontFamily(_time, "SansSerif");
-		StyleConstants.setFontSize(_time, 10);
+		StyleConstants.setFontFamily(_time, "Verdana");
+		StyleConstants.setFontSize(_time, 8);
 		StyleConstants.setForeground(_time, Color.GRAY);
 
 		_nick = _document.addStyle("nick", _time);
-		StyleConstants.setForeground(_nick, Color.BLUE);
+		StyleConstants.setForeground(_nick, Color.BLACK);
+		StyleConstants.setFontSize(_nick, 10);
 		StyleConstants.setBold(_nick, true);
 
 		_shout = _document.addStyle("shout", def);

@@ -23,7 +23,6 @@ class ShoutPainter {
 
 	ShoutPainter(DefaultStyledDocument styledDocument) {
 		_document = styledDocument;
-		
 		Style def = StyleContext.getDefaultStyleContext().
         getStyle(StyleContext.DEFAULT_STYLE);
 

@@ -52,8 +52,6 @@ import sneer.bricks.snapps.system.blinkinglights.gui.BlinkingLightsGui;
 class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	
 	private final InstrumentRegistry _instrumentManager = my(InstrumentRegistry.class);
-	private final BlinkingLights _blinkingLights = my(BlinkingLights.class);
-	private final ReactiveWidgetFactory _rfactory = my(ReactiveWidgetFactory.class);
 	private final Map<LightType, Signal<Image>> _images = new HashMap<LightType, Signal<Image>>();
 
 	private ListWidget<Light> _lightsList;
@@ -70,7 +68,8 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 
 	@Override public void init(InstrumentPanel window) {
 		_container = window.contentPane();
-		_lightsList = _rfactory.newList(_blinkingLights.lights(), new BlinkingLightsLabelProvider());
+		_lightsList = my(ReactiveWidgetFactory.class).newList(
+				my(BlinkingLights.class).lights(), new BlinkingLightsLabelProvider());
 		iniGui();
 		new AlertWindowSupport();
 	}

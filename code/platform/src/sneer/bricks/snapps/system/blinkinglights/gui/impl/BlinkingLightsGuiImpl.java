@@ -64,6 +64,7 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		loadImage("info.png", LightType.INFO);
 		loadImage("warn.png", LightType.WARN);
 		loadImage("error.png", LightType.ERROR);
+		my(BlinkingLights.class);
 	}
 
 	@Override public void init(InstrumentPanel window) {

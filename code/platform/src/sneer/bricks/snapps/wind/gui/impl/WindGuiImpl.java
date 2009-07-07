@@ -24,6 +24,7 @@ import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.DefaultStyledDocument;
 
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.hardware.io.log.Logger;
@@ -63,12 +64,20 @@ class WindGuiImpl implements WindGui {
 	}
 	
 	private final JScrollPane _scrollPane = my(AutoScroll.class).create(_wind.shoutsHeard(),
-		new Consumer<CollectionChange<Shout>>() { @Override public void consume(CollectionChange<Shout> change) {
-				for (Shout shout : change.elementsAdded())
-					ShoutPainter.appendShout(shout, _shoutsList);
+		new Consumer<CollectionChange<Shout>>() { 
+			
+			ShoutPainter _shoutPainter = new ShoutPainter((DefaultStyledDocument) _shoutsList.getStyledDocument());
+			
+			@Override 
+			public void consume(CollectionChange<Shout> change) {
+				if (!change.elementsRemoved().isEmpty()){
+					_shoutPainter.repaintAllShoults(_wind.shoutsHeard());
+					return;
+				}
 
-				if (!change.elementsRemoved().isEmpty())
-					ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList);
+				for (Shout shout : change.elementsAdded())
+					_shoutPainter.appendShout(shout);
+
 			}
 		});
 

@@ -23,6 +23,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollBar;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
@@ -175,15 +178,18 @@ class DashboardPanel extends JPanel {
 				@Override public void run() { 
 					if(_isDocked) undock();
 					else dock();
-					resizeInstrumentPanel();
-					my(GuiThread.class).invokeLaterForWussies(new Runnable(){ @Override public void run() {
-						hideAllToolbars();
-						_toolbar.setVisible(true);
-					}});
-				}
-			});
+					repaintInstruments();
+				}});
 		}
 
+		private void repaintInstruments() {
+			resizeInstrumentPanel();
+			my(GuiThread.class).invokeLaterForWussies(new Runnable(){ @Override public void run() {
+				hideAllToolbars();
+				_toolbar.setVisible(true);
+			}});
+		}
+		
 		private void dock(){
 			_undockWindow.setVisible(false);
 			remove(_contentPane);
@@ -205,8 +211,14 @@ class DashboardPanel extends JPanel {
 			
 			remove(_contentPane);
 			_undockWindow.add(_contentPane, BorderLayout.CENTER);
+			_undockWindow.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 			_undockWindow.setVisible(true);
 			_isDocked = false;
+			
+			_undockWindow.addWindowListener(new WindowAdapter(){ @Override public void windowClosing(WindowEvent e) {
+					dock();
+					repaintInstruments();
+			}});
 		}
 		
 		private void hideAndShow(Point mousePoint) {

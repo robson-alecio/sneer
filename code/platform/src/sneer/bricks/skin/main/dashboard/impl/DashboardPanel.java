@@ -23,8 +23,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -178,6 +176,10 @@ class DashboardPanel extends JPanel {
 					if(_isDocked) undock();
 					else dock();
 					resizeInstrumentPanel();
+					my(GuiThread.class).invokeLaterForWussies(new Runnable(){ @Override public void run() {
+						hideAllToolbars();
+						_toolbar.setVisible(true);
+					}});
 				}
 			});
 		}
@@ -203,13 +205,7 @@ class DashboardPanel extends JPanel {
 			
 			remove(_contentPane);
 			_undockWindow.add(_contentPane, BorderLayout.CENTER);
-
 			_undockWindow.setVisible(true);
-			_undockWindow.addWindowListener(new WindowAdapter(){ @Override public void windowClosed(WindowEvent arg0) {
-				dock();
-				resizeInstrumentPanel();
-			}});
-			
 			_isDocked = false;
 		}
 		

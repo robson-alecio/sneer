@@ -1,34 +1,81 @@
 package sneer.bricks.snapps.wind.gui.impl;
 
-import javax.swing.JTextPane;
+import java.awt.Color;
+
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 
 import sneer.bricks.pulp.reactive.collections.ListSignal;
 import sneer.bricks.snapps.wind.Shout;
+import sneer.foundation.lang.exceptions.NotImplementedYet;
 
-abstract class ShoutPainter {
+class ShoutPainter {
 	
-	static void appendShout(Shout shout, JTextPane pane) {
-		StringBuilder buffer = new StringBuilder();
-		buffer.append(pane.getText());
-		appendShout(shout,buffer);
-		pane.setText(buffer.toString());
-	}
+	private final DefaultStyledDocument _document;
 	
-	static void repaintAllShoults(ListSignal<Shout> listSignal, JTextPane pane) {
-		StringBuilder buffer = new StringBuilder();
-		for (Shout shout : listSignal) {
-			appendShout(shout, buffer);
-		}
-		pane.setText(buffer.toString());
-	}
-	
-	private static void appendShout(Shout shout, StringBuilder buffer) {
-		if(ShoutUtils.isMyOwnShout(shout))
-			buffer.append("|W|");
-		else
-			buffer.append(ShoutUtils.publisherNick(shout));
+	private Style _space;
+	private Style _time;
+	private Style _shout;
+	private Style _nick;
+
+	ShoutPainter(DefaultStyledDocument styledDocument) {
+		_document = styledDocument;
 		
-		buffer.append(" - "). append(ShoutUtils.getFormatedShoutTime(shout)).append("\n");
-		buffer.append(shout.phrase).append("\n\n");
+		Style def = StyleContext.getDefaultStyleContext().
+        getStyle(StyleContext.DEFAULT_STYLE);
+
+		_space = _document.addStyle("space", def);
+		StyleConstants.setFontSize(_space, 4);
+
+		_time = _document.addStyle("time", def);
+		StyleConstants.setFontFamily(_time, "SansSerif");
+		StyleConstants.setFontSize(_time, 10);
+		StyleConstants.setForeground(_time, Color.GRAY);
+
+		_nick = _document.addStyle("nick", _time);
+		StyleConstants.setForeground(_nick, Color.BLUE);
+		StyleConstants.setBold(_nick, true);
+
+		_shout = _document.addStyle("shout", def);
+		StyleConstants.setFontFamily(_shout, "Verdana");
+		StyleConstants.setFontSize(_shout, 12);		
+		
+		_document.addStyle("time", _time);
+		_document.addStyle("shout", _shout);
+	}
+
+	void repaintAllShoults(ListSignal<Shout> listSignal) {
+		try {
+			_document.remove(0, _document.getLength());
+		} catch (BadLocationException e) {
+			throw new NotImplementedYet(e); // Fix Handle this exception.
+		}
+		for (Shout shout : listSignal) 
+			appendShout(shout);
+	}
+	
+	void appendShout(Shout shout) {
+		try {
+			_document.insertString(_document.getLength(), nick(shout) ,  _nick);
+			_document.insertString(_document.getLength(), header(shout) ,  _time);
+			_document.insertString(_document.getLength(), shout.phrase ,  _shout);
+			_document.insertString(_document.getLength(), "\n\n" ,  _space);
+		} catch (BadLocationException e) {
+			throw new NotImplementedYet(e); // Fix Handle this exception.
+		}	
+	}
+	
+	private String header(Shout shout){		
+		return new StringBuilder().append(" - ")
+			.append(ShoutUtils.getFormatedShoutTime(shout)).append("\n").toString();
+	}
+
+	private String nick(Shout shout) {
+		if(ShoutUtils.isMyOwnShout(shout)) return "|W|";
+		
+		return ShoutUtils.publisherNick(shout);
 	}
 }

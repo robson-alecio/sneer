@@ -13,7 +13,8 @@ class ReceiversImpl {
 
  		private ReceptionImpl(EventSource<? extends T>... eventSources) {
  			for (EventSource<? extends T> source : eventSources)
- 				source.addReceiver(this);
+ 				// TODO: Analyze cases of NULL source elements being added
+ 				if (source != null) source.addReceiver(this);
 
  			_sourcesReferenceToAvoidGc = eventSources;
  		}

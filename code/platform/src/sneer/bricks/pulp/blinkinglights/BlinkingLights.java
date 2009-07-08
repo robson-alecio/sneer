@@ -10,7 +10,6 @@ public interface BlinkingLights {
 
 	ListSignal<Light> lights();
 	Light prepare(LightType type);
-	Light prepare(LightType type, Consumer<Boolean> confirmationReceiver);
 
 	void turnOnIfNecessary(Light light, FriendlyException e);
 	void turnOnIfNecessary(Light light, FriendlyException e, int timeout);

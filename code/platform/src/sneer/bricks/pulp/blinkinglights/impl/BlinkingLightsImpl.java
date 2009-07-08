@@ -64,11 +64,6 @@ class BlinkingLightsImpl implements BlinkingLights {
 	}
 
 	@Override
-	public Light prepare(LightType type, Consumer<Boolean> confirmationReceiver) {
-		return new LightImpl(type, confirmationReceiver);
-	}
-	
-	@Override
 	public void turnOnIfNecessary(Light light, FriendlyException e) {
 		turnOnIfNecessary(light, e, LightImpl.NEVER);
 	}

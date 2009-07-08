@@ -4,12 +4,10 @@
 	- [Klaus] Revise entire package structure.  
 
 	- [Sandro] RapidShare Killer
-		- Help Célio - Find him on skype.
 		- Focus. Keep it simple. Zero sofistication. Simplest possible solution. No crash-recovery, for example. No bugs. Decent design.
 
 	- [Sandro] Wind 
 		- FORGET THIS FOR NOW: Auto Scroll - DO NOT make a framework. Make a test SPECIFIC for auto-scroll using screen image comparisons.
-		- Work with HTML Document - Simple. No sophistication. No template.
 
 	- [Sandro] Auto-scroll
 		- Delete the OldAutoScroll class.

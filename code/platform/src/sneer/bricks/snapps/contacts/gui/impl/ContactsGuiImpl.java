@@ -9,7 +9,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JList;
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 
@@ -28,7 +27,9 @@ import sneer.bricks.skin.main.dashboard.InstrumentPanel;
 import sneer.bricks.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.bricks.skin.main.synth.Synth;
 import sneer.bricks.skin.main.synth.scroll.SynthScrolls;
+import sneer.bricks.skin.menu.MenuFactory;
 import sneer.bricks.skin.menu.MenuGroup;
+import sneer.bricks.skin.popuptrigger.PopupTrigger;
 import sneer.bricks.skin.widgets.reactive.LabelProvider;
 import sneer.bricks.skin.widgets.reactive.ListWidget;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -37,6 +38,7 @@ import sneer.bricks.snapps.contacts.actions.ContactActionManager;
 import sneer.bricks.snapps.contacts.gui.ContactsGui;
 import sneer.bricks.snapps.contacts.gui.comparator.ContactComparator;
 import sneer.foundation.lang.ByRef;
+import sneer.foundation.lang.Consumer;
 import sneer.foundation.lang.Functor;
 
 class ContactsGuiImpl implements ContactsGui {
@@ -146,10 +148,9 @@ class ContactsGuiImpl implements ContactsGui {
 	private final class ListContactsPopUpSupport {
 		private ListContactsPopUpSupport() {
 			final JList list = _contactList.getMainWidget();
-			list.addMouseListener(new MouseAdapter(){ 
-				@Override public void mousePressed(MouseEvent e) { tryToShowContactMenu(e); }
-				@Override public void mouseReleased(MouseEvent e) { tryToShowContactMenu(e); }
-			});
+			my(PopupTrigger.class).listen(list, new Consumer<MouseEvent>(){ @Override public void consume(MouseEvent e) {
+				tryToShowContactMenu(e);
+			}});
 		}
 		
 		private void tryToShowContactMenu(MouseEvent e) {
@@ -158,17 +159,13 @@ class ContactsGuiImpl implements ContactsGui {
 			list.getSelectionModel().setSelectionInterval(index, index);
 			if (!e.isPopupTrigger()) return;
 			
-			JPopupMenu popupMain = new JPopupMenu();	
+			MenuGroup<JPopupMenu> popupMain = my(MenuFactory.class).createPopupMenu();
 			for (ContactAction action : my(ContactActionManager.class).actions())
 				if (action.isVisible())
-					createMenuItem(popupMain, action);
+					popupMain.addAction(action);
 
-			if (popupMain.getSubElements().length>0)
-				popupMain.show(e.getComponent(),e.getX(),e.getY());
-		}
-
-		private void createMenuItem(JPopupMenu menu, ContactAction action) {
-			menu.add(new JMenuItem(new SwingActionAdapter(action)));
+			if (popupMain.getWidget().getSubElements().length>0)
+				popupMain.getWidget().show(e.getComponent(),e.getX(),e.getY());
 		}
 	}
 }

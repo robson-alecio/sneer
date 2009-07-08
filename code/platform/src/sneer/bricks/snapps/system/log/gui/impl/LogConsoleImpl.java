@@ -9,7 +9,6 @@ import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
@@ -41,6 +40,7 @@ import sneer.bricks.skin.main.synth.scroll.SynthScrolls;
 import sneer.bricks.skin.main.translucentsupport.TranslucentSupport;
 import sneer.bricks.skin.menu.MenuFactory;
 import sneer.bricks.skin.menu.MenuGroup;
+import sneer.bricks.skin.popuptrigger.PopupTrigger;
 import sneer.bricks.skin.widgets.reactive.ListWidget;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.autoscroll.AutoScroll;
@@ -191,13 +191,9 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 			@Override public void run() { _txtLog.setText("");}
 		});
 		
-		_txtLog.addMouseListener(new MouseAdapter(){ 
-			@Override 
-			public void mouseReleased(MouseEvent e) {
-				if(e.isPopupTrigger())
-					_popupMenu.getWidget().show(e.getComponent(),e.getX(),e.getY());
-			}
-		});
+		my(PopupTrigger.class).listen(_txtLog, new Consumer<MouseEvent>(){ @Override public void consume(MouseEvent e) {
+			_popupMenu.getWidget().show(e.getComponent(),e.getX(),e.getY());
+		}});
 	}
 
 	private JScrollPane AutoScroll() {

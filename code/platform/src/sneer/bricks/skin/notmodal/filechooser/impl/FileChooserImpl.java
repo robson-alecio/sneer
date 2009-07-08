@@ -1,4 +1,4 @@
-package sneer.bricks.skin.widgets.notmodal.filechooser.impl;
+package sneer.bricks.skin.notmodal.filechooser.impl;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -15,7 +15,7 @@ import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import sneer.bricks.skin.widgets.notmodal.filechooser.FileChooser;
+import sneer.bricks.skin.notmodal.filechooser.FileChooser;
 import sneer.foundation.lang.Consumer;
 
 public class FileChooserImpl implements FileChooser {

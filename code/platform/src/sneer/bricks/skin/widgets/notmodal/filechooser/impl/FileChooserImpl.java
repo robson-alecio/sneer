@@ -1,4 +1,4 @@
-package sneer.bricks.skin.widgets.reactive.filechooser.impl;
+package sneer.bricks.skin.widgets.notmodal.filechooser.impl;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -15,31 +15,36 @@ import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import sneer.bricks.skin.widgets.reactive.filechooser.FileChooser;
+import sneer.bricks.skin.widgets.notmodal.filechooser.FileChooser;
 import sneer.foundation.lang.Consumer;
 
 public class FileChooserImpl implements FileChooser {
 	
 	@Override
-	public void choose(Consumer<File> selectedFile) {
-		@SuppressWarnings("unused")
-		JFileChooser chooser = new NotModalFileChooser();
+	public JFileChooser newFileChooser(Consumer<File> selectionReceiver) {
+		return new NotModalFileChooser(selectionReceiver);
 	}
 
 	public static class NotModalFileChooser extends JFileChooser {
 	
-	    public static final int WAITING_OPTION = 100;
+		public static final int WAITING_OPTION = 100;
+		private final Consumer<File> _selectionReceiver;
+
+		protected JDialog dialog;
 	    
-	    @Override
+	    public NotModalFileChooser(Consumer<File> selectionReceiver) {
+			_selectionReceiver = selectionReceiver;
+		}
+
+		@Override
 		protected JDialog createDialog(Component parent) throws HeadlessException {
 			String title = getUI().getDialogTitle(this);
 			putClientProperty(AccessibleContext.ACCESSIBLE_DESCRIPTION_PROPERTY, title);
-	
-			JDialog dialog;
-			if(parent==null) dialog = new JDialog(){
-				
-			};
-			else dialog = new JDialog(SwingUtilities.getWindowAncestor(parent));
+			
+			if(parent==null) 
+				dialog = new JDialog();
+			else 
+				dialog = new JDialog(SwingUtilities.getWindowAncestor(parent));
 			
 			dialog.setTitle(title);
 			dialog.setModal(false);
@@ -65,7 +70,7 @@ public class FileChooserImpl implements FileChooser {
 			    setApproveButtonText(approveButtonText);
 			    setDialogType(CUSTOM_DIALOG);
 			}
-			JDialog dialog = createDialog(parent);
+			dialog = createDialog(parent);
 			dialog.addWindowListener(new WindowAdapter() { @Override public void windowClosing(WindowEvent e) {
 					returnValue[0] = CANCEL_OPTION;
 				}
@@ -76,13 +81,42 @@ public class FileChooserImpl implements FileChooser {
 			return returnValue[0];
 	    }
 		
+	    @Override
+		public void approveSelection() {
+	    	fireActionPerformed(APPROVE_SELECTION);
+	    	disposeDialog();
+	    	_selectionReceiver.consume(getSelectedFile());
+        }
+
+	    @Override
+       public void cancelSelection() {
+	    	fireActionPerformed(CANCEL_SELECTION);
+	    	_selectionReceiver.consume(null);
+	    	disposeDialog();
+        }	    
+	    
+	    private void disposeDialog() {
+	    	if(dialog == null) return;
+	    	
+	    	dialog.setVisible(false);
+	        firePropertyChange("JFileChooserDialogIsClosingProperty", dialog, null);
+	    	dialog.removeAll();
+	    	dialog.dispose();
+	    	dialog = null;
+	    }
+	    
 		private boolean supportsWindowDecorations() {
 			return UIManager.getLookAndFeel().getSupportsWindowDecorations();
 		}
 	}
 	
 	public static void main(String[] args) throws Exception{
-		JFileChooser chooser = new NotModalFileChooser();
+		Consumer<File> selectionReceiver = new Consumer<File>(){ @Override public void consume(File file) {
+			System.out.println(file);
+		}};
+		
+		//	JFileChooser chooser = my(FileChooser.class).newNotModalFileChooser(selectionReceiver);
+		JFileChooser chooser = new FileChooserImpl().newFileChooser(selectionReceiver);
 		chooser.showOpenDialog(null);
 	}
 }

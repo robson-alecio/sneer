@@ -14,8 +14,6 @@
 		- Delete the create(...) methods.
 		- Use the new runWithAutoscroll() method. Must be called inside the GUI Thread!!! (I did not test it!!!)
 
-	- [Sandro] Right-click doesn't work In LogConsole - Revise all code and encapsulate to work for Windows and Linux.
-
 	- [Bamboo] Video Tutorial with Jazz :)
 
 	- [Igor] Mic and Speaker bricks - Stop using tuples. Instead do:

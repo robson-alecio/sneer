@@ -8,7 +8,6 @@ import sneer.tests.SovereignParty;
 
 public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 
-	//@Intermittent
 	@Test (timeout = 10000)
 	public void shoutToTheWind() {
 		

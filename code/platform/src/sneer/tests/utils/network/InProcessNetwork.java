@@ -28,7 +28,7 @@ public class InProcessNetwork implements Network {
 	}
 
 	private InProcessByteArrayServerSocket findServer(int serverPort) {
-	    return (InProcessByteArrayServerSocket) _serverSocketByPort.get(new Integer(serverPort));
+	    return (InProcessByteArrayServerSocket) _serverSocketByPort.get(serverPort);
 	}
 
 	private ByteArraySocket startClient(int serverPort) throws IOException {

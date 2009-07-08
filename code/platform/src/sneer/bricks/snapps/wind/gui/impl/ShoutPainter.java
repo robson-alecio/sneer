@@ -31,7 +31,7 @@ class ShoutPainter {
 
 		_time = _document.addStyle("time", def);
 		StyleConstants.setFontFamily(_time, "Verdana");
-		StyleConstants.setFontSize(_time, 8);
+		StyleConstants.setFontSize(_time, 9);
 		StyleConstants.setForeground(_time, Color.GRAY);
 
 		_nick = _document.addStyle("nick", _time);

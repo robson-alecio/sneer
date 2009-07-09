@@ -47,8 +47,8 @@ class WindowBoundsSetterImpl implements WindowBoundsSetter{
 		
 		int y = location.y;
 		int x = location.x;
-
-		int width = window.getWidth() + space;
+		
+		int width = window.getWidth();
 		int widthDif = 0;
 		if(horizontalLimit != 0 && width > horizontalLimit) 
 			widthDif = width - horizontalLimit;

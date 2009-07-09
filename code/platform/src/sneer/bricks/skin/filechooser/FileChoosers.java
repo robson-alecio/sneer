@@ -1,4 +1,4 @@
-package sneer.bricks.skin.notmodal.filechooser;
+package sneer.bricks.skin.filechooser;
 
 import java.io.File;
 
@@ -8,8 +8,9 @@ import sneer.foundation.brickness.Brick;
 import sneer.foundation.lang.Consumer;
 
 @Brick
-public interface FileChooser {
+public interface FileChoosers {
 
 	JFileChooser newFileChooser(Consumer<File> selectedFile);
-	
+
 }
+

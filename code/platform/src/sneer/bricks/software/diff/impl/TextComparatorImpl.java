@@ -11,6 +11,10 @@ import sneer.bricks.software.diff.TextComparator;
 
 class TextComparatorImpl implements TextComparator{
 	
+	public TextComparatorImpl(){
+		super();
+	};
+	
 	@Override
 	public Iterator<TextBlock> diff(String text1, String text2){
 		return diff(text1, text2, 32);

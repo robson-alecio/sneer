@@ -25,7 +25,7 @@ class TextComparatorImpl implements TextComparator{
 	
 	@Override
 	public String toPrettyHtml(Iterator<TextBlock> blocksIterator){
-		if(!(blocksIterator instanceof TextBlockImpl)) throw new NotImplementedException();
+		if(!(blocksIterator instanceof TextBlockIterator)) throw new NotImplementedException();
 		
 		TextBlockIterator adapter = (TextBlockIterator) blocksIterator;
 		return new diff_match_patch().diff_prettyHtml(adapter._diffs);

@@ -103,13 +103,6 @@ public class TextComparatorTest extends BrickTest {
 		check("The cat in the hat.", "The dog in the hat.");				
 	
 		_expectations.clear();
-		expectedBlock(EQUAL, "The ");
-		expectedBlock(DELETE, "cat");
-		expectedBlock(INSERT, "dog");
-		expectedBlock(EQUAL, " in the hat.");
-		check("The cat in the hat.", "The dog in the hat.");				
-	
-		_expectations.clear();
 		expectedBlock(EQUAL, 	"1111111111\n");
 		expectedBlock(INSERT, "55555555\n");
 		expectedBlock(EQUAL, 	"22222222\n" +

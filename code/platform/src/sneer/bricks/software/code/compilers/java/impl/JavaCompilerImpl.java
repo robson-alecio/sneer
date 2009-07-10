@@ -56,7 +56,7 @@ class JavaCompilerImpl implements JavaCompiler {
 		try {
 			File args = File.createTempFile("javac-", ".args");
 			
-			my(IO.class).files().writeStringToFile(args, my(Lang.class).strings().join(files, "\n"));
+			my(IO.class).files().writeString(args, my(Lang.class).strings().join(files, "\n"));
 			return args;
 		} catch(IOException e) {
 			throw new CompilerException("Can't create temp file", e);

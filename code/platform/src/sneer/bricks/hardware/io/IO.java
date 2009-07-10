@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import sneer.foundation.brickness.Brick;
+import sneer.foundation.lang.Consumer;
 
 @Brick
 public interface IO {
@@ -32,13 +33,22 @@ public interface IO {
 	
 	interface Files{
 		boolean isEmpty(File file);
-		String concat(String basePath, String path);
-		void copyDirectory(File srcDir, File destDir) throws IOException;
 		Collection<File> listFiles(File directory, String[] extensions, boolean recursive);
-		void writeStringToFile(File file, String data) throws IOException;
+		
+		void copyDirectory(File srcDir, File destDir) throws IOException;
 		void deleteDirectory(File directory) throws IOException;
 		Iterator<File> iterate(File directory, String[] extensions, boolean recursive);
-		byte[] readFileToByteArray(File file) throws IOException;
+
+		void writeString(File file, String data) throws IOException;
+		
+		byte[] readBytes(File file) throws IOException;
+		void readBytes(File file, Consumer<byte[]> content);
+		void readBytes(File file, Consumer<byte[]> content, Consumer<IOException> exception);
+		
+		String readString(File file) throws IOException;
+		void readString(File file, Consumer<String> content);
+		void readString(File file, Consumer<String> content, Consumer<IOException> exception);
+		
 	}
 	
 	interface Streams{

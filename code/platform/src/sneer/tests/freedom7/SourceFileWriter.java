@@ -16,7 +16,7 @@ public class SourceFileWriter {
 	}
 
 	public void write(String className, String code) throws IOException {
-		my(IO.class).files().writeStringToFile(javaFile(className), "package " + packageName(className) + ";\n" + code);
+		my(IO.class).files().writeString(javaFile(className), "package " + packageName(className) + ";\n" + code);
 	}
 
 	private String packageName(String className) {

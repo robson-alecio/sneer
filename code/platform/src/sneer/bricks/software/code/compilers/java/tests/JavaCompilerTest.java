@@ -78,7 +78,7 @@ public class JavaCompilerTest extends BrickTest {
 	private File writeSourceFile(String code) {
 		try {
 			File java = createTempFile(); 
-			my(IO.class).files().writeStringToFile(java, code);
+			my(IO.class).files().writeString(java, code);
 			return java;
 		} catch (IOException e) {
 			throw new IllegalStateException(e);

@@ -46,7 +46,7 @@ abstract class MetaClassSupport implements MetaClass {
 	
 	@Override
 	public byte[] bytes() throws IOException {
-		return my(IO.class).files().readFileToByteArray(_classFile);
+		return my(IO.class).files().readBytes(_classFile);
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package sneer.bricks.hardware.io.impl;
 
+import static sneer.foundation.environments.Environments.my;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -8,12 +10,15 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 
 import sneer.bricks.hardware.io.IO;
+import sneer.bricks.pulp.blinkinglights.BlinkingLights;
+import sneer.bricks.pulp.blinkinglights.LightType;
+import sneer.foundation.lang.Consumer;
+
 
 class IOImpl implements IO {
 	
@@ -30,13 +35,33 @@ class IOImpl implements IO {
 			return file.length() == 0;
 		}
 		
-		@Override public String concat(String basePath, String fullFilenameToAdd) { return FilenameUtils.concat(basePath, fullFilenameToAdd); }
 		@Override public void copyDirectory(File srcDir, File destDir) throws IOException { FileUtils.copyDirectory(srcDir, destDir); }
 		@Override public Collection<File> listFiles(File directory, String[] extensions, boolean recursive) { return FileUtils.listFiles(directory, extensions, recursive); }
-		@Override public void writeStringToFile(File file, String data) throws IOException { FileUtils.writeStringToFile(file, data); }
+		@Override public void writeString(File file, String data) throws IOException { FileUtils.writeStringToFile(file, data); }
 		@Override public void deleteDirectory(File directory) throws IOException { FileUtils.deleteDirectory(directory); }
 		@Override public Iterator<File> iterate(File directory, String[] extensions, boolean recursive){ return FileUtils.iterateFiles(directory, extensions, recursive); }
-		@Override public byte[] readFileToByteArray(File file) throws IOException { return FileUtils.readFileToByteArray(file); }
+		
+		@Override public String readString(File file) throws IOException {return new String(readBytes(file)); }
+		@Override public void readString(final File file, final Consumer<String> content) {
+			readBytes(file, new Consumer<byte[]>(){ @Override public void consume(byte[] value) { content.consume(new String(value)); }});}
+		@Override public void readString(final File file, final Consumer<String> content, final Consumer<IOException> exception) {
+			readBytes(file, new Consumer<byte[]>(){ @Override public void consume(byte[] value) {  content.consume(new String(value)); } }, exception);}
+
+		@Override public byte[] readBytes(File file) throws IOException { 
+			return FileUtils.readFileToByteArray(file); 
+		}
+		@Override public void readBytes(final File file, Consumer<byte[]> content) {
+			readBytes(file, content, new Consumer<IOException>(){ @Override public void consume(IOException exception) {
+				my(BlinkingLights.class).turnOn(LightType.ERROR, "Error", "Unable to read file: " + file.getAbsolutePath(),  exception, 5*60*1000);
+			}});		
+		}
+		@Override public void readBytes(File file, Consumer<byte[]> content, Consumer<IOException> exception) {
+			try {
+				content.consume(readBytes(file));
+			} catch (IOException e) {
+				exception.consume(e);
+			}
+		}
 	};
 	
 	private Streams _streams = new Streams(){

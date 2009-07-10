@@ -4,8 +4,6 @@ import static sneer.foundation.environments.Environments.my;
 
 import java.awt.BorderLayout;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -15,6 +13,8 @@ import javax.swing.JScrollPane;
 
 import sneer.bricks.hardware.gui.Action;
 import sneer.bricks.hardware.io.IO;
+import sneer.bricks.pulp.blinkinglights.BlinkingLights;
+import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.skin.main.dashboard.InstrumentPanel;
 import sneer.bricks.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.bricks.skin.main.synth.scroll.SynthScrolls;
@@ -23,7 +23,6 @@ import sneer.bricks.snapps.diff.text.gui.TextDiffGui;
 import sneer.bricks.software.diff.TextComparator;
 import sneer.bricks.software.diff.TextComparator.TextBlock;
 import sneer.foundation.lang.Consumer;
-import sneer.foundation.lang.exceptions.NotImplementedYet;
 
 class TextDiffGuiImpl implements TextDiffGui{
 
@@ -78,14 +77,23 @@ class TextDiffGuiImpl implements TextDiffGui{
 	}
 
 	private void compare(File file1, File file2) {
+		String text1;
+		String text2;
 		try {
-			String text1 = readFile(file1);
-			String text2 = readFile(file2);
-			compare(text1, text2);
-			
+			text1 = read(file1);
+			text2 = read(file2);
+		} catch (IOException ignore) {
+			return;
+		}
+		compare(text1, text2);
+	}
+
+	private String read(File file) throws IOException {
+		try {
+			return my(IO.class).files().readString(file);
 		} catch (IOException e) {
-			e.printStackTrace();
-			throw new NotImplementedYet(e); // Fix Handle this exception.
+			my(BlinkingLights.class).turnOn(LightType.ERROR, "Error", "Unable to read file: " + file.getAbsolutePath(),  e, 5*60*1000);
+			throw e;
 		}
 	}
 
@@ -95,10 +103,6 @@ class TextDiffGuiImpl implements TextDiffGui{
 		String html = comparator.toPrettyHtml(diff);
 		
 		_htmlDif.setText(html);
-	}
-
-	private String readFile(File file) throws IOException, FileNotFoundException {
-		return new String(my(IO.class).streams().readBytesAndClose(new FileInputStream(file)));
 	}
 
 	private int showFileChooser() {

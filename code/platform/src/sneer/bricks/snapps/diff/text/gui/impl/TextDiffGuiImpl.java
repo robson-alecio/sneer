@@ -45,9 +45,9 @@ class TextDiffGuiImpl implements TextDiffGui{
 				return;
 			}
 			
-			_chooser = null;
-			compare(_file1, value);
+			File tmp = _file1;
 			_file1 = null;
+			compare(tmp, value);
 		}
 	};
 	private JFileChooser _chooser = fileChooser(_fileConsumer);

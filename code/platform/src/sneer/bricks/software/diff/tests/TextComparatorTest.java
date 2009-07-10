@@ -10,6 +10,9 @@ import org.junit.Test;
 
 import sneer.bricks.software.diff.TextComparator.TextBlock;
 import sneer.bricks.software.diff.TextComparator.TextBlockType;
+import static sneer.bricks.software.diff.TextComparator.TextBlockType.INSERT;
+import static sneer.bricks.software.diff.TextComparator.TextBlockType.DELETE;
+import static sneer.bricks.software.diff.TextComparator.TextBlockType.EQUAL;
 import sneer.bricks.software.diff.TextComparator;
 import sneer.foundation.brickness.testsupport.BrickTest;
 
@@ -21,98 +24,99 @@ public class TextComparatorTest extends BrickTest {
 	@Test
 	public void diffTest() throws Exception {
 
-		newExpectation(TextBlockType.EQUAL, "abc");
+		expectedBlock(EQUAL, "abc");
 		check("abc", "abc");
 
 		_expectations.clear();
-		newExpectation(TextBlockType.DELETE, "a");
-		newExpectation(TextBlockType.INSERT, "b");
+		expectedBlock(DELETE, "a");
+		expectedBlock(TextBlockType.INSERT, "b");
 		check("a", "b");
 		
 		_expectations.clear();
-		newExpectation(TextBlockType.EQUAL, "a");
-		newExpectation(TextBlockType.INSERT, "123");
-		newExpectation(TextBlockType.EQUAL, "b");
-		newExpectation(TextBlockType.INSERT, "456");
-		newExpectation(TextBlockType.EQUAL, "c");
+		expectedBlock(EQUAL, "a");
+		expectedBlock(INSERT, "123");
+		expectedBlock(EQUAL, "b");
+		expectedBlock(INSERT, "456");
+		expectedBlock(EQUAL, "c");
 		check("abc", "a123b456c");
 		
 		_expectations.clear();
-		newExpectation(TextBlockType.EQUAL, "a");
-		newExpectation(TextBlockType.DELETE, "123");
-		newExpectation(TextBlockType.EQUAL, "b");
-		newExpectation(TextBlockType.DELETE, "456");
-		newExpectation(TextBlockType.EQUAL, "c");
+		expectedBlock(EQUAL, "a");
+		expectedBlock(DELETE, "123");
+		expectedBlock(EQUAL, "b");
+		expectedBlock(DELETE, "456");
+		expectedBlock(EQUAL, "c");
 		check("a123b456c", "abc");		
 		
 		_expectations.clear();
-		newExpectation(TextBlockType.DELETE, "Apple");
-		newExpectation(TextBlockType.INSERT, "Banana");
-		newExpectation(TextBlockType.EQUAL, "s are a");
-		newExpectation(TextBlockType.INSERT, "lso");
-		newExpectation(TextBlockType.EQUAL, " fruit.");
+		expectedBlock(DELETE, "Apple");
+		expectedBlock(INSERT, "Banana");
+		expectedBlock(EQUAL, "s are a");
+		expectedBlock(INSERT, "lso");
+		expectedBlock(EQUAL, " fruit.");
 		check("Apples are a fruit.", "Bananas are also fruit.");
 		
 		_expectations.clear();
-		newExpectation(TextBlockType.DELETE, "a");
-		newExpectation(TextBlockType.INSERT, "\u0680");
-		newExpectation(TextBlockType.EQUAL, "x");
-		newExpectation(TextBlockType.DELETE, "\t");
-		newExpectation(TextBlockType.INSERT, "\000");
+		expectedBlock(DELETE, "a");
+		expectedBlock(INSERT, "\u0680");
+		expectedBlock(EQUAL, "x");
+		expectedBlock(DELETE, "\t");
+		expectedBlock(INSERT, "\000");
 		check("ax\t", "\u0680x\000");
 		
 		_expectations.clear();
-		newExpectation(TextBlockType.DELETE, "1");
-		newExpectation(TextBlockType.EQUAL, "a");
-		newExpectation(TextBlockType.DELETE, "y");
-		newExpectation(TextBlockType.EQUAL, "b");
-		newExpectation(TextBlockType.DELETE, "2");
-		newExpectation(TextBlockType.INSERT, "xab");
+		expectedBlock(DELETE, "1");
+		expectedBlock(EQUAL, "a");
+		expectedBlock(DELETE, "y");
+		expectedBlock(EQUAL, "b");
+		expectedBlock(DELETE, "2");
+		expectedBlock(INSERT, "xab");
 		check("1ayb2", "abxab");
 		
 		_expectations.clear();
-		newExpectation(TextBlockType.INSERT, "xaxcx");
-		newExpectation(TextBlockType.EQUAL, "abc");
-		newExpectation(TextBlockType.DELETE, "y");
+		expectedBlock(INSERT, "xaxcx");
+		expectedBlock(EQUAL, "abc");
+		expectedBlock(DELETE, "y");
 		check("abcy", "xaxcxabc");
 		
 		_expectations.clear();
-		newExpectation(TextBlockType.INSERT, "x");
-		newExpectation(TextBlockType.EQUAL, "a");
-		newExpectation(TextBlockType.DELETE, "b");
-		newExpectation(TextBlockType.INSERT, "x");
-		newExpectation(TextBlockType.EQUAL, "c");
-		newExpectation(TextBlockType.DELETE, "y");
-		newExpectation(TextBlockType.INSERT, "xabc");
+		expectedBlock(INSERT, "x");
+		expectedBlock(EQUAL, "a");
+		expectedBlock(DELETE, "b");
+		expectedBlock(INSERT, "x");
+		expectedBlock(EQUAL, "c");
+		expectedBlock(DELETE, "y");
+		expectedBlock(INSERT, "xabc");
 		check("abcy", "xaxcxabc", 2);		
 		
 		_expectations.clear();
-		newExpectation(TextBlockType.DELETE, "alpha\n");
-		newExpectation(TextBlockType.EQUAL, "beta\nalpha\n");
-		newExpectation(TextBlockType.INSERT, "beta\n");
+		expectedBlock(DELETE, "alpha\n");
+		expectedBlock(EQUAL, "beta\nalpha\n");
+		expectedBlock(INSERT, "beta\n");
 		check("alpha\nbeta\nalpha\n", "beta\nalpha\nbeta\n");				
 
 		_expectations.clear();
-		newExpectation(TextBlockType.EQUAL, "The ");
-		newExpectation(TextBlockType.DELETE, "cat");
-		newExpectation(TextBlockType.INSERT, "dog");
-		newExpectation(TextBlockType.EQUAL, " in the hat.");
+		expectedBlock(EQUAL, "The ");
+		expectedBlock(DELETE, "cat");
+		expectedBlock(INSERT, "dog");
+		expectedBlock(EQUAL, " in the hat.");
 		check("The cat in the hat.", "The dog in the hat.");				
 	
 		_expectations.clear();
-		newExpectation(TextBlockType.EQUAL, "The ");
-		newExpectation(TextBlockType.DELETE, "cat");
-		newExpectation(TextBlockType.INSERT, "dog");
-		newExpectation(TextBlockType.EQUAL, " in the hat.");
+		expectedBlock(EQUAL, "The ");
+		expectedBlock(DELETE, "cat");
+		expectedBlock(INSERT, "dog");
+		expectedBlock(EQUAL, " in the hat.");
 		check("The cat in the hat.", "The dog in the hat.");				
 	
 		_expectations.clear();
-		newExpectation(TextBlockType.EQUAL, "1111111111\n");
-		newExpectation(TextBlockType.INSERT, "55555555\n");
-		newExpectation(TextBlockType.EQUAL, "22222222\n" +
-														   "33333333\n" +
-														   "44444444\n");
-		newExpectation(TextBlockType.DELETE, "55555555\n");
+		expectedBlock(EQUAL, 	"1111111111\n");
+		expectedBlock(INSERT, "55555555\n");
+		expectedBlock(EQUAL, 	"22222222\n" +
+											"33333333\n" +
+											"44444444\n");
+		expectedBlock(DELETE, "55555555\n");
+		
 		
 		String txt1 = 	"1111111111\n" +
 							"22222222\n" +
@@ -125,11 +129,10 @@ public class TextComparatorTest extends BrickTest {
 							"22222222\n" +
 							"33333333\n" +
 							"44444444\n";
-
 		check(txt1, txt2);				
 	}
 	
-	private void newExpectation(TextBlockType expectedDiffType, String expectedContent) {
+	private void expectedBlock(TextBlockType expectedDiffType, String expectedContent) {
 		_expectations.add( new Object[]{  expectedDiffType, expectedContent });
 	}
 

@@ -3,8 +3,6 @@
 
 	- [Klaus] Revise entire package structure.  
 	
-	- [Sandro] Diff - Find a few diff libs we can use (open source) and prepare very simple demos with them. We will choose one of them to compare brick versions among peers.
-	
 	- [Sandro] RapidShare Killer
 		- Focus. Keep it simple. Zero sofistication. Simplest possible solution. No crash-recovery, for example. No bugs. Decent design.
 

@@ -55,6 +55,7 @@ class TextDiffGuiImpl implements TextDiffGui{
 	
 	TextDiffGuiImpl() {
 		my(InstrumentRegistry.class).registerInstrument(this);	
+		_htmlDif.setContentType("text/html");
 		_htmlDif.setEditable(false);
 	}
 

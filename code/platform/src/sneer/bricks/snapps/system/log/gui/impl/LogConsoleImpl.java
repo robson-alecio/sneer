@@ -10,8 +10,6 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -46,6 +44,8 @@ import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.autoscroll.AutoScroll;
 import sneer.bricks.skin.windowboundssetter.WindowBoundsSetter;
 import sneer.bricks.snapps.system.log.gui.LogConsole;
+import sneer.bricks.software.timing.Animator;
+import sneer.bricks.software.timing.TimingFramework;
 import sneer.foundation.lang.Consumer;
 
 class LogConsoleImpl extends JFrame implements LogConsole {
@@ -80,14 +80,15 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	}
 	
 	private void initTranslucentWindow() {
-		addWindowFocusListener(new WindowFocusListener(){
-			{ 	setOpacity(0.3f); }
-			@Override public void windowGainedFocus(WindowEvent e) { setOpacity(1f); }
-			@Override public void windowLostFocus(WindowEvent e) { 	setOpacity(0.3f); }
-			private void setOpacity(float opacity) {
-				my(TranslucentSupport.class).setWindowOpacity(LogConsoleImpl.this, opacity);
-			}
-		});
+		my(TranslucentSupport.class).setWindowOpacity(this, 0.3f);
+		
+		TimingFramework timing = my(TimingFramework.class);
+		
+		Animator fadeIn =timing.windowOpacity().animator(1000, this, 1f,0.2f);
+		timing.triggers().focus().onLost(this, fadeIn);
+		
+		Animator fadeOut =timing.windowOpacity().animator(200, this, 0.2f,1f);
+		timing.triggers().focus().onGain(this, fadeOut);
 	}
 	
 	private void addMenuAction() {

@@ -6,10 +6,8 @@ import sneer.foundation.brickness.Brick;
 public interface GuiThread {
 
 	void invokeAndWait(Runnable runnable);
-	void invokeLater(Runnable runnable);
-
 	void invokeAndWaitForWussies(Runnable runnable);
-	void invokeLaterForWussies(Runnable runnable);
+	void invokeLater(Runnable runnable);
 
 	void assertInGuiThread();
 	void assertNotInGuiThread();

@@ -89,7 +89,7 @@ class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 
 			private void changeSelectionGuiToSelectedContact() {
 				final ELEMENT element = _selectedElement.output().currentValue();
-				my(GuiThread.class).invokeLaterForWussies(new Runnable(){ @Override public void run() {
+				my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
 					if(getSelectedValue()==element)
 						return;
 					
@@ -110,7 +110,7 @@ class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 	
 	@Override
 	public void clearSelection(){
-		my(GuiThread.class).invokeLaterForWussies(new Runnable(){ @Override public void run() {
+		my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
 			getSelectionModel().clearSelection();
 			changeSelectedElement(null);
 		}});

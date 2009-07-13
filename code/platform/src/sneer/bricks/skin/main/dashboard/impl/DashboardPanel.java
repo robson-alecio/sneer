@@ -184,7 +184,7 @@ class DashboardPanel extends JPanel {
 
 		private void repaintInstruments() {
 			resizeInstrumentPanel();
-			my(GuiThread.class).invokeLaterForWussies(new Runnable(){ @Override public void run() {
+			my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
 				hideAllToolbars();
 				_toolbar.setVisible(true);
 			}});
@@ -208,13 +208,12 @@ class DashboardPanel extends JPanel {
 			int offset_x = 26;
 			int offset_y = 40;
 			_undockWindow.setBounds(location.x-offset_x/2, location.y,  bounds.width + offset_x, bounds.height + offset_y);
-			
+
 			remove(_contentPane);
 			_undockWindow.add(_contentPane, BorderLayout.CENTER);
 			_undockWindow.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 			_undockWindow.setVisible(true);
 			_isDocked = false;
-			
 			_undockWindow.addWindowListener(new WindowAdapter(){ @Override public void windowClosing(WindowEvent e) {
 					dock();
 					repaintInstruments();
@@ -271,10 +270,10 @@ class DashboardPanel extends JPanel {
 			private final JPanel _toolbarPanel = new JPanel();
 			private final JPanel _toolbarShadow = new JPanel(){ @Override public void paint(Graphics g) {
 				paintShadows(g);
-			}};	
+			}};
 			
 			private final JButton _mouseBlockButton = new JButton(); //Fix: Remove this hack used to block mouse 
-																									//event dispatch to the instrument behind toolbar 
+																									//event dispatch to the instrument behind toolbar.
 			private final JLabel _title = new JLabel();
 			private final JButton _menu = new JButton();
 			
@@ -398,12 +397,15 @@ class DashboardPanel extends JPanel {
 		private void resizeInstrumentPanel() {
 			_toolbar.resizeToolbar();
 			int width = _instrumentsContainer.getWidth() - VERTICAL_MARGIN*2;
-			Dimension size = new Dimension(width,  (_isDocked)?_instrument.defaultHeight():10);
-			setMinimumSize(size);
-			setPreferredSize(size);
-			setSize(size);
+			setSize(new Dimension(width,  (_isDocked)?_instrument.defaultHeight():10));
 		}
 
+		@Override public void setSize(Dimension size) {
+			setMinimumSize(size);
+			setPreferredSize(size);
+			super.setSize(size);
+		}
+		
 		@Override public MenuGroup<JPopupMenu> actions() { return _toolbar._menuActions; }
 		@Override public Container contentPane() {	return _contentPane ; }
 	}

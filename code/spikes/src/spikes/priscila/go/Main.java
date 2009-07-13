@@ -163,7 +163,7 @@ public class Main extends JFrame{
 			_scrollYDelta = scrollDeltaFor(e.getY());
 			
 			repaint();
-			my(GuiThread.class).invokeLaterForWussies(new Runnable() { @Override public void run() {
+			my(GuiThread.class).invokeLater(new Runnable() { @Override public void run() {
 				int x = toScreenPosition(e.getX());
 				int y = toScreenPosition(e.getY());
 				if(_board.canPlayStone(unscrollX(x), unscrollY(y)))

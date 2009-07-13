@@ -3,17 +3,13 @@ package sneer.bricks.software.diff.impl;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import org.apache.commons.lang.NotImplementedException;
-
 import name.fraser.neil.plaintext.diff_match_patch;
+import name.fraser.neil.plaintext.diff_match_patch.Diff;
 import name.fraser.neil.plaintext.diff_match_patch.Operation;
 import sneer.bricks.software.diff.TextComparator;
+import sneer.foundation.lang.exceptions.NotImplementedYet;
 
 class TextComparatorImpl implements TextComparator{
-	
-	public TextComparatorImpl(){
-		super();
-	};
 	
 	@Override
 	public Iterator<TextBlock> diff(String text1, String text2){
@@ -21,18 +17,44 @@ class TextComparatorImpl implements TextComparator{
 	}
 	
 	@Override
+	public Iterator<TextBlock> semanticCleanup(Iterator<TextBlock> iterator){
+		if(!(iterator instanceof TextBlockIterator)) throw new NotImplementedYet();
+		
+		LinkedList<Diff> diffs = ((TextBlockIterator) iterator)._diffs;
+		new diff_match_patch().diff_cleanupSemantic(diffs);
+		
+		return new TextBlockIterator(diffs);
+	}
+	
+	@Override
 	public Iterator<TextBlock> diff(String text1, String text2, int dualThreshold){
 		diff_match_patch delegate = new diff_match_patch();
 		delegate.Diff_DualThreshold = (short) dualThreshold;
-		return adaptIterator(delegate.diff_main(text1, text2));
+		LinkedList<Diff> diffs = delegate.diff_main(text1, text2);
+		return adaptIterator(diffs);
 	}
 	
 	@Override
 	public String toPrettyHtml(Iterator<TextBlock> blocksIterator){
-		if(!(blocksIterator instanceof TextBlockIterator)) throw new NotImplementedException();
-		
-		TextBlockIterator adapter = (TextBlockIterator) blocksIterator;
-		return new diff_match_patch().diff_prettyHtml(adapter._diffs);
+	    StringBuilder html = new StringBuilder();
+	    html.append("<html><body>");
+	    while(blocksIterator.hasNext()){
+	    	TextBlock block = blocksIterator.next();
+	    	String text = block.content().replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\n", "&para;<BR>");
+	    	
+	    	switch (block.type()) {
+	    		case INSERT:
+	    			html.append("<font color='green'>").append(text).append("</font>");
+	    			break;
+	    		case DELETE:
+	    			html.append("<font color='red'>").append(text).append("</font>");
+	    			break;
+	    		case EQUAL:
+	    			html.append(text);
+	    	}
+	    }
+	    html.append("</body></html>");
+	    return html.toString();
 	}
 	
 	private Iterator<TextBlock> adaptIterator( LinkedList<name.fraser.neil.plaintext.diff_match_patch.Diff> diffs) {

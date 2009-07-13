@@ -10,6 +10,7 @@ public interface TextComparator {
 	Iterator<TextBlock> diff(String text1, String text2);
 	Iterator<TextBlock> diff(String text1, String text2, int dualThreshold);
 
+	Iterator<TextBlock> semanticCleanup(Iterator<TextBlock> iterator);
 	String toPrettyHtml(Iterator<TextBlock> blocksIterator);
 
 	public interface TextBlock {
@@ -22,4 +23,5 @@ public interface TextComparator {
 		DELETE,
 		EQUAL;
 	}
+
 }

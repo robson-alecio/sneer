@@ -10,7 +10,6 @@ import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.bricks.hardware.gui.guithread.GuiThread;
@@ -19,6 +18,7 @@ import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.widgets.reactive.autoscroll.AutoScroll;
 import sneer.foundation.brickness.testsupport.BrickTest;
+import sneer.foundation.lang.ByRef;
 import sneer.foundation.lang.Consumer;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
 
@@ -30,39 +30,32 @@ public class AutoScrollTest extends BrickTest {
 	private JScrollPane _subject;
 	
 	@Test
-	@Ignore
-	public void testOldAutoScroll() throws Exception {
-		
-		_subject = my(AutoScroll.class).create(_register.output(), new Consumer<String>() { @Override public void consume(String change) {
-			Document document = _field.getDocument();
-			try {
-				document.insertString(document.getLength(), change, null);
-			} catch (BadLocationException e) {
-				throw new NotImplementedYet(e); // Fix Handle this exception.
-			}
-		}});
-
-		doAutoScrollTest();
-	}
-	
-	@Test
-	@Ignore
-	public void testNewAutoScroll() throws Exception {
+	public void autoScrollWithEventInsideGuiThread() throws Exception {
 		
 		_subject = new JScrollPane();
 		@SuppressWarnings("unused")
 		Reception reception = my(Signals.class).receive(_register.output(), new Consumer<String>() { @Override public void consume(final String change) {
 			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
-				my(AutoScroll.class).runWithAutoscroll(_subject, new Runnable(){
-					@Override public void run() {
-						Document document = _field.getDocument();
-						try {
-							document.insertString(document.getLength(), change, null);
-						} catch (BadLocationException e) {
-							throw new NotImplementedYet(e); // Fix Handle this exception.
-						}
-					}});
+				appendChange(change);
 			}});
+		}});
+
+		doAutoScrollTest();
+		
+		final ByRef<Thread> guiThread = ByRef.newInstance();
+		my(GuiThread.class).invokeAndWait(new Runnable() { @Override public void run() {
+			guiThread.value = Thread.currentThread();
+		}});
+		//guiThread.value.stop();
+	}
+
+	@Test
+	public void autoScrollWithEventOutsideGuiThread() throws Exception {
+		
+		_subject = new JScrollPane();
+		@SuppressWarnings("unused")
+		Reception reception = my(Signals.class).receive(_register.output(), new Consumer<String>() { @Override public void consume(final String change) {
+			appendChange(change);
 		}});
 
 		doAutoScrollTest();
@@ -78,12 +71,24 @@ public class AutoScrollTest extends BrickTest {
 		_window.setVisible(true);
 		
 		int i = 0;
-		while(i<1000){
+		
+		while(i<20){
 			_register.setter().consume("\n" + i++);
 			Thread.sleep(100);
 		}
 		
 		_window.setVisible(false);
 		_window.dispose();
+	}
+
+	private void appendChange(final String change) {
+		my(AutoScroll.class).runWithAutoscroll(_subject, new Runnable() { @Override public void run() {
+				Document document = _field.getDocument();
+				try {
+					document.insertString(document.getLength(), change, null);
+				} catch (BadLocationException e) {
+					throw new NotImplementedYet(e); // Fix Handle this exception.
+				}
+		}});
 	}
 }

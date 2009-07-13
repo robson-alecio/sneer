@@ -29,7 +29,6 @@ import sneer.bricks.hardware.gui.Action;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.hardware.io.log.filter.LogFilter;
 import sneer.bricks.hardware.io.log.workers.notifier.LogNotifier;
-import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.reactive.collections.ListRegister;
 import sneer.bricks.skin.main.dashboard.Dashboard;
 import sneer.bricks.skin.main.menu.MainMenu;
@@ -65,8 +64,6 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	private final JTabbedPane _tab = new JTabbedPane();
 	private final JTextArea _txtLog = new JTextArea();
 	
-	@SuppressWarnings("unused")
-	private final WidgetLogger _logger = new WidgetLogger();
 	private final JScrollPane _autoScroll = AutoScroll();
 	
 	LogConsoleImpl(){
@@ -83,6 +80,16 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 		my(TranslucentSupport.class).setWindowOpacity(this, 0.3f);
 		
 		TimingFramework timing = my(TimingFramework.class);
+		
+//		this.addWindowFocusListener(new WindowFocusListener(){
+//			@Override public void windowGainedFocus(WindowEvent e) {
+//				fade.playForward();
+//			}
+//
+//			@Override public void windowLostFocus(WindowEvent e) {
+//				fade.playBackward();
+//			}});
+		
 		
 		Animator fadeIn =timing.windowOpacity().animator(1000, this, 1f,0.2f);
 		timing.triggers().focus().onLost(this, fadeIn);
@@ -198,20 +205,11 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	}
 
 	private JScrollPane AutoScroll() {
-		JScrollPane scroll = my(AutoScroll.class).create(my(LogNotifier.class).loggedMessages());
+		JScrollPane scroll = my(AutoScroll.class).create(my(LogNotifier.class).loggedMessages(), new Consumer<String>() { @Override public void consume(String message) {
+			_txtLog.append(message);
+		}});
 		scroll.getViewport().add(_txtLog);
 		return scroll;
 	}
 
-	private class WidgetLogger {
-		@SuppressWarnings("unused") private final Object _referenceToAvoidGc;
-		private WidgetLogger(){
-			_referenceToAvoidGc = my(Signals.class).receive(my(LogNotifier.class).loggedMessages(), 
-				new Consumer<String>(){ @Override public void consume(final String msg) {
-					my(GuiThread.class).invokeLaterForWussies(new Runnable(){ @Override public void run() {
-						_txtLog.append(msg);
-					}});
-				}});
-		}
-	}
 }

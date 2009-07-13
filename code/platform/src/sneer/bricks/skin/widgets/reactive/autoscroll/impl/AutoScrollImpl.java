@@ -3,24 +3,13 @@ package sneer.bricks.skin.widgets.reactive.autoscroll.impl;
 import javax.swing.BoundedRangeModel;
 import javax.swing.JScrollPane;
 
+import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.pulp.events.EventSource;
-import sneer.bricks.pulp.reactive.collections.CollectionChange;
-import sneer.bricks.pulp.reactive.collections.CollectionSignal;
 import sneer.bricks.skin.widgets.reactive.autoscroll.AutoScroll;
 import sneer.foundation.lang.Consumer;
+import static sneer.foundation.environments.Environments.my;
 
 public class AutoScrollImpl implements AutoScroll {
-
-	@Override
-	public <T> JScrollPane create(CollectionSignal<T> inputSignal, Consumer<CollectionChange<T>> receiver) {
-		return new OldAutoScroll<T>(inputSignal, receiver).scrollPane();
-	}
-
-	@Override
-	public <T> JScrollPane create(EventSource<T> eventSource) {
-		return new OldAutoScroll<T>(eventSource).scrollPane();
-	}
-
 
 	@Override
 	public <T> JScrollPane create(EventSource<T> eventSource, Consumer<T> receiver) {
@@ -29,10 +18,18 @@ public class AutoScrollImpl implements AutoScroll {
 	
 	
 	@Override
-	public void runWithAutoscroll(JScrollPane scrollPane, Runnable runnable) {
-		boolean wasAtEnd = isAtEnd(scrollPane);
+	public void runWithAutoscroll(final JScrollPane scrollPane, Runnable runnable) {
+		final int position = model(scrollPane).getValue();
+		final boolean wasAtEnd = isAtEnd(scrollPane);
+		
 		runnable.run();
-		if (wasAtEnd) placeAtEnd(scrollPane);
+		
+		my(GuiThread.class).invokeLater(new Runnable() { @Override public void run() {
+			if (wasAtEnd)
+				placeAtEnd(scrollPane);
+			else
+				model(scrollPane).setValue(position);
+		}});
 	}
 	
 	
@@ -41,12 +38,10 @@ public class AutoScrollImpl implements AutoScroll {
 		return model.getValue() + model.getExtent() == model.getMaximum();
 	}		
 	
-	
 	private void placeAtEnd(final JScrollPane scrollPane) {
 		BoundedRangeModel model = model(scrollPane);
 		model.setValue(model.getMaximum() - model.getExtent());
 	}
-	
 	
 	private BoundedRangeModel model(JScrollPane scrollPane) {
 		return scrollPane.getVerticalScrollBar().getModel();

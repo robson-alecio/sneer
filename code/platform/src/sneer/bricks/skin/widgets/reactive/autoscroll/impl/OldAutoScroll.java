@@ -11,8 +11,6 @@ import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.reactive.Reception;
 import sneer.bricks.pulp.reactive.Signals;
-import sneer.bricks.pulp.reactive.collections.CollectionChange;
-import sneer.bricks.pulp.reactive.collections.CollectionSignal;
 import sneer.bricks.skin.main.synth.scroll.SynthScrolls;
 import sneer.foundation.lang.ByRef;
 import sneer.foundation.lang.Consumer;
@@ -32,16 +30,6 @@ class OldAutoScroll<T> {
 		holdReceivers();
 	}
 
-	OldAutoScroll(CollectionSignal<T> inputSignal, Consumer<CollectionChange<T>> receiver) {
-		initReceivers(inputSignal, receiver);
-		holdReceivers();
-	}
-	
-	OldAutoScroll(EventSource<T> eventSource) {
-		initReceivers(eventSource);
-		holdReceivers();
-	}
-
 	private void holdReceivers() {
 		_scroll.addFocusListener(new FocusAdapter(){
 			@SuppressWarnings({ "unchecked", "unused" })
@@ -58,7 +46,7 @@ class OldAutoScroll<T> {
 	}		
 	
 	private void placeAtEnd() {
-		my(GuiThread.class).invokeLaterForWussies(new Runnable(){ @Override public void run() {
+		my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
 			scrollModel().setValue(scrollModel().getMaximum()-scrollModel().getExtent());
 		}});
 	}
@@ -67,28 +55,10 @@ class OldAutoScroll<T> {
 		return _scroll.getVerticalScrollBar().getModel();
 	}	
 	
-	private void initReceivers(EventSource<T> eventSource) {
-		_reception = my(Signals.class).receive(eventSource, new Consumer<T>(){ @Override public void consume(T value) {
-			doAutoScroll();
-		}});
-	}
-	
 	private void initReceivers(EventSource<T> eventSource, Consumer<T> consumer) {
 		_reception = my(Signals.class).receive(eventSource, wrapper(consumer));
 	}
 	
-	private void initReceivers(CollectionSignal<T> inputSignal, Consumer<CollectionChange<T>> consumer) {
-		_reception = my(Signals.class).receive(inputSignal, wrapperCollectionChange(consumer));
-	}
-	
-	private Consumer<CollectionChange<T>> wrapperCollectionChange(final Consumer<CollectionChange<T>> consumer) {
-		return new Consumer<CollectionChange<T>>(){ @Override public void consume(CollectionChange<T> value){
-			_shouldAutoscroll = isAtEnd();
-			consumer.consume(value);
-			doAutoScroll();
-		}};
-	}
-
 	private Consumer<T> wrapper(final	Consumer<T> consumer) {
 		return new Consumer<T>(){ @Override public void consume(T value){
 			_shouldAutoscroll = isAtEnd();

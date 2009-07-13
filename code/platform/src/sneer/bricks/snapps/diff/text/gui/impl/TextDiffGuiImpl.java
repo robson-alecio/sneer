@@ -7,9 +7,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 
-import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
+import javax.swing.text.DefaultStyledDocument;
 
 import sneer.bricks.hardware.gui.Action;
 import sneer.bricks.hardware.io.IO;
@@ -26,8 +27,9 @@ import sneer.foundation.lang.Consumer;
 
 class TextDiffGuiImpl implements TextDiffGui{
 
-	private final JEditorPane _htmlDif = new JEditorPane();
+	private final JTextPane _htmlDif = new JTextPane();
 	private final JScrollPane _scroll = my(SynthScrolls.class).create();
+	private final TextBlockPainter painter = new TextBlockPainter((DefaultStyledDocument) _htmlDif.getStyledDocument());
 	
 	private final Consumer<File> _fileConsumer = new Consumer<File>(){	
 		private File _file1;
@@ -55,7 +57,6 @@ class TextDiffGuiImpl implements TextDiffGui{
 	
 	TextDiffGuiImpl() {
 		my(InstrumentRegistry.class).registerInstrument(this);	
-		_htmlDif.setContentType("text/html");
 		_htmlDif.setEditable(false);
 	}
 
@@ -84,6 +85,7 @@ class TextDiffGuiImpl implements TextDiffGui{
 			text1 = read(file1);
 			text2 = read(file2);
 		} catch (IOException ignore) {
+			_htmlDif.setText(ignore.getMessage());
 			return;
 		}
 		compare(text1, text2);
@@ -100,10 +102,9 @@ class TextDiffGuiImpl implements TextDiffGui{
 
 	private void compare(String text1, String text2) {
 		TextComparator comparator = my(TextComparator.class);
-		Iterator<TextBlock> diff = comparator.diff(text1, text2);
-		String html = comparator.toPrettyHtml(diff);
-		
-		_htmlDif.setText(html);
+		Iterator<TextBlock> blocksIterator = comparator.diff(text1, text2);
+		blocksIterator = comparator.semanticCleanup(blocksIterator);
+		painter.append(blocksIterator);
 	}
 
 	private int showFileChooser() {

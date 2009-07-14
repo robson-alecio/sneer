@@ -296,14 +296,18 @@ class DashboardPanel extends JPanel {
 					}
 
 					@Override public void run() {
-						StringSelection stringSelection = new StringSelection(_instrument.getClass().getName());
+						StringSelection stringSelection = new StringSelection(instrumentInterface().getName());
 						Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 						clipboard.setContents(stringSelection, new ClipboardOwner(){ @Override public void lostOwnership(Clipboard clipboard_, Transferable contents) {}});
 					}});
 			}
 			
 			private String instrumentName() {
-				return my(Introspector.class).brickInterfaceFor(_instrument).getSimpleName();
+				return instrumentInterface().getSimpleName();
+			}
+
+			private Class<?> instrumentInterface() {
+				return my(Introspector.class).brickInterfaceFor(_instrument);
 			}
 
 			private void initSynth() {

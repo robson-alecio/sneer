@@ -55,7 +55,7 @@
 					<description kind="short">Sneer is a java-based, free software platform for sovereign applications.</description>
 					<homepage href="http://sovereigncomputing.net/" />
 				</information>
-				
+				<offline-allowed/>				
 				<update check="timeout" policy="always" />
 				
 				<resources>

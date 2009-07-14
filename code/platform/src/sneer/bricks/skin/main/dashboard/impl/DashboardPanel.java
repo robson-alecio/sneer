@@ -52,6 +52,7 @@ import sneer.bricks.skin.main.instrumentregistry.Instrument;
 import sneer.bricks.skin.main.synth.Synth;
 import sneer.bricks.skin.menu.MenuFactory;
 import sneer.bricks.skin.menu.MenuGroup;
+import sneer.bricks.software.bricks.introspection.Introspector;
 
 class DashboardPanel extends JPanel {
 
@@ -142,7 +143,7 @@ class DashboardPanel extends JPanel {
 	void install(Instrument instrument) {
 		_instrumentInstaller.install(instrument);
 	}
-	
+
 	private class InstrumentPanelImpl extends JPanel implements InstrumentPanel{
 		
 		private boolean _isDocked=true;
@@ -291,14 +292,22 @@ class DashboardPanel extends JPanel {
 			private void initCopyClassNameToClipboardAction() {
 				_menuActions.addAction(new Action(){
 					@Override public String caption() { 
-						return "Copy Class Name (" +_instrument.getClass().getSimpleName() + ")";
+						return "Copy Instrument Name (" + instrumentName() + ")";
 					}
 
 					@Override public void run() {
-						StringSelection stringSelection = new StringSelection(_instrument.getClass().getName());
+						StringSelection stringSelection = new StringSelection(instrumentInterface().getName());
 						Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 						clipboard.setContents(stringSelection, new ClipboardOwner(){ @Override public void lostOwnership(Clipboard clipboard_, Transferable contents) {}});
 					}});
+			}
+			
+			private String instrumentName() {
+				return instrumentInterface().getSimpleName();
+			}
+
+			private Class<?> instrumentInterface() {
+				return my(Introspector.class).brickInterfaceFor(_instrument);
 			}
 
 			private void initSynth() {

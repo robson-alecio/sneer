@@ -6,7 +6,7 @@ import sneer.foundation.brickness.Brick;
 
 @Snapp
 @Brick
-public interface BlinkingLightsGui extends Instrument {
-
-
-}
+/** Displays Blinking Lights on the dashboard. 
+ * @see BlinkingLights
+ */
+public interface BlinkingLightsGui extends Instrument {}

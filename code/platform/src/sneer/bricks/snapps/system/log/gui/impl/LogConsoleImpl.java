@@ -40,7 +40,7 @@ import sneer.bricks.skin.menu.MenuGroup;
 import sneer.bricks.skin.popuptrigger.PopupTrigger;
 import sneer.bricks.skin.widgets.reactive.ListWidget;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
-import sneer.bricks.skin.widgets.reactive.autoscroll.AutoScroll;
+import sneer.bricks.skin.widgets.reactive.autoscroll.ReactiveAutoScroll;
 import sneer.bricks.skin.windowboundssetter.WindowBoundsSetter;
 import sneer.bricks.snapps.system.log.gui.LogConsole;
 import sneer.bricks.software.timing.Animator;
@@ -205,7 +205,7 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	}
 
 	private JScrollPane AutoScroll() {
-		JScrollPane scroll = my(AutoScroll.class).create(my(LogNotifier.class).loggedMessages(), new Consumer<String>() { @Override public void consume(String message) {
+		JScrollPane scroll = my(ReactiveAutoScroll.class).create(my(LogNotifier.class).loggedMessages(), new Consumer<String>() { @Override public void consume(String message) {
 			_txtLog.append(message);
 		}});
 		scroll.getViewport().add(_txtLog);

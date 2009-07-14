@@ -1,22 +1,15 @@
-package sneer.bricks.skin.widgets.reactive.autoscroll.impl;
+package sneer.bricks.skin.widgets.autoscroll.impl;
+
+import static sneer.foundation.environments.Environments.my;
 
 import javax.swing.BoundedRangeModel;
 import javax.swing.JScrollPane;
 
 import sneer.bricks.hardware.gui.guithread.GuiThread;
-import sneer.bricks.pulp.events.EventSource;
-import sneer.bricks.skin.widgets.reactive.autoscroll.AutoScroll;
-import sneer.foundation.lang.Consumer;
-import static sneer.foundation.environments.Environments.my;
+import sneer.bricks.skin.widgets.autoscroll.AutoScroll;
 
 public class AutoScrollImpl implements AutoScroll {
 
-	@Override
-	public <T> JScrollPane create(EventSource<T> eventSource, Consumer<T> receiver) {
-		return new OldAutoScroll<T>(eventSource, receiver).scrollPane();
-	}
-	
-	
 	@Override
 	public void runWithAutoscroll(final JScrollPane scrollPane, Runnable runnable) {
 		final int position = model(scrollPane).getValue();

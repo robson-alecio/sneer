@@ -9,11 +9,6 @@
 	- [Sandro] Wind 
 		- FORGET THIS FOR NOW: Auto Scroll - DO NOT make a framework. Make a test SPECIFIC for auto-scroll using screen image comparisons.
 
-	- [Sandro] Auto-scroll
-		- Delete the OldAutoScroll class.
-		- Delete the create(...) methods.
-		- Use the new runWithAutoscroll() method. Must be called inside the GUI Thread!!! (I did not test it!!!)
-
 	- [Bamboo] Video Tutorial with Jazz :)
 
 	- [Igor] Mic and Speaker bricks - Stop using tuples. Instead do:

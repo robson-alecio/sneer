@@ -6,5 +6,7 @@ import sneer.foundation.brickness.Brick;
 
 @Brick
 public interface Bricks {
-	void publish(File sourceDirectory);
+	
+	void install(File sourceDirectory);
+	
 }

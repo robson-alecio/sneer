@@ -128,7 +128,8 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 	@Override
 	public void publishBricks(File sourceDirectory) {
-		my(Bricks.class).publish(sourceDirectory);
+		my(Bricks.class).install(sourceDirectory);
+		//my(Brick)
 	}
 
 

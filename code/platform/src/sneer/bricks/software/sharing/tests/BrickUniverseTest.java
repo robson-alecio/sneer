@@ -19,6 +19,7 @@ public class BrickUniverseTest extends BrickTest {
 		my(DirectoryConfig.class).platformBinDirectory().set(platformBinDirectory());
 	}
 	
+	@SuppressWarnings("unused")
 	private BrickUniverse _subject = my(BrickUniverse.class);
 
 	

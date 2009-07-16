@@ -6,12 +6,12 @@ package sneer.bricks.hardware.cpu.threads;
 public interface Latch extends Runnable {
 
 	/** See await() */
-	void trip();
+	void open();
 	
-	/** Waits for some other thread to trip() this latch. If this latch has already been tripped, returns immediately. */
+	/** Waits for some other thread to open() this latch. If this latch has already been opened, returns immediately. */
 	void await();
 
-	/** Trips this latch. */
+	/** Opens this latch. */
 	@Override
 	void run();
 	

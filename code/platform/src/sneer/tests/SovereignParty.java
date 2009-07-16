@@ -22,5 +22,6 @@ public interface SovereignParty {
 
 	//Freedom7
 	void publishBricks(File sourceDirectory);
+	void waitForAvailableBrick(String brickName);
 	
 }

@@ -25,7 +25,10 @@ import sneer.bricks.snapps.wind.Shout;
 import sneer.bricks.snapps.wind.Wind;
 import sneer.bricks.software.bricks.Bricks;
 import sneer.bricks.software.directoryconfig.DirectoryConfig;
+import sneer.bricks.software.sharing.BrickInfo;
+import sneer.bricks.software.sharing.BrickUniverse;
 import sneer.foundation.brickness.Seal;
+import sneer.foundation.lang.Predicate;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
 import sneer.foundation.lang.exceptions.Refusal;
 import sneer.tests.SovereignParty;
@@ -189,6 +192,13 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 			my(Clock.class).advanceTime(20 * 1000);
 			my(Threads.class).sleepWithoutInterruptions(500);
 			return true;
+		}});
+	}
+
+	@Override
+	public void waitForAvailableBrick(final String brickName) {
+		my(SignalUtils.class).waitForElement(my(BrickUniverse.class).availableBricks(), new Predicate<BrickInfo>() { @Override public boolean evaluate(BrickInfo brickInfo) {
+			return brickInfo.name().equals(brickName);
 		}});
 	}
 

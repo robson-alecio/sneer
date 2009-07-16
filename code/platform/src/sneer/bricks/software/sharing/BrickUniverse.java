@@ -1,9 +1,11 @@
 package sneer.bricks.software.sharing;
 
-import java.util.Collection;
+import sneer.bricks.pulp.reactive.collections.SetSignal;
+import sneer.foundation.brickness.Brick;
 
+@Brick
 public interface BrickUniverse {
 
-	Collection<BrickInfo> availableBricks();
+	SetSignal<BrickInfo> availableBricks();
 	
 }

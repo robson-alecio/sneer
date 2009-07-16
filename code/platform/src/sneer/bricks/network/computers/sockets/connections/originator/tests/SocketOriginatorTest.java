@@ -43,7 +43,7 @@ public class SocketOriginatorTest extends BrickTest {
 
 			oneOf(_connectionManagerMock).manageOutgoingSocket(_contactManager.produceContact("Neide"), _openedSocket); inSequence(sequence);
 				will(new CustomAction("manageIncomingSocket") { @Override public Object invoke(Invocation ignored) {
-					_ready.trip(); return null;
+					_ready.open(); return null;
 				}});
 		}});
 

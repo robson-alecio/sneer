@@ -3,6 +3,7 @@ package sneer.tests.adapters.impl;
 import static sneer.foundation.environments.Environments.my;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,6 +28,7 @@ import sneer.bricks.software.bricks.Bricks;
 import sneer.bricks.software.directoryconfig.DirectoryConfig;
 import sneer.bricks.software.sharing.BrickInfo;
 import sneer.bricks.software.sharing.BrickUniverse;
+import sneer.bricks.software.sharing.publisher.BrickPublisher;
 import sneer.foundation.brickness.Seal;
 import sneer.foundation.lang.Predicate;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
@@ -127,9 +129,9 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 
 	@Override
-	public void publishBricks(File sourceDirectory) {
+	public void publishBricks(File sourceDirectory) throws IOException {
 		my(Bricks.class).install(sourceDirectory);
-		//my(Brick)
+		//my(BrickPublisher.class).publishAllBricks();
 	}
 
 

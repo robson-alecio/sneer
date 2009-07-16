@@ -2,6 +2,7 @@
 =========
 
 	- [Klaus] Revise entire package structure.  
+		- software.sharing -> softwaresharing 
 
 	- Metoo
 		- [Sandro] Gui

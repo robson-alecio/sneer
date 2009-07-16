@@ -17,25 +17,25 @@ public class BandwidthConsolidationTest extends BrickTest {
 		final Clock clock = my(Clock.class);		
 		final BandwidthCounter subject = my(BandwidthCounter.class);
 
-		signalsUtils.waitForValue(0, subject.downloadSpeed());
-		signalsUtils.waitForValue(0, subject.uploadSpeed());
+		signalsUtils.waitForValue(subject.downloadSpeed(), 0);
+		signalsUtils.waitForValue(subject.uploadSpeed(), 0);
 
 		subject.received(1024*4);
 		subject.sent(1024*40);
-		signalsUtils.waitForValue(0, subject.downloadSpeed());
-		signalsUtils.waitForValue(0, subject.uploadSpeed());
+		signalsUtils.waitForValue(subject.downloadSpeed(), 0);
+		signalsUtils.waitForValue(subject.uploadSpeed(), 0);
 
 		clock.advanceTime(4000);
-		signalsUtils.waitForValue(1, subject.downloadSpeed());
-		signalsUtils.waitForValue(10, subject.uploadSpeed());
+		signalsUtils.waitForValue(subject.downloadSpeed(), 1);
+		signalsUtils.waitForValue(subject.uploadSpeed(), 10);
 
 		subject.received(1024*50);
 		subject.sent(1024*5);
-		signalsUtils.waitForValue(1, subject.downloadSpeed());
-		signalsUtils.waitForValue(10, subject.uploadSpeed());
+		signalsUtils.waitForValue(subject.downloadSpeed(), 1);
+		signalsUtils.waitForValue(subject.uploadSpeed(), 10);
 
 		clock.advanceTime(5000);
-		signalsUtils.waitForValue(10, subject.downloadSpeed());
-		signalsUtils.waitForValue(1, subject.uploadSpeed());
+		signalsUtils.waitForValue(subject.downloadSpeed(), 10);
+		signalsUtils.waitForValue(subject.uploadSpeed(), 1);
 	}
 }

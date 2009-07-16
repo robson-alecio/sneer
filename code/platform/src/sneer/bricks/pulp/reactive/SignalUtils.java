@@ -6,8 +6,8 @@ import sneer.foundation.brickness.Brick;
 @Brick
 public interface SignalUtils {
 
-	void waitForValue(Object expectedValue, Signal<?> signal);
+	void waitForValue(Signal<?> signal, Object expectedValue);
 
-	<T> void waitForElement(T expected, SetSignal<T> setSignal);
+	<T> void waitForElement(SetSignal<T> setSignal, T expected);
 
 }

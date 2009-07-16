@@ -88,7 +88,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 	private void waitUntilOnline(Contact contact) {
 		//System.out.println("WAITING FOR ONLINE: " + contact.nickname().currentValue() + " " + contact);
-		my(SignalUtils.class).waitForValue(true, isAlive(contact));
+		my(SignalUtils.class).waitForValue(isAlive(contact), true);
 	}
 
 	private Signal<Boolean> isAlive(Contact contact) {

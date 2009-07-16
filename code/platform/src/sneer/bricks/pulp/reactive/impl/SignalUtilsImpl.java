@@ -9,7 +9,7 @@ import sneer.bricks.pulp.reactive.collections.SetSignal;
 class SignalUtilsImpl implements SignalUtils {
 
 	@Override
-	public void waitForValue(Object expectedValue, Signal<?> signal) {
+	public void waitForValue(Signal<?> signal, Object expectedValue) {
 		while (true) {
 			if (expectedValue == null && signal.currentValue() == null) return;
 			if (expectedValue != null && expectedValue.equals(signal.currentValue())) return;
@@ -19,7 +19,7 @@ class SignalUtilsImpl implements SignalUtils {
 	}
 
 	@Override
-	public <T> void waitForElement(T expected, SetSignal<T> setSignal) {
+	public <T> void waitForElement(SetSignal<T> setSignal, T expected) {
 		while (true) {
 			if (setSignal.currentContains(expected)) return;
 			my(Threads.class).sleepWithoutInterruptions(10);

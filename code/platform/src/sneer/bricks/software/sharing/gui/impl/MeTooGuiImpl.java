@@ -28,7 +28,7 @@ class MeTooGuiImpl implements MeTooGui{
 
 	MeTooGuiImpl(){
 		my(InstrumentRegistry.class).registerInstrument(this);
-
+		_tree.setRootVisible(false);
 		_tree.setModel(new DefaultTreeModel(FakeModel.root()));
 	}
 	

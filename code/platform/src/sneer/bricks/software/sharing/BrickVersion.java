@@ -1,6 +1,6 @@
 package sneer.bricks.software.sharing;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface BrickVersion {
 
@@ -13,8 +13,8 @@ public interface BrickVersion {
 	
 	long publicationDate();
 	
-	Collection<String> knownUsers();
+	List<String> knownUsers();
 	int unknownUsers();
 	
-	Collection<FileVersion> files();
+	List<FileVersion> files();
 }

@@ -2,8 +2,6 @@ package sneer.bricks.software.sharing;
 
 import java.util.Collection;
 
-
-
 public interface BrickVersion {
 
 	public enum Status { CURRENT, DIFFERENT, REJECTED }

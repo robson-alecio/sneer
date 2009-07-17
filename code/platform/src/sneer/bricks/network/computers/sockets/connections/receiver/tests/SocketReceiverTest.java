@@ -48,7 +48,7 @@ public class SocketReceiverTest extends BrickTest {
 
 			oneOf(_connectionManagerMock).manageIncomingSocket(_contactManager.produceContact("Neide"), _socket);
 				will(new CustomAction("manageIncomingSocket") { @Override public Object invoke(Invocation ignored) {
-					_ready.trip(); return null;
+					_ready.open(); return null;
 				}});
 		}});
 

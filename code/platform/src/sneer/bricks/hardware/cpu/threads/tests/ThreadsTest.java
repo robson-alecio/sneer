@@ -22,7 +22,7 @@ public class ThreadsTest extends BrickTest {
 
 		final Stepper refToAvoidGc = new Stepper() { @Override public boolean step() {
 			assertSame(environment, Environments.my(Environment.class));
-			latch.trip();
+			latch.open();
 			return false;
 		}};
 

@@ -52,7 +52,7 @@ class ThreadsImpl implements Threads {
 		final Latch hasStarted = newLatch();
 
 		new Daemon(threadName) { @Override public void run() {
-			hasStarted.trip();
+			hasStarted.open();
 			Environments.runWith(environment, runnable);
 		}};
 		
@@ -97,7 +97,7 @@ class ThreadsImpl implements Threads {
 	public void crashAllThreads() {
 		//doCrashAllThreads();
 		
-		_crash.trip();
+		_crash.open();
 	}
 
 //	private void doCrashAllThreads() {

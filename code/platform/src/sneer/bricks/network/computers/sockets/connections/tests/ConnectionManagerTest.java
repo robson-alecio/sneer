@@ -28,6 +28,6 @@ public class ConnectionManagerTest extends BrickTest {
 		
 		//Implement: MOCK THE INCOMING OR OUTGOING CONNECTIONS TO NEIDE. 
 
-		my(SignalUtils.class).waitForValue(true, isConnected);
+		my(SignalUtils.class).waitForValue(isConnected, true);
 	}
 }

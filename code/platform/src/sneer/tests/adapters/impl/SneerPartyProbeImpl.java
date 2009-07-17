@@ -3,6 +3,7 @@ package sneer.tests.adapters.impl;
 import static sneer.foundation.environments.Environments.my;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -25,7 +26,11 @@ import sneer.bricks.snapps.wind.Shout;
 import sneer.bricks.snapps.wind.Wind;
 import sneer.bricks.software.bricks.Bricks;
 import sneer.bricks.software.directoryconfig.DirectoryConfig;
+import sneer.bricks.software.sharing.BrickInfo;
+import sneer.bricks.software.sharing.BrickUniverse;
+import sneer.bricks.software.sharing.publisher.BrickPublisher;
 import sneer.foundation.brickness.Seal;
+import sneer.foundation.lang.Predicate;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
 import sneer.foundation.lang.exceptions.Refusal;
 import sneer.tests.SovereignParty;
@@ -88,7 +93,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 	private void waitUntilOnline(Contact contact) {
 		//System.out.println("WAITING FOR ONLINE: " + contact.nickname().currentValue() + " " + contact);
-		my(SignalUtils.class).waitForValue(true, isAlive(contact));
+		my(SignalUtils.class).waitForValue(isAlive(contact), true);
 	}
 
 	private Signal<Boolean> isAlive(Contact contact) {
@@ -124,8 +129,9 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 
 	@Override
-	public void publishBricks(File sourceDirectory) {
-		my(Bricks.class).publish(sourceDirectory);
+	public void publishBricks(File sourceDirectory) throws IOException {
+		my(Bricks.class).install(sourceDirectory);
+		//my(BrickPublisher.class).publishAllBricks();
 	}
 
 
@@ -189,6 +195,13 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 			my(Clock.class).advanceTime(20 * 1000);
 			my(Threads.class).sleepWithoutInterruptions(500);
 			return true;
+		}});
+	}
+
+	@Override
+	public void waitForAvailableBrick(final String brickName) {
+		my(SignalUtils.class).waitForElement(my(BrickUniverse.class).availableBricks(), new Predicate<BrickInfo>() { @Override public boolean evaluate(BrickInfo brickInfo) {
+			return brickInfo.name().equals(brickName);
 		}});
 	}
 

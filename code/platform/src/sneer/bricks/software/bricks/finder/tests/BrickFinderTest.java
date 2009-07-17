@@ -9,11 +9,10 @@ import java.util.Collection;
 import org.junit.Test;
 
 import sneer.bricks.software.bricks.finder.BrickFinder;
-import sneer.bricks.software.bricks.finder.tests.fixtures.brick1.BrickWithoutNature;
-import sneer.bricks.software.bricks.finder.tests.fixtures.brick2.BrickWithNature;
-import sneer.bricks.software.bricks.finder.tests.fixtures.nature.SomeNature;
 import sneer.bricks.software.code.compilers.java.tests.JarUtils;
+import sneer.bricks.software.directoryconfig.DirectoryConfig;
 import sneer.foundation.brickness.testsupport.BrickTest;
+import sneer.foundation.testsupport.AssertUtils;
 
 public class BrickFinderTest extends BrickTest {
 
@@ -22,13 +21,16 @@ public class BrickFinderTest extends BrickTest {
 	@Test
 	public void findBricks() throws IOException {
 		File testDir = JarUtils.fileFor(getClass()).getParentFile();
+		my(DirectoryConfig.class).ownBinDirectory().set(testDir);
+		my(DirectoryConfig.class).platformBinDirectory().set(testDir);
 		
-		Collection<String> bricks = _subject.findBricks(testDir);
+		Collection<String> bricks = _subject.findBricks();
 
-		assertEquals(3, bricks.size());
-		assertTrue(bricks.contains(BrickWithoutNature.class.getName()));
-		assertTrue(bricks.contains(BrickWithNature.class.getName()));
-		assertTrue(bricks.contains(SomeNature.class.getName()));
+		AssertUtils.assertSameContents(bricks,
+			sneer.bricks.software.bricks.finder.tests.fixtures.brick1.BrickWithoutNature.class.getName(),
+			sneer.bricks.software.bricks.finder.tests.fixtures.brick2.BrickWithNature.class.getName(),
+			sneer.bricks.software.bricks.finder.tests.fixtures.nature.SomeNature.class.getName()
+		);
 	}
 	
 }

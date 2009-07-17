@@ -19,11 +19,11 @@ public class LatchImpl implements Latch {
 
 	@Override
 	public void run() {
-		trip();
+		open();
 	}
 
 	@Override
-	public void trip() {
+	public void open() {
 		_delegate.countDown();
 	}
 

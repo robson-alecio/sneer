@@ -18,10 +18,18 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	private SovereignParty _publisher;
 	
 	@Test (timeout = 6000)
-	public void testPublishSingleBrick() throws Exception {
+	public void publishedBrickIsStarted() throws Exception {
 		System.clearProperty("freedom7.y.Y.installed");
 		publisher().publishBricks(generateY());
 		assertEquals("true", System.getProperty("freedom7.y.Y.installed"));
+	}
+
+	@Ignore
+	@Test (timeout = 6000)
+	public void brickSharing() throws Exception {
+		a().publishBricks(generateY());
+		a().waitForAvailableBrick("freedom7.y.Y");
+		b().waitForAvailableBrick("freedom7.y.Y");
 	}
 
 	@Test

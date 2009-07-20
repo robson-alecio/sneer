@@ -14,13 +14,25 @@ import sneer.bricks.software.sharing.BrickVersion.Status;
 class FakeModel {
 
 	static TreeNode root(){
-		List<FileVersion> _fileVersions = new ArrayList<FileVersion>();
+		List<FileVersion> files = new ArrayList<FileVersion>();
 		List<BrickVersion> versions = new ArrayList<BrickVersion>();
 		List<BrickInfo> infos = new ArrayList<BrickInfo>();
 
-		versions.add(newBrickVersion(Status.CURRENT, 1, _fileVersions)); 
-		versions.add(newBrickVersion(Status.DIFFERENT, 2, _fileVersions)); 
-		versions.add(newBrickVersion(Status.REJECTED, 1, _fileVersions)); 
+		files.add(newFileVersion("3\n1\n2\n5\n6", "1\n2\n3\n4\n5", 
+				"MODIFIED", sneer.bricks.software.sharing.FileVersion.Status.MODIFIED));
+		
+		files.add(newFileVersion("1\n2\n3\n4\n5", "1\n2\n3\n4\n5", 
+				"CURRENT", sneer.bricks.software.sharing.FileVersion.Status.CURRENT));
+		
+		files.add(newFileVersion("1\n2\n3\n4\n5", "", 
+				"MISSING", sneer.bricks.software.sharing.FileVersion.Status.MISSING));
+
+		files.add(newFileVersion("", "1\n2\n3\n4\n5", 
+				"EXTRA", sneer.bricks.software.sharing.FileVersion.Status.EXTRA));
+		
+		versions.add(newBrickVersion(Status.CURRENT, 1, files)); 
+		versions.add(newBrickVersion(Status.DIFFERENT, 2, files)); 
+		versions.add(newBrickVersion(Status.REJECTED, 1, files)); 
 
 		infos.add(newBrickInfo("BrickInfo1", versions));
 		infos.add(newBrickInfo("BrickInfo2", versions));
@@ -28,6 +40,16 @@ class FakeModel {
 		infos.add(newBrickInfo("BrickInfo4", versions));
 		
 		return new RootTreeNode(infos);
+	}
+
+	private static FileVersion newFileVersion(final String contents, final String currentContents, 
+			final String fileName, final sneer.bricks.software.sharing.FileVersion.Status status) {
+		return new FileVersion(){ 
+			@Override public byte[] contents() {  return contents.getBytes(); }
+			@Override public byte[] contentsInCurrentVersion() { 	return currentContents.getBytes(); }
+			@Override public String name() { return fileName; }
+			@Override public Status status() { return status; }
+		};
 	}
 
 	private static BrickVersion newBrickVersion(final Status status, final int _unknownUsersCount, final List<FileVersion> _fileVersions) {

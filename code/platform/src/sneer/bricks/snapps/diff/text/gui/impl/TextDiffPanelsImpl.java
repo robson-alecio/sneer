@@ -64,10 +64,11 @@ class TextDiffPanelsImpl implements TextDiffPanels{
 			}
 		}
 
-		private void compare(String text1, String text2) {
+		@Override public void compare(String text1, String text2) {
 			TextComparator comparator = my(TextComparator.class);
 			Iterator<TextBlock> blocksIterator = comparator.diff(text1, text2);
 			blocksIterator = comparator.semanticCleanup(blocksIterator);
+			_htmlDif.setText("");
 			_painter.append(blocksIterator);
 		}
 		

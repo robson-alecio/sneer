@@ -6,6 +6,7 @@ import java.io.File;
 public interface TextDiffPanel {
 	
 	void compare(File file1, File file2);
-	Component component();
+	void compare(String text1, String text2);
 
+	Component component();
 }

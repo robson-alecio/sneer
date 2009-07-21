@@ -51,6 +51,6 @@ public class SocketOriginatorTest extends BrickTest {
 
 		_internetAddressKeeper.add(_contactManager.produceContact("Neide"), "neide.selfip.net", 5000);
 
-		_ready.await();
+		_ready.waitTillOpen();
 	}
 }

@@ -15,23 +15,24 @@ import sneer.foundation.lang.Predicate;
 class SignalUtilsImpl implements SignalUtils {
 
 	@Override
-	public <T> void waitForValue(Signal<T> signal, T expectedValue) {
-		while (true) {
-			if (expectedValue == null && signal.currentValue() == null) return;
-			if (expectedValue != null && expectedValue.equals(signal.currentValue())) return;
-
-			my(Threads.class).sleepWithoutInterruptions(10); //Optimize
-		}
+	public <T> void waitForValue(Signal<T> signal, final T expected) {
+		final Latch latch = my(Threads.class).newLatch();
+		@SuppressWarnings("unused")
+		Reception reception = my(Signals.class).receive(signal, new Consumer<T>() { @Override public void consume(T value) {
+			if (equalsWithNulls(expected, value))
+				latch.open();
+		}});
+		
+		latch.waitTillOpen();
 	}
 
 	@Override
-	public <T> void waitForElement(SetSignal<T> setSignal, T expected) {
-		while (true) {
-			if (setSignal.currentContains(expected)) return;
-			my(Threads.class).sleepWithoutInterruptions(10); //Optimize
-		}		
+	public <T> void waitForElement(SetSignal<T> setSignal, final T expected) {
+		waitForElement(setSignal, new Predicate<T>() { @Override public boolean evaluate(T value) {
+			return equalsWithNulls(expected, value);
+		}});		
 	}
-
+	
 	@Override
 	public <T> void waitForElement(SetSignal<T> setSignal, final Predicate<T> predicate) {
 		final Latch latch = my(Threads.class).newLatch();
@@ -41,6 +42,14 @@ class SignalUtilsImpl implements SignalUtils {
 				if (predicate.evaluate(element)) latch.open();
 		}});
 		
-		latch.await();
-	}	
+		latch.waitTillOpen();
+	}
+	
+	static private <T> boolean equalsWithNulls(final T expected, T value) {
+		return value == null
+			? expected == null
+			: value.equals(expected);
+	}
+	
 }
+

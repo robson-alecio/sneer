@@ -21,15 +21,17 @@ class RetrierImpl implements Retrier {
 	
 	private volatile boolean _isStillTrying = true;
 	private final Light _light = _lights.prepare(LightType.ERROR);
+	private final Stepper _refToAvoidGc;
 
 	
 	RetrierImpl(final int periodBetweenAttempts, final Task task) {
-		_threads.registerStepper(new Stepper() { @Override public boolean step() {
+		_refToAvoidGc = new Stepper() { @Override public boolean step() {
 			if (wasSuccessful(task))
 				return false;
 			_clock.sleepAtLeast(periodBetweenAttempts);
 			return true;
-		}});
+		}};
+		_threads.registerStepper(_refToAvoidGc);
 	}
 
 	

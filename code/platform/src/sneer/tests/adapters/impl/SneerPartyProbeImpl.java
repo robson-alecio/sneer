@@ -3,6 +3,7 @@ package sneer.tests.adapters.impl;
 import static sneer.foundation.environments.Environments.my;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,6 +28,7 @@ import sneer.bricks.software.bricks.Bricks;
 import sneer.bricks.software.directoryconfig.DirectoryConfig;
 import sneer.bricks.software.sharing.BrickInfo;
 import sneer.bricks.software.sharing.BrickUniverse;
+import sneer.bricks.software.sharing.publisher.BrickPublisher;
 import sneer.foundation.brickness.Seal;
 import sneer.foundation.lang.Predicate;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
@@ -39,6 +41,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	
 	static private final String MOCK_ADDRESS = "localhost";
 	private Collection<Object> _referenceToAvoidGc = new ArrayList<Object>();
+	private Stepper _referenceToAvoicGc2;
 
 	@Override
 	public void setSneerPort(int port) {
@@ -127,9 +130,9 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 
 	@Override
-	public void publishBricks(File sourceDirectory) {
+	public void publishBricks(File sourceDirectory) throws IOException {
 		my(Bricks.class).install(sourceDirectory);
-		//my(BrickPublisher.class).publishAllBricks();//
+		my(BrickPublisher.class).publishAllBricks();
 	}
 
 
@@ -157,8 +160,9 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	}
 
 	@Override
-	public void setOwnBinDirectory(File ownBinDirectory) {
+	public void setBinDirectories(File ownBinDirectory, File platformBinDirectory) {
 		my(DirectoryConfig.class).ownBinDirectory().set(ownBinDirectory);
+		my(DirectoryConfig.class).platformBinDirectory().set(platformBinDirectory);
 	}
 
 	@Override
@@ -173,6 +177,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 		startAndKeep(sneer.bricks.network.computers.sockets.connections.receiver.SocketReceiver.class);
 		startAndKeep(sneer.bricks.pulp.probe.ProbeManager.class);
 		startAndKeep(sneer.bricks.snapps.wind.Wind.class);
+		startAndKeep(sneer.bricks.software.sharing.BrickUniverse.class);
 		startAndKeep(sneer.bricks.network.social.heartbeat.stethoscope.Stethoscope.class);
 		startAndKeep(sneer.bricks.network.social.heartbeat.Heart.class);
 	}
@@ -189,11 +194,12 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 	@Override
 	public void accelerateHeartbeat() {
-		my(Threads.class).registerStepper(new Stepper() { @Override public boolean step() {
-			my(Clock.class).advanceTime(20 * 1000);
+		_referenceToAvoicGc2 = new Stepper() { @Override public boolean step() {
+			my(Clock.class).advanceTime(10 * 1000);
 			my(Threads.class).sleepWithoutInterruptions(500);
 			return true;
-		}});
+		}};
+		my(Threads.class).registerStepper(_referenceToAvoicGc2);
 	}
 
 	@Override

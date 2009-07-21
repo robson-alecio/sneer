@@ -7,6 +7,7 @@ import java.lang.ref.WeakReference;
 import sneer.bricks.hardware.cpu.threads.Latch;
 import sneer.bricks.hardware.cpu.threads.Stepper;
 import sneer.bricks.hardware.cpu.threads.Threads;
+import sneer.bricks.hardware.io.log.Logger;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
 import sneer.foundation.testsupport.Daemon;
@@ -56,7 +57,7 @@ class ThreadsImpl implements Threads {
 			Environments.runWith(environment, runnable);
 		}};
 		
-		hasStarted.await();
+		hasStarted.waitTillOpen();
 	}
 
 	@Override
@@ -67,11 +68,13 @@ class ThreadsImpl implements Threads {
 	@Override
 	public void registerStepper(Stepper stepper) {
 		final WeakReference<Stepper> stepperWeakRef = new WeakReference<Stepper>(stepper);
+		final String stepperToString = stepper.toString(); 
 		startDaemon(inferThreadName(), new Runnable() { @Override public void run() {
 			Stepper s;
 			do {
 				s = stepperWeakRef.get();
-			} while(s != null && s.step());
+				if (s == null) my(Logger.class).log("Stepper {} garbage collected.", stepperToString);
+			} while (s != null && s.step());
 		}});
 	}
 
@@ -90,7 +93,7 @@ class ThreadsImpl implements Threads {
 	/**Waits until crashAllThreads() is called. */
 	@Override
 	public void waitUntilCrash() {
-		_crash.await();
+		_crash.waitTillOpen();
 	}
 
 	@Override

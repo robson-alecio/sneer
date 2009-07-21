@@ -23,28 +23,32 @@ import sneer.bricks.skin.audio.kernel.Audio;
 import sneer.bricks.skin.audio.player.SoundPlayer;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
 
-class SoundPlayerImpl implements SoundPlayer {
+class SoundPlayerImpl implements SoundPlayer, Stepper {
 
 	private final Audio _audio = my(Audio.class);
-	
-	final static private List<URL> urls = Collections.synchronizedList(new ArrayList<URL>());
+	private final List<URL> urls = Collections.synchronizedList(new ArrayList<URL>());
 
-	public SoundPlayerImpl() {
-		my(Threads.class).registerStepper(new Stepper(){ @Override public boolean step() {
-			playNextIfAvailable();
-			return true;
-		}});
+	@Override
+	public void play(URL url) {
+		synchronized (urls) {
+			urls.add(url);
+			if (urls.size() == 1)
+				my(Threads.class).registerStepper(this);
+		}
+	}
+
+	@Override
+	public boolean step() {
+		while (true) {
+			doPlay(urls.get(0));
+			synchronized (urls) {
+				urls.remove(0);
+				if (urls.isEmpty()) return false;
+			}
+		}
 	}
 	
-	
-	private void playNextIfAvailable() {
-		if (urls.isEmpty()) {
-			my(Threads.class).sleepWithoutInterruptions(50); //Optimize: Use wait/notify.
-			return;
-		}
-
-		URL url = urls.remove(0);
-		
+	private void doPlay(URL url) {
 		AudioInputStream audioInputStream = null;
 		try {
 			audioInputStream = tryInitAudioInputStream(url);
@@ -103,8 +107,4 @@ class SoundPlayerImpl implements SoundPlayer {
 		}
 	} 
 
-	@Override
-	public void play(URL url) {
-		urls.add(url);
-	}
 }

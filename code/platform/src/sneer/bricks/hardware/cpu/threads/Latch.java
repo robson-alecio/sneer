@@ -9,7 +9,7 @@ public interface Latch extends Runnable {
 	void open();
 	
 	/** Waits for some other thread to open() this latch. If this latch has already been opened, returns immediately. */
-	void await();
+	void waitTillOpen();
 
 	/** Opens this latch. */
 	@Override

@@ -49,19 +49,20 @@ class TupleSpaceImpl implements TupleSpace {
 		private final Environment _environment;
 		private final List<Tuple> _tuplesToNotify = new LinkedList<Tuple>(); 
 
+		private final Stepper _refToAvoidGc;
+		
 		<T extends Tuple> Subscription(Consumer<? super T> subscriber, Class<T> tupleType) {
 			_subscriber = new WeakReference<Consumer<? super Tuple>>((Consumer<? super Tuple>) subscriber);
 			_tupleType = tupleType;
 			_environment = my(Environment.class);
 			
-			_threads.registerStepper(notifier());
-
+			_refToAvoidGc = notifier();
+			_threads.registerStepper(_refToAvoidGc);
 		}
 
 		private Stepper notifier() {
 			return new Stepper() { @Override public boolean step() {
 				Tuple tuple = waitToPopTuple();
-				if (tuple == null) return true; //Is testing for null really necessary?
 				
 				Consumer<? super Tuple> subscriber = _subscriber.get();
 				if (subscriber == null) return false;
@@ -72,7 +73,7 @@ class TupleSpaceImpl implements TupleSpace {
 		}
 
 		private void notifySubscriber(final Consumer<? super Tuple> subscriber, final Tuple tuple) {
-			_exceptionHandler.shield(new Runnable(){@Override public void run() {
+			_exceptionHandler.shield(new Runnable() { @Override public void run() {
 				Environments.runWith(_environment, new Runnable() { @Override public void run() {
 					subscriber.consume(tuple);
 				}});
@@ -83,7 +84,7 @@ class TupleSpaceImpl implements TupleSpace {
 		void filterAndNotify(final Tuple tuple) {
 			if (!_tupleType.isInstance(tuple))
 				return;
-			
+
 			dispatchCounterIncrement();
 			pushTuple(tuple);
 		}
@@ -185,7 +186,7 @@ class TupleSpaceImpl implements TupleSpace {
 	@Override
 	public synchronized void acquire(Tuple tuple) {
 		if (isWeird(tuple)) return; //Filter out those weird shouts that appeared in the beginning.
-
+		
 		if (!_transientTupleCache.add(tuple)) return;
 		capTransientTuples();
 		

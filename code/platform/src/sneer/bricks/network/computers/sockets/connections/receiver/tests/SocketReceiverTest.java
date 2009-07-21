@@ -56,6 +56,6 @@ public class SocketReceiverTest extends BrickTest {
 
 		_acceptedSocketNotifier.notifyReceivers(_socket);
 
-		_ready.await();
+		_ready.waitTillOpen();
 	}
 }

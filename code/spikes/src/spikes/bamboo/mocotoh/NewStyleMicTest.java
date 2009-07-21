@@ -7,7 +7,7 @@ import javax.sound.sampled.TargetDataLine;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.bricks.skin.audio.PcmSoundPacket;
@@ -37,10 +37,10 @@ public class NewStyleMicTest {
 					tuples.addSubscription(PcmSoundPacket.class, subscriber);
 				}};
 	
-				final Stepper stepper = capture();
+				final Steppable stepper = capture();
 				new Stimulus() {{
 					mic.open();
-						threads.registerStepper(stepper);
+						threads.newStepper(stepper);
 				}};
 					
 				final byte[] buffer = capture();

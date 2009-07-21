@@ -22,7 +22,7 @@ import org.prevayler.PrevaylerFactory;
 import org.prevayler.foundation.serialization.Serializer;
 
 import sneer.bricks.hardware.clock.Clock;
-import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
@@ -49,7 +49,7 @@ class TupleSpaceImpl implements TupleSpace {
 		private final Environment _environment;
 		private final List<Tuple> _tuplesToNotify = new LinkedList<Tuple>(); 
 
-		private final Stepper _refToAvoidGc;
+		private final Steppable _refToAvoidGc;
 		
 		<T extends Tuple> Subscription(Consumer<? super T> subscriber, Class<T> tupleType) {
 			_subscriber = new WeakReference<Consumer<? super Tuple>>((Consumer<? super Tuple>) subscriber);
@@ -57,11 +57,11 @@ class TupleSpaceImpl implements TupleSpace {
 			_environment = my(Environment.class);
 			
 			_refToAvoidGc = notifier();
-			_threads.registerStepper(_refToAvoidGc);
+			_threads.newStepper(_refToAvoidGc);
 		}
 
-		private Stepper notifier() {
-			return new Stepper() { @Override public boolean step() {
+		private Steppable notifier() {
+			return new Steppable() { @Override public boolean step() {
 				Tuple tuple = waitToPopTuple();
 				
 				Consumer<? super Tuple> subscriber = _subscriber.get();

@@ -5,6 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.lang.ref.WeakReference;
 
 import sneer.bricks.hardware.cpu.threads.Latch;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Stepper;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
@@ -66,16 +67,17 @@ class ThreadsImpl implements Threads {
 	}
 
 	@Override
-	public void registerStepper(Stepper stepper) {
-		final WeakReference<Stepper> stepperWeakRef = new WeakReference<Stepper>(stepper);
+	public Stepper newStepper(Steppable stepper) {
+		final WeakReference<Steppable> stepperWeakRef = new WeakReference<Steppable>(stepper);
 		final String stepperToString = stepper.toString(); 
 		startDaemon(inferThreadName(), new Runnable() { @Override public void run() {
-			Stepper s;
+			Steppable s;
 			do {
 				s = stepperWeakRef.get();
 				if (s == null) my(Logger.class).log("Stepper {} garbage collected.", stepperToString);
 			} while (s != null && s.step());
 		}});
+		return null;
 	}
 
 	private String inferThreadName() {

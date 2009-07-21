@@ -5,7 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import sneer.bricks.hardware.clock.Clock;
-import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.pulp.bandwidth.BandwidthCounter;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
@@ -27,7 +27,7 @@ class BandwidthCounterImpl implements BandwidthCounter {
 	
 	BandwidthCounterImpl(){
 		_lastConsolidationTime = _clock.time();
-		_clock.wakeUpEvery(CONSOLIDATION_TIME, new Stepper(){ @Override public boolean step() {
+		_clock.wakeUpEvery(CONSOLIDATION_TIME, new Steppable(){ @Override public boolean step() {
 			consolidate();
 			return true;
 		}});

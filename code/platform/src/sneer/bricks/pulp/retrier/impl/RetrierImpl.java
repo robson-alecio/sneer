@@ -3,7 +3,7 @@ package sneer.bricks.pulp.retrier.impl;
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.exceptions.Hiccup;
-import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
@@ -21,17 +21,17 @@ class RetrierImpl implements Retrier {
 	
 	private volatile boolean _isStillTrying = true;
 	private final Light _light = _lights.prepare(LightType.ERROR);
-	private final Stepper _refToAvoidGc;
+	private final Steppable _refToAvoidGc;
 
 	
 	RetrierImpl(final int periodBetweenAttempts, final Task task) {
-		_refToAvoidGc = new Stepper() { @Override public boolean step() {
+		_refToAvoidGc = new Steppable() { @Override public boolean step() {
 			if (wasSuccessful(task))
 				return false;
 			_clock.sleepAtLeast(periodBetweenAttempts);
 			return true;
 		}};
-		_threads.registerStepper(_refToAvoidGc);
+		_threads.newStepper(_refToAvoidGc);
 	}
 
 	

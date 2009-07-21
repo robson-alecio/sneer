@@ -10,7 +10,7 @@ import java.util.List;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.lang.Lang;
-import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.ram.iterables.Iterables;
 import sneer.bricks.network.social.Contact;
@@ -41,7 +41,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	
 	static private final String MOCK_ADDRESS = "localhost";
 	private Collection<Object> _referenceToAvoidGc = new ArrayList<Object>();
-	private Stepper _referenceToAvoicGc2;
+	private Steppable _referenceToAvoicGc2;
 
 	@Override
 	public void setSneerPort(int port) {
@@ -194,12 +194,12 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 	@Override
 	public void accelerateHeartbeat() {
-		_referenceToAvoicGc2 = new Stepper() { @Override public boolean step() {
+		_referenceToAvoicGc2 = new Steppable() { @Override public boolean step() {
 			my(Clock.class).advanceTime(10 * 1000);
 			my(Threads.class).sleepWithoutInterruptions(500);
 			return true;
 		}};
-		my(Threads.class).registerStepper(_referenceToAvoicGc2);
+		my(Threads.class).newStepper(_referenceToAvoicGc2);
 	}
 
 	@Override

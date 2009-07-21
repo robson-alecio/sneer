@@ -4,7 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 
-import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.reactive.SignalUtils;
 import sneer.bricks.pulp.reactive.collections.impl.SetRegisterImpl;
@@ -28,12 +28,12 @@ public class SignalUtilsTest extends BrickTest {
 	public void waitForNewElementWithPredicate() {
 		final SetRegisterImpl<String> setRegister = new SetRegisterImpl<String>();
 		
-		Stepper refToAvoidGc = new Stepper() { @Override public boolean step() {
+		Steppable refToAvoidGc = new Steppable() { @Override public boolean step() {
 			my(Threads.class).sleepWithoutInterruptions(200);
 			setRegister.add("foo");
 			return false;
 		}};
-		my(Threads.class).registerStepper(refToAvoidGc);
+		my(Threads.class).newStepper(refToAvoidGc);
 		
 		my(SignalUtils.class).waitForElement(setRegister.output(), new Predicate<String>() { @Override public boolean evaluate(String value) {
 			return value.equals("foo");

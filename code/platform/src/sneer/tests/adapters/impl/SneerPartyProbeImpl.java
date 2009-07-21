@@ -3,7 +3,6 @@ package sneer.tests.adapters.impl;
 import static sneer.foundation.environments.Environments.my;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -28,7 +27,7 @@ import sneer.bricks.software.bricks.Bricks;
 import sneer.bricks.software.directoryconfig.DirectoryConfig;
 import sneer.bricks.software.sharing.BrickInfo;
 import sneer.bricks.software.sharing.BrickUniverse;
-import sneer.bricks.software.sharing.publisher.BrickPublisher;
+import sneer.bricks.software.sharing.BrickVersion;
 import sneer.foundation.brickness.Seal;
 import sneer.foundation.lang.Predicate;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
@@ -130,9 +129,8 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 
 	@Override
-	public void publishBricks(File sourceDirectory) throws IOException {
+	public void installBricks(File sourceDirectory) {
 		my(Bricks.class).install(sourceDirectory);
-		my(BrickPublisher.class).publishAllBricks();
 	}
 
 
@@ -207,6 +205,26 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 		my(SignalUtils.class).waitForElement(my(BrickUniverse.class).availableBricks(), new Predicate<BrickInfo>() { @Override public boolean evaluate(BrickInfo brickInfo) {
 			return brickInfo.name().equals(brickName);
 		}});
+	}
+	
+	@Override
+	public void installTheOnlyAvailableVersionOfBrick(String brickName) {
+		final BrickInfo brick = availableBrick(brickName);
+		final BrickVersion latestVersion = onlyVersionOf(brick);
+		installBricks(latestVersion.sourceFolder());
+	}
+
+	private BrickVersion onlyVersionOf(BrickInfo brick) {
+		if (brick.versions().size() != 1)
+			throw new IllegalStateException();
+		return brick.versions().get(0);
+	}
+
+	private BrickInfo availableBrick(String brickName) {
+		for (BrickInfo brick : my(BrickUniverse.class).availableBricks())
+			if (brick.name().equals(brickName))
+				return brick;
+		throw new IllegalArgumentException();
 	}
 
 }

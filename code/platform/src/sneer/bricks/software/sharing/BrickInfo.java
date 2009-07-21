@@ -7,6 +7,7 @@ public interface BrickInfo {
 	String name();
 	
 	boolean isSnapp();
+	
 	List<BrickVersion> versions();
 
 }

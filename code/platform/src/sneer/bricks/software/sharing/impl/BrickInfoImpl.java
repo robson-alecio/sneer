@@ -23,6 +23,7 @@ class BrickInfoImpl implements BrickInfo {
 	public String name() {
 		return _brickName;
 	}
+	
 
 	@Override
 	public List<BrickVersion> versions() {

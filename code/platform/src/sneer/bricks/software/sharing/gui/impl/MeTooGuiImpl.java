@@ -11,6 +11,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TreeSelectionEvent;
@@ -46,7 +47,10 @@ class MeTooGuiImpl extends JFrame implements MeTooGui{
 		_tree.setRootVisible(false);
 		_tree.setModel(new DefaultTreeModel(FakeModel.root()));
 		_tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-
+		_tree.setCellRenderer(new MeTooTreeCellRenderer());
+		_tree.setBorder(new EmptyBorder(5,5,5,5));
+		_tree.setShowsRootHandles(true);
+		
 		my(LogConsole.class);
 		Synth _synth = my(Synth.class);
 		_OFFSET_X = (Integer) _synth.getDefaultProperty("LodConsoleImpl.offsetX");

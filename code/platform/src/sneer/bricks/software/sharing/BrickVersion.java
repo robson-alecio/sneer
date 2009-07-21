@@ -4,7 +4,11 @@ import java.util.List;
 
 public interface BrickVersion {
 
-	public enum Status { CURRENT, DIFFERENT, REJECTED }
+	public enum Status {
+		CURRENT, 
+		DIFFERENT,
+		REJECTED
+	}
 	
 	Status status();
 	boolean isStagedForExecution();

@@ -18,16 +18,16 @@ class FakeModel {
 		List<BrickVersion> versions = new ArrayList<BrickVersion>();
 		List<BrickInfo> infos = new ArrayList<BrickInfo>();
 
-		files.add(newFileVersion("3\n1\n2\n5\n6", "1\n2\n3\n4\n5", 
+		files.add(newFileVersion("3333333\nadsafimww\n222222\n555555\n6666666", "adsafimww\n222222\n3333333\n44444444\n555555", 
 				"MODIFIED", sneer.bricks.software.sharing.FileVersion.Status.MODIFIED));
 		
-		files.add(newFileVersion("1\n2\n3\n4\n5", "1\n2\n3\n4\n5", 
+		files.add(newFileVersion("adsafimww\n222222\n3333333\n44444444\n555555", "adsafimww\n222222\n3333333\n44444444\n555555", 
 				"CURRENT", sneer.bricks.software.sharing.FileVersion.Status.CURRENT));
 		
-		files.add(newFileVersion("1\n2\n3\n4\n5", "", 
+		files.add(newFileVersion("adsafimww\n222222\n3333333\n44444444\n555555", "", 
 				"MISSING", sneer.bricks.software.sharing.FileVersion.Status.MISSING));
 
-		files.add(newFileVersion("", "1\n2\n3\n4\n5", 
+		files.add(newFileVersion("", "adsafimww\n222222\n3333333\n44444444\n555555", 
 				"EXTRA", sneer.bricks.software.sharing.FileVersion.Status.EXTRA));
 		
 		versions.add(newBrickVersion(Status.CURRENT, 1, files)); 

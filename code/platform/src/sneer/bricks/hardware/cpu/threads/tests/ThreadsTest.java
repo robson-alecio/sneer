@@ -28,7 +28,7 @@ public class ThreadsTest extends BrickTest {
 
 		_subject.registerStepper(refToAvoidGc);
 		
-		latch.await();
+		latch.waitTillOpen();
 	}
 
 	@Test (timeout = 2000)

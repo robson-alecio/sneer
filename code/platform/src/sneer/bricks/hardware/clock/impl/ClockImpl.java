@@ -49,7 +49,7 @@ class ClockImpl implements Clock {
 	public void sleepAtLeast(long millis) {
 		Latch latch = my(Threads.class).newLatch();
 		wakeUpInAtLeast(millis, latch);
-		latch.await();
+		latch.waitTillOpen();
 	}
 
 	@Override

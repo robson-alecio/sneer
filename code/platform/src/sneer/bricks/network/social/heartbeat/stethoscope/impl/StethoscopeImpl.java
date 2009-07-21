@@ -82,14 +82,19 @@ class StethoscopeImpl implements Stethoscope, Consumer<Heartbeat>, Stepper {
 
 
 	@Override
-	public void consume(Heartbeat beat) {
-		if (my(Seals.class).ownSeal().equals(beat.publisher())) return;
+	synchronized public void consume(Heartbeat beat) {
+		if (isMyOwn(beat)) return;
 		if (isTooOld(beat)) return;
 		
 		Contact contact = contact(beat);
 		_lastBeatTimesByContact.put(contact, now());
 
 		setAlive(contact);
+	}
+
+
+	private boolean isMyOwn(Heartbeat beat) {
+		return my(Seals.class).ownSeal().equals(beat.publisher());
 	}
 
 

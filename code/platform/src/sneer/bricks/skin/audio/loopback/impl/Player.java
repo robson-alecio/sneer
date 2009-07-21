@@ -16,6 +16,7 @@ class Player {
 	static private ByteArrayOutputStream _buffer;
 	static private volatile boolean _isRunning;
 	static private SourceDataLine _sourceDataLine;
+	private static Stepper _refToAvoidGc;
 
 	static void stop() {
 		_isRunning = false;
@@ -31,7 +32,7 @@ class Player {
 		_buffer = buffer;
 		
 		_isRunning = true;
-		my(Threads.class).registerStepper(new Stepper() { @Override public boolean step() {
+		_refToAvoidGc = new Stepper() { @Override public boolean step() {
 			playBuffer();
 
 			if (!_isRunning) {
@@ -40,7 +41,8 @@ class Player {
 			}
 
 			return true;
-		}});
+		}};
+		my(Threads.class).registerStepper(_refToAvoidGc);
 		return true;
 	}
 

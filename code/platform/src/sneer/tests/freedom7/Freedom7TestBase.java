@@ -24,8 +24,8 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 		assertEquals("true", System.getProperty("freedom7.y.Y.installed"));
 	}
 
-	@Ignore
-	@Test (timeout = 6000)
+	//@Ignore
+	@Test (timeout = 10000)
 	public void brickSharing() throws Exception {
 		a().publishBricks(generateY());
 		a().waitForAvailableBrick("freedom7.y.Y");

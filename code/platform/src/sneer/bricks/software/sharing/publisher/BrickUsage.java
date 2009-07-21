@@ -10,4 +10,11 @@ public class BrickUsage extends Tuple {
 		brickName = brickName_;
 	}
 
+	@Override
+	public String toString() {
+		return "BrickUsage: " + brickName;
+	}
+
+	
+	
 }

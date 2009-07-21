@@ -34,16 +34,17 @@ public class SneerCommunity implements SovereignCommunity {
 	public SovereignParty createParty(final String name) {
 		File sneerHome = rootDirectory(name);
 		File ownBinDirectory = makeDirectory(sneerHome, "own/bin");
+		File platformBinDirectory = my(ClassUtils.class).classpathRootFor(SneerCommunity.class);
 		File dataDirectory = makeDirectory(sneerHome, "data");
 		
 		Environment container = Brickness.newBrickContainer(_network);
-		URLClassLoader apiClassLoader = apiClassLoader(ownBinDirectory, name);
+		URLClassLoader apiClassLoader = apiClassLoader(ownBinDirectory, platformBinDirectory, name);
 		
 		Object partyImpl = EnvironmentUtils.retrieveFrom(container, loadProbeClassUsing(apiClassLoader));
 		final SneerParty party = (SneerParty)ProxyInEnvironment.newInstance(container, partyImpl);
 		
 		party.setDataDirectory(dataDirectory);
-		party.setOwnBinDirectory(ownBinDirectory);
+		party.setBinDirectories(ownBinDirectory, platformBinDirectory);
 		party.setOwnName(name);
 		party.setSneerPort(_nextPort++);
 		
@@ -68,8 +69,8 @@ public class SneerCommunity implements SovereignCommunity {
 		}
 	}
 
-	private URLClassLoader apiClassLoader(File binDir, final String name) {
-		return new EagerClassLoader(new URL[]{toURL(binDir), toURL(my(ClassUtils.class).classpathRootFor(SneerCommunity.class))}, SneerCommunity.class.getClassLoader()) {
+	private URLClassLoader apiClassLoader(File ownBin, File platformBin, final String name) {
+		return new EagerClassLoader(new URL[]{toURL(ownBin), toURL(platformBin)}, SneerCommunity.class.getClassLoader()) {
 			@Override
 			protected boolean isEagerToLoad(String className) {
 				return !isSharedByAllParties(className);

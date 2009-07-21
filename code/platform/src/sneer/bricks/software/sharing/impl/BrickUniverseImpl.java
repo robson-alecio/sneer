@@ -10,19 +10,23 @@ import sneer.bricks.software.sharing.publisher.BrickUsage;
 import sneer.foundation.lang.Consumer;
 import static sneer.foundation.environments.Environments.my;
 
-class BrickUniverseImpl implements BrickUniverse {
+class BrickUniverseImpl implements BrickUniverse, Consumer<BrickUsage> {
 
 	private SetRegister<BrickInfo> _availableBricks = new SetRegisterImpl<BrickInfo>();
 
 	{
-		my(TupleSpace.class).addSubscription(BrickUsage.class, new Consumer<BrickUsage>() { @Override public void consume(BrickUsage brickUsage) {
-			_availableBricks.add(new BrickInfoImpl(brickUsage.brickName));
-		}});
+		//my(TupleSpace.class).keep(BrickUsage.class);
+		my(TupleSpace.class).addSubscription(BrickUsage.class, this);
 	}
 	
 	@Override
 	public SetSignal<BrickInfo> availableBricks() {
 		return _availableBricks.output();
+	}
+
+	@Override
+	public void consume(BrickUsage brickUsage) {
+		_availableBricks.add(new BrickInfoImpl(brickUsage.brickName));
 	}
 
 }

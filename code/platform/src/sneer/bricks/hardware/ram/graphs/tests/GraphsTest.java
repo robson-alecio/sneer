@@ -45,10 +45,13 @@ public class GraphsTest extends BrickTest {
 		
 		assertTrue(_subject.detectCycle().isEmpty());
 		
-		assertPluckedInAnyOrder("D", "E", "F", "G"); //They are all leaf vertices.
-		assertEquals("C", _subject.pluck());
-		assertEquals("B", _subject.pluck());
-		assertEquals("A", _subject.pluck());
+		assertPluckOneOfThese("D", "E", "F", "G");
+		assertPluckOneOfThese("D", "E", "F", "G");
+		assertPluckOneOfThese("C", "D", "E", "F", "G");
+		assertPluckOneOfThese("B", "C", "D", "E", "F", "G");
+		assertPluckOneOfThese("B", "C", "D", "E", "F", "G");
+		assertPluckOneOfThese("A", "B", "G");
+		assertPluckOneOfThese("A", "G");
 	}
 
 	@Test
@@ -68,9 +71,10 @@ public class GraphsTest extends BrickTest {
 		assertSameContents(cycle, "B", "C", "D");
 	}
 
-	private void assertPluckedInAnyOrder(String... vertices) {
-		for (int i = 0; i < vertices.length; i++)
-			assertTrue(Arrays.asList(vertices).contains(_subject.pluck()));
+	private void assertPluckOneOfThese(String... vertices) {
+		String plucked = _subject.pluck();
+		if (!Arrays.asList(vertices).contains(plucked))
+			fail("Plucked: " + plucked);
 	}
 		
 

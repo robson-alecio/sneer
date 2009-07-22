@@ -45,7 +45,7 @@ public class SequencerTest extends BrickTest {
 			one(_consumer).consume("D"); inSequence(main);
 		}});
 		
-		Sequencer<String> sequencer = _subject.createSequencerFor(_consumer, BUFFER_SIZE, MAX_GAP);
+		Sequencer<String> sequencer = _subject.createSequencerFor(BUFFER_SIZE, MAX_GAP, _consumer);
 
 		sequencer.produceInSequence("A", (short)0);
 		sequencer.produceInSequence(packet1, (short)sequence1);
@@ -80,7 +80,7 @@ public class SequencerTest extends BrickTest {
 	}
 
 	private void feedInputSequence(int[] input) {
-		Sequencer<Integer> sequencer = _subject.createSequencerFor(sequenceRecorder(), BUFFER_SIZE, MAX_GAP);
+		Sequencer<Integer> sequencer = _subject.createSequencerFor(BUFFER_SIZE, MAX_GAP, sequenceRecorder());
 		
 		for (int sequence : input)
 			sequencer.produceInSequence(sequence, (short)sequence);

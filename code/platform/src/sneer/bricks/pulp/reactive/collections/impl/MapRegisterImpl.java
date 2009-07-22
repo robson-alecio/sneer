@@ -50,7 +50,7 @@ class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 
 	private class MyOutput implements MapSignal<K,V> {
 
-		private final EventNotifier<CollectionChange<Map.Entry<K,V>>> _notifier = my(EventNotifiers.class).create(new Consumer<Consumer<? super CollectionChange<Map.Entry<K,V>>>>(){@Override public void consume(Consumer<? super CollectionChange<Entry<K, V>>> newReceiver) {
+		private final EventNotifier<CollectionChange<Map.Entry<K,V>>> _notifier = my(EventNotifiers.class).newInstance(new Consumer<Consumer<? super CollectionChange<Map.Entry<K,V>>>>(){@Override public void consume(Consumer<? super CollectionChange<Entry<K, V>>> newReceiver) {
 			if (_map.isEmpty()) return;
 			newReceiver.consume(asChange(_map.entrySet()));
 		}});

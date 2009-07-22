@@ -27,7 +27,7 @@ public class ClockTest extends BrickTest {
 		_subject.wakeUpInAtLeast(30, new Worker(30,_order));
 		
 		_subject.advanceTime(81);
-		assertEquals(81, _subject.time());
+		assertTrue(81 == _subject.time().currentValue());
 		
 		Integer lastInteger = null;
 		for (Integer timeout : _order) {

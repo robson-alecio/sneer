@@ -61,7 +61,7 @@ class WatchMeImpl implements WatchMe {
 		if (publisher == null)
 			throw new IllegalArgumentException("The publisher argument can't be null.");
 		
-		EventNotifier<BufferedImage> result = my(EventNotifiers.class).create();
+		EventNotifier<BufferedImage> result = my(EventNotifiers.class).newInstance();
 		
 		_consumerToAvoidGc = imageDeltaPacketConsumer(publisher, result);
 		_tupleSpace.addSubscription(ImageDeltaPacket.class, _consumerToAvoidGc);

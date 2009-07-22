@@ -6,9 +6,9 @@ import sneer.foundation.lang.Consumer;
 @Brick
 public interface EventNotifiers {
 	
-	<T> EventNotifier<T> create();
+	<T> EventNotifier<T> newInstance();
 
 	/** @param receiverHandler will be called whenever a receiver is added to the returned EventNotifier. */
-	<T> EventNotifier<T> create(Consumer<Consumer<? super T>> receiverHandler);
+	<T> EventNotifier<T> newInstance(Consumer<Consumer<? super T>> receiverHandler);
 
 }

@@ -12,7 +12,7 @@ import sneer.foundation.lang.Consumer;
 
 abstract class AbstractSignal<T> implements Signal<T> {
 
-	EventNotifier<T> _notifier = my(EventNotifiers.class).create(new Consumer<Consumer<? super T>>(){@Override public void consume(Consumer<? super T> newReceiver) {
+	EventNotifier<T> _notifier = my(EventNotifiers.class).newInstance(new Consumer<Consumer<? super T>>(){@Override public void consume(Consumer<? super T> newReceiver) {
 		newReceiver.consume(currentValue());
 	}});
 

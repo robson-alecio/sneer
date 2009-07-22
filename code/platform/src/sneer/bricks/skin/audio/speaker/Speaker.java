@@ -1,16 +1,18 @@
 package sneer.bricks.skin.audio.speaker;
 
+import java.io.Closeable;
+
 import javax.sound.sampled.LineUnavailableException;
 
-import sneer.bricks.pulp.reactive.Signal;
 import sneer.foundation.brickness.Brick;
+import sneer.foundation.lang.Consumer;
 
 @Brick
 public interface Speaker {
 
-	/** Will start playing PcmSoundPacket tuples with duration of one hundredth of a second each. 
-	 * @throws LineUnavailableException */
-	void open();
-	void close();
-	Signal<Boolean> isRunning();
+	public interface Line extends Consumer<byte[]>, Closeable {}
+
+	/** Returns a line to play packets of PCM-encoded sound: 8000Hz, 16 bits, 2 Channels (Stereo), Signed, Little Endian */
+	Line acquireLine() throws LineUnavailableException;
+
 }

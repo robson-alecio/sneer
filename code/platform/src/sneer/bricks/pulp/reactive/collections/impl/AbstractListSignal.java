@@ -10,11 +10,11 @@ import sneer.foundation.lang.Consumer;
 
 abstract class AbstractListSignal<T> implements ListSignal<T> {
 
-	EventNotifier<ListChange<T>> _notifier = my(EventNotifiers.class).create(new Consumer<Consumer<? super ListChange<T>>>(){@Override public void consume(Consumer<? super ListChange<T>> receiver) {
+	EventNotifier<ListChange<T>> _notifier = my(EventNotifiers.class).newInstance(new Consumer<Consumer<? super ListChange<T>>>(){@Override public void consume(Consumer<? super ListChange<T>> receiver) {
 		//TODO
 	}});
 
-	EventNotifier<CollectionChange<T>> _notifier2 = my(EventNotifiers.class).create(new Consumer<Consumer<? super CollectionChange<T>>>(){@Override public void consume(Consumer<? super CollectionChange<T>> receiver) {
+	EventNotifier<CollectionChange<T>> _notifier2 = my(EventNotifiers.class).newInstance(new Consumer<Consumer<? super CollectionChange<T>>>(){@Override public void consume(Consumer<? super CollectionChange<T>> receiver) {
 		//TODO
 	}});
 

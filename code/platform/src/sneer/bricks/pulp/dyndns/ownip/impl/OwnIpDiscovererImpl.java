@@ -69,7 +69,7 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	}
 
 	protected void ipDiscovery() throws IOException {
-		_store.set(LAST_CHECK_TIME_KEY, _clock.time());
+		_store.set(LAST_CHECK_TIME_KEY, _clock.time().currentValue());
 
 		final String ip = _checkip.check();
 		final String current = _store.get(LAST_IP_KEY);

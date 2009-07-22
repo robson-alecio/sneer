@@ -18,7 +18,7 @@ import sneer.foundation.brickness.testsupport.Bind;
 public class ReachabilityTest extends BrickTest {
 	
 	@Bind private final SocketAccepter _accepter = mock(SocketAccepter.class);
-	private final EventNotifier<ByteArraySocket> _notifier = my(EventNotifiers.class).create();
+	private final EventNotifier<ByteArraySocket> _notifier = my(EventNotifiers.class).newInstance();
 	
 	private final Clock _clock = my(Clock.class);
 	

@@ -6,8 +6,12 @@ import org.junit.Test;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.clock.ticker.ClockTicker;
+import sneer.bricks.hardware.cpu.threads.Latch;
 import sneer.bricks.hardware.cpu.threads.Threads;
+import sneer.bricks.pulp.reactive.Signals;
 import sneer.foundation.brickness.testsupport.BrickTest;
+import sneer.foundation.lang.Consumer;
+
 
 public class ClockTickerTest extends BrickTest {
 
@@ -24,9 +28,11 @@ public class ClockTickerTest extends BrickTest {
 	}
 
 	private void waitForATick() {
-		long t0 = _clock.time();
-		while (t0 == _clock.time());
-			my(Threads.class).sleepWithoutInterruptions(1);
+		final Latch latch = my(Threads.class).newLatch();
+		my(Signals.class).receive(_clock.time(), new Consumer<Long>() { @Override public void consume(Long value) {
+			latch.open();
+		}});
+		latch.waitTillOpen();
 	}
 	
 }

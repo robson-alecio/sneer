@@ -11,11 +11,14 @@ import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.cpu.timebox.Timebox;
 import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
+import sneer.bricks.pulp.reactive.Register;
+import sneer.bricks.pulp.reactive.Signal;
+import sneer.bricks.pulp.reactive.Signals;
 import sneer.foundation.lang.ByRef;
 
 class ClockImpl implements Clock {
 	
-	volatile long _currentTimeMillis = 0;
+	private final Register<Long> _currentTimeMillis = my(Signals.class).newRegister(0L);
 	
 	final SortedSet<Alarm> _alarms = new TreeSet<Alarm>();
 	
@@ -23,10 +26,14 @@ class ClockImpl implements Clock {
 	
 	@Override
 	synchronized public void wakeUpNoEarlierThan(long timeToWakeUp, Runnable runnable) {
-		long millisFromNow = timeToWakeUp <= _currentTimeMillis
+		long millisFromNow = timeToWakeUp <= currentTime()
 			? 0
-			: timeToWakeUp - _currentTimeMillis;
+			: timeToWakeUp - currentTime();
 		wakeUpInAtLeast(millisFromNow, runnable);
+	}
+
+	private long currentTime() {
+		return time().currentValue();
 	}
 
 	@Override
@@ -53,19 +60,19 @@ class ClockImpl implements Clock {
 	}
 
 	@Override
-	public long time() {
-		return _currentTimeMillis;
+	public Signal<Long> time() {
+		return _currentTimeMillis.output();
 	}
 
 	@Override
 	synchronized public void advanceTime(long deltaMillis) {
-		advanceTimeTo(_currentTimeMillis + deltaMillis);
+		advanceTimeTo(currentTime() + deltaMillis);
 	}
 
 	
 	@Override
 	synchronized public void advanceTimeTo(long absoluteTimeMillis) {
-		_currentTimeMillis = absoluteTimeMillis;
+		_currentTimeMillis.setter().consume(absoluteTimeMillis);
 		wakeUpAlarmsIfNecessary();
 	}
 	
@@ -108,7 +115,7 @@ class ClockImpl implements Clock {
 		public Alarm(Steppable stepper, long period) {
 			if (period < 0) throw new IllegalArgumentException("" + period);
 			_period = period;
-			_wakeUpTime = _currentTimeMillis + period;
+			_wakeUpTime = currentTime() + period;
 			_stepper = stepper;
 		}
 
@@ -116,12 +123,12 @@ class ClockImpl implements Clock {
 			_alarms.remove(this);
 			if (!step(_stepper)) return;
 
-			_wakeUpTime = _currentTimeMillis + _period;
+			_wakeUpTime = currentTime() + _period;
 			_alarms.add(this);
 		}
 
 		boolean isTimeToWakeUp() {
-			return _currentTimeMillis >= _wakeUpTime;
+			return currentTime() >= _wakeUpTime;
 		}
 		
 		@Override

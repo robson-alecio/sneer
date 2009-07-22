@@ -6,6 +6,6 @@ import sneer.foundation.lang.Consumer;
 @Brick
 public interface Sequencers {
 
-	<T> Sequencer<T> createSequencerFor(Consumer<T> consumer,short bufferSize, short maxGap);
+	<T> Sequencer<T> createSequencerFor(short bufferSize,short maxGap, Consumer<T> consumer);
 	
 }

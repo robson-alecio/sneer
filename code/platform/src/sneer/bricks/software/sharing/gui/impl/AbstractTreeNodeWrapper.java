@@ -4,6 +4,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.tree.TreeNode;
 
 import sneer.foundation.lang.exceptions.NotImplementedYet;
@@ -12,6 +13,7 @@ abstract class AbstractTreeNodeWrapper<CHILD> implements TreeNode{
 
 	private final Object _source;
 	protected final TreeNode _parent;
+	protected ImageIcon _icon;
 
 	AbstractTreeNodeWrapper(TreeNode parent, Object source){
 		_parent = parent;
@@ -43,6 +45,9 @@ abstract class AbstractTreeNodeWrapper<CHILD> implements TreeNode{
 			throw new NotImplementedYet(e); // Fix Handle this exception.
 		}
 	}
+	
+	public ImageIcon getIcon() { return _icon; }
+
 	protected abstract List<CHILD> listChildren();
 	protected abstract AbstractTreeNodeWrapper<CHILD> wrapChild(int childIndex);
 }

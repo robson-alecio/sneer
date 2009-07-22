@@ -23,15 +23,15 @@ class TextBlockPainter {
 	TextBlockPainter(DefaultStyledDocument styledDocument) {
 		_document = styledDocument;
 		Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
-		StyleConstants.setFontFamily(def, "Verdana");
-		StyleConstants.setFontSize(def, 10);
+		StyleConstants.setFontSize(def, 11);
 		
 		_equal = _document.addStyle("equal", def);
 		_delete = _document.addStyle("equal", def);
 		_insert = _document.addStyle("equal", def);
 		
-		StyleConstants.setForeground(_delete, Color.RED);
+		StyleConstants.setForeground(_delete, Color.BLACK);
 		StyleConstants.setStrikeThrough(_delete, true);
+		StyleConstants.setBackground(_delete, new Color(230,230,230));
 		StyleConstants.setBackground(_insert, Color.GREEN);
 		
 		_document.addStyle("equal", _equal);

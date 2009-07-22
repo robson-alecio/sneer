@@ -25,16 +25,14 @@ class RListSimpleCellRenderer<ELEMENT> implements ListCellRenderer {
 	public Component getListCellRendererComponent(JList ignored, Object value, int ignored2, boolean isSelected, boolean cellHasFocus) {
 
 		Signal<String> slabel = _rlist._labelProvider.labelFor(getElement(value));
-		Signal<? extends Image> sicon = _rlist._labelProvider.imageFor(getElement(value));
-
 		JLabel label = (JLabel) renderer.getListCellRendererComponent(ignored, value, ignored2, isSelected, cellHasFocus);
+		label.setText(slabel.currentValue());
 
+		Signal<? extends Image> sicon = _rlist._labelProvider.imageFor(getElement(value));
 		if (sicon.currentValue() != null) {
 			ImageIcon icon = new ImageIcon(sicon.currentValue());
 			label.setIcon(icon);
 		}
-
-		label.setText(slabel.currentValue());
 
 		return label;
 	}

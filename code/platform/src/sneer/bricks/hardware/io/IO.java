@@ -49,6 +49,9 @@ public interface IO {
 		void readString(File file, Consumer<String> content);
 		void readString(File file, Consumer<String> content, Consumer<IOException> exception);
 		
+		void writeByteArrayToFile(File file, byte[] data) throws IOException;
+
+		boolean contentEquals(File file1, File file2) throws IOException;
 	}
 	
 	interface Streams{

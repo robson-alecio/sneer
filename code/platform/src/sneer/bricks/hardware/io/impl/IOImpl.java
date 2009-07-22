@@ -55,6 +55,12 @@ class IOImpl implements IO {
 				my(BlinkingLights.class).turnOn(LightType.ERROR, "Error", "Unable to read file: " + file.getAbsolutePath(),  exception, 5*60*1000);
 			}});		
 		}
+		
+		@Override
+		public void writeByteArrayToFile(File file, byte[] data) throws IOException {
+			FileUtils.writeByteArrayToFile(file, data);
+		}
+
 		@Override public void readBytes(File file, Consumer<byte[]> content, Consumer<IOException> exception) {
 			try {
 				content.consume(readBytes(file));
@@ -62,6 +68,13 @@ class IOImpl implements IO {
 				exception.consume(e);
 			}
 		}
+
+		@Override
+		public boolean contentEquals(File file1, File file2) throws IOException {
+			return FileUtils.contentEquals(file1, file2);
+		}
+
+
 	};
 	
 	private Streams _streams = new Streams(){

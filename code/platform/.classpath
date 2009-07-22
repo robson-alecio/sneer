@@ -8,7 +8,6 @@
 	<classpathentry exported="true" kind="lib" path="src/sneer/foundation/testsupport/lib/jmock-2.5.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="src/sneer/foundation/testsupport/lib/jmock-junit4-2.5.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="src/sneer/foundation/testsupport/lib/junit-4.4.jar" sourcepath="src/sneer/foundation/testsupport/lib/junit-4.4-src.jar"/>
-	<classpathentry kind="lib" path="src/sneer/bricks/snapps/whisper/speex/impl/lib/speex.jar"/>
 	<classpathentry kind="lib" path="src/sneer/bricks/pulp/tuples/impl/lib/prevayler-2.3.jar" sourcepath="src/sneer/bricks/pulp/tuples/impl/lib/prevayler-2.3-src.zip"/>
 	<classpathentry kind="lib" path="src/sneer/bricks/skin/main/dashboard/impl/lib/jxlayer.jar" sourcepath="bricks/src/sneer/skin/main/dashboard/impl/lib/jxlayer-src.zip"/>
 	<classpathentry kind="lib" path="src/sneer/bricks/hardware/cpu/lang/impl/lib/commons-lang-2.4.jar" sourcepath="bricks/src/sneer/hardware/cpu/lang/impl/lib/commons-lang-2.4.zip"/>

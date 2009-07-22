@@ -5,12 +5,12 @@ import static sneer.foundation.environments.Environments.my;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.exceptions.Hiccup;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.hardware.ram.arrays.ImmutableByteArray;
+import sneer.bricks.hardware.timer.Timer;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.blinkinglights.LightType;
@@ -44,8 +44,6 @@ class WatchMeImpl implements WatchMe {
 	private final Threads _threads = my(Threads.class);
 	private final BlinkingLights _lights = my(BlinkingLights.class);
 
-	private final Clock _clock = my(Clock.class);
-	
 	private boolean _isRunning;
 	private final Light _light = _lights.prepare(LightType.ERROR);
 
@@ -100,7 +98,7 @@ class WatchMeImpl implements WatchMe {
 		_refToAvoidGc = new Steppable(){ @Override public boolean step() {
 			if(_isRunning) {
 				doPublishShot();
-				_clock.sleepAtLeast(PERIOD_IN_MILLIS);
+				my(Timer.class).sleepAtLeast(PERIOD_IN_MILLIS);
 				return true;
 			}
 

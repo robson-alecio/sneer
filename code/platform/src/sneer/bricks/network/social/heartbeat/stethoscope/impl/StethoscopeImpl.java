@@ -6,6 +6,7 @@ import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.hardware.ram.maps.cachemaps.CacheMap;
 import sneer.bricks.hardware.ram.maps.cachemaps.CacheMaps;
+import sneer.bricks.hardware.timer.Timer;
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.network.social.heartbeat.Heartbeat;
 import sneer.bricks.network.social.heartbeat.stethoscope.Stethoscope;
@@ -30,7 +31,7 @@ class StethoscopeImpl implements Stethoscope, Consumer<Heartbeat>, Steppable {
 	
 	{
 		my(TupleSpace.class).addSubscription(Heartbeat.class, this);
-		my(Clock.class).wakeUpEvery(TIME_TILL_DEATH, this);
+		my(Timer.class).wakeUpEvery(TIME_TILL_DEATH, this);
 	}
 	
 	

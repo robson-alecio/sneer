@@ -4,9 +4,9 @@ import static sneer.foundation.environments.Environments.my;
 
 import java.io.IOException;
 
-import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
+import sneer.bricks.hardware.timer.Timer;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.blinkinglights.LightType;
@@ -35,7 +35,6 @@ class DynDnsClientImpl implements DynDnsClient {
 	private final PropertyStore _propertyStore = my(PropertyStore.class);
 	private final BlinkingLights _blinkingLights = my(BlinkingLights.class);
 	private final Threads _threads = my(Threads.class);
-	private final Clock _clock = my(Clock.class);
 	private final Object _stateMonitor = new Object();
 	private final Light _light = _blinkingLights.prepare(LightType.ERROR);
 
@@ -160,7 +159,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		}
 
 		private void addAlarm(long millisFromNow) {
-			_clock.wakeUpInAtLeast((int)millisFromNow, new Runnable() { @Override public void run() {
+			my(Timer.class).wakeUpInAtLeast((int)millisFromNow, new Runnable() { @Override public void run() {
 				synchronized (_stateMonitor) {
 					_state = _state.wakeUp();
 				}

@@ -1,4 +1,4 @@
-package sneer.bricks.hardware.clock.tests;
+package sneer.bricks.hardware.timer.tests;
 
 import static sneer.foundation.environments.Environments.my;
 
@@ -9,11 +9,13 @@ import org.junit.Test;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.threads.Steppable;
+import sneer.bricks.hardware.timer.Timer;
 import sneer.foundation.brickness.testsupport.BrickTest;
 
-public class ClockTest extends BrickTest {
+public class TimerTest extends BrickTest {
 
-	private final Clock _subject = my(Clock.class);
+	private final Clock _clock = my(Clock.class);
+	private final Timer _subject = my(Timer.class);
 	private StringBuilder _events = new StringBuilder();
 	
 	@Test
@@ -26,8 +28,8 @@ public class ClockTest extends BrickTest {
 		_subject.wakeUpEvery(35, new Worker(35, _order));
 		_subject.wakeUpInAtLeast(30, new Worker(30,_order));
 		
-		_subject.advanceTime(81);
-		assertTrue(81 == _subject.time().currentValue());
+		_clock.advanceTime(81);
+		assertTrue(81 == _clock.time().currentValue());
 		
 		Integer lastInteger = null;
 		for (Integer timeout : _order) {
@@ -44,7 +46,7 @@ public class ClockTest extends BrickTest {
 		_subject.wakeUpInAtLeast(10, new Worker(10, _order));
 		_subject.wakeUpInAtLeast(10, new Worker(10, _order));
 		
-		_subject.advanceTime(10);
+		_clock.advanceTime(10);
 		
 		assertEquals(2, _order.size());
 	}
@@ -83,10 +85,10 @@ public class ClockTest extends BrickTest {
 			}});
 		}});
 		
-		_subject.advanceTime(2);
+		_clock.advanceTime(2);
 		assertEvents("first");
 
-		_subject.advanceTime(1);
+		_clock.advanceTime(1);
 		assertEvents("second");
 	}
 

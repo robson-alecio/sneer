@@ -7,6 +7,7 @@ public interface BrickInfo {
 	public enum Status {
 		NEW,
 		DIFFERENT,
+		DIVERGING,
 		CURRENT, 
 		REJECTED
 	}

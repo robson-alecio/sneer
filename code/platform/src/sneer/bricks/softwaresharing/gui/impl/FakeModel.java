@@ -33,12 +33,14 @@ class FakeModel {
 				"EXTRA", sneer.bricks.softwaresharing.FileVersion.Status.EXTRA));
 		
 		versions.add(newBrickVersion(Status.CURRENT, 1, files)); 
-		versions.add(newBrickVersion(Status.DIFFERENT, 2, files)); 
-		versions.add(newBrickVersion(Status.REJECTED, 1, files)); 
+		versions.add(newBrickVersion(Status.DIVERGING, 2, files)); 
+		versions.add(newBrickVersion(Status.DIFFERENT, 20, files)); 
+		versions.add(newBrickVersion(Status.REJECTED, 3, files)); 
 
 		infos.add(newBrickInfo("BrickInfo1", versions, BrickInfo.Status.NEW));
 		infos.add(newBrickInfo("BrickInfo2", versions, BrickInfo.Status.CURRENT));
 		infos.add(newBrickInfo("BrickInfo3", versions, BrickInfo.Status.DIFFERENT));
+		infos.add(newBrickInfo("BrickInfo3", versions, BrickInfo.Status.DIVERGING));
 		infos.add(newBrickInfo("BrickInfo4", versions, BrickInfo.Status.REJECTED));
 		
 		return new RootTreeNode(infos);

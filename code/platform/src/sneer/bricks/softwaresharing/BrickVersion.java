@@ -10,6 +10,7 @@ public interface BrickVersion {
 	public enum Status {
 		CURRENT, 
 		DIFFERENT,
+		DIVERGING,
 		REJECTED
 	}
 	

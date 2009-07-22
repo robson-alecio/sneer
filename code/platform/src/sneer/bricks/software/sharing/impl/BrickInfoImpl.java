@@ -30,4 +30,9 @@ class BrickInfoImpl implements BrickInfo {
 		throw new NotImplementedYet(); // Implement
 	}
 
+	@Override
+	public Status status() {
+		throw new NotImplementedYet(); // Implement
+	}
+
 }

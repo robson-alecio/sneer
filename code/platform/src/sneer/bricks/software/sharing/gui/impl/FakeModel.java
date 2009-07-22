@@ -36,10 +36,10 @@ class FakeModel {
 		versions.add(newBrickVersion(Status.DIFFERENT, 2, files)); 
 		versions.add(newBrickVersion(Status.REJECTED, 1, files)); 
 
-		infos.add(newBrickInfo("BrickInfo1", versions));
-		infos.add(newBrickInfo("BrickInfo2", versions));
-		infos.add(newBrickInfo("BrickInfo3", versions));
-		infos.add(newBrickInfo("BrickInfo4", versions));
+		infos.add(newBrickInfo("BrickInfo1", versions, sneer.bricks.software.sharing.BrickInfo.Status.NEW));
+		infos.add(newBrickInfo("BrickInfo2", versions, sneer.bricks.software.sharing.BrickInfo.Status.CURRENT));
+		infos.add(newBrickInfo("BrickInfo3", versions, sneer.bricks.software.sharing.BrickInfo.Status.DIFFERENT));
+		infos.add(newBrickInfo("BrickInfo4", versions, sneer.bricks.software.sharing.BrickInfo.Status.REJECTED));
 		
 		return new RootTreeNode(infos);
 	}
@@ -83,11 +83,12 @@ class FakeModel {
 		};
 	}
 
-	private static BrickInfo newBrickInfo(final String name, final List<BrickVersion> versions) {
+	private static BrickInfo newBrickInfo(final String name, final List<BrickVersion> versions, final sneer.bricks.software.sharing.BrickInfo.Status status) {
 		return new BrickInfo(){
 			@Override public boolean isSnapp() { return false; }
 			@Override public String name() {return name; }
 			@Override public List<BrickVersion> versions() { return versions;}
+			@Override public sneer.bricks.software.sharing.BrickInfo.Status status() { return status; }
 		};
 	}
 }

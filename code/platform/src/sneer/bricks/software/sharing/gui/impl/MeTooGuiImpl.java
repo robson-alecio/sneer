@@ -51,6 +51,9 @@ class MeTooGuiImpl extends JFrame implements MeTooGui{
 		_tree.setBorder(new EmptyBorder(5,5,5,5));
 		_tree.setShowsRootHandles(true);
 		
+		_files.setBorder(new EmptyBorder(5,5,5,5));
+		_files.setCellRenderer(new MeeTooListCellRenderer());
+		
 		my(LogConsole.class);
 		Synth _synth = my(Synth.class);
 		_OFFSET_X = (Integer) _synth.getDefaultProperty("LodConsoleImpl.offsetX");

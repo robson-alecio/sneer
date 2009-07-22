@@ -27,7 +27,8 @@ public interface Lang {
 		boolean isEmpty(String str);
 		String join(Collection<?> collection, String separator);
 		String trimToNull(String str);
-		String chomp(String str, String separator);
+		String chomp(String str, String suffix);
+		String substringBeforeLast(String str, String separator);
 		String deleteWhitespace(String str);
 		List<String> readLines(String input) throws IOException;
 		byte[] toByteArray(String string);

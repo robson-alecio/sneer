@@ -33,6 +33,8 @@ class LangImpl implements Lang {
 		@Override public String join(Collection<?> collection, String separator) {return StringUtils.join(collection, separator); }
 		@Override public String trimToNull(String str) {return StringUtils.trimToNull(str);}
 		@Override public String chomp(String str, String separator) { return StringUtils.chomp(str, separator);}
+		@Override public String substringBeforeLast(String str, String separator) {	return StringUtils.substringBeforeLast(str, separator); }
+
 		@Override public String deleteWhitespace(String str) {return StringUtils.deleteWhitespace(str);}
 		
 		@Override public List<String> readLines(String input) throws IOException {
@@ -77,7 +79,7 @@ class LangImpl implements Lang {
 		}
 	};
 
-	@Override	 public Arrays arrays() { return _arrays; }
+	@Override	public Arrays arrays() { return _arrays; }
 	@Override public Serialization serialization() {	 return _serialization;}
 	@Override public Strings strings() { return _strings;}
 }

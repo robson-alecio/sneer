@@ -26,7 +26,7 @@ class BandwidthCounterImpl implements BandwidthCounter {
 	private long _lastConsolidationTime;
 	
 	BandwidthCounterImpl(){
-		_lastConsolidationTime = _clock.time();
+		_lastConsolidationTime = _clock.time().currentValue();
 		_clock.wakeUpEvery(CONSOLIDATION_TIME, new Steppable(){ @Override public boolean step() {
 			consolidate();
 			return true;
@@ -39,7 +39,7 @@ class BandwidthCounterImpl implements BandwidthCounter {
 	@Override public void sent(int sizeBytes) { sent.addAndGet(sizeBytes); }
 	
 	private final void consolidate(){
-		long currentTime = _clock.time();
+		long currentTime = _clock.time().currentValue();
 		int deltaTime = (int) (currentTime-_lastConsolidationTime);
 		int deltaTimeInSeconds =deltaTime/1000;
 		

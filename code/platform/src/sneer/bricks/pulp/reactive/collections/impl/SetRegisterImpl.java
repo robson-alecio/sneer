@@ -30,7 +30,7 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 
 	private class MyOutput implements SetSignal<T> {
 
-		private final EventNotifier<CollectionChange<T>> _notifier = my(EventNotifiers.class).create(new Consumer<Consumer<? super CollectionChange<T>>>(){@Override public void consume(Consumer<? super CollectionChange<T>> newReceiver) {
+		private final EventNotifier<CollectionChange<T>> _notifier = my(EventNotifiers.class).newInstance(new Consumer<Consumer<? super CollectionChange<T>>>(){@Override public void consume(Consumer<? super CollectionChange<T>> newReceiver) {
 			if (_contents.isEmpty()) return;
 			newReceiver.consume(new CollectionChangeImpl<T>(contentsCopy(), null));
 		}});

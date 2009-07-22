@@ -29,13 +29,13 @@ public class MicTest extends BrickTest {
 
 		final SignalUtils signalUtils = my(SignalUtils.class);
 
-		signalUtils.waitForValue(_subject.isRunning(), false);
+		signalUtils.waitForValue(_subject.isOpen(), false);
 
 		_subject.open();
-		signalUtils.waitForValue(_subject.isRunning(), true);
+		signalUtils.waitForValue(_subject.isOpen(), true);
 
 		_subject.close();
-		signalUtils.waitForValue(_subject.isRunning(), false);
+		signalUtils.waitForValue(_subject.isOpen(), false);
 	}
 
 	private Expectations soundExpectations() throws LineUnavailableException {

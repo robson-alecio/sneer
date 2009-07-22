@@ -25,9 +25,9 @@ import sneer.bricks.snapps.wind.Shout;
 import sneer.bricks.snapps.wind.Wind;
 import sneer.bricks.software.bricks.Bricks;
 import sneer.bricks.software.directoryconfig.DirectoryConfig;
-import sneer.bricks.software.sharing.BrickInfo;
-import sneer.bricks.software.sharing.BrickUniverse;
-import sneer.bricks.software.sharing.BrickVersion;
+import sneer.bricks.softwaresharing.BrickInfo;
+import sneer.bricks.softwaresharing.BrickUniverse;
+import sneer.bricks.softwaresharing.BrickVersion;
 import sneer.foundation.brickness.Seal;
 import sneer.foundation.lang.Predicate;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
@@ -175,7 +175,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 		startAndKeep(sneer.bricks.network.computers.sockets.connections.receiver.SocketReceiver.class);
 		startAndKeep(sneer.bricks.pulp.probe.ProbeManager.class);
 		startAndKeep(sneer.bricks.snapps.wind.Wind.class);
-		startAndKeep(sneer.bricks.software.sharing.BrickUniverse.class);
+		startAndKeep(sneer.bricks.softwaresharing.BrickUniverse.class);
 		startAndKeep(sneer.bricks.network.social.heartbeat.stethoscope.Stethoscope.class);
 		startAndKeep(sneer.bricks.network.social.heartbeat.Heart.class);
 	}

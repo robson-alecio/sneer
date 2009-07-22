@@ -36,7 +36,7 @@ class WindImpl implements Wind, Consumer<Shout> {
 
 	@Override
 	public void consume(Shout shout) {
-		if (my(Clock.class).time() - shout.publicationTime() > 1000 * 60 * 60 * 24) return;
+		if (my(Clock.class).time().currentValue() - shout.publicationTime() > 1000 * 60 * 60 * 24) return;
 		_shoutsHeard.adder().consume(shout);
 	}
 

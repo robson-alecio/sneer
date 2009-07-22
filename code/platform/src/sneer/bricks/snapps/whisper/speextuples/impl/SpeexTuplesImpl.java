@@ -2,19 +2,24 @@ package sneer.bricks.snapps.whisper.speextuples.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.sound.sampled.LineUnavailableException;
+
 import sneer.bricks.hardware.ram.arrays.ImmutableArrays;
+import sneer.bricks.hardware.ram.arrays.ImmutableByteArray;
 import sneer.bricks.hardware.ram.arrays.ImmutableByteArray2D;
-import sneer.bricks.pulp.distribution.filtering.TupleFilterManager;
+import sneer.bricks.hardware.ram.maps.cachemaps.CacheMap;
+import sneer.bricks.hardware.ram.maps.cachemaps.CacheMaps;
 import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.reactive.Signal;
+import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.streams.sequencer.Sequencer;
 import sneer.bricks.pulp.streams.sequencer.Sequencers;
 import sneer.bricks.pulp.tuples.TupleSpace;
-import sneer.bricks.skin.audio.PcmSoundPacket;
+import sneer.bricks.skin.audio.mic.Mic;
+import sneer.bricks.skin.audio.speaker.Speaker;
+import sneer.bricks.skin.audio.speaker.Speaker.Line;
 import sneer.bricks.skin.rooms.ActiveRoomKeeper;
 import sneer.bricks.snapps.whisper.speex.Decoder;
 import sneer.bricks.snapps.whisper.speex.Encoder;
@@ -23,19 +28,15 @@ import sneer.bricks.snapps.whisper.speextuples.SpeexPacket;
 import sneer.bricks.snapps.whisper.speextuples.SpeexTuples;
 import sneer.foundation.brickness.Seal;
 import sneer.foundation.brickness.Tuple;
+import sneer.foundation.lang.ByRef;
 import sneer.foundation.lang.Consumer;
+import sneer.foundation.lang.Producer;
 
-class SpeexTuplesImpl implements SpeexTuples {
+class SpeexTuplesImpl implements SpeexTuples { //Refactor Break this into the encoding and decoding sides.
 
-	private final Map<Seal, Sequencer<SpeexPacket>> _sequencers = new HashMap<Seal, Sequencer<SpeexPacket>>();
 	private final TupleSpace _tupleSpace = my(TupleSpace.class);
 	private final Seals _keyManager = my(Seals.class);
-	private final TupleFilterManager _filter = my(TupleFilterManager.class); {
-		_filter.block(PcmSoundPacket.class);
-	}
 	private final Speex _speex = my(Speex.class);
-
-	static private final int FRAMES_PER_AUDIO_PACKET = 10;
 
 	private final Signal<String> _room = my(ActiveRoomKeeper.class).room();
 	private byte[][] _frames = newFramesArray();
@@ -45,33 +46,44 @@ class SpeexTuplesImpl implements SpeexTuples {
 	private final Decoder _decoder = _speex.createDecoder();
 	
 	private final AtomicInteger _ids = new AtomicInteger();
-	private Consumer<PcmSoundPacket> _refToAvoidGc;
+	@SuppressWarnings("unused")	private Object _refToAvoidGc;
 	private Consumer<SpeexPacket> _refToAvoidGc2;
-
+	
+	private final CacheMap<Seal, Sequencer<SpeexPacket>> _sequencersByPublisher = my(CacheMaps.class).newInstance();
+	private Producer<Sequencer<SpeexPacket>> _sequencerProducer = sequencerProducer();
+	
 	public SpeexTuplesImpl() {
 
-		final Consumer<SpeexPacket> consumer = new Consumer<SpeexPacket>(){ @Override public void consume(SpeexPacket packet) {
-			decode(packet);
-		}};
-		
-		_refToAvoidGc = new Consumer<PcmSoundPacket>() { @Override public void consume(PcmSoundPacket packet) {
-			if (!isMine(packet)) return;
-			if (encode(packet.payload.copy()))
+		_refToAvoidGc = my(Signals.class).receive(my(Mic.class).sound(), new Consumer<ImmutableByteArray>() { @Override public void consume(ImmutableByteArray packet) {
+			if (encode(packet.copy()))
 				flush();
-		}};
-		_refToAvoidGc2 = new Consumer<SpeexPacket>() { @Override public void consume(SpeexPacket packet) {
+		}});
+
+		_refToAvoidGc2 = new Consumer<SpeexPacket>() {
+
+		@Override public void consume(SpeexPacket packet) {
 			if (isMine(packet))	return;
 			if (!_room.currentValue().equals(packet.room)) return;
 
-			Seal publisher = packet.publisher();
-			if(!_sequencers.containsKey(publisher)) 
-				_sequencers.put(publisher, my(Sequencers.class).createSequencerFor(consumer, (short)15, (short)150));
-			
-			_sequencers.get(publisher).produceInSequence(packet, packet.sequence);
+			playInSequence(packet);
 		}};
-		
-		_tupleSpace.addSubscription(PcmSoundPacket.class, _refToAvoidGc);
 		_tupleSpace.addSubscription(SpeexPacket.class, _refToAvoidGc2);
+	}
+	
+	
+	private void playInSequence(SpeexPacket packet) {
+		Sequencer<SpeexPacket> sequencer = _sequencersByPublisher.get(packet.publisher(), _sequencerProducer);
+		sequencer.produceInSequence(packet, packet.sequence);
+	}
+	
+	
+	private Producer<Sequencer<SpeexPacket>> sequencerProducer() {
+		return new Producer<Sequencer<SpeexPacket>>() { @Override public Sequencer<SpeexPacket> produce() {
+			final ByRef<Line> speakerLine = ByRef.newInstance();
+			return my(Sequencers.class).createSequencerFor((short)15, (short)150, new Consumer<SpeexPacket>(){ @Override public void consume(SpeexPacket sequencedPacket) {
+				play(sequencedPacket, speakerLine);
+			}});
+		}};
 	}
 
 	private short nextShort() {
@@ -105,13 +117,22 @@ class SpeexTuplesImpl implements SpeexTuples {
 		return _frameIndex == FRAMES_PER_AUDIO_PACKET;
 	}
 	
-	protected void decode(SpeexPacket packet) {
+	
+	private void play(SpeexPacket packet, ByRef<Line> speakerLine) {
+		if (!initSpeakerLine(speakerLine)) return;
 		for (byte[] frame : _decoder.decode(packet.frames.copy()))
-			_tupleSpace.acquire(new PcmSoundPacket(packet.publisher(), packet.publicationTime(), my(ImmutableArrays.class).newImmutableByteArray(frame)));
+			speakerLine.value.consume(frame);
 	}
 
-	@Override
-	public int framesPerAudioPacket() {
-		return FRAMES_PER_AUDIO_PACKET;
+	
+	private boolean initSpeakerLine(ByRef<Line> speakerLine) {
+		if (speakerLine.value != null) return true;
+		try {
+			speakerLine.value = my(Speaker.class).acquireLine();
+		} catch (LineUnavailableException e) {
+			return false;
+		}
+		return true;
 	}
+
 }

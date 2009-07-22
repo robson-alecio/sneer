@@ -28,7 +28,7 @@ class SocketAccepterImpl implements SocketAccepter {
 	private final BlinkingLights _lights = my(BlinkingLights.class);
 	private final Threads _threads = my(Threads.class);
 
-	private final EventNotifier<ByteArraySocket> _notifier = my(EventNotifiers.class).create();
+	private final EventNotifier<ByteArraySocket> _notifier = my(EventNotifiers.class).newInstance();
 
 	private final transient Object _portToListenMonitor = new Object();
 

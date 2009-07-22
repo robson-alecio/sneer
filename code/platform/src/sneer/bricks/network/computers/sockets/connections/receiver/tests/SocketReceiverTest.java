@@ -30,7 +30,7 @@ public class SocketReceiverTest extends BrickTest {
 	@Bind private final ConnectionManager _connectionManagerMock = mock(ConnectionManager.class);
 
 	private final ByteArraySocket _socket = mock(ByteArraySocket.class);
-	private final EventNotifier<ByteArraySocket> _acceptedSocketNotifier = my(EventNotifiers.class).create();
+	private final EventNotifier<ByteArraySocket> _acceptedSocketNotifier = my(EventNotifiers.class).newInstance();
 	private final ContactManager _contactManager = my(ContactManager.class);
 
 	@Test (timeout = 2000)

@@ -14,10 +14,8 @@ import javax.swing.JToggleButton;
 
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
-import sneer.bricks.pulp.reactive.gates.logic.LogicGates;
 import sneer.bricks.skin.audio.loopback.LoopbackTester;
 import sneer.bricks.skin.audio.mic.Mic;
-import sneer.bricks.skin.audio.speaker.Speaker;
 import sneer.bricks.skin.main.dashboard.InstrumentPanel;
 import sneer.bricks.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.bricks.skin.main.synth.Synth;
@@ -33,7 +31,6 @@ class WhisperGuiImpl implements WhisperGui {
 	private final Synth _synth = my(Synth.class);
 	private final LoopbackTester _loopback = my(LoopbackTester.class);
 	private final InstrumentRegistry _instrumentManager = my(InstrumentRegistry.class);
-	private final Speaker _speaker = my(Speaker.class);
 	private final Mic _mic = my(Mic.class);
 
 	private final JToggleButton _whisperButton = new JToggleButton();
@@ -55,7 +52,7 @@ class WhisperGuiImpl implements WhisperGui {
 	}
 	
 	private Signal<Boolean> isRunning() {
-		return my(LogicGates.class).and(_mic.isRunning(), _speaker.isRunning());
+		return _mic.isOpen();
 	}
 
 	@Override
@@ -110,12 +107,10 @@ class WhisperGuiImpl implements WhisperGui {
 
 	protected void whisperOff() {
 		_mic.close();
-		_speaker.close();
 	}
 
 	protected void whisperOn() {
 		_mic.open();
-		_speaker.open();
 	}
 
 	@Override

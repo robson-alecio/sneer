@@ -7,12 +7,12 @@ import sneer.foundation.lang.Consumer;
 class EventNotifiersImpl implements EventNotifiers {
 
 	@Override
-	public <T> EventNotifier<T> create() {
-		return create(null);
+	public <T> EventNotifier<T> newInstance() {
+		return newInstance(null);
 	}
 
 	@Override
-	public <T> EventNotifier<T> create(Consumer<Consumer<? super T>> receiverHandler) {
+	public <T> EventNotifier<T> newInstance(Consumer<Consumer<? super T>> receiverHandler) {
 		return new EventNotifierImpl<T>(receiverHandler);
 	}
 

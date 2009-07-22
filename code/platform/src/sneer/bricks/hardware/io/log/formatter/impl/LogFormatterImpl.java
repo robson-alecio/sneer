@@ -61,6 +61,6 @@ public class LogFormatterImpl implements LogFormatter {
 	}	
 	
 	private void appendTime(StringBuilder builder) {
-		builder.append(SIMPLE_DATE_FORMAT.format(my(Clock.class).time()));
+		builder.append(SIMPLE_DATE_FORMAT.format(my(Clock.class).time().currentValue()));
 	}
 }

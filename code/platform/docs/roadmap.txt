@@ -1,12 +1,16 @@
 ﻿TASKS
 =========
 
-	- [Klaus] Revise TupleSpace subscription
-
-	- [Klaus] Revise Threads#newStepper callers
+	- [Klaus] Revise garbage collectable handles
+		- Threads#newStepper callers
+		- TupleSpace subscription
+		- Signals Reception (normal and collections).
 	
 	- [Klaus] Revise entire package structure.  
-		- software.sharing -> softwaresharing 
+
+	- [Sandro] Audio - Move all audio-related bricks to spikes.
+
+	- [Sandro] Clock - Leave only time(), advanceTime() and advanceTimeTo() methods. Extract all other methods to a new Timer brick.
 
 	- Metoo
 		- [Sandro] Gui
@@ -15,16 +19,7 @@
 	- [Sandro] RapidShare Killer
 		- Focus. Keep it simple. Zero sofistication. Simplest possible solution. No crash-recovery, for example. No bugs. Decent design.
 
-	- [Bamboo] Video Tutorial with Jazz :)
-
-	- [Igor] Mic and Speaker bricks - Stop using tuples. Instead do:
-		- EventSource<PcmSoundPacket> Mic.sound()
-		- Speaker.Line Speaker.acquireLine() - Speaker.Line extends Consumer<PcmSoundPacket>, Closeable;
-	
-	- [Igor] Test Intermittence - Fix all. Coordinate with Kalecser.
-		- Start with Hudson failures, then Eclipse failures.
-	
-	- [Igor] Log Filter
+	- [Sandro] Log Filter
 		- By default, nothing is logged. For each event, process lines from a "filter text", from top to bottom:
 			- Lines starting with # are ignored
 			- Blank lines are ignored
@@ -43,8 +38,6 @@
 
 	- [Bamboo and Igor] my(StorageDirectory.class) - Make it work context-based and delete DirectoryConfig.getStorageDirectoryFor(brick).
 
-	- [Igor] Clock - Leave only time() and advanceTime*() methods. Extract all other methods to a new Timer brick.
-        
 	- Savepoints - For entire source code.
 
 	- DynDns

@@ -3,14 +3,16 @@ package sneer.bricks.skin.audio.mic.impl;
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
+import sneer.bricks.hardware.ram.arrays.ImmutableByteArray;
+import sneer.bricks.pulp.events.EventNotifier;
+import sneer.bricks.pulp.events.EventNotifiers;
+import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.retrier.Retrier;
 import sneer.bricks.pulp.retrier.RetrierManager;
 import sneer.bricks.pulp.retrier.Task;
-import sneer.bricks.pulp.tuples.TupleSpace;
-import sneer.bricks.skin.audio.PcmSoundPacket;
 import sneer.bricks.skin.audio.mic.Mic;
 import sneer.foundation.lang.exceptions.FriendlyException;
 
@@ -18,27 +20,27 @@ class MicImpl implements Mic {
 
 	private final Threads _threads = my(Threads.class);
 	private final RetrierManager _retriers = my(RetrierManager.class);
-	private final TupleSpace _tupleSpace = my(TupleSpace.class);
 	
-	private boolean _isOpen;
+	private boolean _isOpenRequested;
 	private Steppable _refToAvoidGc;
 	
-	private Register<Boolean> _isRunning = my(Signals.class).newRegister(false);
+	private Register<Boolean> _isOpen = my(Signals.class).newRegister(false);
+	private EventNotifier<ImmutableByteArray> _sound = my(EventNotifiers.class).newInstance();
 	
 	@Override
-	public Signal<Boolean> isRunning() {
-		return _isRunning.output();
+	public Signal<Boolean> isOpen() {
+		return _isOpen.output();
 	}
 
 	@Override
 	synchronized public void open() {
-		_isOpen = true;
+		_isOpenRequested = true;
 		startToWorkIfNecessary();
 	}
 	
 	@Override
 	synchronized public void close() {
-		_isOpen = false;
+		_isOpenRequested = false;
 		wakeUp();
 	}
 
@@ -49,7 +51,6 @@ class MicImpl implements Mic {
 			work();
 			return false;
 		}};
-
 		_threads.newStepper(_refToAvoidGc);
 	}
 	
@@ -59,10 +60,10 @@ class MicImpl implements Mic {
 			if (doAcquireLine()) continue;
 	
 			MicLine.close();
-			_isRunning.setter().consume(false);
+			_isOpen.setter().consume(false);
 
 			synchronized (this) {
-				if (!_isOpen) {
+				if (!_isOpenRequested) {
 					_refToAvoidGc = null;
 					return;
 				}
@@ -74,7 +75,7 @@ class MicImpl implements Mic {
 	private boolean doAcquireLine() {
 		Retrier retrier;
 		synchronized (this) {
-			if (!isOpen()) return false;
+			if (!isOpenRequested()) return false;
 
 			retrier = _retriers.startRetrier(5000, new Task() { @Override public void execute() throws FriendlyException { //Fix The blinking light turned on by this retrier is redundant with the one turned on by the Audio brick. 
 				MicLine.tryToAcquire();
@@ -85,24 +86,24 @@ class MicImpl implements Mic {
 		}
 		
 		retrier.giveUpIfStillTrying();
-		return isOpen();
+		return isOpenRequested();
 	}
 
 	
 	private boolean doCapture() {
-		if (!isOpen()) return false;
+		if (!isOpenRequested()) return false;
 		if (!MicLine.isAquired()) return false;
 		
-		_tupleSpace.publish(new PcmSoundPacket(MicLine.read()));
-		_isRunning.setter().consume(true);
+		_sound.notifyReceivers(MicLine.read());
+		_isOpen.setter().consume(true);
 		
 		return true;
 	}
 
 
-	private boolean isOpen() {
+	private boolean isOpenRequested() {
 		synchronized (this) {
-			return _isOpen;
+			return _isOpenRequested;
 		}
 	}
 
@@ -112,5 +113,10 @@ class MicImpl implements Mic {
 
 	private void goToSleep() {
 		_threads.waitWithoutInterruptions(this);
+	}
+
+	@Override
+	public EventSource<ImmutableByteArray> sound() {
+		return _sound.output();
 	}
 }

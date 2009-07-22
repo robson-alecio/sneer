@@ -250,7 +250,7 @@ class TupleSpaceImpl implements TupleSpace {
 
 	
 	private void stamp(Tuple tuple) {
-		tuple.stamp(_keyManager.ownSeal(), my(Clock.class).time());
+		tuple.stamp(_keyManager.ownSeal(), my(Clock.class).time().currentValue());
 	}
 
 	private void capTransientTuples() {

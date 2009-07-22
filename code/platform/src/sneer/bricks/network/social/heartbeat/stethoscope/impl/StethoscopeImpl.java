@@ -71,7 +71,7 @@ class StethoscopeImpl implements Stethoscope, Consumer<Heartbeat>, Steppable {
 
 
 	private long now() {
-		return my(Clock.class).time();
+		return my(Clock.class).time().currentValue();
 	}
 
 

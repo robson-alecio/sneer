@@ -14,7 +14,7 @@ public class LogNotifierImpl implements LogNotifier {
 
 	private final LogFilter _filter = my(LogFilter.class);
 	private final LogFormatter _formatter = my(LogFormatter.class);
-	private final EventNotifier<String> _loggedMessages = my(EventNotifiers.class).create();
+	private final EventNotifier<String> _loggedMessages = my(EventNotifiers.class).newInstance();
 	
 	{
 		my(Logger.class).setDelegate(new LogWorker(){

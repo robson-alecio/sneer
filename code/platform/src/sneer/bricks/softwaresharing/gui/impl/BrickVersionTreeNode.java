@@ -19,6 +19,7 @@ class BrickVersionTreeNode extends AbstractTreeNodeWrapper<String> {
 	private static final ImageIcon _currentVersion = loadIcon("currentVersion.png");
 	private static final ImageIcon _differentVersion = loadIcon("differentVersion.png");
 	private static final ImageIcon _rejectedVersion = loadIcon("rejectedVersion.png");
+	private static final ImageIcon _divergingVersion = loadIcon("divergingVersion.png");
 
 	private static ImageIcon loadIcon(String fileName){
 		return my(ImageFactory.class).getIcon(BrickInfoTreeNode.class, fileName);
@@ -30,6 +31,10 @@ class BrickVersionTreeNode extends AbstractTreeNodeWrapper<String> {
 		
 		if(brickVersion.status()==Status.DIFFERENT){
 			_icon = _differentVersion;
+			return;
+		}
+		if(brickVersion.status()==Status.DIVERGING){
+			_icon = _divergingVersion;
 			return;
 		}
 		if(brickVersion.status()==Status.REJECTED){

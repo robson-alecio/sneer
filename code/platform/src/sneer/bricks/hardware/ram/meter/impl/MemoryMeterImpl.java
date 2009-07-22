@@ -2,7 +2,7 @@ package sneer.bricks.hardware.ram.meter.impl;
 
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.clock.Clock;
-import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.ram.meter.MemoryMeter;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
@@ -17,7 +17,7 @@ class MemoryMeterImpl implements MemoryMeter {
 	private final Register<Integer> _usedMBsPeak = my(Signals.class).newRegister(0);
 	
 	private final Clock _clock = my(Clock.class); {
-		_clock.wakeUpNowAndEvery(PERIOD_IN_MILLIS, new Stepper() { @Override public boolean step() {
+		_clock.wakeUpNowAndEvery(PERIOD_IN_MILLIS, new Steppable() { @Override public boolean step() {
 			measureMemory();
 			return true;
 		}});

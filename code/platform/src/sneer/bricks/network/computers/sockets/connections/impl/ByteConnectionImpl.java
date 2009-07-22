@@ -5,7 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.IOException;
 import java.util.Arrays;
 
-import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.network.computers.sockets.connections.ByteConnection;
@@ -35,7 +35,8 @@ class ByteConnectionImpl implements ByteConnection {
 	private Consumer<byte[]> _receiver;
 	
 	private volatile boolean _isClosed;
-	private Stepper _refToAvoidGc;
+	private Steppable _refToAvoidGc;
+	private Steppable _refToAvoidGc2;
 
 
 	ByteConnectionImpl(String label, Contact contact) {
@@ -105,24 +106,26 @@ class ByteConnectionImpl implements ByteConnection {
 
 
 	private void startSending() {
-		_threads.registerStepper(new Stepper() { @Override public boolean step() {
+		_refToAvoidGc = new Steppable() { @Override public boolean step() {
 			if (tryToSend(_scheduler.highestPriorityPacketToSend()))
 				_scheduler.previousPacketWasSent();
 			else
 				_threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify.
 			
 			return !_isClosed;
-		}});
+		}};
+		
+		_threads.newStepper(_refToAvoidGc);
 	}
 	
 	private void startReceiving() {
-		_refToAvoidGc = new Stepper() { @Override public boolean step() {
+		_refToAvoidGc2 = new Steppable() { @Override public boolean step() {
 			if (!tryToReceive())
 				_threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify
 			return !_isClosed;
 		}};
 
-		_threads.registerStepper(_refToAvoidGc);
+		_threads.newStepper(_refToAvoidGc2);
 	}
 
 	private boolean tryToReceive() {

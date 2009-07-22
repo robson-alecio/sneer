@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.Test;
 
 import sneer.bricks.hardware.clock.Clock;
-import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.foundation.brickness.testsupport.BrickTest;
 
 public class ClockTest extends BrickTest {
@@ -50,7 +50,7 @@ public class ClockTest extends BrickTest {
 	}
 
 	
-	private class Worker implements Stepper, Runnable {
+	private class Worker implements Steppable, Runnable {
 
 		private final int _timeout;
 		private final List<Integer> _order;

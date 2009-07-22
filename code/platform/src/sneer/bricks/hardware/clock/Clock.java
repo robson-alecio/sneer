@@ -1,6 +1,6 @@
 package sneer.bricks.hardware.clock;
 
-import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.foundation.brickness.Brick;
 
 @Brick
@@ -12,8 +12,8 @@ public interface Clock {
 
 	void wakeUpNoEarlierThan(long timeToWakeUp, Runnable runnable);
 	void wakeUpInAtLeast(long millisFromNow, Runnable runnable);
-	void wakeUpEvery(long minimumPeriodInMillis, Stepper stepper);
-	void wakeUpNowAndEvery(long minimumPeriodInMillis, Stepper stepper);
+	void wakeUpEvery(long minimumPeriodInMillis, Steppable stepper);
+	void wakeUpNowAndEvery(long minimumPeriodInMillis, Steppable stepper);
 
 	void advanceTime(long deltaMillis);
 	void advanceTimeTo(long absoluteTimeMillis);

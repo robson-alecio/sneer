@@ -18,7 +18,7 @@ import sneer.bricks.software.directoryconfig.DirectoryConfig;
 public class BricksImpl implements Bricks {
 
 	@Override
-	public void publish(File sourceDirectory) {
+	public void install(File sourceDirectory) {
 		
 		final Result result = compile(sourceDirectory, ownBinDirectory());
 		if (!result.success())

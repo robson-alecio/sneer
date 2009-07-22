@@ -13,6 +13,8 @@ public class DirectoryConfigImpl implements DirectoryConfig {
 
 	private final Immutable<File> _ownBinDirectory = immutable();
 	private final Immutable<File> _platformBinDirectory = immutable();
+	private final Immutable<File> _ownSrcDirectory = immutable();
+	private final Immutable<File> _platformSrcDirectory = immutable();
 	private final Immutable<File> _dataDirectory = immutable();
 	private final Immutable<File> _logFile = immutable();
 
@@ -45,6 +47,16 @@ public class DirectoryConfigImpl implements DirectoryConfig {
 
 	private static <T> Immutable<T> immutable() {
 		return my(Immutables.class).newInstance();
+	}
+
+	@Override
+	public Immutable<File> ownSrcDirectory() {
+		return _ownSrcDirectory;
+	}
+
+	@Override
+	public Immutable<File> platformSrcDirectory() {
+		return _platformSrcDirectory;
 	}
 	
 	

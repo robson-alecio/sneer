@@ -1,6 +1,7 @@
 package sneer.tests;
 
 import java.io.File;
+import java.io.IOException;
 
 
 
@@ -21,6 +22,8 @@ public interface SovereignParty {
 	void waitForShouts(String shoutsExpected);
 
 	//Freedom7
-	void publishBricks(File sourceDirectory);
+	void installBricks(File sourceDirectory) throws IOException;
+	void waitForAvailableBrick(String brickName);
+	void installTheOnlyAvailableVersionOfBrick(String brickName) throws IOException;
 	
 }

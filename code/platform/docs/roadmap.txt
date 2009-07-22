@@ -1,13 +1,19 @@
 ﻿TASKS
 =========
 
+	- [Klaus] Revise TupleSpace subscription
+
+	- [Klaus] Revise Threads#newStepper callers
+	
 	- [Klaus] Revise entire package structure.  
+		- software.sharing -> softwaresharing 
+
+	- Metoo
+		- [Sandro] Gui
+		- [Klaus] Business
 	
 	- [Sandro] RapidShare Killer
 		- Focus. Keep it simple. Zero sofistication. Simplest possible solution. No crash-recovery, for example. No bugs. Decent design.
-
-	- [Sandro] AutoScroll 
-		- FORGET THIS FOR NOW: Auto Scroll - DO NOT make a framework. Make a test SPECIFIC for auto-scroll using screen image comparisons.
 
 	- [Bamboo] Video Tutorial with Jazz :)
 

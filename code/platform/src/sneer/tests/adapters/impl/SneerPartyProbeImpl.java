@@ -9,7 +9,7 @@ import java.util.List;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.lang.Lang;
-import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.ram.iterables.Iterables;
 import sneer.bricks.network.social.Contact;
@@ -25,7 +25,11 @@ import sneer.bricks.snapps.wind.Shout;
 import sneer.bricks.snapps.wind.Wind;
 import sneer.bricks.software.bricks.Bricks;
 import sneer.bricks.software.directoryconfig.DirectoryConfig;
+import sneer.bricks.software.sharing.BrickInfo;
+import sneer.bricks.software.sharing.BrickUniverse;
+import sneer.bricks.software.sharing.BrickVersion;
 import sneer.foundation.brickness.Seal;
+import sneer.foundation.lang.Predicate;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
 import sneer.foundation.lang.exceptions.Refusal;
 import sneer.tests.SovereignParty;
@@ -36,6 +40,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	
 	static private final String MOCK_ADDRESS = "localhost";
 	private Collection<Object> _referenceToAvoidGc = new ArrayList<Object>();
+	private Steppable _referenceToAvoicGc2;
 
 	@Override
 	public void setSneerPort(int port) {
@@ -88,7 +93,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 	private void waitUntilOnline(Contact contact) {
 		//System.out.println("WAITING FOR ONLINE: " + contact.nickname().currentValue() + " " + contact);
-		my(SignalUtils.class).waitForValue(true, isAlive(contact));
+		my(SignalUtils.class).waitForValue(isAlive(contact), true);
 	}
 
 	private Signal<Boolean> isAlive(Contact contact) {
@@ -124,8 +129,8 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 
 	@Override
-	public void publishBricks(File sourceDirectory) {
-		my(Bricks.class).publish(sourceDirectory);
+	public void installBricks(File sourceDirectory) {
+		my(Bricks.class).install(sourceDirectory);
 	}
 
 
@@ -153,8 +158,9 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	}
 
 	@Override
-	public void setOwnBinDirectory(File ownBinDirectory) {
+	public void setBinDirectories(File ownBinDirectory, File platformBinDirectory) {
 		my(DirectoryConfig.class).ownBinDirectory().set(ownBinDirectory);
+		my(DirectoryConfig.class).platformBinDirectory().set(platformBinDirectory);
 	}
 
 	@Override
@@ -169,6 +175,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 		startAndKeep(sneer.bricks.network.computers.sockets.connections.receiver.SocketReceiver.class);
 		startAndKeep(sneer.bricks.pulp.probe.ProbeManager.class);
 		startAndKeep(sneer.bricks.snapps.wind.Wind.class);
+		startAndKeep(sneer.bricks.software.sharing.BrickUniverse.class);
 		startAndKeep(sneer.bricks.network.social.heartbeat.stethoscope.Stethoscope.class);
 		startAndKeep(sneer.bricks.network.social.heartbeat.Heart.class);
 	}
@@ -185,11 +192,39 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 	@Override
 	public void accelerateHeartbeat() {
-		my(Threads.class).registerStepper(new Stepper() { @Override public boolean step() {
-			my(Clock.class).advanceTime(20 * 1000);
+		_referenceToAvoicGc2 = new Steppable() { @Override public boolean step() {
+			my(Clock.class).advanceTime(10 * 1000);
 			my(Threads.class).sleepWithoutInterruptions(500);
 			return true;
+		}};
+		my(Threads.class).newStepper(_referenceToAvoicGc2);
+	}
+
+	@Override
+	public void waitForAvailableBrick(final String brickName) {
+		my(SignalUtils.class).waitForElement(my(BrickUniverse.class).availableBricks(), new Predicate<BrickInfo>() { @Override public boolean evaluate(BrickInfo brickInfo) {
+			return brickInfo.name().equals(brickName);
 		}});
+	}
+	
+	@Override
+	public void installTheOnlyAvailableVersionOfBrick(String brickName) {
+		final BrickInfo brick = availableBrick(brickName);
+		final BrickVersion latestVersion = onlyVersionOf(brick);
+		installBricks(latestVersion.sourceFolder());
+	}
+
+	private BrickVersion onlyVersionOf(BrickInfo brick) {
+		if (brick.versions().size() != 1)
+			throw new IllegalStateException();
+		return brick.versions().get(0);
+	}
+
+	private BrickInfo availableBrick(String brickName) {
+		for (BrickInfo brick : my(BrickUniverse.class).availableBricks())
+			if (brick.name().equals(brickName))
+				return brick;
+		throw new IllegalArgumentException();
 	}
 
 }

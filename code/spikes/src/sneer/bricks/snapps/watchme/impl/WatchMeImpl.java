@@ -7,7 +7,7 @@ import java.util.List;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.exceptions.Hiccup;
-import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.hardware.ram.arrays.ImmutableByteArray;
@@ -54,7 +54,7 @@ class WatchMeImpl implements WatchMe {
 
 	private Consumer<ImageDeltaPacket> _consumerToAvoidGc;
 
-	private Stepper _refToAvoidGc;
+	private Steppable _refToAvoidGc;
 
 	@Override
 	public EventSource<BufferedImage> screenStreamFor(final Seal publisher) {
@@ -97,7 +97,7 @@ class WatchMeImpl implements WatchMe {
 	public void startShowingMyScreen() {
 		_isRunning = true;
 
-		_refToAvoidGc = new Stepper(){ @Override public boolean step() {
+		_refToAvoidGc = new Steppable(){ @Override public boolean step() {
 			if(_isRunning) {
 				doPublishShot();
 				_clock.sleepAtLeast(PERIOD_IN_MILLIS);
@@ -109,7 +109,7 @@ class WatchMeImpl implements WatchMe {
 			return false;
 		}};
 
-		_threads.registerStepper(_refToAvoidGc);
+		_threads.newStepper(_refToAvoidGc);
 	}
 
 	private void doPublishShot() {

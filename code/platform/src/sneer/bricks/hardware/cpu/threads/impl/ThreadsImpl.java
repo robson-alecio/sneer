@@ -5,8 +5,10 @@ import static sneer.foundation.environments.Environments.my;
 import java.lang.ref.WeakReference;
 
 import sneer.bricks.hardware.cpu.threads.Latch;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Stepper;
 import sneer.bricks.hardware.cpu.threads.Threads;
+import sneer.bricks.hardware.io.log.Logger;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
 import sneer.foundation.testsupport.Daemon;
@@ -52,11 +54,11 @@ class ThreadsImpl implements Threads {
 		final Latch hasStarted = newLatch();
 
 		new Daemon(threadName) { @Override public void run() {
-			hasStarted.trip();
+			hasStarted.open();
 			Environments.runWith(environment, runnable);
 		}};
 		
-		hasStarted.await();
+		hasStarted.waitTillOpen();
 	}
 
 	@Override
@@ -65,14 +67,17 @@ class ThreadsImpl implements Threads {
 	}
 
 	@Override
-	public void registerStepper(Stepper stepper) {
-		final WeakReference<Stepper> stepperWeakRef = new WeakReference<Stepper>(stepper);
+	public Stepper newStepper(Steppable stepper) {
+		final WeakReference<Steppable> stepperWeakRef = new WeakReference<Steppable>(stepper);
+		final String stepperToString = stepper.toString(); 
 		startDaemon(inferThreadName(), new Runnable() { @Override public void run() {
-			Stepper s;
+			Steppable s;
 			do {
 				s = stepperWeakRef.get();
-			} while(s != null && s.step());
+				if (s == null) my(Logger.class).log("Stepper {} garbage collected.", stepperToString);
+			} while (s != null && s.step());
 		}});
+		return null;
 	}
 
 	private String inferThreadName() {
@@ -90,14 +95,14 @@ class ThreadsImpl implements Threads {
 	/**Waits until crashAllThreads() is called. */
 	@Override
 	public void waitUntilCrash() {
-		_crash.await();
+		_crash.waitTillOpen();
 	}
 
 	@Override
 	public void crashAllThreads() {
 		//doCrashAllThreads();
 		
-		_crash.trip();
+		_crash.open();
 	}
 
 //	private void doCrashAllThreads() {

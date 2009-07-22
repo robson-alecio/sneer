@@ -2,7 +2,7 @@ package sneer.bricks.network.social.heartbeat.stethoscope.impl;
 
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.clock.Clock;
-import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.hardware.ram.maps.cachemaps.CacheMap;
 import sneer.bricks.hardware.ram.maps.cachemaps.CacheMaps;
@@ -19,7 +19,7 @@ import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.lang.Consumer;
 import sneer.foundation.lang.Producer;
 
-class StethoscopeImpl implements Stethoscope, Consumer<Heartbeat>, Stepper {
+class StethoscopeImpl implements Stethoscope, Consumer<Heartbeat>, Steppable {
 
 	private static final int TIME_TILL_DEATH = 30 * 1000;
 	private static final int MAX_BEAT_AGE = 10 * 60 * 1000;
@@ -82,14 +82,19 @@ class StethoscopeImpl implements Stethoscope, Consumer<Heartbeat>, Stepper {
 
 
 	@Override
-	public void consume(Heartbeat beat) {
-		if (my(Seals.class).ownSeal().equals(beat.publisher())) return;
+	synchronized public void consume(Heartbeat beat) {
+		if (isMyOwn(beat)) return;
 		if (isTooOld(beat)) return;
 		
 		Contact contact = contact(beat);
 		_lastBeatTimesByContact.put(contact, now());
 
 		setAlive(contact);
+	}
+
+
+	private boolean isMyOwn(Heartbeat beat) {
+		return my(Seals.class).ownSeal().equals(beat.publisher());
 	}
 
 

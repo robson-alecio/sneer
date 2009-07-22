@@ -9,7 +9,7 @@ public class LatchImpl implements Latch {
 	CountDownLatch _delegate = new CountDownLatch(1);
 	
 	@Override
-	public void await() {
+	public void waitTillOpen() {
 		try {
 			_delegate.await();
 		} catch (InterruptedException e) {
@@ -19,11 +19,11 @@ public class LatchImpl implements Latch {
 
 	@Override
 	public void run() {
-		trip();
+		open();
 	}
 
 	@Override
-	public void trip() {
+	public void open() {
 		_delegate.countDown();
 	}
 

@@ -4,27 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sneer.bricks.hardware.cpu.threads.Latch;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Stepper;
 import sneer.bricks.hardware.cpu.threads.Threads;
 
 public class ThreadsMock implements Threads {
 
-	List<Stepper> _steppers = new ArrayList<Stepper>();
+	List<Steppable> _steppers = new ArrayList<Steppable>();
 
 	@Override
-	public synchronized void registerStepper(final Stepper stepper) {
+	public synchronized Stepper newStepper(final Steppable stepper) {
 		_steppers.add(stepper);
+		return null;
 	}
 
-	public synchronized Stepper stepper(int i) {
+	public synchronized Steppable stepper(int i) {
 		return _steppers.get(i);
 	}
 
 	public synchronized void stepAllSteppers() {
-		ArrayList<Stepper> steppersCopy = new ArrayList<Stepper>(_steppers);
+		ArrayList<Steppable> steppersCopy = new ArrayList<Steppable>(_steppers);
 		_steppers.clear();
 
-		for (Stepper stepper : steppersCopy) stepper.step();
+		for (Steppable stepper : steppersCopy) stepper.step();
 	}
 
 	@Override

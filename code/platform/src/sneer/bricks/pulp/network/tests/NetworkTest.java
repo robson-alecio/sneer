@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.network.ByteArrayServerSocket;
 import sneer.bricks.pulp.network.ByteArraySocket;
@@ -25,7 +25,7 @@ public class NetworkTest extends BrickTest {
 		
 		final ByteArrayServerSocket server = network.openServerSocket(9090);
 
-		final Stepper _refToAvoidGc = new Stepper() { @Override public boolean step() {
+		final Steppable _refToAvoidGc = new Steppable() { @Override public boolean step() {
 			try {
 				ByteArraySocket request = server.accept();
 				request.write(new String(request.read()).toUpperCase().getBytes());
@@ -36,7 +36,7 @@ public class NetworkTest extends BrickTest {
 			return false;
 		}};
 
-		_threads.registerStepper(_refToAvoidGc);
+		_threads.newStepper(_refToAvoidGc);
 
 		ByteArraySocket client = network.openSocket("localhost", 9090);
 		client.write("hello".getBytes());

@@ -5,7 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.IOException;
 
 import sneer.bricks.hardware.clock.Clock;
-import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
@@ -85,10 +85,10 @@ class DynDnsClientImpl implements DynDnsClient {
 
 		private boolean _isReactionPending = false;
 
-		private final Stepper _refToAvoidGc;
+		private final Steppable _refToAvoidGc;
 
 		Requesting() {
-			_refToAvoidGc = new Stepper() { @Override public boolean step() {
+			_refToAvoidGc = new Steppable() { @Override public boolean step() {
 				State state = submitUpdateRequest(currentAccount(), currentIp());
 				synchronized (_stateMonitor) {
 					_state = state;
@@ -99,7 +99,7 @@ class DynDnsClientImpl implements DynDnsClient {
 				return false;
 			}};
 
-			_threads.registerStepper(_refToAvoidGc);
+			_threads.newStepper(_refToAvoidGc);
 		}
 
 		private State submitUpdateRequest(final DynDnsAccount account, String ip) {

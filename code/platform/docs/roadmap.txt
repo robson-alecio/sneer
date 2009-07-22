@@ -1,15 +1,16 @@
 ﻿TASKS
 =========
 
-	- [Klaus] Revise TupleSpace subscription
-
-	- [Klaus] Revise Threads#newStepper callers
+	- [Klaus] Revise garbage collectable handles
+		- Threads#newStepper callers
+		- TupleSpace subscription
+		- Signals Reception (normal and collections).
 	
 	- [Klaus] Revise entire package structure.  
 
 	- [Sandro] Audio - Move all audio-related bricks to spikes.
 
-	- [Sandro] Clock - Leave only time() and advanceTime() methods. Extract all other methods to a new Timer brick.
+	- [Sandro] Clock - Leave only time(), advanceTime() and advanceTimeTo() methods. Extract all other methods to a new Timer brick.
 
 	- Metoo
 		- [Sandro] Gui

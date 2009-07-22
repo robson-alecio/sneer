@@ -59,5 +59,6 @@ public class OwnIpDiscovererTest extends BrickTest {
 		clock.advanceTime(retryTime);
 		clock.advanceTime(retryTime);
 		clock.advanceTime(retryTime);
+		clock.advanceTime(retryTime);
 	}
 }

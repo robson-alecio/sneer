@@ -44,16 +44,6 @@ class MeTooGuiImpl extends JFrame implements MeTooGui{
 	MeTooGuiImpl(){
 		super("MeToo");
 		
-		_tree.setRootVisible(false);
-		_tree.setModel(new DefaultTreeModel(FakeModel.root()));
-		_tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-		_tree.setCellRenderer(new MeTooTreeCellRenderer());
-		_tree.setBorder(new EmptyBorder(5,5,5,5));
-		_tree.setShowsRootHandles(true);
-		
-		_files.setBorder(new EmptyBorder(5,5,5,5));
-		_files.setCellRenderer(new MeeTooListCellRenderer());
-		
 		my(LogConsole.class);
 		Synth _synth = my(Synth.class);
 		_OFFSET_X = (Integer) _synth.getDefaultProperty("LodConsoleImpl.offsetX");
@@ -65,7 +55,7 @@ class MeTooGuiImpl extends JFrame implements MeTooGui{
 		initListeners();
 		initMeTooMenu();
 	}
-
+	
 	private void initMeTooMenu() {
 		final WindowBoundsSetter wbSetter = my(WindowBoundsSetter.class);
 		wbSetter.runWhenBaseContainerIsReady(new Runnable(){ @Override public void run() {
@@ -110,8 +100,17 @@ class MeTooGuiImpl extends JFrame implements MeTooGui{
 	}
 	
 	private void initGui() {
-		Container contentPane = getContentPane();
+		_tree.setRootVisible(false);
+		_tree.setModel(new DefaultTreeModel(FakeModel.root()));
+		_tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+		_tree.setCellRenderer(new MeTooTreeCellRenderer());
+		_tree.setBorder(new EmptyBorder(5,5,5,5));
+		_tree.setShowsRootHandles(true);
 		
+		_files.setBorder(new EmptyBorder(5,5,5,5));
+		_files.setCellRenderer(new MeeTooListCellRenderer());
+		
+		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
 		
 		JScrollPane scrollTree = my(SynthScrolls.class).create();

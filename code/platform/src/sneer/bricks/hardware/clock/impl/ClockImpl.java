@@ -6,9 +6,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import sneer.bricks.hardware.clock.Clock;
-import sneer.bricks.hardware.cpu.threads.Latch;
 import sneer.bricks.hardware.cpu.threads.Steppable;
-import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.cpu.timebox.Timebox;
 import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
 import sneer.bricks.pulp.reactive.Register;
@@ -24,39 +22,8 @@ class ClockImpl implements Clock {
 	
 	final ExceptionHandler _exceptionHandler = my(ExceptionHandler.class);
 	
-	@Override
-	synchronized public void wakeUpNoEarlierThan(long timeToWakeUp, Runnable runnable) {
-		long millisFromNow = timeToWakeUp <= currentTime()
-			? 0
-			: timeToWakeUp - currentTime();
-		wakeUpInAtLeast(millisFromNow, runnable);
-	}
-
 	private long currentTime() {
 		return time().currentValue();
-	}
-
-	@Override
-	synchronized public void wakeUpInAtLeast(long millisFromCurrentTime, Runnable runnable) {
-		_alarms.add(new Alarm(runnable, millisFromCurrentTime));
-	}
-
-	@Override
-	synchronized public void wakeUpNowAndEvery(long period, Steppable stepper) {
-		if (!step(stepper)) return;
-		wakeUpEvery(period, stepper);
-	}
-
-	@Override
-	synchronized public void wakeUpEvery(long period, Steppable stepper) {
-		_alarms.add(new Alarm(stepper, period));
-	}
-
-	@Override
-	public void sleepAtLeast(long millis) {
-		Latch latch = my(Threads.class).newLatch();
-		wakeUpInAtLeast(millis, latch);
-		latch.waitTillOpen();
 	}
 
 	@Override

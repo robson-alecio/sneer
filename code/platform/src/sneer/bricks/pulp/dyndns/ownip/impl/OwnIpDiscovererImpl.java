@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.io.log.Logger;
+import sneer.bricks.hardware.timer.Timer;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.blinkinglights.LightType;
@@ -56,7 +57,7 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	}
 
 	private void scheduleNextDiscovery() {
-		_clock.wakeUpNoEarlierThan(timeForNextDiscovery(), new Runnable() { @Override public void run() {
+		my(Timer.class).wakeUpNoEarlierThan(timeForNextDiscovery(), new Runnable() { @Override public void run() {
 			tryIpDiscovery();
 			scheduleNextDiscovery();
 		}});

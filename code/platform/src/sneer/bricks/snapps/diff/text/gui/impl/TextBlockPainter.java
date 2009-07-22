@@ -29,9 +29,8 @@ class TextBlockPainter {
 		_delete = _document.addStyle("equal", def);
 		_insert = _document.addStyle("equal", def);
 		
-		StyleConstants.setForeground(_delete, Color.BLACK);
+		StyleConstants.setForeground(_delete, Color.RED);
 		StyleConstants.setStrikeThrough(_delete, true);
-		StyleConstants.setBackground(_delete, new Color(230,230,230));
 		StyleConstants.setBackground(_insert, Color.GREEN);
 		
 		_document.addStyle("equal", _equal);

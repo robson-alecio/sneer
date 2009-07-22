@@ -1,7 +1,7 @@
 package sneer.bricks.pulp.blinkinglights.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.hardware.clock.Clock;
+import sneer.bricks.hardware.timer.Timer;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.blinkinglights.LightType;
@@ -12,8 +12,6 @@ import sneer.foundation.lang.Consumer;
 import sneer.foundation.lang.exceptions.FriendlyException;
 
 class BlinkingLightsImpl implements BlinkingLights {
-	
-	private final Clock _clock = my(Clock.class);
 	
 	private final ListRegister<Light> _lights = my(CollectionSignals.class).newListRegister();
 	
@@ -53,7 +51,7 @@ class BlinkingLightsImpl implements BlinkingLights {
 	}
 	
 	private void turnOffIn(final Light light, int millisFromNow) {
-		_clock.wakeUpInAtLeast(millisFromNow, new Runnable() { @Override public void run() {
+		my(Timer.class).wakeUpInAtLeast(millisFromNow, new Runnable() { @Override public void run() {
 			turnOffIfNecessary(light);	
 		}});
 	}

@@ -10,9 +10,9 @@
 	<classpathentry exported="true" kind="lib" path="src/sneer/foundation/testsupport/lib/junit-4.4.jar" sourcepath="src/sneer/foundation/testsupport/lib/junit-4.4-src.jar"/>
 	<classpathentry kind="lib" path="src/sneer/bricks/pulp/tuples/impl/lib/prevayler-2.3.jar" sourcepath="src/sneer/bricks/pulp/tuples/impl/lib/prevayler-2.3-src.zip"/>
 	<classpathentry kind="lib" path="src/sneer/bricks/skin/main/dashboard/impl/lib/jxlayer.jar" sourcepath="bricks/src/sneer/skin/main/dashboard/impl/lib/jxlayer-src.zip"/>
-	<classpathentry kind="lib" path="src/sneer/bricks/hardware/cpu/lang/impl/lib/commons-lang-2.4.jar" sourcepath="bricks/src/sneer/hardware/cpu/lang/impl/lib/commons-lang-2.4.zip"/>
+	<classpathentry kind="lib" path="src/sneer/bricks/hardware/cpu/lang/impl/lib/commons-lang-2.4.jar" sourcepath="src/sneer/bricks/hardware/cpu/lang/impl/lib/commons-lang-2.4-src.zip"/>
 	<classpathentry kind="lib" path="src/sneer/bricks/hardware/io/impl/lib/commons-io-1.4.jar" sourcepath="src/sneer/bricks/hardware/io/impl/lib/commons-io-1.4-src.zip"/>
-	<classpathentry kind="lib" path="src/sneer/bricks/hardware/ram/collections/impl/lib/commons-collections-3.2.1.jar" sourcepath="bricks/src/sneer/hardware/ram/collections/impl/lib/commons-collections-3.2.1-src.zip"/>
+	<classpathentry kind="lib" path="src/sneer/bricks/hardware/ram/collections/impl/lib/commons-collections-3.2.1.jar" sourcepath="src/sneer/bricks/hardware/ram/collections/impl/lib/commons-collections-3.2.1-src.zip"/>
 	<classpathentry kind="lib" path="src/sneer/bricks/pulp/crypto/impl/lib/bcprov-jdk16-139.jar"/>
 	<classpathentry kind="lib" path="src/sneer/bricks/pulp/natures/gui/impl/lib/javassist.jar"/>
 	<classpathentry kind="lib" path="src/sneer/bricks/pulp/serialization/impl/lib/xpp3_min-1.1.4c.jar"/>

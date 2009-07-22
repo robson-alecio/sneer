@@ -26,8 +26,9 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 
 	@Ignore
 	@Test (timeout = 10000)
-	public void brickSharing() throws Exception {
+	public void meToo() throws Exception {
 		a().installBricks(generateY());
+		a().publishBrick("freedom7.y.Y");
 		a().waitForAvailableBrick("freedom7.y.Y");
 		b().waitForAvailableBrick("freedom7.y.Y");
 		

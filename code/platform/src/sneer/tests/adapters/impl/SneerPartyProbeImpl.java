@@ -3,6 +3,7 @@ package sneer.tests.adapters.impl;
 import static sneer.foundation.environments.Environments.my;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -28,6 +29,7 @@ import sneer.bricks.software.directoryconfig.DirectoryConfig;
 import sneer.bricks.softwaresharing.BrickInfo;
 import sneer.bricks.softwaresharing.BrickUniverse;
 import sneer.bricks.softwaresharing.BrickVersion;
+import sneer.bricks.softwaresharing.publisher.BrickPublisher;
 import sneer.foundation.brickness.Seal;
 import sneer.foundation.lang.Predicate;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
@@ -129,7 +131,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 
 	@Override
-	public void installBricks(File sourceDirectory) {
+	public void installBricks(File sourceDirectory) throws IOException {
 		my(Bricks.class).install(sourceDirectory);
 	}
 
@@ -158,15 +160,14 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	}
 
 	@Override
-	public void setBinDirectories(File ownBinDirectory, File platformBinDirectory) {
+	public void configDirectories(File dataDirectory, File ownSrcDirectory, File ownBinDirectory, File platformSrcDirectory, File platformBinDirectory) {
+		my(DirectoryConfig.class).dataDirectory().set(dataDirectory);
+		my(DirectoryConfig.class).ownSrcDirectory().set(ownSrcDirectory);
 		my(DirectoryConfig.class).ownBinDirectory().set(ownBinDirectory);
+		my(DirectoryConfig.class).platformSrcDirectory().set(platformSrcDirectory);
 		my(DirectoryConfig.class).platformBinDirectory().set(platformBinDirectory);
 	}
 
-	@Override
-	public void setDataDirectory(File dataDirectory) {
-		my(DirectoryConfig.class).dataDirectory().set(dataDirectory);
-	}
 
 	@Override
 	public void startSnapps() {
@@ -208,7 +209,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	}
 	
 	@Override
-	public void installTheOnlyAvailableVersionOfBrick(String brickName) {
+	public void installTheOnlyAvailableVersionOfBrick(String brickName) throws IOException {
 		final BrickInfo brick = availableBrick(brickName);
 		final BrickVersion latestVersion = onlyVersionOf(brick);
 		installBricks(latestVersion.sourceFolder());
@@ -225,6 +226,11 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 			if (brick.name().equals(brickName))
 				return brick;
 		throw new IllegalArgumentException();
+	}
+
+	@Override
+	public void publishBrick(String brickName) throws IOException {
+		my(BrickPublisher.class).publishBrick(brickName);
 	}
 
 }

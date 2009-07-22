@@ -3,6 +3,7 @@ package sneer.bricks.software.bricks.impl;
 import static sneer.foundation.environments.Environments.my;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,17 +19,23 @@ import sneer.bricks.software.directoryconfig.DirectoryConfig;
 public class BricksImpl implements Bricks {
 
 	@Override
-	public void install(File sourceDirectory) {
+	public void install(File sourceDirectory) throws IOException {
 		
 		final Result result = compile(sourceDirectory, ownBinDirectory());
 		if (!result.success())
 			throw new CompilationError(result.getErrorString());
+		
+		copyToOwnSrc(sourceDirectory);
 		
 		final String brickName = brickNameFor(result);
 		if (null == brickName)
 			throw new IllegalArgumentException("Directory '" + sourceDirectory + "' contains no bricks.");
 		
 		instatiate(brickName);
+	}
+
+	private void copyToOwnSrc(File sourceDirectory) throws IOException {
+		my(IO.class).files().copyDirectory(sourceDirectory, my(DirectoryConfig.class).ownSrcDirectory().get());
 	}
 
 	private void instatiate(final String brickName) {

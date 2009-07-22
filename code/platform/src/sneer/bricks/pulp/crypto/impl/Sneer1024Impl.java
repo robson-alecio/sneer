@@ -34,7 +34,7 @@ class Sneer1024Impl implements Sneer1024 {
 
 	@Override
 	public int hashCode() {
-		return Arrays.hashCode(_bytes);
+		return Arrays.hashCode(_bytes); //Optimize Use only the first 4 bytes. They already are mashed up enough. :)
 	}
 
 	@Override

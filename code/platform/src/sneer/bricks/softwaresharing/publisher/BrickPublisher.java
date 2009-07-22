@@ -7,6 +7,6 @@ import sneer.foundation.brickness.Brick;
 @Brick
 public interface BrickPublisher {
 
-	void publishAllBricks() throws IOException;
+	void publishBrick(String brickName) throws IOException;
 
 }

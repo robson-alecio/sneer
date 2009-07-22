@@ -11,6 +11,9 @@ public interface DirectoryConfig {
 	Immutable<File> ownBinDirectory();
 	Immutable<File> platformBinDirectory();
 
+	Immutable<File> ownSrcDirectory();
+	Immutable<File> platformSrcDirectory();
+
 	Immutable<File> dataDirectory();
 	File getStorageDirectoryFor(Class<?> brick);
 

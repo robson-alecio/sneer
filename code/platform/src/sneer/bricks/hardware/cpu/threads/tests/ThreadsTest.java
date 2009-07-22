@@ -5,7 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import org.junit.Test;
 
 import sneer.bricks.hardware.cpu.threads.Latch;
-import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.environments.Environment;
@@ -20,13 +20,13 @@ public class ThreadsTest extends BrickTest {
 		final Environment environment = my(Environment.class);
 		final Latch latch = _subject.newLatch();
 
-		final Stepper refToAvoidGc = new Stepper() { @Override public boolean step() {
+		final Steppable refToAvoidGc = new Steppable() { @Override public boolean step() {
 			assertSame(environment, Environments.my(Environment.class));
 			latch.open();
 			return false;
 		}};
 
-		_subject.registerStepper(refToAvoidGc);
+		_subject.newStepper(refToAvoidGc);
 		
 		latch.waitTillOpen();
 	}

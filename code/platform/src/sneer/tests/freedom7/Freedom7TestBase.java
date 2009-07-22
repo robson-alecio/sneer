@@ -18,25 +18,29 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	private SovereignParty _publisher;
 	
 	@Test (timeout = 6000)
-	public void publishedBrickIsStarted() throws Exception {
+	public void installedBrickIsStarted() throws Exception {
 		System.clearProperty("freedom7.y.Y.installed");
-		publisher().publishBricks(generateY());
+		publisher().installBricks(generateY());
 		assertEquals("true", System.getProperty("freedom7.y.Y.installed"));
 	}
 
-	//@Ignore
+	@Ignore
 	@Test (timeout = 10000)
 	public void brickSharing() throws Exception {
-		a().publishBricks(generateY());
+		a().installBricks(generateY());
 		a().waitForAvailableBrick("freedom7.y.Y");
 		b().waitForAvailableBrick("freedom7.y.Y");
+		
+		System.clearProperty("freedom7.y.Y.installed");
+		b().installTheOnlyAvailableVersionOfBrick("freedom7.y.Y");
+		assertEquals("true", System.getProperty("freedom7.y.Y.installed"));
 	}
 
 	@Test
 	@Ignore
 	public void testPublishBrickWithTupleType() throws Exception {
 		System.clearProperty("freedom7.v.V.installed");
-		publisher().publishBricks(generateV());
+		publisher().installBricks(generateV());
 		assertEquals("true", System.getProperty("freedom7.v.V.installed"));
 	}
 	
@@ -45,7 +49,7 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	public void testPublishTwoBricks() throws Exception {
 		System.clearProperty("freedom7.y.Y.installed");
 		System.clearProperty("freedom7.w.W.installed");
-		publisher().publishBricks(generateWandY());
+		publisher().installBricks(generateWandY());
 		assertEquals("true", System.getProperty("freedom7.y.Y.installed"));
 		assertEquals("true", System.getProperty("freedom7.w.W.installed"));
 	}
@@ -66,8 +70,8 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	@Ignore
 	public void testPublishBrickWithDependencies() throws Exception {
 		System.clearProperty("freedom7.w.W.installed");
-		publisher().publishBricks(generateY());
-		publisher().publishBricks(generateW());
+		publisher().installBricks(generateY());
+		publisher().installBricks(generateW());
 		assertEquals("true", System.getProperty("freedom7.w.W.installed"));
 	}
 	
@@ -75,7 +79,7 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	@Ignore
 	public void testPublishBrickWithLib() throws Exception {
 		System.clearProperty("freedom7.lib.Lib.executed");
-		publisher().publishBricks(generateX());
+		publisher().installBricks(generateX());
 		assertEquals("true", System.getProperty("freedom7.lib.Lib.executed"));
 	}
 		

@@ -5,7 +5,9 @@ import sneer.foundation.brickness.Brick;
 @Brick
 public interface Threads {
 
-	void registerStepper(Stepper stepper);
+	/** @return a stepper that will call steppable.{@link Steppable#step() step} until the steppable returns false or the stepper itself is garbage collected */
+	Stepper newStepper(Steppable steppable);
+	
 	void startDaemon(String threadName, Runnable runnable);
 
 	void sleepWithoutInterruptions(long milliseconds);

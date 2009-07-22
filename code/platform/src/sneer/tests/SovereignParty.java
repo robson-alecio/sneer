@@ -22,7 +22,8 @@ public interface SovereignParty {
 	void waitForShouts(String shoutsExpected);
 
 	//Freedom7
-	void publishBricks(File sourceDirectory) throws IOException;
+	void installBricks(File sourceDirectory) throws IOException;
 	void waitForAvailableBrick(String brickName);
+	void installTheOnlyAvailableVersionOfBrick(String brickName) throws IOException;
 	
 }

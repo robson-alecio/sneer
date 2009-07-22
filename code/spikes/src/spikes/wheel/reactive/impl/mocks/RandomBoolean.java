@@ -4,7 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import java.util.Random;
 
-import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
@@ -14,14 +14,14 @@ public class RandomBoolean {
 
 	private static final Random RANDOM = new Random();
 	private Register<Boolean> _register = my(Signals.class).newRegister(false);
-	private final Stepper _refToAvoidGc;
+	private final Steppable _refToAvoidGc;
 
 	{
-		_refToAvoidGc = new Stepper() { @Override public boolean step() {
+		_refToAvoidGc = new Steppable() { @Override public boolean step() {
 			sleepAndFlip();
 			return true;
 		}};
-		my(Threads.class).registerStepper(_refToAvoidGc);
+		my(Threads.class).newStepper(_refToAvoidGc);
 	}
 	
 	public Signal<Boolean> output() {

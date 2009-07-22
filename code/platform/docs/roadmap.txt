@@ -1,6 +1,10 @@
 ﻿TASKS
 =========
 
+	- [Klaus] Revise TupleSpace subscription
+
+	- [Klaus] Revise Threads#newStepper callers
+	
 	- [Klaus] Revise entire package structure.  
 		- software.sharing -> softwaresharing 
 

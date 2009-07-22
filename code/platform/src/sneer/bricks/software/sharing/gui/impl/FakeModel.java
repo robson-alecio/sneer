@@ -1,11 +1,13 @@
 package sneer.bricks.software.sharing.gui.impl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.tree.TreeNode;
 
+import sneer.bricks.pulp.crypto.Sneer1024;
 import sneer.bricks.software.sharing.BrickInfo;
 import sneer.bricks.software.sharing.BrickVersion;
 import sneer.bricks.software.sharing.FileVersion;
@@ -71,6 +73,12 @@ class FakeModel {
 					return;
 				}
 				_status = Status.DIFFERENT;
+			}
+			@Override public File sourceFolder() {
+				throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
+			}
+			@Override public Sneer1024 hash() {
+				throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 			}
 		};
 	}

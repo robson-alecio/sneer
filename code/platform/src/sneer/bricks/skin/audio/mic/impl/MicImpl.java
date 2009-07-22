@@ -1,7 +1,7 @@
 package sneer.bricks.skin.audio.mic.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
@@ -21,7 +21,7 @@ class MicImpl implements Mic {
 	private final TupleSpace _tupleSpace = my(TupleSpace.class);
 	
 	private boolean _isOpen;
-	private Stepper _refToAvoidGc;
+	private Steppable _refToAvoidGc;
 	
 	private Register<Boolean> _isRunning = my(Signals.class).newRegister(false);
 	
@@ -45,12 +45,12 @@ class MicImpl implements Mic {
 	private void startToWorkIfNecessary() {
 		if (_refToAvoidGc != null) return;
 
-		_refToAvoidGc = new Stepper() { @Override public boolean step() {
+		_refToAvoidGc = new Steppable() { @Override public boolean step() {
 			work();
 			return false;
 		}};
 
-		_threads.registerStepper(_refToAvoidGc);
+		_threads.newStepper(_refToAvoidGc);
 	}
 	
 	private void work() {

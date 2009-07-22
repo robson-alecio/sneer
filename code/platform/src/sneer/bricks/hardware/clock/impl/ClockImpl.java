@@ -7,7 +7,7 @@ import java.util.TreeSet;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.threads.Latch;
-import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.cpu.timebox.Timebox;
 import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
@@ -35,13 +35,13 @@ class ClockImpl implements Clock {
 	}
 
 	@Override
-	synchronized public void wakeUpNowAndEvery(long period, Stepper stepper) {
+	synchronized public void wakeUpNowAndEvery(long period, Steppable stepper) {
 		if (!step(stepper)) return;
 		wakeUpEvery(period, stepper);
 	}
 
 	@Override
-	synchronized public void wakeUpEvery(long period, Stepper stepper) {
+	synchronized public void wakeUpEvery(long period, Steppable stepper) {
 		_alarms.add(new Alarm(stepper, period));
 	}
 
@@ -79,7 +79,7 @@ class ClockImpl implements Clock {
 	}
 
 	
-	private boolean step(final Stepper stepper) {
+	private boolean step(final Steppable stepper) {
 		final ByRef<Boolean> result = ByRef.newInstance(false); 
 		_exceptionHandler.shield(new Runnable() { @Override public void run() {
 			my(Timebox.class).run(10000, new Runnable() { @Override public void run() {
@@ -99,13 +99,13 @@ class ClockImpl implements Clock {
 		final long _period;
 		
 		long _wakeUpTime;
-		final Stepper _stepper;
+		final Steppable _stepper;
 
 		Alarm(final Runnable runnable, long millisFromNow) {
 			this(singleStepperFor(runnable), millisFromNow);
 		}
 
-		public Alarm(Stepper stepper, long period) {
+		public Alarm(Steppable stepper, long period) {
 			if (period < 0) throw new IllegalArgumentException("" + period);
 			_period = period;
 			_wakeUpTime = _currentTimeMillis + period;
@@ -137,8 +137,8 @@ class ClockImpl implements Clock {
 		}
 	}
 
-	private static Stepper singleStepperFor(final Runnable runnable) {
-		return new Stepper() { @Override public boolean step() {
+	private static Steppable singleStepperFor(final Runnable runnable) {
+		return new Steppable() { @Override public boolean step() {
 			runnable.run();
 			return false;
 		}};

@@ -8,7 +8,7 @@ import sneer.foundation.brickness.Brick;
 
 @Brick
 public interface BrickFinder {
-
+	
 	Collection<String> findBricks() throws IOException;
 
 }

@@ -4,7 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import java.io.IOException;
 
-import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.network.computers.sockets.accepter.SocketAccepter;
@@ -43,20 +43,20 @@ class SocketAccepterImpl implements SocketAccepter {
 	private final Light _cantAcceptSocket = _lights.prepare(LightType.ERROR);
 
 	@SuppressWarnings("unused") private final Object _receptionRefToAvoidGc;
-	private final Stepper _stepperRefToAvoidGc;
-	private Stepper _refToAvoidGc;
+	private final Steppable _stepperRefToAvoidGc;
+	private Steppable _refToAvoidGc;
 
 	SocketAccepterImpl() {
 		_receptionRefToAvoidGc = my(Signals.class).receive(_portKeeper.port(), new Consumer<Integer>() { @Override public void consume(Integer port) {
 			setPort(port);
 		}});
 
-		_stepperRefToAvoidGc = new Stepper() { @Override public boolean step() {
+		_stepperRefToAvoidGc = new Steppable() { @Override public boolean step() {
 			listenToSneerPort();
 			return true;
 		}};
 
-		_threads.registerStepper(_stepperRefToAvoidGc);
+		_threads.newStepper(_stepperRefToAvoidGc);
 	}
 
 	@Override
@@ -87,7 +87,7 @@ class SocketAccepterImpl implements SocketAccepter {
 	private void startAccepting() {
 		_isStopped = false;
 
-		_refToAvoidGc = new Stepper() { @Override public boolean step() {
+		_refToAvoidGc = new Steppable() { @Override public boolean step() {
 			try {
 				dealWith(_serverSocket.accept());
 			} catch (IOException e) {
@@ -97,7 +97,7 @@ class SocketAccepterImpl implements SocketAccepter {
 			return !_isStopped;
 		}};
 
-		_threads.registerStepper(_refToAvoidGc);
+		_threads.newStepper(_refToAvoidGc);
 
 	}
 	

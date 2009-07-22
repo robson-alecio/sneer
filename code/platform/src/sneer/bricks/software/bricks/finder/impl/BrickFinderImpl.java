@@ -52,8 +52,7 @@ public class BrickFinderImpl implements BrickFinder {
 		
 		Filter dirFilter = filters.not(filters.name("impl"));
 		Filter fileFilter = filters.suffix(".class");
-		Collection<File> result = filters.listFiles(binDirectory, fileFilter, dirFilter);
-		return result;
+		return filters.listFiles(binDirectory, fileFilter, dirFilter);
 	}
 
 	private class Visitor implements ClassVisitor, AnnotationVisitor{

@@ -7,14 +7,14 @@ import java.io.ByteArrayOutputStream;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
-import sneer.bricks.hardware.cpu.threads.Stepper;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.skin.audio.kernel.Audio;
 class Recorder {
 	
 	static private ByteArrayOutputStream _buffer;
 	static private volatile boolean _isRunning;
-	private static Stepper _refToAvoidGc;
+	private static Steppable _refToAvoidGc;
 
 	static void stop() {
 		_isRunning = false;
@@ -27,7 +27,7 @@ class Recorder {
 		_buffer = buffer;
 
 		_isRunning = true;
-		_refToAvoidGc = new Stepper() { @Override public boolean step() {
+		_refToAvoidGc = new Steppable() { @Override public boolean step() {
 			record(targetDataLine);
 
 			if (!_isRunning) {
@@ -37,7 +37,7 @@ class Recorder {
 
 			return true;
 		}};
-		my(Threads.class).registerStepper(_refToAvoidGc);
+		my(Threads.class).newStepper(_refToAvoidGc);
 		return true;
 	}
 

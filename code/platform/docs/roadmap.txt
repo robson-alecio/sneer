@@ -8,6 +8,8 @@
 	
 	- [Klaus] Revise entire package structure.  
 
+	- [Sandro] Auto-scroll fix: it does not work when LogConsole is minimized.
+
 	- Metoo
 		- [Sandro] Gui
 		- [Klaus] Business
@@ -32,7 +34,7 @@
         
 ------------------------------------------ "EAT YOUR OWN DOGFOOD" RELEASE
 
-	- [Bamboo and Igor] my(StorageDirectory.class) - Make it work context-based and delete DirectoryConfig.getStorageDirectoryFor(brick).
+	- [Bamboo] my(StorageDirectory.class) - Make it work context-based and delete DirectoryConfig.getStorageDirectoryFor(brick).
 
 	- Savepoints - For entire source code.
 
@@ -41,8 +43,6 @@
 		- User data - Check if persistence is ok, in the right directory.					
 
 	- [Igor] Daemon - Eliminate uses, especially Daemon.killAllInstances(). Find a better way. Talk to Klaus.
-
-	- [Igor] SpeexTuplesTest - Fix intermittent failure. 	
 
 	- [Igor] SimpleListReceiver - It cannot be public.
 		- Talk to Klaus about this.

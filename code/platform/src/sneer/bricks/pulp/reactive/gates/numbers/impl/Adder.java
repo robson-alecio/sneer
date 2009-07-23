@@ -1,7 +1,7 @@
 package sneer.bricks.pulp.reactive.gates.numbers.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.hardware.ram.ref.weakreferencekeeper.WeakReferenceKeeper;
+import sneer.bricks.hardware.ram.ref.weak.keeper.WeakReferenceKeeper;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;

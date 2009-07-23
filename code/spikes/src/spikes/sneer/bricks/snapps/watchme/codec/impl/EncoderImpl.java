@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 import sneer.bricks.hardware.cpu.exceptions.Hiccup;
-import sneer.bricks.hardware.cpu.profiler.Profiler;
-import sneer.bricks.hardware.cpu.profiler.Profilers;
+import sneer.bricks.hardware.cpu.utils.profiler.Profiler;
+import sneer.bricks.hardware.cpu.utils.profiler.Profilers;
 import sneer.bricks.hardware.gui.images.Images;
 import sneer.bricks.hardware.ram.arrays.ImmutableArrays;
 import sneer.bricks.skin.image.ImageFactory;

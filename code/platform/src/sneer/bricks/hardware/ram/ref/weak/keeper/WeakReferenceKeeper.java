@@ -1,4 +1,4 @@
-package sneer.bricks.hardware.ram.ref.weakreferencekeeper;
+package sneer.bricks.hardware.ram.ref.weak.keeper;
 
 import sneer.foundation.brickness.Brick;
 

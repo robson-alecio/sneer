@@ -6,6 +6,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Rectangle;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -80,8 +81,10 @@ class MeTooGuiImpl extends JFrame implements MeTooGui{
 			return;
 		
 		Object selected = _tree.getSelectionPath().getLastPathComponent();
-		if(! (selected instanceof BrickVersionTreeNode))
+		if(! (selected instanceof BrickVersionTreeNode)){
+			_files.setModel(new DefaultListModel());
 			return;
+		}
 		
 		BrickVersionTreeNode node = (BrickVersionTreeNode) selected;
 		
@@ -101,7 +104,7 @@ class MeTooGuiImpl extends JFrame implements MeTooGui{
 	
 	private void initGui() {
 		_tree.setRootVisible(false);
-		_tree.setModel(new DefaultTreeModel(FakeModel.root()));
+		_tree.setModel(new DefaultTreeModel(new RootTreeNode(FakeModel.bricks())));
 		_tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		_tree.setCellRenderer(new MeTooTreeCellRenderer());
 		_tree.setBorder(new EmptyBorder(5,5,5,5));

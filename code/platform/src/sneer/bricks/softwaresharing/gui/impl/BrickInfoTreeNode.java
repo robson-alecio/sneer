@@ -2,6 +2,8 @@ package sneer.bricks.softwaresharing.gui.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -53,10 +55,24 @@ class BrickInfoTreeNode extends AbstractTreeNodeWrapper<BrickVersion> {
 	}
 	
 	@Override public String toString() {  return _brickInfo.name(); }
-	@Override protected List<BrickVersion> listChildren() { return _brickInfo.versions(); }
 
 	@SuppressWarnings("unchecked")
 	@Override protected AbstractTreeNodeWrapper wrapChild(int childIndex) {
 		return new BrickVersionTreeNode(this, listChildren().get(childIndex));
 	}
+
+	@Override protected List<BrickVersion> listChildren() { 
+		Collections.sort(_brickInfo.versions(), new Comparator<BrickVersion>(){ @Override public int compare(BrickVersion v1, BrickVersion v2) {
+			if(v1.publicationDate()==v2.publicationDate())
+				return usersCount(v1) - usersCount(v2);
+			
+			return (int)(v1.publicationDate()-v2.publicationDate());
+		}
+
+		private int usersCount(BrickVersion v1) {
+			return v1.unknownUsers() + v1.knownUsers().size();
+		}});
+		return _brickInfo.versions(); 
+	}
+
 }

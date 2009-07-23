@@ -5,9 +5,9 @@ import java.util.List;
 public interface BrickInfo {
 	
 	public enum Status {
-		NEW,
-		DIFFERENT,
 		DIVERGING,
+		DIFFERENT,
+		NEW,
 		CURRENT, 
 		REJECTED
 	}

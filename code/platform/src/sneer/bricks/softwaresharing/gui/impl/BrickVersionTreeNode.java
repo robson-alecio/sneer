@@ -2,6 +2,9 @@ package sneer.bricks.softwaresharing.gui.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -14,8 +17,10 @@ import sneer.bricks.softwaresharing.BrickVersion.Status;
 
 class BrickVersionTreeNode extends AbstractTreeNodeWrapper<String> {
 
+	private final String _toString; 
 	private final BrickVersion _brickVersion;
-
+	
+	private static SimpleDateFormat _ddMMyyHHmmss = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
 	private static final ImageIcon _currentVersion = loadIcon("currentVersion.png");
 	private static final ImageIcon _differentVersion = loadIcon("differentVersion.png");
 	private static final ImageIcon _rejectedVersion = loadIcon("rejectedVersion.png");
@@ -28,6 +33,8 @@ class BrickVersionTreeNode extends AbstractTreeNodeWrapper<String> {
 	BrickVersionTreeNode(TreeNode parent, BrickVersion brickVersion) {
 		super(parent, brickVersion);
 		_brickVersion = brickVersion;
+		
+		_toString = _ddMMyyHHmmss.format(new Date(_brickVersion.publicationDate())) + " (users = " + usersCount() + ")";
 		
 		if(brickVersion.status()==Status.DIFFERENT){
 			_icon = _differentVersion;
@@ -44,12 +51,21 @@ class BrickVersionTreeNode extends AbstractTreeNodeWrapper<String> {
 		_icon = _currentVersion;
 	}
 
-	@Override protected List<String> listChildren() {return _brickVersion.knownUsers();}
+	private int usersCount() {
+		return _brickVersion.unknownUsers() + _brickVersion.knownUsers().size();
+	}
+
+	@Override public String toString() { return  _toString;	}
+	
+	@Override protected List<String> listChildren() { 
+		Collections.sort(_brickVersion.knownUsers(), new Comparator<String>(){ @Override public int compare(String nick1, String nick2) {
+			return nick1.compareTo(nick2);
+		}});
+		return _brickVersion.knownUsers(); 
+	}
 	
 	@SuppressWarnings("unchecked")
 	@Override protected AbstractTreeNodeWrapper wrapChild(int childIndex) {
 		return new StringTreeNode(this, listChildren().get(childIndex));
 	}	
-	
-	@Override public String toString() {return  new Date(_brickVersion.publicationDate()).toString();	}
 }

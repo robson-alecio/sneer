@@ -1,11 +1,11 @@
 package sneer.bricks.pulp.reactive.impl;
 
+import sneer.bricks.hardware.cpu.lang.contract.Contract;
 import sneer.bricks.pulp.events.EventSource;
-import sneer.bricks.pulp.reactive.Reception;
 import sneer.foundation.lang.Consumer;
 
 /** Instances of this class hold a reference to the EventSources (Signals) they are receiving, so that these sources are not GCd. */
-class ReceptionImpl implements Reception {
+class ReceptionImpl implements Contract {
 
 	
 	private final Consumer<?> _receiver;

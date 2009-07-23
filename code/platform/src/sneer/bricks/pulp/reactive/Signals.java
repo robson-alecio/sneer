@@ -1,5 +1,6 @@
 package sneer.bricks.pulp.reactive;
 
+import sneer.bricks.hardware.cpu.lang.contract.Contract;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.foundation.brickness.Brick;
 import sneer.foundation.lang.Consumer;
@@ -11,8 +12,8 @@ public interface Signals {
 	<T> Register<T> newRegister(T initialValue);
 	<T> Signal<T> constant(T value);
 
-	<T> Reception receive(EventSource<? extends T> source, Consumer<? super T> receiver);	
-	<T> Reception receive(Consumer<? super T> receiver, EventSource<? extends T>... sources);
+	<T> Contract receive(EventSource<? extends T> source, Consumer<? super T> receiver);	
+	<T> Contract receive(Consumer<? super T> receiver, EventSource<? extends T>... sources);
 
 	Consumer<Object> sink();
 

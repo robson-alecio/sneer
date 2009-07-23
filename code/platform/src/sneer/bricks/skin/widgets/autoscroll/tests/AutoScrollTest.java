@@ -13,8 +13,8 @@ import javax.swing.text.Document;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import sneer.bricks.hardware.cpu.lang.contract.Contract;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
-import sneer.bricks.pulp.reactive.Reception;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.widgets.autoscroll.AutoScroll;
@@ -45,7 +45,7 @@ public class AutoScrollTest extends BrickTest {
 	protected void autoScrollWithEventInsideGuiThread() throws Exception {
 		_subject1 = new JScrollPane();
 		@SuppressWarnings("unused")
-		Reception reception = my(Signals.class).receive(_register.output(), new Consumer<String>() { @Override public void consume(final String change) {
+		Contract reception = my(Signals.class).receive(_register.output(), new Consumer<String>() { @Override public void consume(final String change) {
 			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
 				my(AutoScroll.class).runWithAutoscroll(_subject1, new Runnable() { @Override public void run() {
 					append(_field1, change);
@@ -57,7 +57,7 @@ public class AutoScrollTest extends BrickTest {
 	protected void autoScrollWithEventOutsideGuiThread() throws Exception {
 		_subject2 = new JScrollPane();
 		@SuppressWarnings("unused")
-		Reception reception = my(Signals.class).receive(_register.output(), new Consumer<String>() { @Override public void consume(final String change) {
+		Contract reception = my(Signals.class).receive(_register.output(), new Consumer<String>() { @Override public void consume(final String change) {
 			my(AutoScroll.class).runWithAutoscroll(_subject2, new Runnable() { @Override public void run() {
 				append(_field2, change);
 			}});

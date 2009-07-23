@@ -2,8 +2,8 @@ package sneer.bricks.network.computers.sockets.reachability.impl;
 
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.clock.Clock;
+import sneer.bricks.hardware.clock.timer.Timer;
 import sneer.bricks.hardware.cpu.threads.Steppable;
-import sneer.bricks.hardware.timer.Timer;
 import sneer.bricks.network.computers.sockets.accepter.SocketAccepter;
 import sneer.bricks.network.computers.sockets.reachability.ReachabilitySentinel;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;

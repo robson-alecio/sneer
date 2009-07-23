@@ -1,8 +1,8 @@
 package sneer.bricks.network.social.heartbeat.impl;
 
 import static sneer.foundation.environments.Environments.my;
+import sneer.bricks.hardware.clock.timer.Timer;
 import sneer.bricks.hardware.cpu.threads.Steppable;
-import sneer.bricks.hardware.timer.Timer;
 import sneer.bricks.network.social.heartbeat.Heart;
 import sneer.bricks.network.social.heartbeat.Heartbeat;
 import sneer.bricks.pulp.tuples.TupleSpace;

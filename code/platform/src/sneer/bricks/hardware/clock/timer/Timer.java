@@ -1,4 +1,4 @@
-package sneer.bricks.hardware.timer;
+package sneer.bricks.hardware.clock.timer;
 
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.foundation.brickness.Brick;

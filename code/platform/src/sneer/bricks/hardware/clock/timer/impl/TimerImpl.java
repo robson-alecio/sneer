@@ -1,4 +1,4 @@
-package sneer.bricks.hardware.timer.impl;
+package sneer.bricks.hardware.clock.timer.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
@@ -6,11 +6,11 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import sneer.bricks.hardware.clock.Clock;
+import sneer.bricks.hardware.clock.timer.Timer;
 import sneer.bricks.hardware.cpu.threads.Latch;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.cpu.timebox.Timebox;
-import sneer.bricks.hardware.timer.Timer;
 import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.foundation.lang.ByRef;

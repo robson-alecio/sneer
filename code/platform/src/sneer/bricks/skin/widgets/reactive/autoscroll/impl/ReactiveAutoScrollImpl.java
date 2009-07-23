@@ -6,7 +6,7 @@ import java.awt.event.FocusAdapter;
 
 import javax.swing.JScrollPane;
 
-import sneer.bricks.hardware.cpu.lang.contract.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.main.synth.scroll.SynthScrolls;

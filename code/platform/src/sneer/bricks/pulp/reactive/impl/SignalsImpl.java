@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.reactive.impl;
 
-import sneer.bricks.hardware.cpu.lang.contract.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;

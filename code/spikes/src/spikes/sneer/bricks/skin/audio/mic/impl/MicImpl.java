@@ -1,6 +1,7 @@
 package spikes.sneer.bricks.skin.audio.mic.impl;
 
 import static sneer.foundation.environments.Environments.my;
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.ram.arrays.ImmutableByteArray;
@@ -22,7 +23,7 @@ class MicImpl implements Mic {
 	private final RetrierManager _retriers = my(RetrierManager.class);
 	
 	private boolean _isOpenRequested;
-	private Steppable _refToAvoidGc;
+	private Contract _refToAvoidGc;
 	
 	private Register<Boolean> _isOpen = my(Signals.class).newRegister(false);
 	private EventNotifier<ImmutableByteArray> _sound = my(EventNotifiers.class).newInstance();
@@ -47,26 +48,23 @@ class MicImpl implements Mic {
 	private void startToWorkIfNecessary() {
 		if (_refToAvoidGc != null) return;
 
-		_refToAvoidGc = new Steppable() { @Override public boolean step() {
+		_refToAvoidGc = _threads.keepStepping(new Steppable() { @Override public void step() {
 			work();
-			return false;
-		}};
-		_threads.newStepper(_refToAvoidGc);
+		}});
 	}
 	
 	private void work() {
-		while (true) {
-			if (doCapture()) continue;
-			if (doAcquireLine()) continue;
-	
-			MicLine.close();
-			_isOpen.setter().consume(false);
+		if (doCapture()) return;
+		if (doAcquireLine()) return;
 
-			synchronized (this) {
-				if (!_isOpenRequested) {
-					_refToAvoidGc = null;
-					return;
-				}
+		MicLine.close();
+		_isOpen.setter().consume(false);
+
+		synchronized (this) {
+			if (!_isOpenRequested) {
+				_refToAvoidGc.dispose();
+				_refToAvoidGc = null;
+				return;
 			}
 		}
 	}

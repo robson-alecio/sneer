@@ -22,6 +22,7 @@ import org.prevayler.PrevaylerFactory;
 import org.prevayler.foundation.serialization.Serializer;
 
 import sneer.bricks.hardware.clock.Clock;
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
@@ -49,26 +50,25 @@ class TupleSpaceImpl implements TupleSpace {
 		private final Environment _environment;
 		private final List<Tuple> _tuplesToNotify = new LinkedList<Tuple>(); 
 
-		private final Steppable _refToAvoidGc;
+		private final Contract _refToAvoidGc;
 		
 		<T extends Tuple> Subscription(Consumer<? super T> subscriber, Class<T> tupleType) {
 			_subscriber = new WeakReference<Consumer<? super Tuple>>((Consumer<? super Tuple>) subscriber);
 			_tupleType = tupleType;
 			_environment = my(Environment.class);
 			
-			_refToAvoidGc = notifier();
-			_threads.newStepper(_refToAvoidGc);
+			_refToAvoidGc = _threads.keepStepping(notifier());
 		}
 
 		private Steppable notifier() {
-			return new Steppable() { @Override public boolean step() {
+			return new Steppable() { @Override public void step() {
 				Tuple tuple = waitToPopTuple();
 				
 				Consumer<? super Tuple> subscriber = _subscriber.get();
-				if (subscriber == null) return false;
-				
-				notifySubscriber(subscriber, tuple);
-				return true;
+				if (subscriber == null)
+					_refToAvoidGc.dispose();
+				else
+					notifySubscriber(subscriber, tuple);
 			}};
 		}
 

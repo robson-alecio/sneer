@@ -1,7 +1,6 @@
 package sneer.bricks.network.computers.sockets.connections.receiver.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.network.computers.sockets.accepter.SocketAccepter;
 import sneer.bricks.network.computers.sockets.connections.receiver.SocketReceiver;
@@ -17,16 +16,11 @@ class SocketReceiverImpl implements SocketReceiver {
 
 	@SuppressWarnings("unused") private final Object _receptionRefToAvoidGc;
 
-	private Steppable _stepperRefToAvoidGc;
-
 	SocketReceiverImpl() {
 		_receptionRefToAvoidGc = my(Signals.class).receive(_socketAccepter.lastAcceptedSocket(), new Consumer<ByteArraySocket>() { @Override public void consume(final ByteArraySocket socket) {
-			_stepperRefToAvoidGc = new Steppable() { @Override public boolean step() {
+			_threads.startDaemon("SocketReceiverImpl", new Runnable() { @Override public void run() {
 				new IndividualSocketReception(socket);
-				return false;
-			}};
-
-			_threads.newStepper(_stepperRefToAvoidGc);
+			}});
 		}});
 	}
 }

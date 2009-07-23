@@ -4,7 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 
-import sneer.bricks.hardware.cpu.lang.contract.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;

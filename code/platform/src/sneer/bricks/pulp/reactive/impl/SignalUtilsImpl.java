@@ -1,7 +1,7 @@
 package sneer.bricks.pulp.reactive.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.hardware.cpu.lang.contract.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.cpu.threads.Latch;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.reactive.Signal;

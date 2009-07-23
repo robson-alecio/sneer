@@ -16,17 +16,15 @@ public class ThreadsTest extends BrickTest {
 	private final Threads _subject = my(Threads.class);
 
 	@Test (timeout = 2000)
-	public void environmentIsPropagated() throws Exception {
+	public void environmentIsPropagatedToSteppables() throws Exception {
 		final Environment environment = my(Environment.class);
 		final Latch latch = _subject.newLatch();
 
-		final Steppable refToAvoidGc = new Steppable() { @Override public boolean step() {
+		@SuppressWarnings("unused")
+		final Object refToAvoidGc = _subject.keepStepping(new Steppable() { @Override public void step() {
 			assertSame(environment, Environments.my(Environment.class));
 			latch.open();
-			return false;
-		}};
-
-		_subject.newStepper(refToAvoidGc);
+		}});
 		
 		latch.waitTillOpen();
 	}

@@ -9,24 +9,19 @@ import sneer.bricks.hardware.cpu.threads.Threads;
 class ClockTickerImpl implements ClockTicker {
 
 	private final Threads _threads = my(Threads.class);
-
 	private final Clock _clock = my(Clock.class);
-
-	private final Steppable _refToAvoidGc;
+	@SuppressWarnings("unused")	private final Object _refToAvoidGc;
 
 	ClockTickerImpl() {
 		tick();
-		_refToAvoidGc = new Steppable() { @Override public boolean step() {
+		_refToAvoidGc = _threads.keepStepping(new Steppable() { @Override public void step() {
 			tick();
-			return true;
-		}};
-
-		_threads.newStepper(_refToAvoidGc);
+		}});
 	}
 
 	private void tick() {
 		_clock.advanceTimeTo(System.currentTimeMillis());
-		my(Threads.class).sleepWithoutInterruptions(10); //Precision of 100 times per second is OK for now.
+		_threads.sleepWithoutInterruptions(10); //Precision of 100 times per second is OK for now.
 	}
 
 }

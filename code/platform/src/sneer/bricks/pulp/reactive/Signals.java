@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.reactive;
 
-import sneer.bricks.hardware.cpu.lang.contract.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.foundation.brickness.Brick;
 import sneer.foundation.lang.Consumer;

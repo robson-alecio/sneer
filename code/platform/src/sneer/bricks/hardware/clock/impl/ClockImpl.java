@@ -6,7 +6,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import sneer.bricks.hardware.clock.Clock;
-import sneer.bricks.hardware.cpu.threads.Steppable;
+import sneer.bricks.hardware.cpu.threads.OldSteppable;
 import sneer.bricks.hardware.cpu.timebox.Timebox;
 import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
 import sneer.bricks.pulp.reactive.Register;
@@ -53,7 +53,7 @@ class ClockImpl implements Clock {
 	}
 
 	
-	private boolean step(final Steppable stepper) {
+	private boolean step(final OldSteppable stepper) {
 		final ByRef<Boolean> result = ByRef.newInstance(false); 
 		_exceptionHandler.shield(new Runnable() { @Override public void run() {
 			my(Timebox.class).run(10000, new Runnable() { @Override public void run() {
@@ -73,13 +73,13 @@ class ClockImpl implements Clock {
 		final long _period;
 		
 		long _wakeUpTime;
-		final Steppable _stepper;
+		final OldSteppable _stepper;
 
 		Alarm(final Runnable runnable, long millisFromNow) {
 			this(singleStepperFor(runnable), millisFromNow);
 		}
 
-		public Alarm(Steppable stepper, long period) {
+		public Alarm(OldSteppable stepper, long period) {
 			if (period < 0) throw new IllegalArgumentException("" + period);
 			_period = period;
 			_wakeUpTime = currentTime() + period;
@@ -111,8 +111,8 @@ class ClockImpl implements Clock {
 		}
 	}
 
-	private static Steppable singleStepperFor(final Runnable runnable) {
-		return new Steppable() { @Override public boolean step() {
+	private static OldSteppable singleStepperFor(final Runnable runnable) {
+		return new OldSteppable() { @Override public boolean step() {
 			runnable.run();
 			return false;
 		}};

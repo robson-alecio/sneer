@@ -13,7 +13,7 @@ import javax.swing.text.Document;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import sneer.bricks.hardware.cpu.lang.contract.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signals;

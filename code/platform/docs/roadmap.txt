@@ -2,6 +2,7 @@
 =========
 
 	- [Klaus] Revise garbage collectable handles
+		- Stepper - Consider weak referencing it from the daemon.
 		- Timer
 		- TupleSpace subscription
 		- Collection Signals Reception

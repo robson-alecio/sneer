@@ -2,11 +2,13 @@
 =========
 
 	- [Klaus] Revise garbage collectable handles
-		- Threads#newStepper callers
+		- Timer
 		- TupleSpace subscription
-		- Signals Reception (normal and collections).
+		- Collection Signals Reception
 	
 	- [Klaus] Revise entire package structure.  
+
+	- [Sandro] ClockImpl - Remove unused code.
 
 	- [Sandro] Auto-scroll fix: it does not work when LogConsole is minimized.
 

@@ -40,6 +40,8 @@
 (CPU: Threads, Natures (Concurrency), Consumers, Signals, Exceptions)
                           (T4T Billing)
 
+                     RESOURCE TALLY (FREEDOM 4)
+
                                                                   BRICKS
 ------------------------------------------------------------------------
 
@@ -48,4 +50,4 @@
 
                                JRE
 
-                   PROPERTY/PRIVACY (FREEDOM 4)
+                       SECURITY (FREEDOM 4)

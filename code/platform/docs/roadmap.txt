@@ -2,7 +2,7 @@
 =========
 
 	- [Klaus] Revise garbage collectable handles
-		- Threads#newStepper  callers
+		- Threads#newStepper callers
 		- TupleSpace subscription
 		- Signals Reception (normal and collections).
 	

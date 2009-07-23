@@ -1,4 +1,4 @@
-package sneer.bricks.hardware.cpu.profiler;
+package sneer.bricks.hardware.cpu.utils.profiler;
 
 
 public interface Profiler {

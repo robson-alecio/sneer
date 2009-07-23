@@ -2,11 +2,11 @@ package sneer.bricks.network.social.heartbeat.stethoscope.impl;
 
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.clock.Clock;
-import sneer.bricks.hardware.cpu.threads.Steppable;
+import sneer.bricks.hardware.clock.timer.Timer;
+import sneer.bricks.hardware.cpu.threads.OldSteppable;
 import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.hardware.ram.maps.cachemaps.CacheMap;
 import sneer.bricks.hardware.ram.maps.cachemaps.CacheMaps;
-import sneer.bricks.hardware.timer.Timer;
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.network.social.heartbeat.Heartbeat;
 import sneer.bricks.network.social.heartbeat.stethoscope.Stethoscope;
@@ -20,7 +20,7 @@ import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.lang.Consumer;
 import sneer.foundation.lang.Producer;
 
-class StethoscopeImpl implements Stethoscope, Consumer<Heartbeat>, Steppable {
+class StethoscopeImpl implements Stethoscope, Consumer<Heartbeat>, OldSteppable {
 
 	private static final int TIME_TILL_DEATH = 30 * 1000;
 	private static final int MAX_BEAT_AGE = 10 * 60 * 1000;

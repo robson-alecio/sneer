@@ -14,14 +14,12 @@ public class RandomBoolean {
 
 	private static final Random RANDOM = new Random();
 	private Register<Boolean> _register = my(Signals.class).newRegister(false);
-	private final Steppable _refToAvoidGc;
+	@SuppressWarnings("unused")	private final Object _refToAvoidGc;
 
 	{
-		_refToAvoidGc = new Steppable() { @Override public boolean step() {
+		_refToAvoidGc = my(Threads.class).keepStepping(new Steppable() { @Override public void step() {
 			sleepAndFlip();
-			return true;
-		}};
-		my(Threads.class).newStepper(_refToAvoidGc);
+		}});
 	}
 	
 	public Signal<Boolean> output() {

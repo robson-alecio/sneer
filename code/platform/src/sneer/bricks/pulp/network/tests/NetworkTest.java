@@ -6,7 +6,6 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.network.ByteArrayServerSocket;
 import sneer.bricks.pulp.network.ByteArraySocket;
@@ -25,18 +24,14 @@ public class NetworkTest extends BrickTest {
 		
 		final ByteArrayServerSocket server = network.openServerSocket(9090);
 
-		final Steppable _refToAvoidGc = new Steppable() { @Override public boolean step() {
+		_threads.startDaemon("Network Test", new Runnable() { @Override public void run() {
 			try {
 				ByteArraySocket request = server.accept();
 				request.write(new String(request.read()).toUpperCase().getBytes());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
-			return false;
-		}};
-
-		_threads.newStepper(_refToAvoidGc);
+		}});
 
 		ByteArraySocket client = network.openSocket("localhost", 9090);
 		client.write("hello".getBytes());

@@ -7,6 +7,7 @@ import java.io.ByteArrayOutputStream;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import spikes.sneer.bricks.skin.audio.kernel.Audio;
@@ -14,12 +15,13 @@ import spikes.sneer.bricks.skin.audio.kernel.Audio;
 class Player {
 	
 	static private ByteArrayOutputStream _buffer;
-	static private volatile boolean _isRunning;
 	static private SourceDataLine _sourceDataLine;
-	private static Steppable _refToAvoidGc;
+	private static Contract _refToAvoidGc;
 
 	static void stop() {
-		_isRunning = false;
+		_refToAvoidGc.dispose();
+		if (_sourceDataLine != null)
+			_sourceDataLine.close();
 	}
 
 	static boolean start(ByteArrayOutputStream buffer) {
@@ -31,18 +33,9 @@ class Player {
 
 		_buffer = buffer;
 		
-		_isRunning = true;
-		_refToAvoidGc = new Steppable() { @Override public boolean step() {
+		_refToAvoidGc = my(Threads.class).keepStepping(new Steppable() { @Override public void step() {
 			playBuffer();
-
-			if (!_isRunning) {
-				_sourceDataLine.close();
-				return false;
-			}
-
-			return true;
-		}};
-		my(Threads.class).newStepper(_refToAvoidGc);
+		}});
 		return true;
 	}
 

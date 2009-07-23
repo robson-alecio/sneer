@@ -14,11 +14,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.keymanager.Seals;
-import sneer.bricks.pulp.reactive.Reception;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.Widget;
@@ -36,7 +36,7 @@ class WatchMeReceiver{
 	private Widget<JFrame> _windowWidget;
 	private JLabel _imageLabel = new JLabel();
 
-	private Reception _screensReception;
+	private Contract _screensReception;
 
 	WatchMeReceiver(Contact contact) {
 		_contact = contact;

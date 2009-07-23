@@ -1,4 +1,4 @@
-package sneer.bricks.hardware.timer.tests;
+package sneer.bricks.hardware.clock.timer.tests;
 
 import static sneer.foundation.environments.Environments.my;
 
@@ -8,8 +8,8 @@ import java.util.List;
 import org.junit.Test;
 
 import sneer.bricks.hardware.clock.Clock;
-import sneer.bricks.hardware.cpu.threads.Steppable;
-import sneer.bricks.hardware.timer.Timer;
+import sneer.bricks.hardware.clock.timer.Timer;
+import sneer.bricks.hardware.cpu.threads.OldSteppable;
 import sneer.foundation.brickness.testsupport.BrickTest;
 
 public class TimerTest extends BrickTest {
@@ -52,7 +52,7 @@ public class TimerTest extends BrickTest {
 	}
 
 	
-	private class Worker implements Steppable, Runnable {
+	private class Worker implements OldSteppable, Runnable {
 
 		private final int _timeout;
 		private final List<Integer> _order;

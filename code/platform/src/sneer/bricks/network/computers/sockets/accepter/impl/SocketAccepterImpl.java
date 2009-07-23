@@ -4,6 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import java.io.IOException;
 
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
@@ -34,8 +35,6 @@ class SocketAccepterImpl implements SocketAccepter {
 
 	private ByteArrayServerSocket _serverSocket;
 	
-	private volatile boolean _isStopped;
-
 	private int _portToListen;
 	
 	private Light _cantOpenServerSocket = _lights.prepare(LightType.ERROR);
@@ -43,20 +42,17 @@ class SocketAccepterImpl implements SocketAccepter {
 	private final Light _cantAcceptSocket = _lights.prepare(LightType.ERROR);
 
 	@SuppressWarnings("unused") private final Object _receptionRefToAvoidGc;
-	private final Steppable _stepperRefToAvoidGc;
-	private Steppable _refToAvoidGc;
+	@SuppressWarnings("unused")	private final Contract _stepperRefToAvoidGc;
+	private Contract _refToAvoidGc;
 
 	SocketAccepterImpl() {
 		_receptionRefToAvoidGc = my(Signals.class).receive(_portKeeper.port(), new Consumer<Integer>() { @Override public void consume(Integer port) {
 			setPort(port);
 		}});
 
-		_stepperRefToAvoidGc = new Steppable() { @Override public boolean step() {
+		_stepperRefToAvoidGc = _threads.keepStepping(new Steppable() { @Override public void step() {
 			listenToSneerPort();
-			return true;
-		}};
-
-		_threads.newStepper(_stepperRefToAvoidGc);
+		}});
 	}
 
 	@Override
@@ -85,19 +81,13 @@ class SocketAccepterImpl implements SocketAccepter {
     }
 	
 	private void startAccepting() {
-		_isStopped = false;
-
-		_refToAvoidGc = new Steppable() { @Override public boolean step() {
+		_refToAvoidGc = _threads.keepStepping(new Steppable() { @Override public void step() {
 			try {
 				dealWith(_serverSocket.accept());
 			} catch (IOException e) {
 				dealWith(e);
 			}
-
-			return !_isStopped;
-		}};
-
-		_threads.newStepper(_refToAvoidGc);
+		}});
 
 	}
 	
@@ -107,7 +97,7 @@ class SocketAccepterImpl implements SocketAccepter {
 	}
 
 	private void dealWith(IOException e) {
-		if (!_isStopped) 
+		if (_refToAvoidGc != null) 
 			_lights.turnOnIfNecessary(_cantAcceptSocket, "Unable to accept client connection", null, e);
 	}
 
@@ -118,7 +108,7 @@ class SocketAccepterImpl implements SocketAccepter {
 			_lights.turnOffIfNecessary(_cantOpenServerSocket);
 			_lights.turnOn(LightType.GOOD_NEWS, "TCP port opened: " + port, "Sneer has successfully opened TCP port " + port + " to receive incoming connections from others.", 7000);
 		} catch (IOException e) {
-			if (!_isStopped)
+			if (_refToAvoidGc != null)
 				_lights.turnOnIfNecessary(_cantOpenServerSocket, "Unable to listen on TCP port " + port, helpMessage(), e);
 		}
 	}
@@ -136,7 +126,8 @@ class SocketAccepterImpl implements SocketAccepter {
 		if(_serverSocket == null) return;
 
 		my(Logger.class).log("crashing server socket");
-		_isStopped = true;
+		if (_refToAvoidGc != null) _refToAvoidGc.dispose();
+		_refToAvoidGc = null;
 		_serverSocket.crash();
 	}
 }

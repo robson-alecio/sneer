@@ -1,6 +1,6 @@
-package sneer.bricks.hardware.cpu.profiler.impl;
+package sneer.bricks.hardware.cpu.utils.profiler.impl;
 
-import sneer.bricks.hardware.cpu.profiler.Profiler;
+import sneer.bricks.hardware.cpu.utils.profiler.Profiler;
 import sneer.bricks.hardware.io.log.Logger;
 import static sneer.foundation.environments.Environments.my;
 

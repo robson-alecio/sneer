@@ -4,7 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 
-import sneer.bricks.pulp.reactive.Reception;
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
@@ -74,7 +74,7 @@ public class SignalsTest extends BrickTest {
 
 		Register<String> register = _subject.newRegister("hey");
 
-		Reception reception = _subject.receive(register.output(), new Consumer<String>() { @Override public void consume(String value) {
+		Contract reception = _subject.receive(register.output(), new Consumer<String>() { @Override public void consume(String value) {
 			received.append(value);
 		}});
 

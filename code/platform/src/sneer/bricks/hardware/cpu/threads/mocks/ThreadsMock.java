@@ -3,17 +3,18 @@ package sneer.bricks.hardware.cpu.threads.mocks;
 import java.util.ArrayList;
 import java.util.List;
 
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.cpu.threads.Latch;
 import sneer.bricks.hardware.cpu.threads.Steppable;
-import sneer.bricks.hardware.cpu.threads.Stepper;
 import sneer.bricks.hardware.cpu.threads.Threads;
 
 public class ThreadsMock implements Threads {
 
 	List<Steppable> _steppers = new ArrayList<Steppable>();
+	private List<Runnable> _daemons = new ArrayList<Runnable>();
 
 	@Override
-	public synchronized Stepper newStepper(final Steppable stepper) {
+	public synchronized Contract keepStepping(final Steppable stepper) {
 		_steppers.add(stepper);
 		return null;
 	}
@@ -22,11 +23,11 @@ public class ThreadsMock implements Threads {
 		return _steppers.get(i);
 	}
 
-	public synchronized void stepAllSteppers() {
-		ArrayList<Steppable> steppersCopy = new ArrayList<Steppable>(_steppers);
-		_steppers.clear();
+	public synchronized void runAllDaemons() {
+		ArrayList<Runnable> daemonsCopy = new ArrayList<Runnable>(_daemons);
+		_daemons.clear();
 
-		for (Steppable stepper : steppersCopy) stepper.step();
+		for (Runnable daemon : daemonsCopy) daemon.run();
 	}
 
 	@Override
@@ -47,7 +48,7 @@ public class ThreadsMock implements Threads {
 
 	@Override
 	public void startDaemon(String threadName, Runnable runnable) {
-		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
+		_daemons.add(runnable);
 	}
 
 	@Override

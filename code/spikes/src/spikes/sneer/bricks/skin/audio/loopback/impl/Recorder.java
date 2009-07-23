@@ -7,37 +7,31 @@ import java.io.ByteArrayOutputStream;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import spikes.sneer.bricks.skin.audio.kernel.Audio;
 class Recorder {
 	
 	static private ByteArrayOutputStream _buffer;
-	static private volatile boolean _isRunning;
-	private static Steppable _refToAvoidGc;
+	private static Contract _refToAvoidGc;
+	private static TargetDataLine _targetDataLine;
 
 	static void stop() {
-		_isRunning = false;
+		_refToAvoidGc.dispose();
+		if (_targetDataLine != null)
+			_targetDataLine.close();
 	}
 	
 	static boolean start(ByteArrayOutputStream buffer) {
-		final TargetDataLine targetDataLine = tryToOpenCaptureLine();
-		if (targetDataLine == null) return false;
+		_targetDataLine = tryToOpenCaptureLine();
+		if (_targetDataLine == null) return false;
 		
 		_buffer = buffer;
 
-		_isRunning = true;
-		_refToAvoidGc = new Steppable() { @Override public boolean step() {
-			record(targetDataLine);
-
-			if (!_isRunning) {
-				targetDataLine.close();
-				return false;
-			}
-
-			return true;
-		}};
-		my(Threads.class).newStepper(_refToAvoidGc);
+		_refToAvoidGc = my(Threads.class).keepStepping(new Steppable() { @Override public void step() {
+			record(_targetDataLine);
+		}});
 		return true;
 	}
 

@@ -1,12 +1,12 @@
 package sneer.bricks.hardware.cpu.threads;
 
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.foundation.brickness.Brick;
 
 @Brick
 public interface Threads {
 
-	/** @return a stepper that will call steppable.{@link Steppable#step() step} until the steppable returns false or the stepper itself is garbage collected */
-	Stepper newStepper(Steppable steppable);
+	Contract keepStepping(Steppable steppable);
 	
 	void startDaemon(String threadName, Runnable runnable);
 

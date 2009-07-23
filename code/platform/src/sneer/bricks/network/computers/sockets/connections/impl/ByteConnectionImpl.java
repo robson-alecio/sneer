@@ -5,6 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.IOException;
 import java.util.Arrays;
 
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
@@ -34,9 +35,8 @@ class ByteConnectionImpl implements ByteConnection {
 	private PacketScheduler _scheduler;
 	private Consumer<byte[]> _receiver;
 	
-	private volatile boolean _isClosed;
-	private Steppable _refToAvoidGc;
-	private Steppable _refToAvoidGc2;
+	private Contract _refToAvoidGc;
+	private Contract _refToAvoidGc2;
 
 
 	ByteConnectionImpl(String label, Contact contact) {
@@ -106,26 +106,19 @@ class ByteConnectionImpl implements ByteConnection {
 
 
 	private void startSending() {
-		_refToAvoidGc = new Steppable() { @Override public boolean step() {
+		_refToAvoidGc = _threads.keepStepping(new Steppable() { @Override public void step() {
 			if (tryToSend(_scheduler.highestPriorityPacketToSend()))
 				_scheduler.previousPacketWasSent();
 			else
 				_threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify.
-			
-			return !_isClosed;
-		}};
-		
-		_threads.newStepper(_refToAvoidGc);
+		}});
 	}
 	
 	private void startReceiving() {
-		_refToAvoidGc2 = new Steppable() { @Override public boolean step() {
+		_refToAvoidGc2 = _threads.keepStepping(new Steppable() { @Override public void step() {
 			if (!tryToReceive())
 				_threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify
-			return !_isClosed;
-		}};
-
-		_threads.newStepper(_refToAvoidGc2);
+		}});
 	}
 
 	private boolean tryToReceive() {
@@ -161,7 +154,8 @@ class ByteConnectionImpl implements ByteConnection {
 	}
 
 	void close() {
-		_isClosed = true;
+		_refToAvoidGc.dispose();
+		_refToAvoidGc2.dispose();
 		
 		ByteArraySocket socket = _socketHolder.socket();
 		if (socket == null) return;

@@ -6,11 +6,12 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 import sneer.bricks.hardware.cpu.exceptions.Hiccup;
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.hardware.ram.arrays.ImmutableByteArray;
-import sneer.bricks.hardware.timer.Timer;
+import sneer.bricks.hardware.clock.timer.Timer;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.blinkinglights.LightType;
@@ -44,7 +45,6 @@ class WatchMeImpl implements WatchMe {
 	private final Threads _threads = my(Threads.class);
 	private final BlinkingLights _lights = my(BlinkingLights.class);
 
-	private boolean _isRunning;
 	private final Light _light = _lights.prepare(LightType.ERROR);
 
 	private Encoder _encoder;
@@ -52,7 +52,7 @@ class WatchMeImpl implements WatchMe {
 
 	private Consumer<ImageDeltaPacket> _consumerToAvoidGc;
 
-	private Steppable _refToAvoidGc;
+	private Contract _refToAvoidGc;
 
 	@Override
 	public EventSource<BufferedImage> screenStreamFor(final Seal publisher) {
@@ -93,21 +93,10 @@ class WatchMeImpl implements WatchMe {
 
 	@Override
 	public void startShowingMyScreen() {
-		_isRunning = true;
-
-		_refToAvoidGc = new Steppable(){ @Override public boolean step() {
-			if(_isRunning) {
-				doPublishShot();
-				my(Timer.class).sleepAtLeast(PERIOD_IN_MILLIS);
-				return true;
-			}
-
-			_encoder = null;
-			_cache = null;
-			return false;
-		}};
-
-		_threads.newStepper(_refToAvoidGc);
+		_refToAvoidGc = _threads.keepStepping(new Steppable(){ @Override public void step() {
+			doPublishShot();
+			my(Timer.class).sleepAtLeast(PERIOD_IN_MILLIS);
+		}});
 	}
 
 	private void doPublishShot() {
@@ -156,7 +145,9 @@ class WatchMeImpl implements WatchMe {
 
 	@Override
 	public void stopShowingMyScreen() {
-		_isRunning = false;
+		_refToAvoidGc.dispose();
+		_encoder = null;
+		_cache = null;
 	}
 
 }

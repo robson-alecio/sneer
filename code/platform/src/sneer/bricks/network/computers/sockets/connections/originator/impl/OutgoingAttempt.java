@@ -4,9 +4,10 @@ import static sneer.foundation.environments.Environments.my;
 
 import java.io.IOException;
 
+import sneer.bricks.hardware.clock.timer.Timer;
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
-import sneer.bricks.hardware.timer.Timer;
 import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddress;
 import sneer.bricks.pulp.network.ByteArraySocket;
@@ -17,32 +18,20 @@ class OutgoingAttempt {
 	private final Network _network = my(Network.class);
 	private final ConnectionManager _connectionManager = my(ConnectionManager.class);
 	private final InternetAddress _address;
-	private final Steppable _refToAvoidGc;
-
-	private boolean _isRunning = true;
+	private final Contract _refToAvoidGc;
 
 	OutgoingAttempt(InternetAddress address) {
 		_address = address;
 
-		_refToAvoidGc = new Steppable() { @Override public boolean step() {
-			if (isRunning()) {
-				tryToOpen();
-				my(Timer.class).sleepAtLeast(20 * 1000);
-				return true;
-			}
+		_refToAvoidGc = my(Threads.class).keepStepping(new Steppable() { @Override public void step() {
+			tryToOpen();
+			my(Timer.class).sleepAtLeast(20 * 1000);
+		}});
 
-			return false;
-		}};
-
-		my(Threads.class).newStepper(_refToAvoidGc);
 	}
 
 	public synchronized void crash() {
-		_isRunning = false;
-	}
-
-	private synchronized boolean isRunning() {
-		return _isRunning;
+		_refToAvoidGc.dispose();
 	}
 
 	private void tryToOpen() {

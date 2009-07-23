@@ -6,7 +6,7 @@ import sneer.foundation.brickness.Brick;
 @Brick
 public interface Threads {
 
-	Contract keepStepping(Steppable steppable);
+	Contract startStepping(Steppable steppable);
 	
 	void startDaemon(String threadName, Runnable runnable);
 

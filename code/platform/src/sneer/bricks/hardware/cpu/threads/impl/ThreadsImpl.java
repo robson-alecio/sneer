@@ -63,7 +63,7 @@ class ThreadsImpl implements Threads {
 	}
 
 	@Override
-	public Contract keepStepping(Steppable steppable) {
+	public Contract startStepping(Steppable steppable) {
 		Stepper result = new Stepper(steppable);
 		startDaemon(inferThreadName(), result);
 		return result.contract();

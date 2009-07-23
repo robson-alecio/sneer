@@ -35,7 +35,7 @@ class SoundPlayerImpl implements SoundPlayer, Steppable {
 		synchronized (urls) {
 			urls.add(url);
 			if (urls.size() == 1)
-				_stepperContract = my(Threads.class).keepStepping(this);
+				_stepperContract = my(Threads.class).startStepping(this);
 		}
 	}
 

@@ -29,7 +29,7 @@ class Recorder {
 		
 		_buffer = buffer;
 
-		_refToAvoidGc = my(Threads.class).keepStepping(new Steppable() { @Override public void step() {
+		_refToAvoidGc = my(Threads.class).startStepping(new Steppable() { @Override public void step() {
 			record(_targetDataLine);
 		}});
 		return true;

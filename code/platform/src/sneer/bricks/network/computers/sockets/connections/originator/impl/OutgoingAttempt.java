@@ -23,7 +23,7 @@ class OutgoingAttempt {
 	OutgoingAttempt(InternetAddress address) {
 		_address = address;
 
-		_refToAvoidGc = my(Threads.class).keepStepping(new Steppable() { @Override public void step() {
+		_refToAvoidGc = my(Threads.class).startStepping(new Steppable() { @Override public void step() {
 			tryToOpen();
 			my(Timer.class).sleepAtLeast(20 * 1000);
 		}});

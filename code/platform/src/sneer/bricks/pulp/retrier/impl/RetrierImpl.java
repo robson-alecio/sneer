@@ -23,7 +23,7 @@ class RetrierImpl implements Retrier {
 	private final Contract _refToAvoidGc;
 	
 	RetrierImpl(final int periodBetweenAttempts, final Task task) {
-		_refToAvoidGc = _threads.keepStepping(new Steppable() { @Override public void step() {
+		_refToAvoidGc = _threads.startStepping(new Steppable() { @Override public void step() {
 			if (wasSuccessful(task))
 				_refToAvoidGc.dispose();
 			else

@@ -106,7 +106,7 @@ class ByteConnectionImpl implements ByteConnection {
 
 
 	private void startSending() {
-		_refToAvoidGc = _threads.keepStepping(new Steppable() { @Override public void step() {
+		_refToAvoidGc = _threads.startStepping(new Steppable() { @Override public void step() {
 			if (tryToSend(_scheduler.highestPriorityPacketToSend()))
 				_scheduler.previousPacketWasSent();
 			else
@@ -115,7 +115,7 @@ class ByteConnectionImpl implements ByteConnection {
 	}
 	
 	private void startReceiving() {
-		_refToAvoidGc2 = _threads.keepStepping(new Steppable() { @Override public void step() {
+		_refToAvoidGc2 = _threads.startStepping(new Steppable() { @Override public void step() {
 			if (!tryToReceive())
 				_threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify
 		}});

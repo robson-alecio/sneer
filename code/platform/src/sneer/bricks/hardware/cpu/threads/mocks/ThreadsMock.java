@@ -14,7 +14,7 @@ public class ThreadsMock implements Threads {
 	private List<Runnable> _daemons = new ArrayList<Runnable>();
 
 	@Override
-	public synchronized Contract keepStepping(final Steppable stepper) {
+	public synchronized Contract startStepping(final Steppable stepper) {
 		_steppers.add(stepper);
 		return null;
 	}

@@ -14,7 +14,7 @@ class ClockTickerImpl implements ClockTicker {
 
 	ClockTickerImpl() {
 		tick();
-		_refToAvoidGc = _threads.keepStepping(new Steppable() { @Override public void step() {
+		_refToAvoidGc = _threads.startStepping(new Steppable() { @Override public void step() {
 			tick();
 		}});
 	}

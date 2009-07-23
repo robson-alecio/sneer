@@ -57,7 +57,7 @@ class TupleSpaceImpl implements TupleSpace {
 			_tupleType = tupleType;
 			_environment = my(Environment.class);
 			
-			_refToAvoidGc = _threads.keepStepping(notifier());
+			_refToAvoidGc = _threads.startStepping(notifier());
 		}
 
 		private Steppable notifier() {

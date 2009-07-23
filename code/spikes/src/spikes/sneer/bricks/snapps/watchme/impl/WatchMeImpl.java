@@ -93,7 +93,7 @@ class WatchMeImpl implements WatchMe {
 
 	@Override
 	public void startShowingMyScreen() {
-		_refToAvoidGc = _threads.keepStepping(new Steppable(){ @Override public void step() {
+		_refToAvoidGc = _threads.startStepping(new Steppable(){ @Override public void step() {
 			doPublishShot();
 			my(Timer.class).sleepAtLeast(PERIOD_IN_MILLIS);
 		}});

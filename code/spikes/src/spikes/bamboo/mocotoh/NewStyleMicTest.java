@@ -39,7 +39,7 @@ public class NewStyleMicTest {
 				final Steppable stepper = capture();
 				new Stimulus() {{
 					mic.open();
-						threads.keepStepping(stepper);
+						threads.startStepping(stepper);
 				}};
 					
 				final byte[] buffer = capture();

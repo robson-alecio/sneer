@@ -48,7 +48,7 @@ class MicImpl implements Mic {
 	private void startToWorkIfNecessary() {
 		if (_refToAvoidGc != null) return;
 
-		_refToAvoidGc = _threads.keepStepping(new Steppable() { @Override public void step() {
+		_refToAvoidGc = _threads.startStepping(new Steppable() { @Override public void step() {
 			work();
 		}});
 	}

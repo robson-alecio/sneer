@@ -194,7 +194,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 	@Override
 	public void accelerateHeartbeat() {
-		_referenceToAvoicGc2 = my(Threads.class).keepStepping(new Steppable() { @Override public void step() {
+		_referenceToAvoicGc2 = my(Threads.class).startStepping(new Steppable() { @Override public void step() {
 			my(Clock.class).advanceTime(10 * 1000);
 			my(Threads.class).sleepWithoutInterruptions(500);
 		}});

@@ -50,7 +50,7 @@ class SocketAccepterImpl implements SocketAccepter {
 			setPort(port);
 		}});
 
-		_stepperRefToAvoidGc = _threads.keepStepping(new Steppable() { @Override public void step() {
+		_stepperRefToAvoidGc = _threads.startStepping(new Steppable() { @Override public void step() {
 			listenToSneerPort();
 		}});
 	}
@@ -81,7 +81,7 @@ class SocketAccepterImpl implements SocketAccepter {
     }
 	
 	private void startAccepting() {
-		_refToAvoidGc = _threads.keepStepping(new Steppable() { @Override public void step() {
+		_refToAvoidGc = _threads.startStepping(new Steppable() { @Override public void step() {
 			try {
 				dealWith(_serverSocket.accept());
 			} catch (IOException e) {

@@ -21,7 +21,7 @@ public class ThreadsTest extends BrickTest {
 		final Latch latch = _subject.newLatch();
 
 		@SuppressWarnings("unused")
-		final Object refToAvoidGc = _subject.keepStepping(new Steppable() { @Override public void step() {
+		final Object refToAvoidGc = _subject.startStepping(new Steppable() { @Override public void step() {
 			assertSame(environment, Environments.my(Environment.class));
 			latch.open();
 		}});

@@ -14,9 +14,9 @@ class Adapter<IN, OUT> {
 	@SuppressWarnings("unused") private final Object _referenceToAvoidGc;
 
 	Adapter(Signal<IN> input, final Functor<IN, OUT> functor) {
-		_referenceToAvoidGc = new ReceptionImpl(new Consumer<IN>() { @Override public void consume(IN inputValue) {
+		_referenceToAvoidGc = input.addReceiverWithContract(new Consumer<IN>() { @Override public void consume(IN inputValue) {
 			_register.setter().consume(functor.evaluate(inputValue));
-		}}, input);
+		}});
 	}
 
 	Signal<OUT> output() {

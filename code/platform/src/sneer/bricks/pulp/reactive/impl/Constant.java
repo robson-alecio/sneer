@@ -1,5 +1,6 @@
 package sneer.bricks.pulp.reactive.impl;
 
+
 class ConstantImpl<TYPE> extends AbstractSignal<TYPE> {
 
 	private final TYPE _constantValue;
@@ -12,4 +13,5 @@ class ConstantImpl<TYPE> extends AbstractSignal<TYPE> {
 	public TYPE currentValue() {
 		return _constantValue;
 	}
+
 }

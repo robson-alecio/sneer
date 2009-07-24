@@ -3,6 +3,9 @@
 
 	- [Klaus] Revise cycle created by EventNotifierImpl#addReceiver
 
+	- [Klaus] Signals.receive(eventSources...) move to a pulse Gate
+		- sneer.bricks.pulp.reactive.impl.ReceptionImpl - Delete
+
 	- [Klaus] Revise Threads#waitUntilCrash in the light of Threads#crashing
 
 	- [Klaus] Revise garbage collectable handles

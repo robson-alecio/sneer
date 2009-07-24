@@ -29,6 +29,11 @@ abstract class AbstractSignal<T> implements Signal<T> {
 	}
 
 	@Override
+	public Contract addReceiverWithContract(Consumer<? super T> eventReceiver) {
+		return _notifier.output().addReceiverWithContract(eventReceiver);
+	}
+
+	@Override
 	public void addReceiver(Consumer<? super T> receiver) {
 		_notifier.output().addReceiver(receiver);
 	}

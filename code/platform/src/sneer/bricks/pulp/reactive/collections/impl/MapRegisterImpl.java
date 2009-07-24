@@ -107,6 +107,11 @@ class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 			return _map.entrySet().contains(entry);
 		}
 
+		@Override
+		public Contract addReceiverWithContract(Consumer<? super CollectionChange<Entry<K, V>>> eventReceiver) {
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
+		}
+
 
 	}
 

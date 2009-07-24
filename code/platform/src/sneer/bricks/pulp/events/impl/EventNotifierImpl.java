@@ -103,4 +103,9 @@ class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 	public EventSource<T> output() {
 		return this;
 	}
+
+	@Override
+	public Contract addReceiverWithContract(Consumer<? super T> eventReceiver) {
+		return new ReceptionImpl(this, eventReceiver); 
+	}
 }

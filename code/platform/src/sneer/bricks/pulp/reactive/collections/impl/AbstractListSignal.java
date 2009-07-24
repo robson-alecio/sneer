@@ -11,17 +11,17 @@ import sneer.foundation.lang.Consumer;
 
 abstract class AbstractListSignal<T> implements ListSignal<T> {
 
-	EventNotifier<ListChange<T>> _notifier = my(EventNotifiers.class).newInstance(new Consumer<Consumer<? super ListChange<T>>>(){@Override public void consume(Consumer<? super ListChange<T>> receiver) {
+	EventNotifier<ListChange<T>> _notifierAsList = my(EventNotifiers.class).newInstance(new Consumer<Consumer<? super ListChange<T>>>(){@Override public void consume(Consumer<? super ListChange<T>> receiver) {
 		//TODO
 	}});
 
-	EventNotifier<CollectionChange<T>> _notifier2 = my(EventNotifiers.class).newInstance(new Consumer<Consumer<? super CollectionChange<T>>>(){@Override public void consume(Consumer<? super CollectionChange<T>> receiver) {
+	EventNotifier<CollectionChange<T>> _notifierAsCollection = my(EventNotifiers.class).newInstance(new Consumer<Consumer<? super CollectionChange<T>>>(){@Override public void consume(Consumer<? super CollectionChange<T>> receiver) {
 		//TODO
 	}});
 
 	void notifyReceivers(final AbstractListValueChange<T> valueChange) {
-		_notifier.notifyReceivers(valueChange);
-		_notifier2.notifyReceivers(valueChange);
+		_notifierAsList.notifyReceivers(valueChange);
+		_notifierAsCollection.notifyReceivers(valueChange);
 	}
 
 	@Override
@@ -31,21 +31,26 @@ abstract class AbstractListSignal<T> implements ListSignal<T> {
 
 	@Override
 	public void addListReceiver(Consumer<? super ListChange<T>> receiver) {
-		_notifier.output().addReceiver(receiver);
+		_notifierAsList.output().addReceiver(receiver);
 	}
 
 	@Override
 	public void removeListReceiver(Object receiver) {
-		_notifier.output().removeReceiver(receiver);	
+		_notifierAsList.output().removeReceiver(receiver);	
 	}
 
 	@Override
 	public void removeReceiver(Object receiver) {
-		_notifier2.output().removeReceiver(receiver);
+		_notifierAsCollection.output().removeReceiver(receiver);
 	}
 
 	@Override
 	public void addReceiver(Consumer<? super CollectionChange<T>> receiver) {
-		_notifier2.output().addReceiver(receiver);
+		_notifierAsCollection.output().addReceiver(receiver);
+	}
+
+	@Override
+	public Contract addReceiverWithContract(Consumer<? super CollectionChange<T>> receiver) {
+		return _notifierAsCollection.output().addReceiverWithContract(receiver);
 	}
 }

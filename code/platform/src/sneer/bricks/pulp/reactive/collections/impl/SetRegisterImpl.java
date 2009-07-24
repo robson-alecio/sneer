@@ -42,6 +42,11 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 		}
 
 		@Override
+		public Contract addReceiverWithContract(Consumer<? super CollectionChange<T>> eventReceiver) {
+			return _notifier.output().addReceiverWithContract(eventReceiver);
+		}
+		
+		@Override
 		public void addReceiver(Consumer<? super CollectionChange<T>> receiver) {
 			_notifier.output().addReceiver(receiver);
 		}
@@ -76,7 +81,7 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 		public boolean currentContains(T element) {
 			return _contents.contains(element);
 		}
-		
+
 	}
 
 	private final Set<T> _contents = new HashSet<T>();

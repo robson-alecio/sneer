@@ -55,7 +55,7 @@ class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 
 	@Override
 	public Contract addReceiver(final Runnable pulseReceiver) {
-		return my(Signals.class).receive(this, new Consumer<Object>() { @Override public void consume(Object ignored) {
+		return addReceiverWithContract(new Consumer<Object>() { @Override public void consume(Object ignored) {
 			pulseReceiver.run();
 		}});
 	}

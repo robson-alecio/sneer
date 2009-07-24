@@ -1,7 +1,7 @@
 ﻿TASKS
 =========
 
-	- [Klaus] Revise cycle created by EventNotifierImpl#addReceiver
+	- [Klaus] Signals.receive(signal, consumer) -> signal.addReceiver(consumer)
 
 	- [Klaus] Signals.receive(eventSources...) move to a pulse Gate
 		- sneer.bricks.pulp.reactive.impl.ReceptionImpl - Delete

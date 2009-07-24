@@ -1,9 +1,10 @@
 package sneer.bricks.hardware.gui.guithread.impl;
 
-import java.lang.reflect.InvocationTargetException;
-
 import static sneer.foundation.environments.Environments.my;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
@@ -13,6 +14,8 @@ import sneer.foundation.environments.Environments;
 
 class GuiThreadImpl implements GuiThread {
 	
+	private Set<Thread> _threadsThatShouldNotWaitForGui = new HashSet<Thread>();
+
 	@Override
 	public void invokeAndWaitForWussies(final Runnable runnable) { //Fix This method is called sometimes from swing's thread and other times from aplication's thread. Split the caller method (if it is possible), and delete this method.
 		if(SwingUtilities.isEventDispatchThread())
@@ -23,6 +26,7 @@ class GuiThreadImpl implements GuiThread {
 
 	private void invokeAndWait(final Environment environment, final Runnable runnable) { //Fix Calling this from brick code is no longer necessary after the container is calling gui brick code only in the Swing thread.
 		assertNotInGuiThread();
+		assertThreadCanWaitForGui();
 		try {
 			SwingUtilities.invokeAndWait(envolve(environment, runnable));
 		} catch (InterruptedException e) {
@@ -61,4 +65,14 @@ class GuiThreadImpl implements GuiThread {
 			Environments.runWith(environment, delegate);
 		}};
 	}
+
+	@Override
+	public void registerThreadThatShouldNotWaitForGui(Thread thread) {
+		_threadsThatShouldNotWaitForGui.add(thread);
+	}
+	
+	private void assertThreadCanWaitForGui() {
+		if (_threadsThatShouldNotWaitForGui.contains(Thread.currentThread())) throw new IllegalStateException("The current thread should not have to wait for the GUI thread."); 
+	}
+
 }

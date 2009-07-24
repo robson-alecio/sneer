@@ -17,6 +17,9 @@ class SnappStarterImpl implements SnappStarter {
 
 	@Override
 	public void startSnapps() {
+		
+		//my(GuiThread.class).registerThreadThatShouldNotWaitForGui(Thread.currentThread());
+		
 		try {
 			tryToStartSnapps();
 		} catch (Exception e) {

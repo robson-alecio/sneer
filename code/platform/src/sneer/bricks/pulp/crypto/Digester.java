@@ -1,12 +1,10 @@
 package sneer.bricks.pulp.crypto;
 
-import java.io.IOException;
-import java.io.InputStream;
 
 public interface Digester {
 
-	void update(InputStream is) throws IOException;
+	void update(byte[] bytes);
 
-	byte[] digest();
+	Sneer1024 digest();
 
 }

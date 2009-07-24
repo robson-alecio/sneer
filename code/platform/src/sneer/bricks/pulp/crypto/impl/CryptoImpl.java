@@ -5,7 +5,6 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.Security;
 
@@ -37,7 +36,7 @@ class CryptoImpl implements Crypto {
 	}
 
 	@Override
-	public Digester digester() {
+	public Digester newDigester() {
 		return new DigesterImpl(messageDigest("SHA-512", "SUN"), messageDigest("WHIRLPOOL", "BC"));
 	}
 
@@ -67,44 +66,4 @@ class CryptoImpl implements Crypto {
 
 }
 
-class DigesterImpl implements Digester {
-	
-	private MessageDigest _sha512;
-	
-	private MessageDigest _whirlPool;
-	
-	DigesterImpl(MessageDigest sha512, MessageDigest whirlPool) {
-		_sha512 = sha512;
-		_whirlPool = whirlPool;
-	}
-	
-	@Override
-	public byte[] digest() {
-		byte[] sha512 = _sha512.digest();
-		byte[] whirlPool = _whirlPool.digest();
-		return merge(sha512, whirlPool);
-	}
-	
-	@Override
-	public void update(InputStream is) throws IOException {
-		byte[] bytes = my(IO.class).streams().toByteArray(is);
-		_sha512.update(bytes);
-		_whirlPool.update(bytes);
-	}
 
-	MessageDigest whirlPool() {
-		return _whirlPool;
-	}
-	
-	MessageDigest sha512() {
-		return _sha512;
-	}
-	
-	byte[] merge(byte[] sha512, byte[] whirlPool) {
-		byte[] result = new byte[sha512.length + whirlPool.length];
-		System.arraycopy(sha512, 0, result, 0, sha512.length);
-		System.arraycopy(whirlPool, 0, result, sha512.length, whirlPool.length);
-		return result;
-	}
-	
-}

@@ -2,6 +2,7 @@
 =========
 
 	- [Klaus] Signals.receive(signal, consumer) -> signal.addReceiver(consumer)
+		- removeReceiver -> Contract.dispose(). EventSource and ListSignal.
 		- ReceptionImpl <-> EventNotifierImpl cycle - Revise
 
 	- [Klaus] Signals.receive(eventSources...) move to a pulse Gate

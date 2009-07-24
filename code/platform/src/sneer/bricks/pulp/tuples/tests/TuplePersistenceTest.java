@@ -2,16 +2,21 @@ package sneer.bricks.pulp.tuples.tests;
 
 import static sneer.foundation.environments.Environments.my;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.junit.Test;
 
+import sneer.bricks.hardware.cpu.threads.Threads;
+import sneer.bricks.hardware.io.IO;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.bricks.software.directoryconfig.DirectoryConfig;
 import sneer.foundation.brickness.Tuple;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
+import sneer.foundation.lang.Closure;
+import sneer.foundation.testsupport.AssertUtils;
 
 public class TuplePersistenceTest extends BrickTest {
 
@@ -38,6 +43,23 @@ public class TuplePersistenceTest extends BrickTest {
 			assertEquals(2, ((TestTuple)kept.get(2)).intValue);
 
 		}});
+	}
+	
+	@Test
+	public void filesAreClosedUponCrash() throws IOException {
+		
+		my(TupleSpace.class).keep(TestTuple.class);
+		my(TupleSpace.class).publish(tuple(42));
+		
+		AssertUtils.expect(IOException.class, new Closure() { @Override public void run() throws Throwable {
+			
+			my(IO.class).files().deleteDirectory(tmpDirectory());
+			
+		}});
+		
+		my(Threads.class).crashAllThreads();
+		
+		my(IO.class).files().deleteDirectory(tmpDirectory());
 	}
 
 

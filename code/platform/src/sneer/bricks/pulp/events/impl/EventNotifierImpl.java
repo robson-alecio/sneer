@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.events.EventNotifier;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
+import sneer.bricks.pulp.reactive.Signals;
 import sneer.foundation.environments.Environments;
 import sneer.foundation.lang.Consumer;
 
@@ -45,6 +47,13 @@ class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 		}
 
 		receiver.consume(valueChange);
+	}
+
+	@Override
+	public Contract addReceiver(final Runnable pulseReceiver) {
+		return my(Signals.class).receive(this, new Consumer<Object>() { @Override public void consume(Object ignored) {
+			pulseReceiver.run();
+		}});
 	}
 
 	@Override

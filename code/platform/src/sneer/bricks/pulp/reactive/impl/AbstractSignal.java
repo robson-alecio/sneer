@@ -5,6 +5,7 @@
 package sneer.bricks.pulp.reactive.impl;
 
 import static sneer.foundation.environments.Environments.my;
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.pulp.events.EventNotifier;
 import sneer.bricks.pulp.events.EventNotifiers;
 import sneer.bricks.pulp.reactive.Signal;
@@ -28,12 +29,18 @@ abstract class AbstractSignal<T> implements Signal<T> {
 	}
 
 	@Override
+	public void addReceiver(Consumer<? super T> receiver) {
+		_notifier.output().addReceiver(receiver);
+	}
+
+	@Override
+	public Contract addReceiver(Runnable pulseReceiver) {
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
+	}
+	
+	@Override
 	public void removeReceiver(Object receiver) {
 		_notifier.output().removeReceiver(receiver);
 	}
 
-	@Override
-	public void addReceiver(Consumer<? super T> receiver) {
-		_notifier.output().addReceiver(receiver);
-	}	
 }

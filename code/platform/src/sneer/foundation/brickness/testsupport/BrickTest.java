@@ -10,6 +10,7 @@ import org.jmock.internal.ExpectationBuilder;
 import org.junit.After;
 import org.junit.runner.RunWith;
 
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.software.directoryconfig.DirectoryConfig;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.testsupport.TestThatMightUseResources;
@@ -27,6 +28,7 @@ public abstract class BrickTest extends TestThatMightUseResources {
 	
 	@After
 	public void afterBrickTest() {
+		my(Threads.class).crashAllThreads();
 		my(BrickTestRunner.class).dispose();
 	}
 	

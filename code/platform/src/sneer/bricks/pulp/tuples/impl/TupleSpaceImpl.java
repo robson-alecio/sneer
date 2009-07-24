@@ -127,12 +127,20 @@ class TupleSpaceImpl implements TupleSpace {
 	private final ListRegister<Tuple> _keptTuples;
 
 	private final Object _publicationMonitor = new Object();
-
-
-
+	
+	@SuppressWarnings("unused")
+	private final Contract _crashingContract = my(Threads.class).crashing().addReceiver(new Runnable() { @Override public void run() {
+		try {
+			_prevayler.close();
+		} catch (IOException e) {
+			throw new IllegalStateException(e);
+		}
+	}});
+	
+	final Prevayler _prevayler = prevayler(my(CollectionSignals.class).newListRegister());
 	
 	TupleSpaceImpl() {
-		_keptTuples = Bubble.wrapStateMachine(prevayler(my(CollectionSignals.class).newListRegister()));
+		_keptTuples = Bubble.wrapStateMachine(_prevayler);
 		
 		for (Tuple tuple : _keptTuples.output().currentElements())
 			if (isWeird(tuple)) _keptTuples.remover().consume(tuple);
@@ -322,6 +330,4 @@ class TupleSpaceImpl implements TupleSpace {
 				_dispatchCounterMonitor.notifyAll();
 		}
 	}
-
-
 }

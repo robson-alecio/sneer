@@ -1,6 +1,7 @@
 package sneer.bricks.hardware.cpu.threads;
 
 import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.pulp.events.Pulser;
 import sneer.foundation.brickness.Brick;
 
 @Brick
@@ -16,7 +17,9 @@ public interface Threads {
 
 	void waitUntilCrash();
 	void crashAllThreads();
+	Pulser crashing();
 	
 	Latch newLatch();
+
 
 }

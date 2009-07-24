@@ -5,6 +5,9 @@ import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.cpu.threads.Latch;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
+import sneer.bricks.pulp.events.EventNotifier;
+import sneer.bricks.pulp.events.EventNotifiers;
+import sneer.bricks.pulp.events.Pulser;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
 import sneer.foundation.testsupport.Daemon;
@@ -13,6 +16,7 @@ import sneer.foundation.testsupport.Daemon;
 class ThreadsImpl implements Threads {
 
 	private final Latch _crash = newLatch();
+	private final EventNotifier<Object> _crashingPulser = my(EventNotifiers.class).newInstance();
 
 	@Override
 	public void waitWithoutInterruptions(Object object) {
@@ -92,8 +96,15 @@ class ThreadsImpl implements Threads {
 		//doCrashAllThreads();
 		
 		_crash.open();
+		
+		_crashingPulser.notifyReceivers(null);
 	}
 
+	@Override
+	public Pulser crashing() {
+		return _crashingPulser.output();
+	}
+	
 //	private void doCrashAllThreads() {
 //		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
 //	}

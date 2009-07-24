@@ -7,6 +7,6 @@ public interface EventSource<VO> extends PulseSource {
 
 	Contract addReceiverWithContract(Consumer<? super VO> eventReceiver);
 
-	void addReceiver(Consumer<? super VO> eventReceiver);
-	void removeReceiver(Object eventReceiver);
+	void publicAddReceiverWithoutContract(Consumer<? super VO> eventReceiver);
+	void publicRemoveReceiver(Object eventReceiver);
 }

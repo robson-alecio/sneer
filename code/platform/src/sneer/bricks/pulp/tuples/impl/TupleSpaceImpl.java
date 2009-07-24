@@ -130,11 +130,7 @@ class TupleSpaceImpl implements TupleSpace {
 	
 	@SuppressWarnings("unused")
 	private final Contract _crashingContract = my(Threads.class).crashing().addReceiver(new Runnable() { @Override public void run() {
-		try {
-			_prevayler.close();
-		} catch (IOException e) {
-			throw new IllegalStateException(e);
-		}
+		closePrevayler();
 	}});
 	
 	final Prevayler _prevayler = prevayler(my(CollectionSignals.class).newListRegister());
@@ -328,6 +324,15 @@ class TupleSpaceImpl implements TupleSpace {
 			_dispatchCounter--;
 			if (_dispatchCounter == 0)
 				_dispatchCounterMonitor.notifyAll();
+		}
+	}
+
+
+	private void closePrevayler() {
+		try {
+			_prevayler.close();
+		} catch (IOException e) {
+			throw new IllegalStateException(e);
 		}
 	}
 }

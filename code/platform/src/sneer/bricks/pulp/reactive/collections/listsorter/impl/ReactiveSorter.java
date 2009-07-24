@@ -49,7 +49,7 @@ final class ReactiveSorter<T> implements ListOfSignalsReceiver<T>{
 			for (T element : tmp) 
 				_sorted.add(element);
 
-			_input.addReceiver(_receiverAvoidGc);
+			_input.publicAddReceiverWithoutContract(_receiverAvoidGc);
 		}
 		
 		_refToAvoidGc = _signalChoosers.receive(input, this);

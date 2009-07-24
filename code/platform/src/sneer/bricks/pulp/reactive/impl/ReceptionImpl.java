@@ -16,7 +16,7 @@ class ReceptionImpl implements Contract {
 		_receiver = receiver;
 
 		for (EventSource<? extends T> source : eventSources)
-			source.addReceiver(receiver);
+			source.publicAddReceiverWithoutContract(receiver);
 
 		_sourcesReferenceToAvoidGc = eventSources;
 	}
@@ -25,7 +25,7 @@ class ReceptionImpl implements Contract {
 	@Override
 	public void dispose() {
 		for (EventSource<?> source : _sourcesReferenceToAvoidGc)
-			source.removeReceiver(_receiver);
+			source.publicRemoveReceiver(_receiver);
 	}
 	
 }

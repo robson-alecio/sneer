@@ -11,7 +11,6 @@ import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.events.EventNotifier;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
-import sneer.bricks.pulp.reactive.Signals;
 import sneer.foundation.environments.Environments;
 import sneer.foundation.lang.Consumer;
 
@@ -61,7 +60,11 @@ class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 	}
 
 	@Override
-	public void addReceiver(final Consumer<? super T> receiver) {
+	public void publicAddReceiverWithoutContract(final Consumer<? super T> receiver) {
+		addReceiverWithoutContract(receiver);
+	}
+
+	void addReceiverWithoutContract(final Consumer<? super T> receiver) {
 		_receivers.add(holderFor(receiver));
 		Environments.my(ExceptionHandler.class).shield(new Runnable() { @Override public void run() {
 			if (_receiverHandler == null) return;
@@ -70,7 +73,11 @@ class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 	}
 
 	@Override
-	public void removeReceiver(Object receiver) {
+	public void publicRemoveReceiver(Object receiver) {
+		removeReceiver(receiver);
+	}
+
+	void removeReceiver(Object receiver) {
 		final Consumer<? super T> typedReceiver = (Consumer<? super T>) receiver;
 		boolean wasThere = _receivers.remove(holderFor(typedReceiver)); //Optimize consider a Set for when there is a great number of receivers.
 		assert wasThere;

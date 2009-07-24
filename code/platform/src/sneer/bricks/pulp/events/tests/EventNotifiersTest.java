@@ -21,7 +21,7 @@ public class EventNotifiersTest extends BrickTest {
 			throw new Error();
 		}};
 		EventNotifier<Object> notifier = my(EventNotifiers.class).newInstance(receiverHandler);
-		notifier.output().addReceiver(my(Signals.class).sink());
+		notifier.output().publicAddReceiverWithoutContract(my(Signals.class).sink());
 	}
 	
 	@Test (timeout = 2000)

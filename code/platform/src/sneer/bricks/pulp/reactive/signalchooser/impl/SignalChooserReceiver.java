@@ -68,7 +68,7 @@ class SignalChooserReceiver<T> {
 
 		public InputReceiver(CollectionSignal<T> input) {
 			_input = input;
-			_input.addReceiver(this);
+			_input.publicAddReceiverWithoutContract(this);
 			
 			synchronized (this) {
 				for (T element : _input)

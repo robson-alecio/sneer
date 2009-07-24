@@ -31,22 +31,22 @@ abstract class AbstractListSignal<T> implements ListSignal<T> {
 
 	@Override
 	public void addListReceiver(Consumer<? super ListChange<T>> receiver) {
-		_notifierAsList.output().addReceiver(receiver);
+		_notifierAsList.output().publicAddReceiverWithoutContract(receiver);
 	}
 
 	@Override
 	public void removeListReceiver(Object receiver) {
-		_notifierAsList.output().removeReceiver(receiver);	
+		_notifierAsList.output().publicRemoveReceiver(receiver);	
 	}
 
 	@Override
-	public void removeReceiver(Object receiver) {
-		_notifierAsCollection.output().removeReceiver(receiver);
+	public void publicRemoveReceiver(Object receiver) {
+		_notifierAsCollection.output().publicRemoveReceiver(receiver);
 	}
 
 	@Override
-	public void addReceiver(Consumer<? super CollectionChange<T>> receiver) {
-		_notifierAsCollection.output().addReceiver(receiver);
+	public void publicAddReceiverWithoutContract(Consumer<? super CollectionChange<T>> receiver) {
+		_notifierAsCollection.output().publicAddReceiverWithoutContract(receiver);
 	}
 
 	@Override

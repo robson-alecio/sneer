@@ -34,8 +34,8 @@ abstract class AbstractSignal<T> implements Signal<T> {
 	}
 
 	@Override
-	public void addReceiver(Consumer<? super T> receiver) {
-		_notifier.output().addReceiver(receiver);
+	public void publicAddReceiverWithoutContract(Consumer<? super T> receiver) {
+		_notifier.output().publicAddReceiverWithoutContract(receiver);
 	}
 
 	@Override
@@ -44,8 +44,8 @@ abstract class AbstractSignal<T> implements Signal<T> {
 	}
 	
 	@Override
-	public void removeReceiver(Object receiver) {
-		_notifier.output().removeReceiver(receiver);
+	public void publicRemoveReceiver(Object receiver) {
+		_notifier.output().publicRemoveReceiver(receiver);
 	}
 
 }

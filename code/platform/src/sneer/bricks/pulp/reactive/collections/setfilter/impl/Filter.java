@@ -58,7 +58,7 @@ final class Filter<T> {
 	void remove(T element) {
 		_output.remove(element);
 		Consumer<?> receiver = _receiversByElement.remove(element);
-		_predicate.evaluate(element).removeReceiver(receiver);
+		_predicate.evaluate(element).publicRemoveReceiver(receiver);
 		_signalsByElement.remove(element);
 	}
 
@@ -71,7 +71,7 @@ final class Filter<T> {
 		}};
 		
 		Signal<Boolean> signal = _predicate.evaluate(element);
-		signal.addReceiver(receiver);
+		signal.publicAddReceiverWithoutContract(receiver);
 		
 		_signalsByElement.put(element, signal);
 		_receiversByElement.put(element, receiver);

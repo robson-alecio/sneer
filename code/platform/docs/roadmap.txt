@@ -2,6 +2,7 @@
 =========
 
 	- [Klaus] Signals.receive(signal, consumer) -> signal.addReceiver(consumer)
+		- EventSource.publicAddReceiverWithoutContract -> addReceiver (returns Contract)
 		- removeReceiver -> Contract.dispose(). EventSource and ListSignal.
 		- ReceptionImpl <-> EventNotifierImpl cycle - Revise
 
@@ -11,7 +12,7 @@
 	- [Klaus] Revise Threads#waitUntilCrash in the light of Threads#crashing
 
 	- [Klaus] Revise garbage collectable handles
-		- Stepper - Consider weak referencing it from the daemon.
+		- Stepper - Consider weak referencing it from the daemon. Doesnt Work. Remove Contract.
 		- Timer
 		- TupleSpace subscription
 		- Collection Signals Reception

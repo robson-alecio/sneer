@@ -1,6 +1,7 @@
 package sneer.bricks.pulp.reactive.collections.impl;
 
 import static sneer.foundation.environments.Environments.my;
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.pulp.events.EventNotifier;
 import sneer.bricks.pulp.events.EventNotifiers;
 import sneer.bricks.pulp.reactive.collections.CollectionChange;
@@ -21,6 +22,11 @@ abstract class AbstractListSignal<T> implements ListSignal<T> {
 	void notifyReceivers(final AbstractListValueChange<T> valueChange) {
 		_notifier.notifyReceivers(valueChange);
 		_notifier2.notifyReceivers(valueChange);
+	}
+
+	@Override
+	public Contract addReceiver(Runnable pulseReceiver) {
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
 	@Override

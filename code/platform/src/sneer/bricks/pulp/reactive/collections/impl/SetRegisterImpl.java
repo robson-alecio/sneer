@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.pulp.events.EventNotifier;
 import sneer.bricks.pulp.events.EventNotifiers;
 import sneer.bricks.pulp.reactive.Register;
@@ -34,6 +35,11 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 			if (_contents.isEmpty()) return;
 			newReceiver.consume(new CollectionChangeImpl<T>(contentsCopy(), null));
 		}});
+
+		@Override
+		public Contract addReceiver(Runnable pulseReceiver) {
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
+		}
 
 		@Override
 		public void addReceiver(Consumer<? super CollectionChange<T>> receiver) {

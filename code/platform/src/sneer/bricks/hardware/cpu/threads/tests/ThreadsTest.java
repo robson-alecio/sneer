@@ -4,6 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.cpu.threads.Latch;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
@@ -37,6 +38,23 @@ public class ThreadsTest extends BrickTest {
 		thread.start();
 
 		_subject.waitUntilCrash();
+	}
+	
+	@Test (timeout = 2000)
+	public void crashHandlersAreNotified() {
+		
+		final Latch crashingLatch = my(Threads.class).newLatch();
+		@SuppressWarnings("unused")
+		Contract crashingContract = my(Threads.class).crashing().addReceiver(crashingLatch);
+		
+		Thread thread = new Thread() { @Override public void run(){
+			_subject.crashAllThreads();
+		}};
+		thread.start();
+
+		_subject.waitUntilCrash();
+		
+		crashingLatch.waitTillOpen();
 	}
 
 }

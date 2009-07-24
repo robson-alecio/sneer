@@ -1,6 +1,12 @@
 ﻿TASKS
 =========
 
+	- [Klaus] Introduce EventNotifier#newPulser and revise ThreadsImpl
+
+	- [Klaus] Revise cycle created by EventNotifierImpl#addReceiver
+
+	- [Klaus] Revise Threads#waitUntilCrash in the light of Threads#crashing
+
 	- [Klaus] Revise garbage collectable handles
 		- Stepper - Consider weak referencing it from the daemon.
 		- Timer

@@ -2,6 +2,7 @@
 =========
 
 	- [Klaus] Signals.receive(signal, consumer) -> signal.addReceiver(consumer)
+		- ReceptionImpl <-> EventNotifierImpl cycle - Revise
 
 	- [Klaus] Signals.receive(eventSources...) move to a pulse Gate
 		- sneer.bricks.pulp.reactive.impl.ReceptionImpl - Delete

@@ -37,13 +37,13 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 		}});
 
 		@Override
-		public Contract addReceiver(Runnable pulseReceiver) {
+		public Contract addPulseReceiver(Runnable pulseReceiver) {
 			throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 		}
 
 		@Override
-		public Contract addReceiverWithContract(Consumer<? super CollectionChange<T>> eventReceiver) {
-			return _notifier.output().addReceiverWithContract(eventReceiver);
+		public Contract addReceiver(Consumer<? super CollectionChange<T>> eventReceiver) {
+			return _notifier.output().addReceiver(eventReceiver);
 		}
 		
 		@Override

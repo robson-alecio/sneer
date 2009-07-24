@@ -62,7 +62,7 @@ class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 		}
 
 		@Override
-		public Contract addReceiver(Runnable pulseReceiver) {
+		public Contract addPulseReceiver(Runnable pulseReceiver) {
 			throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 		}
 
@@ -108,7 +108,7 @@ class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 		}
 
 		@Override
-		public Contract addReceiverWithContract(Consumer<? super CollectionChange<Entry<K, V>>> eventReceiver) {
+		public Contract addReceiver(Consumer<? super CollectionChange<Entry<K, V>>> eventReceiver) {
 			throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 		}
 

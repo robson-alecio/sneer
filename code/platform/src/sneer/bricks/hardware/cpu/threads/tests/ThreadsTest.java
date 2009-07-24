@@ -45,7 +45,7 @@ public class ThreadsTest extends BrickTest {
 		
 		final Latch crashingLatch = my(Threads.class).newLatch();
 		@SuppressWarnings("unused")
-		Contract crashingContract = my(Threads.class).crashing().addReceiver(crashingLatch);
+		Contract crashingContract = my(Threads.class).crashing().addPulseReceiver(crashingLatch);
 		
 		Thread thread = new Thread() { @Override public void run(){
 			_subject.crashAllThreads();

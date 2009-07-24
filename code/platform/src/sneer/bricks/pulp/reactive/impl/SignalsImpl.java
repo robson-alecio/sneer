@@ -44,6 +44,6 @@ class SignalsImpl implements Signals {
 
 	@Override
 	public <T> Contract receive(EventSource<? extends T> source, Consumer<? super T> receiver) {
-		return source.addReceiverWithContract(receiver);
+		return source.addReceiver(receiver);
 	}
 }

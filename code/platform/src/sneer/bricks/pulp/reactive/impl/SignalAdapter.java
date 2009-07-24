@@ -16,10 +16,10 @@ class SignalAdapter<IN, OUT> {
 	private Register<OUT> _register = new RegisterImpl<OUT>(null);
 
 	SignalAdapter(Signal<IN> input, final Functor<IN, Signal<OUT>> functor) {
-		_refToAvoidGC = input.addReceiverWithContract(new Consumer<IN>() { @Override public void consume(IN inputValue) {
+		_refToAvoidGC = input.addReceiver(new Consumer<IN>() { @Override public void consume(IN inputValue) {
 			Signal<OUT> newSignal = functor.evaluate(inputValue);
 			if (_refToAvoidGC2 != null) _refToAvoidGC2.dispose();
-			_refToAvoidGC2 = newSignal.addReceiverWithContract(new Consumer<OUT>() { @Override public void consume(OUT value) {
+			_refToAvoidGC2 = newSignal.addReceiver(new Consumer<OUT>() { @Override public void consume(OUT value) {
 				_register.setter().consume(value);
 			}});
 		}});

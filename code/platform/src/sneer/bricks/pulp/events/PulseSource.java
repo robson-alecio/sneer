@@ -4,6 +4,6 @@ import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 
 public interface PulseSource {
 	
-	Contract addReceiver(Runnable pulseReceiver);
+	Contract addPulseReceiver(Runnable pulseReceiver);
 
 }

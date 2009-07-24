@@ -21,7 +21,7 @@ public class EventNotifiersTest extends BrickTest {
 			throw new Error();
 		}};
 		EventNotifier<Object> notifier = my(EventNotifiers.class).newInstance(receiverHandler);
-		notifier.output().publicAddReceiverWithoutContract(my(Signals.class).sink());
+		notifier.output().addReceiver(my(Signals.class).sink());
 	}
 	
 	@Test (timeout = 2000)
@@ -29,7 +29,7 @@ public class EventNotifiersTest extends BrickTest {
 		final EventNotifier<Object> notifier = my(EventNotifiers.class).newInstance();
 		final Latch pulseLatch = my(Threads.class).newLatch();
 		@SuppressWarnings("unused")
-		final Contract pulseContract = notifier.output().addReceiver(pulseLatch);
+		final Contract pulseContract = notifier.output().addPulseReceiver(pulseLatch);
 		
 		notifier.notifyReceivers("foo");
 		

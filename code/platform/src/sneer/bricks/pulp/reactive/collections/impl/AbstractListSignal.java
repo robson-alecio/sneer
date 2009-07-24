@@ -25,7 +25,7 @@ abstract class AbstractListSignal<T> implements ListSignal<T> {
 	}
 
 	@Override
-	public Contract addReceiver(Runnable pulseReceiver) {
+	public Contract addPulseReceiver(Runnable pulseReceiver) {
 		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
@@ -50,7 +50,7 @@ abstract class AbstractListSignal<T> implements ListSignal<T> {
 	}
 
 	@Override
-	public Contract addReceiverWithContract(Consumer<? super CollectionChange<T>> receiver) {
-		return _notifierAsCollection.output().addReceiverWithContract(receiver);
+	public Contract addReceiver(Consumer<? super CollectionChange<T>> receiver) {
+		return _notifierAsCollection.output().addReceiver(receiver);
 	}
 }

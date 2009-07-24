@@ -129,7 +129,7 @@ class TupleSpaceImpl implements TupleSpace {
 	private final Object _publicationMonitor = new Object();
 	
 	@SuppressWarnings("unused")
-	private final Contract _crashingContract = my(Threads.class).crashing().addReceiver(new Runnable() { @Override public void run() {
+	private final Contract _crashingContract = my(Threads.class).crashing().addPulseReceiver(new Runnable() { @Override public void run() {
 		closePrevayler();
 	}});
 	

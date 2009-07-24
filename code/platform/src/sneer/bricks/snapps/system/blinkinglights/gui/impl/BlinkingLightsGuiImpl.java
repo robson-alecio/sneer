@@ -58,12 +58,12 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	private Container _container;
 	
 	BlinkingLightsGuiImpl(){
-		_instrumentManager.registerInstrument(this);
-				
 		loadImage("good_news.png", LightType.GOOD_NEWS);
 		loadImage("info.png", LightType.INFO);
 		loadImage("warn.png", LightType.WARN);
 		loadImage("error.png", LightType.ERROR);
+
+		_instrumentManager.registerInstrument(this);
 	}
 
 	@Override public void init(InstrumentPanel window) {

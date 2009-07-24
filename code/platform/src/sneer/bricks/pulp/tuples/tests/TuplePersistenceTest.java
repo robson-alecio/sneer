@@ -15,8 +15,6 @@ import sneer.foundation.brickness.Tuple;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
-import sneer.foundation.lang.Closure;
-import sneer.foundation.testsupport.AssertUtils;
 
 public class TuplePersistenceTest extends BrickTest {
 
@@ -50,12 +48,6 @@ public class TuplePersistenceTest extends BrickTest {
 		
 		my(TupleSpace.class).keep(TestTuple.class);
 		my(TupleSpace.class).publish(tuple(42));
-		
-		AssertUtils.expect(IOException.class, new Closure() { @Override public void run() throws Throwable {
-			
-			my(IO.class).files().deleteDirectory(tmpDirectory());
-			
-		}});
 		
 		my(Threads.class).crashAllThreads();
 		

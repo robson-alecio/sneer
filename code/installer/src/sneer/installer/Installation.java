@@ -26,7 +26,6 @@ class Installation {
 	
 	Installation() throws IOException {
 		showWaitWindow();
-		cleanup();
 		createDirectories();
 		addBinaries();
 		createOwnProjectIfNecessary();
@@ -63,20 +62,33 @@ class Installation {
 		extractFiles(file, ownCode().getParentFile());		
 	}
 
-	private void cleanup() throws IOException {
-		platformCode().delete();
-	}
-
 	private void createDirectories() throws IOException {
 		if(!sneerHome().exists())
 			sneerHome().mkdirs();
 		
 		if(platformCode().exists())
-			platformCode().delete();
+			deleteDirectory(platformCode());
 		
 		platformCode().mkdirs();
 	}
 
+	private void deleteDirectory(File directory) throws IOException {
+        if (!directory.exists()) return;
+
+        for (File file : directory.listFiles())  recursiveDelete(file);
+        
+        if (!directory.delete()) throw new IOException(("Unable to delete directory " + directory + "."));
+    }		
+	
+    private void recursiveDelete(File file) throws IOException {
+        if (file.isDirectory()) {
+            deleteDirectory(file);
+            return;
+        }
+        
+        if (!file.delete())  throw new IOException(("Unable to delete file: " + file));
+    }
+	
 	private void addBinaries() throws IOException {
 		IOUtils.write(logFile(), "jar file url: " + jarFileName.toString());
 		File file = extractJar(jarFileName, "sneer", "jar");

@@ -13,13 +13,15 @@ import sneer.bricks.pulp.reactive.Signals;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.lang.Consumer;
 
-public class EventNotifierFactoryTest extends BrickTest {
+public class EventNotifiersTest extends BrickTest {
 	
 	@Test (expected = Throwable.class)
 	public void throwablesBubbleUpDuringTests() {
-		my(EventNotifiers.class).newInstance(new Consumer<Consumer<? super Object>>() { @Override public void consume(Consumer<Object> receiver) {
+		Consumer<Consumer<? super Object>> receiverHandler = new Consumer<Consumer<? super Object>>() { @Override public void consume(Consumer<Object> receiver) {
 			throw new Error();
-		}}).output().addReceiver(my(Signals.class).sink());
+		}};
+		EventNotifier<Object> notifier = my(EventNotifiers.class).newInstance(receiverHandler);
+		notifier.output().addReceiver(my(Signals.class).sink());
 	}
 	
 	@Test (timeout = 2000)

@@ -15,8 +15,10 @@ class ReceptionImpl implements Contract {
 	<T> ReceptionImpl(Consumer<? super T> receiver, EventSource<? extends T>... eventSources) {
 		_receiver = receiver;
 
-		for (EventSource<? extends T> source : eventSources)
+		for (EventSource<? extends T> source : eventSources){
+			if(source==null) continue; //Fix: NPE
 			source.addReceiver(receiver);
+		}
 
 		_sourcesReferenceToAvoidGc = eventSources;
 	}

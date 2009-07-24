@@ -19,6 +19,8 @@
 	
 	- [Klaus] Revise entire package structure.  
 
+	- [Sandro] Webstart point to last STABLE build. ;)
+
 	- [Sandro] Sneer Responsiveness
 		- Uncomment this line in SnappStarterImpl: //my(GuiThread.class).registerThreadThatShouldNotWaitForGui(Thread.currentThread());
 			run Sneer and fix all Exceptions.

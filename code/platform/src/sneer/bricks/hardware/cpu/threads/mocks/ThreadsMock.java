@@ -11,7 +11,7 @@ import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.events.EventNotifier;
 import sneer.bricks.pulp.events.EventNotifiers;
-import sneer.bricks.pulp.events.Pulser;
+import sneer.bricks.pulp.events.PulseSource;
 
 public class ThreadsMock implements Threads {
 
@@ -79,7 +79,7 @@ public class ThreadsMock implements Threads {
 	}
 
 	@Override
-	public Pulser crashing() {
+	public PulseSource crashing() {
 		return _crashingPulser.output();
 	}
 }

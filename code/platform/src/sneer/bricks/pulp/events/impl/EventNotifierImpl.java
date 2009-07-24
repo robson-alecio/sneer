@@ -23,6 +23,10 @@ class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 
 	private final Consumer<Consumer<? super T>> _receiverHandler;
 
+	EventNotifierImpl() {
+		this(null);
+	}
+
 	EventNotifierImpl(Consumer<Consumer<? super T>> receiverHandler) {
 		_receiverHandler = receiverHandler;
 	}

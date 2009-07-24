@@ -2,8 +2,8 @@ package sneer.bricks.pulp.events;
 
 import sneer.foundation.lang.Consumer;
 
-public interface EventSource<VO> extends Pulser {
+public interface EventSource<VO> extends PulseSource {
 
-	void addReceiver(Consumer<? super VO> receiver);
-	void removeReceiver(Object receiver);
+	void addReceiver(Consumer<? super VO> eventReceiver);
+	void removeReceiver(Object eventReceiver);
 }

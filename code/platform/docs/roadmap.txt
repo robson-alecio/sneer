@@ -1,8 +1,6 @@
 ﻿TASKS
 =========
 
-	- [Klaus] Introduce EventNotifier#newPulser and revise ThreadsImpl
-
 	- [Klaus] Revise cycle created by EventNotifierImpl#addReceiver
 
 	- [Klaus] Revise Threads#waitUntilCrash in the light of Threads#crashing
@@ -41,6 +39,7 @@
 		- Make persistent (ask Sandro for help).
 	
 	- [Igor] Thread leaks in sneer (not spikes) tests - Fix
+		- Implement ThreadsImpl.crashAllThreads. Move thread killing logic from TestThatMightUseResources.
 
 	- [Igor] ConnectionManager - tests
 

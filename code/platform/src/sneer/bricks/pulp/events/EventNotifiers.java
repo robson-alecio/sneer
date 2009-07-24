@@ -11,4 +11,6 @@ public interface EventNotifiers {
 	/** @param receiverHandler will be called whenever a receiver is added to the returned EventNotifier. */
 	<T> EventNotifier<T> newInstance(Consumer<Consumer<? super T>> receiverHandler);
 
+	Pulser newPulser();
+
 }

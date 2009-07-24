@@ -1,9 +1,10 @@
 package sneer.bricks.pulp.events;
 
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
-
 public interface Pulser {
 
-	Contract addReceiver(Runnable pulseReceiver);
-
+	PulseSource output();
+	
+	/** Sends a pulse to all receivers of output() (runs them). */
+	void sendPulse();
+	
 }

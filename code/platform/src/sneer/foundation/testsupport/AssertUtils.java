@@ -2,6 +2,8 @@ package sneer.foundation.testsupport;
 
 import org.junit.Assert;
 
+import sneer.foundation.lang.Closure;
+
 public abstract class AssertUtils extends Assert {
 
 	public static void assertFloat(float expected, float actual) {
@@ -15,6 +17,19 @@ public abstract class AssertUtils extends Assert {
 			i++;
 		}
 		assertEquals("Collections not same size", expected.length, i);
+	}
+
+	public static void expect(Class<? extends Throwable> throwable, Closure closure) {
+		try {
+			closure.run();
+		} catch (Throwable t) {
+			assertTrue(
+					"Expecting '" + throwable + "' but got '" + t.getClass() + "'.",
+					throwable.isInstance(t));
+			return;
+		}
+		
+		fail("Expecting '" + throwable + "'.");
 	}
 
 }

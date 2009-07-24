@@ -1,33 +1,34 @@
 package spikes.klaus;
 
-import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.hardware.cpu.threads.Threads;
+import java.lang.ref.WeakReference;
+
 import sneer.foundation.testsupport.Daemon;
 
 @SuppressWarnings("deprecation")
 public class Anything {
 
 	public static void main(String[] args) {
-		final Threads threads = my(Threads.class);
 
-		Daemon daemon = new Daemon("Spike") {
-			@Override
-			public void run() {
-				System.out.println("Sleeping...");
-				try {
-					threads.sleepWithoutInterruptions(3000);
-				} catch (Error e) {
-					System.out.println(e.getClass());
-				}
-				System.out.println("Sleeping again...");
-				threads.sleepWithoutInterruptions(5000);
+		new Daemon("Spike") { @Override public void run() {
+			while (true) {
+				new Object();
+				//System.out.println("creating");
 			}
-		};
-
-		threads.sleepWithoutInterruptions(500);
-		daemon.stop();
-		threads.sleepWithoutInterruptions(5000);
+		}};
 		
+		WeakReference<Object> weak = new WeakReference<Object>(new Object());
+		//Object obj = weak.get();
+		while (true) {
+//			byte[] lixo = new byte[1000000];
+			Thread.yield();
+			Object object = weak.get();
+			if (object == null) return;
+			System.out.println(System.currentTimeMillis());
+			object.toString();
+			object = null;
+			//System.gc();
+		}
+
 //		System.out.println(System.nanoTime() % 3);
 		
 //		for (int i = 0; i <= 0; i++)

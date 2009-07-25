@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.clock.ticker.ClockTicker;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Latch;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.foundation.brickness.testsupport.BrickTest;
@@ -28,7 +29,8 @@ public class ClockTickerTest extends BrickTest {
 
 	private void waitForATick() {
 		final Latch latch = my(Threads.class).newLatch();
-		_clock.time().addReceiver(new Consumer<Long>() { @Override public void consume(Long value) {
+		@SuppressWarnings("unused")
+		WeakContract contract = _clock.time().addReceiver(new Consumer<Long>() { @Override public void consume(Long value) {
 			latch.open();
 		}});
 		latch.waitTillOpen();

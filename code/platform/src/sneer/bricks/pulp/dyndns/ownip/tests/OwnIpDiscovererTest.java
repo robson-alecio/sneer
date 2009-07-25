@@ -13,9 +13,8 @@ import sneer.bricks.pulp.dyndns.checkip.CheckIp;
 import sneer.bricks.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.bricks.pulp.propertystore.PropertyStore;
 import sneer.bricks.pulp.propertystore.mocks.TransientPropertyStore;
-import sneer.bricks.pulp.reactive.Signals;
-import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.Bind;
+import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.lang.Consumer;
 
 public class OwnIpDiscovererTest extends BrickTest {
@@ -49,7 +48,7 @@ public class OwnIpDiscovererTest extends BrickTest {
 		
 		OwnIpDiscoverer subject = my(OwnIpDiscoverer.class);
 
-		@SuppressWarnings("unused") final Object referenceToAvoidGc = my(Signals.class).receive(subject.ownIp(), new Consumer<String>() { @Override public void consume(String value) {
+		@SuppressWarnings("unused") final Object referenceToAvoidGc = subject.ownIp().addReceiver(new Consumer<String>() { @Override public void consume(String value) {
 			receiver.consume(value);
 		}});
 		

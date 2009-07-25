@@ -13,7 +13,6 @@ import sneer.bricks.hardware.ram.maps.cachemaps.CacheMap;
 import sneer.bricks.hardware.ram.maps.cachemaps.CacheMaps;
 import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.reactive.Signal;
-import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.streams.sequencer.Sequencer;
 import sneer.bricks.pulp.streams.sequencer.Sequencers;
 import sneer.bricks.pulp.tuples.TupleSpace;
@@ -54,7 +53,7 @@ class SpeexTuplesImpl implements SpeexTuples { //Refactor Break this into the en
 	
 	public SpeexTuplesImpl() {
 
-		_refToAvoidGc = my(Signals.class).receive(my(Mic.class).sound(), new Consumer<ImmutableByteArray>() { @Override public void consume(ImmutableByteArray packet) {
+		_refToAvoidGc = my(Mic.class).sound().addReceiver(new Consumer<ImmutableByteArray>() { @Override public void consume(ImmutableByteArray packet) {
 			if (encode(packet.copy()))
 				flush();
 		}});

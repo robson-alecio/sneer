@@ -13,7 +13,6 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
 import sneer.bricks.pulp.reactive.Signal;
-import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.main.dashboard.InstrumentPanel;
 import sneer.bricks.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.bricks.skin.main.synth.Synth;
@@ -75,7 +74,7 @@ class WhisperGuiImpl implements WhisperGui {
 		createWhisperButtonListener();
 		createLoopBackButtonListener();
 		
-		_referenceToAvoidGc = my(Signals.class).receive(isRunning(), new Consumer<Boolean>() { @Override public void consume(Boolean isRunning) {
+		_referenceToAvoidGc = isRunning().addReceiver(new Consumer<Boolean>() { @Override public void consume(Boolean isRunning) {
 			_whisperButton.setSelected(isRunning);
 			_roomField.getMainWidget().setEnabled(isRunning);
 		}});

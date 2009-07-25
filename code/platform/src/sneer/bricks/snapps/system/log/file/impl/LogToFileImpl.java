@@ -9,7 +9,6 @@ import java.io.IOException;
 import sneer.bricks.hardware.io.log.workers.notifier.LogNotifier;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.LightType;
-import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.snapps.system.log.file.LogToFile;
 import sneer.bricks.software.directoryconfig.DirectoryConfig;
 import sneer.foundation.lang.Consumer;
@@ -24,7 +23,7 @@ class LogToFileImpl implements LogToFile {
 	private final Object _referenceToAvoidGc;
 
 	private LogToFileImpl() {
-		_referenceToAvoidGc = my(Signals.class).receive(my(LogNotifier.class).loggedMessages(), new Consumer<String>(){ @Override public void consume(String msg) {
+		_referenceToAvoidGc = my(LogNotifier.class).loggedMessages().addReceiver(new Consumer<String>(){ @Override public void consume(String msg) {
 			log(msg);
 		}});
 	}

@@ -20,7 +20,6 @@ import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.gui.images.Images;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.keymanager.Seals;
-import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.bricks.skin.image.ImageFactory;
 import sneer.foundation.brickness.Seal;
@@ -70,7 +69,7 @@ public class WatchMeTest extends BrickTest {
 		
 		EventSource<BufferedImage> screens = subject2.screenStreamFor(key);
 
-		@SuppressWarnings("unused") Object referenceToAvoidGc = my(Signals.class).receive(screens, new Consumer<BufferedImage>() {@Override public void consume(BufferedImage screen) {
+		@SuppressWarnings("unused") Object referenceToAvoidGc = screens.addReceiver(new Consumer<BufferedImage>() {@Override public void consume(BufferedImage screen) {
 			_screenObserved.set(screen);
 		}});
 

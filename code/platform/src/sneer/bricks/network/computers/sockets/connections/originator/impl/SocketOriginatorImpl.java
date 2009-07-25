@@ -8,7 +8,6 @@ import java.util.Map;
 import sneer.bricks.network.computers.sockets.connections.originator.SocketOriginator;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddress;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddressKeeper;
-import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.reactive.collections.CollectionChange;
 import sneer.foundation.lang.Consumer;
 
@@ -20,10 +19,10 @@ class SocketOriginatorImpl implements SocketOriginator {
 	private final Map<InternetAddress, OutgoingAttempt> _attemptsByAddress = new HashMap<InternetAddress, OutgoingAttempt>();
 	
 	SocketOriginatorImpl() {
-		_refToAvoidGC = my(Signals.class).receive(_internetAddressKeeper.addresses(), new Consumer<CollectionChange<InternetAddress>>(){ @Override public void consume(CollectionChange<InternetAddress> value) {
+		_refToAvoidGC = _internetAddressKeeper.addresses().addReceiver(new Consumer<CollectionChange<InternetAddress>>(){ @Override public void consume(CollectionChange<InternetAddress> value) {
 			for (InternetAddress address : value.elementsRemoved()) 
 				stopAddressing(address);
-
+		
 			for (InternetAddress address : value.elementsAdded()) 
 				startAddressing(address);
 		}});

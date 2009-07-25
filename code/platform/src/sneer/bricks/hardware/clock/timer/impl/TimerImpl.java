@@ -12,7 +12,6 @@ import sneer.bricks.hardware.cpu.threads.OldSteppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.cpu.timebox.Timebox;
 import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
-import sneer.bricks.pulp.reactive.Signals;
 import sneer.foundation.lang.ByRef;
 import sneer.foundation.lang.Consumer;
 
@@ -26,7 +25,7 @@ class TimerImpl implements Timer {
 	private final  Object _refToAvoidGC;
 	
 	TimerImpl(){
-		_refToAvoidGC = my(Signals.class).receive(_clock.time() , new Consumer<Long>(){ @Override public void consume(Long value) {
+		_refToAvoidGC = _clock.time().addReceiver(new Consumer<Long>(){ @Override public void consume(Long value) {
 			wakeUpAlarmsIfNecessary();
 		}});
 	}

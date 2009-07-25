@@ -1,7 +1,5 @@
 package sneer.bricks.pulp.reactive.impl;
 
-import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
-import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
@@ -37,8 +35,4 @@ class SignalsImpl implements Signals {
 		return new RegisterImpl<T>(initialValue);
 	}
 
-	@Override
-	public <T> WeakContract receive(EventSource<? extends T> source, Consumer<? super T> receiver) {
-		return source.addReceiver(receiver);
-	}
 }

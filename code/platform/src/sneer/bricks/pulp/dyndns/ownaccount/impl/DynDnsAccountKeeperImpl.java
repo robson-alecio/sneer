@@ -34,7 +34,7 @@ class DynDnsAccountKeeperImpl implements DynDnsAccountKeeper {
 	}
 	
 	private void initReceivers() {
-		_refToAvoidGc = my(Signals.class).receive(ownAccount(), new Consumer<DynDnsAccount>(){ @Override public void consume(DynDnsAccount dynDnsAccount) {
+		_refToAvoidGc = ownAccount().addReceiver(new Consumer<DynDnsAccount>(){ @Override public void consume(DynDnsAccount dynDnsAccount) {
 			save(dynDnsAccount);
 		}});
 	}

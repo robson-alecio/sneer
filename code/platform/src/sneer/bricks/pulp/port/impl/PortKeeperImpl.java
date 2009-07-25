@@ -3,7 +3,6 @@ package sneer.bricks.pulp.port.impl;
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.pulp.port.PortKeeper;
 import sneer.bricks.pulp.reactive.Signal;
-import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.software.bricks.statestore.BrickStateStore;
 import sneer.foundation.lang.Consumer;
 import sneer.foundation.lang.PickyConsumer;
@@ -20,7 +19,7 @@ class PortKeeperImpl implements PortKeeper {
 	
 	PortKeeperImpl(){
 		restore();
-		_refToAvoidGc = my(Signals.class).receive(port(), new Consumer<Integer>(){ @Override public void consume(Integer port) {
+		_refToAvoidGc = port().addReceiver(new Consumer<Integer>(){ @Override public void consume(Integer port) {
 			save(port);
 		}});
 	}

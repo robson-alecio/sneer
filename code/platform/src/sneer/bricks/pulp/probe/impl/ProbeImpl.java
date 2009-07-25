@@ -8,7 +8,6 @@ import sneer.bricks.network.social.Contact;
 import sneer.bricks.pulp.distribution.filtering.TupleFilterManager;
 import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.reactive.Signal;
-import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.brickness.Seal;
 import sneer.foundation.brickness.Tuple;
@@ -32,7 +31,7 @@ final class ProbeImpl implements Consumer<Tuple> {
 
 	ProbeImpl(Contact contact, Signal<Boolean> isConnectedSignal) {
 		_contact = contact;
-		_referenceToAvoidGc = my(Signals.class).receive(isConnectedSignal, new Consumer<Boolean>(){ @Override public void consume(Boolean isConnected) {
+		_referenceToAvoidGc = isConnectedSignal.addReceiver(new Consumer<Boolean>(){ @Override public void consume(Boolean isConnected) {
 			dealWithIsConnected(isConnected);
 		}});
 	}

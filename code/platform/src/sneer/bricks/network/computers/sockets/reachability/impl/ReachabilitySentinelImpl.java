@@ -10,7 +10,6 @@ import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.pulp.port.PortKeeper;
-import sneer.bricks.pulp.reactive.Signals;
 import sneer.foundation.lang.Consumer;
 
 class ReachabilitySentinelImpl implements ReachabilitySentinel {
@@ -27,7 +26,7 @@ class ReachabilitySentinelImpl implements ReachabilitySentinel {
 	@SuppressWarnings("unused") private final Object _referenceToAvoidGc;
 
 	{
-		_referenceToAvoidGc = my(Signals.class).receive(_socketAccepter.lastAcceptedSocket(), new Consumer<Object>() {@Override public void consume(Object value) {
+		_referenceToAvoidGc = _socketAccepter.lastAcceptedSocket().addReceiver(new Consumer<Object>() {@Override public void consume(Object value) {
 			updateIncomingSocketTime();
 		}});
 

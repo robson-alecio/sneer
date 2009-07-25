@@ -9,7 +9,6 @@ import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.ram.ref.weak.keeper.WeakReferenceKeeper;
 import sneer.bricks.pulp.reactive.ReactivePredicate;
 import sneer.bricks.pulp.reactive.Signal;
-import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.pulp.reactive.collections.CollectionChange;
 import sneer.bricks.pulp.reactive.collections.SetRegister;
 import sneer.bricks.pulp.reactive.collections.SetSignal;
@@ -33,7 +32,7 @@ final class Filter<T> {
 		 
 		 addElements(_input);
 		 
-		 _contractOnInput = my(Signals.class).receive(_input, new Consumer<CollectionChange<T>>(){@Override public void consume(CollectionChange<T> change) {
+		 _contractOnInput = _input.addReceiver(new Consumer<CollectionChange<T>>(){@Override public void consume(CollectionChange<T> change) {
 			addElements(change.elementsAdded());
 			remove(change.elementsRemoved());
 		}});

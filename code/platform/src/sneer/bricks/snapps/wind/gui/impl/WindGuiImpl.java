@@ -126,7 +126,7 @@ class WindGuiImpl implements WindGui {
 	}
 
 	private void initShoutReceiver() {
-		_referenceToAvoidGc = my(Signals.class).receive(_wind.shoutsHeard(), new Consumer<CollectionChange<Shout>>() { @Override public void consume(CollectionChange<Shout> ignored) {
+		_referenceToAvoidGc = _wind.shoutsHeard().addReceiver(new Consumer<CollectionChange<Shout>>() { @Override public void consume(CollectionChange<Shout> ignored) {
 			shoutAlert();
 		}});
 	}

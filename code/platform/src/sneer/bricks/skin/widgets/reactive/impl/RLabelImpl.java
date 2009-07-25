@@ -11,7 +11,6 @@ import javax.swing.JLabel;
 
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.pulp.reactive.Signal;
-import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.main.synth.Synth;
 import sneer.bricks.skin.widgets.reactive.TextWidget;
 import sneer.foundation.lang.Consumer;
@@ -33,7 +32,7 @@ class RLabelImpl extends RPanel<JLabel> implements TextWidget<JLabel>{
 		_setter = setter;
 		_source = source;
 
-		_referenceToAvoidGc = my(Signals.class).receive(source, new Consumer<Object>() {@Override public void consume(final Object value) {
+		_referenceToAvoidGc = source.addReceiver(new Consumer<Object>() {@Override public void consume(final Object value) {
 			my(GuiThread.class).invokeAndWaitForWussies(new Runnable() {@Override public void run() {
 				textComponent().setText(valueToString(value));
 			}});

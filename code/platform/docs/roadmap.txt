@@ -1,9 +1,6 @@
 ﻿TASKS
 =========
 
-	- [Klaus] Signals.receive(signal, consumer) -> signal.addReceiver(consumer)
-		- ReceptionImpl <-> EventNotifierImpl cycle - Revise
-
 	- [Klaus] Revise Threads#waitUntilCrash in the light of Threads#crashing
 
 	- [Klaus] Revise garbage collectable handles

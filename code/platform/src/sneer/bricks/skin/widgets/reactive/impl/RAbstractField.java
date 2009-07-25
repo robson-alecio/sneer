@@ -22,7 +22,6 @@ import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.pulp.reactive.Signal;
-import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.widgets.reactive.NotificationPolicy;
 import sneer.bricks.skin.widgets.reactive.TextWidget;
 import sneer.foundation.environments.Environment;
@@ -215,7 +214,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends RPanel<WIDG
 	}
 	
 	private void startReceiving() {
-		_referenceToAvoidGc = my(Signals.class).receive(_source, new Consumer<Object>() {@Override public void consume(final Object text) {
+		_referenceToAvoidGc = _source.addReceiver(new Consumer<Object>() {@Override public void consume(final Object text) {
 			my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {
 				if (!_notified) return;
 				setText(valueToString(text));

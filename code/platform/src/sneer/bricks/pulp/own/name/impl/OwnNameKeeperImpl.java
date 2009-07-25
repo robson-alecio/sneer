@@ -33,7 +33,7 @@ class OwnNameKeeperImpl implements OwnNameKeeper {
 	private void takeCareOfPersistence() {
 		restore();
 		
-		_refToAvoidGc = my(Signals.class).receive(name(), new Consumer<String>(){ @Override public void consume(String name) {
+		_refToAvoidGc = name().addReceiver(new Consumer<String>(){ @Override public void consume(String name) {
 			save(name);
 		}});
 	}

@@ -19,7 +19,6 @@ import sneer.bricks.pulp.network.ByteArrayServerSocket;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.bricks.pulp.network.Network;
 import sneer.bricks.pulp.port.PortKeeper;
-import sneer.bricks.pulp.reactive.Signals;
 import sneer.foundation.lang.Consumer;
 
 class SocketAccepterImpl implements SocketAccepter {
@@ -46,7 +45,7 @@ class SocketAccepterImpl implements SocketAccepter {
 	private WeakContract _refToAvoidGc;
 
 	SocketAccepterImpl() {
-		_receptionRefToAvoidGc = my(Signals.class).receive(_portKeeper.port(), new Consumer<Integer>() { @Override public void consume(Integer port) {
+		_receptionRefToAvoidGc = _portKeeper.port().addReceiver(new Consumer<Integer>() { @Override public void consume(Integer port) {
 			setPort(port);
 		}});
 

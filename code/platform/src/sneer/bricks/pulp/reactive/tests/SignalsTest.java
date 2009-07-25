@@ -73,7 +73,7 @@ public class SignalsTest extends BrickTest {
 
 		Register<String> register = _subject.newRegister("hey");
 
-		WeakContract reception = _subject.receive(register.output(), new Consumer<String>() { @Override public void consume(String value) {
+		WeakContract reception = register.output().addReceiver(new Consumer<String>() { @Override public void consume(String value) {
 			received.append(value);
 		}});
 
@@ -93,7 +93,7 @@ public class SignalsTest extends BrickTest {
 		Register<String> register = _subject.newRegister("hey");
 
 		@SuppressWarnings("unused")
-		Object reception = _subject.receive(register.output(), new Consumer<String>() { @Override public void consume(String value) {
+		Object reception = register.output().addReceiver(new Consumer<String>() { @Override public void consume(String value) {
 			received.append(value);
 		}});
 

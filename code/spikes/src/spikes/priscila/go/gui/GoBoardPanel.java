@@ -16,7 +16,6 @@ import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
-import sneer.bricks.pulp.reactive.Signals;
 import sneer.foundation.lang.Consumer;
 import spikes.priscila.go.GoBoard;
 import spikes.priscila.go.Move;
@@ -73,7 +72,7 @@ public class GoBoardPanel extends JPanel {
 	public GoBoardPanel(Register<Move> moveRegister, StoneColor side) {
 		_side = side;
 		_moveRegister=moveRegister;
-		_referenceToAvoidGc = my(Signals.class).receive(_moveRegister.output(), new Consumer<Move>() { @Override public void consume(Move move) { 
+		_referenceToAvoidGc = _moveRegister.output().addReceiver(new Consumer<Move>() { @Override public void consume(Move move) { 
 			if (move == null) return; 
 			play(move); 
 		}});

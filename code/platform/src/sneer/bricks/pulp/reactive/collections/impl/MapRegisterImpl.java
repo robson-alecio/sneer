@@ -67,11 +67,6 @@ class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 		}
 
 		@Override
-		public void publicRemoveReceiver(Object receiver) {
-			_notifier.output().publicRemoveReceiver(receiver);		
-		}
-
-		@Override
 		public Collection<Entry<K, V>> currentElements() {
 			return new HashSet<Entry<K, V>>(_map.entrySet());
 		}

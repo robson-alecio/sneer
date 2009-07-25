@@ -47,11 +47,6 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 		}
 		
 		@Override
-		public void publicRemoveReceiver(Object receiver) {
-			_notifier.output().publicRemoveReceiver(receiver);
-		}
-
-		@Override
 		public Collection<T> currentElements() {
 			synchronized (_contents) {
 				return new HashSet<T>(_contents);

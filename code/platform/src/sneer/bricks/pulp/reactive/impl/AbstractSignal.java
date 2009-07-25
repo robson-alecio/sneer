@@ -38,9 +38,4 @@ abstract class AbstractSignal<T> implements Signal<T> {
 		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
 	
-	@Override
-	public void publicRemoveReceiver(Object receiver) {
-		_notifier.output().publicRemoveReceiver(receiver);
-	}
-
 }

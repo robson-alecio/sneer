@@ -12,6 +12,4 @@ public interface ListSignal<T> extends CollectionSignal<T> {
 	List<T> currentElements();
 	
 	Contract addListReceiver(Consumer<? super ListChange<T>> receiver);
-
-	void removeListReceiver(Object receiver);
 }

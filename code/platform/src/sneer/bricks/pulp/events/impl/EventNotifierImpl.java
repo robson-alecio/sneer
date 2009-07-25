@@ -67,11 +67,6 @@ class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 		}});
 	}
 
-	@Override
-	public void publicRemoveReceiver(Object receiver) {
-		removeReceiver(receiver);
-	}
-
 	void removeReceiver(Object receiver) {
 		final Consumer<? super T> typedReceiver = (Consumer<? super T>) receiver;
 		boolean wasThere = _receivers.remove(holderFor(typedReceiver)); //Optimize consider a Set for when there is a great number of receivers.

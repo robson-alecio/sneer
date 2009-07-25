@@ -16,9 +16,9 @@ import sneer.foundation.lang.Consumer;
 
 class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 
-	private static final ReceiverHolder<?>[] RECEIVER_HOLDER_ARRAY_TYPE = new ReceiverHolder[0];
+	private static final WeakRefWithAlias<?>[] RECEIVER_HOLDER_ARRAY_TYPE = new WeakRefWithAlias[0];
 	
-	private final List<ReceiverHolder<Consumer<? super T>>> _receivers = Collections.synchronizedList(new ArrayList<ReceiverHolder<Consumer<? super T>>>()); //Fix: Potential object leak. Receivers must be weak referenced. This is equivalent to the whiteboard pattern too, from a receiver referencing perspective. Conceptually, it is only the receiver that references the signal.
+	private final List<WeakRefWithAlias<Consumer<? super T>>> _receivers = Collections.synchronizedList(new ArrayList<WeakRefWithAlias<Consumer<? super T>>>());
 
 	private final Consumer<Consumer<? super T>> _receiverHandler;
 
@@ -32,16 +32,16 @@ class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 
 	@Override
 	public void notifyReceivers(T valueChange) {
-		ReceiverHolder<Consumer<T>>[] receivers = copyOfReceiversToAvoidConcurrentModificationAsResultOfNotifications();
-		for (ReceiverHolder<Consumer<T>> reference : receivers)
+		WeakRefWithAlias<Consumer<T>>[] receivers = copyOfReceiversToAvoidConcurrentModificationAsResultOfNotifications();
+		for (WeakRefWithAlias<Consumer<T>> reference : receivers)
 			notify(reference, valueChange);
 	}
 
-	private ReceiverHolder<Consumer<T>>[] copyOfReceiversToAvoidConcurrentModificationAsResultOfNotifications() {
-		return (ReceiverHolder<Consumer<T>>[]) _receivers.toArray(RECEIVER_HOLDER_ARRAY_TYPE);
+	private WeakRefWithAlias<Consumer<T>>[] copyOfReceiversToAvoidConcurrentModificationAsResultOfNotifications() {
+		return (WeakRefWithAlias<Consumer<T>>[]) _receivers.toArray(RECEIVER_HOLDER_ARRAY_TYPE);
 	}
 
-	private void notify(ReceiverHolder<Consumer<T>> reference, T valueChange) {
+	private void notify(WeakRefWithAlias<Consumer<T>> reference, T valueChange) {
 		Consumer<T> receiver = reference.get();
 		if (receiver == null) {
 			my(Logger.class).log("Receiver has been garbage collected. ({})", reference._alias);
@@ -57,20 +57,6 @@ class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 		return addReceiver(new Consumer<Object>() { @Override public void consume(Object ignored) {
 			pulseReceiver.run();
 		}});
-	}
-
-	void addReceiverWithoutContract(final Consumer<? super T> receiver) {
-		_receivers.add(holderFor(receiver));
-		Environments.my(ExceptionHandler.class).shield(new Runnable() { @Override public void run() {
-			if (_receiverHandler == null) return;
-			_receiverHandler.consume(receiver);
-		}});
-	}
-
-	void removeReceiver(Object receiver) {
-		final Consumer<? super T> typedReceiver = (Consumer<? super T>) receiver;
-		boolean wasThere = _receivers.remove(holderFor(typedReceiver)); //Optimize consider a Set for when there is a great number of receivers.
-		assert wasThere;
 	}
 
 //	@Override
@@ -91,18 +77,30 @@ class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 //		return result.toString();
 //	}
 	
-	private ReceiverHolder<Consumer<? super T>> holderFor(
-			Consumer<? super T> receiver) {
-		return new ReceiverHolder<Consumer<? super T>>(receiver);
-	}
-
 	@Override
 	public EventSource<T> output() {
 		return this;
 	}
 
 	@Override
-	public WeakContract addReceiver(Consumer<? super T> eventReceiver) {
-		return new ReceptionImpl(this, eventReceiver); 
+	public WeakContract addReceiver(final Consumer<? super T> eventReceiver) {
+		_receivers.add(weakRefFor(eventReceiver));
+		handleNewReceiver(eventReceiver); //Fix: this is a potential inconsistency. The receiver might be notified before the handler can do its thing. Reversing the two lines can cause the receiver to lose events. Some sort of synchronization has to happen here, without blocking too much.
+		
+		return new WeakContract() {	@Override public void dispose() {
+			_receivers.remove(weakRefFor(eventReceiver)); //Optimize consider a Set for when there is a great number of receivers.
+		}};	
 	}
+
+	private void handleNewReceiver(final Consumer<? super T> receiver) {
+		if (_receiverHandler == null) return;
+		Environments.my(ExceptionHandler.class).shield(new Runnable() { @Override public void run() {
+			_receiverHandler.consume(receiver);
+		}});
+	}
+
+	private WeakRefWithAlias<Consumer<? super T>> weakRefFor(Consumer<? super T> receiver) {
+		return new WeakRefWithAlias<Consumer<? super T>>(receiver);
+	}
+
 }

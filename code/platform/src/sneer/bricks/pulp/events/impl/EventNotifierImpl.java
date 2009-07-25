@@ -59,11 +59,6 @@ class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 		}});
 	}
 
-	@Override
-	public void publicAddReceiverWithoutContract(final Consumer<? super T> receiver) {
-		addReceiverWithoutContract(receiver);
-	}
-
 	void addReceiverWithoutContract(final Consumer<? super T> receiver) {
 		_receivers.add(holderFor(receiver));
 		Environments.my(ExceptionHandler.class).shield(new Runnable() { @Override public void run() {

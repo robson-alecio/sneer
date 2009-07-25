@@ -45,11 +45,6 @@ abstract class AbstractListSignal<T> implements ListSignal<T> {
 	}
 
 	@Override
-	public void publicAddReceiverWithoutContract(Consumer<? super CollectionChange<T>> receiver) {
-		_notifierAsCollection.output().publicAddReceiverWithoutContract(receiver);
-	}
-
-	@Override
 	public Contract addReceiver(Consumer<? super CollectionChange<T>> receiver) {
 		return _notifierAsCollection.output().addReceiver(receiver);
 	}

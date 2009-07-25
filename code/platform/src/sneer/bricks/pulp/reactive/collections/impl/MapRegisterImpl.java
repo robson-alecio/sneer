@@ -67,11 +67,6 @@ class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 		}
 
 		@Override
-		public void publicAddReceiverWithoutContract(Consumer<? super CollectionChange<Map.Entry<K,V>>> receiver) {
-			_notifier.output().publicAddReceiverWithoutContract(receiver);		
-		}
-		
-		@Override
 		public void publicRemoveReceiver(Object receiver) {
 			_notifier.output().publicRemoveReceiver(receiver);		
 		}

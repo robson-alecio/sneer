@@ -34,11 +34,6 @@ abstract class AbstractSignal<T> implements Signal<T> {
 	}
 
 	@Override
-	public void publicAddReceiverWithoutContract(Consumer<? super T> receiver) {
-		_notifier.output().publicAddReceiverWithoutContract(receiver);
-	}
-
-	@Override
 	public Contract addPulseReceiver(Runnable pulseReceiver) {
 		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}

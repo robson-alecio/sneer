@@ -5,6 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.util.HashMap;
 import java.util.Map;
 
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.ram.ref.weak.keeper.WeakReferenceKeeper;
 import sneer.bricks.pulp.reactive.ReactivePredicate;
 import sneer.bricks.pulp.reactive.Signal;
@@ -21,10 +22,9 @@ final class Filter<T> {
 	private final ReactivePredicate<T> _predicate;	
 	private final SetRegister<T> _output;
 
-	private final Map<T, Consumer<?>> _receiversByElement = new HashMap<T, Consumer<?>>();
-	private final Map<T, Signal<Boolean>> _signalsByElement = new HashMap<T, Signal<Boolean>>();
+	private final Map<T, Contract> _contractsByElement = new HashMap<T, Contract>();
 
-	@SuppressWarnings("unused") private final Object _referenceToAvoidGc;
+	@SuppressWarnings("unused") private final Contract _contractOnInput;
 
 	Filter(SetSignal<T> input, ReactivePredicate<T> predicate) {
 		_input = input;
@@ -33,12 +33,10 @@ final class Filter<T> {
 		 
 		 addElements(_input);
 		 
-		 Consumer<CollectionChange<T>> receiver = new Consumer<CollectionChange<T>>(){@Override public void consume(CollectionChange<T> change) {
+		 _contractOnInput = my(Signals.class).receive(_input, new Consumer<CollectionChange<T>>(){@Override public void consume(CollectionChange<T> change) {
 			addElements(change.elementsAdded());
 			remove(change.elementsRemoved());
-		}};
-
-		_referenceToAvoidGc = my(Signals.class).receive(_input, receiver);
+		}});
 	}
 
 	SetSignal<T> output() {
@@ -57,23 +55,18 @@ final class Filter<T> {
 
 	void remove(T element) {
 		_output.remove(element);
-		Consumer<?> receiver = _receiversByElement.remove(element);
-		_predicate.evaluate(element).publicRemoveReceiver(receiver);
-		_signalsByElement.remove(element);
+		_contractsByElement.remove(element).dispose();
 	}
 
 	void add(final T element) {
-		Consumer<Boolean> receiver = new Consumer<Boolean>() { @Override public void consume(Boolean value) {
+		Signal<Boolean> signal = _predicate.evaluate(element);
+		Contract contract = signal.addReceiver(new Consumer<Boolean>() { @Override public void consume(Boolean value) {
 			if (value)
 				_output.add(element);
 			else
 				_output.remove(element);
-		}};
+		}});
 		
-		Signal<Boolean> signal = _predicate.evaluate(element);
-		signal.publicAddReceiverWithoutContract(receiver);
-		
-		_signalsByElement.put(element, signal);
-		_receiversByElement.put(element, receiver);
+		_contractsByElement.put(element, contract);
 	}
 }

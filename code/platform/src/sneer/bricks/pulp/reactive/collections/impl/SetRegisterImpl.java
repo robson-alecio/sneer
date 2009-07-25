@@ -47,11 +47,6 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 		}
 		
 		@Override
-		public void publicAddReceiverWithoutContract(Consumer<? super CollectionChange<T>> receiver) {
-			_notifier.output().publicAddReceiverWithoutContract(receiver);
-		}
-
-		@Override
 		public void publicRemoveReceiver(Object receiver) {
 			_notifier.output().publicRemoveReceiver(receiver);
 		}

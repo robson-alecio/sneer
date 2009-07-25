@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.ram.ref.weak.keeper.WeakReferenceKeeper;
 import sneer.bricks.pulp.reactive.collections.CollectionChange;
 import sneer.bricks.pulp.reactive.collections.CollectionSignal;
@@ -29,7 +30,7 @@ final class ReactiveSorter<T> implements ListOfSignalsReceiver<T>{
 	private final SignalChooser<T> _chooser;	
 	private final Comparator<T> _comparator;
 	private final ListRegister<T> _sorted;
-	private final Consumer<CollectionChange<T>> _receiverAvoidGc;
+	@SuppressWarnings("unused")	private final Contract _contractToAvoidGc;
 	
 	private final Object _monitor = new Object();
 	
@@ -39,17 +40,15 @@ final class ReactiveSorter<T> implements ListOfSignalsReceiver<T>{
 		_comparator = comparator;
 		_sorted = my(CollectionSignals.class).newListRegister();
 		
-		_receiverAvoidGc = new Consumer<CollectionChange<T>>(){@Override public void consume(CollectionChange<T> change) {
-			executeChanges(change);
-		}};
-		
 		synchronized (_monitor) {
 			ArrayList<T> tmp = resortedList();
 			
 			for (T element : tmp) 
 				_sorted.add(element);
 
-			_input.publicAddReceiverWithoutContract(_receiverAvoidGc);
+			_contractToAvoidGc = _input.addReceiver(new Consumer<CollectionChange<T>>(){@Override public void consume(CollectionChange<T> change) {
+				executeChanges(change);
+			}});
 		}
 		
 		_refToAvoidGc = _signalChoosers.receive(input, this);

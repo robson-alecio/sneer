@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.events.EventNotifier;
 import sneer.bricks.pulp.events.EventSource;
@@ -53,7 +53,7 @@ class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 	}
 
 	@Override
-	public Contract addPulseReceiver(final Runnable pulseReceiver) {
+	public WeakContract addPulseReceiver(final Runnable pulseReceiver) {
 		return addReceiver(new Consumer<Object>() { @Override public void consume(Object ignored) {
 			pulseReceiver.run();
 		}});
@@ -102,7 +102,7 @@ class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 	}
 
 	@Override
-	public Contract addReceiver(Consumer<? super T> eventReceiver) {
+	public WeakContract addReceiver(Consumer<? super T> eventReceiver) {
 		return new ReceptionImpl(this, eventReceiver); 
 	}
 }

@@ -22,7 +22,7 @@ import org.prevayler.PrevaylerFactory;
 import org.prevayler.foundation.serialization.Serializer;
 
 import sneer.bricks.hardware.clock.Clock;
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
@@ -50,7 +50,7 @@ class TupleSpaceImpl implements TupleSpace {
 		private final Environment _environment;
 		private final List<Tuple> _tuplesToNotify = new LinkedList<Tuple>(); 
 
-		private final Contract _refToAvoidGc;
+		private final WeakContract _refToAvoidGc;
 		
 		<T extends Tuple> Subscription(Consumer<? super T> subscriber, Class<T> tupleType) {
 			_subscriber = new WeakReference<Consumer<? super Tuple>>((Consumer<? super Tuple>) subscriber);
@@ -129,7 +129,7 @@ class TupleSpaceImpl implements TupleSpace {
 	private final Object _publicationMonitor = new Object();
 	
 	@SuppressWarnings("unused")
-	private final Contract _crashingContract = my(Threads.class).crashing().addPulseReceiver(new Runnable() { @Override public void run() {
+	private final WeakContract _crashingContract = my(Threads.class).crashing().addPulseReceiver(new Runnable() { @Override public void run() {
 		closePrevayler();
 	}});
 	

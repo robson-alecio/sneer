@@ -5,6 +5,6 @@ import sneer.foundation.brickness.Brick;
 @Brick
 public interface Contracts {
 
-	Contract newContractFor(Disposable service, Object annex);
+	WeakContract newContractFor(Disposable service, Object annex);
 
 }

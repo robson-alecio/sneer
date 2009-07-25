@@ -4,7 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import java.io.IOException;
 
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
@@ -42,8 +42,8 @@ class SocketAccepterImpl implements SocketAccepter {
 	private final Light _cantAcceptSocket = _lights.prepare(LightType.ERROR);
 
 	@SuppressWarnings("unused") private final Object _receptionRefToAvoidGc;
-	@SuppressWarnings("unused")	private final Contract _stepperRefToAvoidGc;
-	private Contract _refToAvoidGc;
+	@SuppressWarnings("unused")	private final WeakContract _stepperRefToAvoidGc;
+	private WeakContract _refToAvoidGc;
 
 	SocketAccepterImpl() {
 		_receptionRefToAvoidGc = my(Signals.class).receive(_portKeeper.port(), new Consumer<Integer>() { @Override public void consume(Integer port) {

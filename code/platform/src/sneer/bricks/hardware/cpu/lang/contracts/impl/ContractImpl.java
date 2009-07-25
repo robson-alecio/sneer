@@ -1,9 +1,9 @@
 package sneer.bricks.hardware.cpu.lang.contracts.impl;
 
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.lang.contracts.Disposable;
 
-class ContractImpl implements Contract {
+class ContractImpl implements WeakContract {
 
 	private Disposable _service;
 	@SuppressWarnings("unused")	private final Object _annexRefToAvoidGc;

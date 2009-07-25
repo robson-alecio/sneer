@@ -4,7 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
@@ -50,22 +50,21 @@ public class SignalsTest extends BrickTest {
 	public void receive() {
 		final StringBuilder received = new StringBuilder();
 
-		Register<String> register1 = _subject.newRegister(null);
-		Register<String> register2 = _subject.newRegister("hey");
+		Register<String> register = _subject.newRegister(null);
 
 		@SuppressWarnings("unused")
-		Object reception = _subject.receive(new Consumer<String>() { @Override public void consume(String value) {
+		WeakContract contract = register.output().addReceiver(new Consumer<String>() { @Override public void consume(String value) {
 			received.append(value);
-		}}, register1.output(), register2.output());
-		assertEquals("nullhey", received.toString());
+		}});
+		assertEquals("null", received.toString());
 
-		register1.setter().consume("foo");
-		register2.setter().consume("bar");
-		assertEquals("nullheyfoobar", received.toString());
+		register.setter().consume("foo");
+		register.setter().consume("bar");
+		assertEquals("nullfoobar", received.toString());
 
-		register1.setter().consume("baz1");
-		register2.setter().consume("baz2");
-		assertEquals("nullheyfoobarbaz1baz2", received.toString());
+		register.setter().consume("baz1");
+		register.setter().consume("baz2");
+		assertEquals("nullfoobarbaz1baz2", received.toString());
 	}
 
 	@Test
@@ -74,7 +73,7 @@ public class SignalsTest extends BrickTest {
 
 		Register<String> register = _subject.newRegister("hey");
 
-		Contract reception = _subject.receive(register.output(), new Consumer<String>() { @Override public void consume(String value) {
+		WeakContract reception = _subject.receive(register.output(), new Consumer<String>() { @Override public void consume(String value) {
 			received.append(value);
 		}});
 

@@ -4,7 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Latch;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.events.EventNotifier;
@@ -29,7 +29,7 @@ public class EventNotifiersTest extends BrickTest {
 		final EventNotifier<Object> notifier = my(EventNotifiers.class).newInstance();
 		final Latch pulseLatch = my(Threads.class).newLatch();
 		@SuppressWarnings("unused")
-		final Contract pulseContract = notifier.output().addPulseReceiver(pulseLatch);
+		final WeakContract pulseContract = notifier.output().addPulseReceiver(pulseLatch);
 		
 		notifier.notifyReceivers("foo");
 		

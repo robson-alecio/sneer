@@ -5,6 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.IOException;
 
 import sneer.bricks.hardware.clock.timer.Timer;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
@@ -19,9 +20,8 @@ import sneer.bricks.pulp.dyndns.updater.RedundantUpdateException;
 import sneer.bricks.pulp.dyndns.updater.Updater;
 import sneer.bricks.pulp.dyndns.updater.UpdaterException;
 import sneer.bricks.pulp.events.EventSource;
+import sneer.bricks.pulp.events.pulsers.Pulsers;
 import sneer.bricks.pulp.propertystore.PropertyStore;
-import sneer.bricks.pulp.reactive.Signals;
-import sneer.foundation.lang.Consumer;
 
 class DynDnsClientImpl implements DynDnsClient {
 
@@ -39,10 +39,10 @@ class DynDnsClientImpl implements DynDnsClient {
 
 	private State _state = new Happy();
 
-	@SuppressWarnings("unused")	private final Object _referenceToAvoidGc;
+	@SuppressWarnings("unused")	private final WeakContract _referenceToAvoidGc;
 
 	DynDnsClientImpl() {
-		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Object>() { @Override public void consume(Object ignored) {
+		_referenceToAvoidGc = my(Pulsers.class).receive(new Runnable() { @Override public void run() {
 			synchronized (_stateMonitor) {
 				_state = _state.react();
 			}

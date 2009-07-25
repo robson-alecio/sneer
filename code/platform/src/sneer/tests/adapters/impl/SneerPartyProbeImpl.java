@@ -10,7 +10,7 @@ import java.util.List;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.lang.Lang;
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.ram.iterables.Iterables;
@@ -43,7 +43,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	
 	static private final String MOCK_ADDRESS = "localhost";
 	private Collection<Object> _referenceToAvoidGc = new ArrayList<Object>();
-	@SuppressWarnings("unused")	private Contract _referenceToAvoicGc2;
+	@SuppressWarnings("unused")	private WeakContract _referenceToAvoicGc2;
 
 	@Override
 	public void setSneerPort(int port) {

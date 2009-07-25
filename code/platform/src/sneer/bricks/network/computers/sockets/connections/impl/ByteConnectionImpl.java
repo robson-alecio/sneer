@@ -5,7 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.IOException;
 import java.util.Arrays;
 
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
@@ -35,8 +35,8 @@ class ByteConnectionImpl implements ByteConnection {
 	private PacketScheduler _scheduler;
 	private Consumer<byte[]> _receiver;
 	
-	private Contract _refToAvoidGc;
-	private Contract _refToAvoidGc2;
+	private WeakContract _refToAvoidGc;
+	private WeakContract _refToAvoidGc2;
 
 
 	ByteConnectionImpl(String label, Contact contact) {

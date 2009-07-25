@@ -5,8 +5,8 @@ import static sneer.foundation.environments.Environments.my;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
-import sneer.bricks.pulp.reactive.Signals;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
+import sneer.bricks.pulp.events.pulsers.Pulsers;
 import sneer.bricks.pulp.reactive.collections.CollectionChange;
 import sneer.bricks.pulp.reactive.collections.CollectionSignal;
 import sneer.bricks.pulp.reactive.signalchooser.ListOfSignalsReceiver;
@@ -67,10 +67,10 @@ class SignalChooserReceiver<T> {
 	
 	private class ElementReceiver {
 		private boolean _isActive = false;
-		@SuppressWarnings("unused") private final Contract _referenceToAvoidGc;
+		@SuppressWarnings("unused") private final WeakContract _referenceToAvoidGc;
 
 		ElementReceiver(final T element) {
-			_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Object>(){ @Override public void consume(Object value) {
+			_referenceToAvoidGc = my(Pulsers.class).receive(new Runnable(){ @Override public void run() {
 				if (!_isActive) return;
 				_listOfSignalsReceiver.elementSignalChanged(element);
 			}}, signalChooser().signalsToReceiveFrom(element));

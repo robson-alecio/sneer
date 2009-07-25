@@ -1,7 +1,7 @@
 package spikes.sneer.bricks.skin.audio.mic.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.ram.arrays.ImmutableByteArray;
@@ -23,7 +23,7 @@ class MicImpl implements Mic {
 	private final RetrierManager _retriers = my(RetrierManager.class);
 	
 	private boolean _isOpenRequested;
-	private Contract _refToAvoidGc;
+	private WeakContract _refToAvoidGc;
 	
 	private Register<Boolean> _isOpen = my(Signals.class).newRegister(false);
 	private EventNotifier<ImmutableByteArray> _sound = my(EventNotifiers.class).newInstance();

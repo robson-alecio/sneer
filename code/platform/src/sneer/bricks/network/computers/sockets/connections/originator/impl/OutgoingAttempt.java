@@ -5,7 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.IOException;
 
 import sneer.bricks.hardware.clock.timer.Timer;
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
@@ -18,7 +18,7 @@ class OutgoingAttempt {
 	private final Network _network = my(Network.class);
 	private final ConnectionManager _connectionManager = my(ConnectionManager.class);
 	private final InternetAddress _address;
-	private final Contract _refToAvoidGc;
+	private final WeakContract _refToAvoidGc;
 
 	OutgoingAttempt(InternetAddress address) {
 		_address = address;

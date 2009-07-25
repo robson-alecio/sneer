@@ -1,7 +1,7 @@
 package sneer.bricks.pulp.reactive.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Latch;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.reactive.Signal;
@@ -18,7 +18,7 @@ class SignalUtilsImpl implements SignalUtils {
 	public <T> void waitForValue(Signal<T> signal, final T expected) {
 		final Latch latch = my(Threads.class).newLatch();
 		@SuppressWarnings("unused")
-		Contract reception = my(Signals.class).receive(signal, new Consumer<T>() { @Override public void consume(T value) {
+		WeakContract reception = my(Signals.class).receive(signal, new Consumer<T>() { @Override public void consume(T value) {
 			if (equalsWithNulls(expected, value))
 				latch.open();
 		}});
@@ -37,7 +37,7 @@ class SignalUtilsImpl implements SignalUtils {
 	public <T> void waitForElement(SetSignal<T> setSignal, final Predicate<T> predicate) {
 		final Latch latch = my(Threads.class).newLatch();
 		@SuppressWarnings("unused")
-		Contract reception = my(Signals.class).receive(setSignal, new Consumer<CollectionChange<T>>() { @Override public void consume(CollectionChange<T> change) {
+		WeakContract reception = my(Signals.class).receive(setSignal, new Consumer<CollectionChange<T>>() { @Override public void consume(CollectionChange<T> change) {
 			for (T element : change.elementsAdded())
 				if (predicate.evaluate(element)) latch.open();
 		}});

@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 import sneer.bricks.hardware.cpu.exceptions.Hiccup;
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
@@ -52,7 +52,7 @@ class WatchMeImpl implements WatchMe {
 
 	private Consumer<ImageDeltaPacket> _consumerToAvoidGc;
 
-	private Contract _refToAvoidGc;
+	private WeakContract _refToAvoidGc;
 
 	@Override
 	public EventSource<BufferedImage> screenStreamFor(final Seal publisher) {

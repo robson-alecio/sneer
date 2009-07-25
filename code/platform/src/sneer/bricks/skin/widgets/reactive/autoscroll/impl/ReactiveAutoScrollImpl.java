@@ -6,7 +6,7 @@ import java.awt.event.FocusAdapter;
 
 import javax.swing.JScrollPane;
 
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.main.synth.scroll.SynthScrolls;
@@ -21,7 +21,7 @@ public class ReactiveAutoScrollImpl implements ReactiveAutoScroll {
 		
 		final JScrollPane result = my(SynthScrolls.class).create();
 		
-		Contract reception = my(Signals.class).receive(eventSource, new Consumer<T>() {  @Override public void consume(final T change) {
+		WeakContract reception = my(Signals.class).receive(eventSource, new Consumer<T>() {  @Override public void consume(final T change) {
 			my(AutoScroll.class).runWithAutoscroll(result, new Runnable() {  @Override public void run() {
 				receiver.consume(change);
 			}});
@@ -31,10 +31,10 @@ public class ReactiveAutoScrollImpl implements ReactiveAutoScroll {
 		return result;
 	}
 
-	private void holdReceivers(JScrollPane scroll, final Contract reception) {
+	private void holdReceivers(JScrollPane scroll, final WeakContract reception) {
 		scroll.addFocusListener(new FocusAdapter(){
 			@SuppressWarnings({ "unused" })
-			Contract _refToAvoidGc = reception;
+			WeakContract _refToAvoidGc = reception;
 		});
 	}
 }

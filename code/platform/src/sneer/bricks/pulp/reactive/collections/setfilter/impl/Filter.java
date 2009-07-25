@@ -5,7 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.ram.ref.weak.keeper.WeakReferenceKeeper;
 import sneer.bricks.pulp.reactive.ReactivePredicate;
 import sneer.bricks.pulp.reactive.Signal;
@@ -22,9 +22,9 @@ final class Filter<T> {
 	private final ReactivePredicate<T> _predicate;	
 	private final SetRegister<T> _output;
 
-	private final Map<T, Contract> _contractsByElement = new HashMap<T, Contract>();
+	private final Map<T, WeakContract> _contractsByElement = new HashMap<T, WeakContract>();
 
-	@SuppressWarnings("unused") private final Contract _contractOnInput;
+	@SuppressWarnings("unused") private final WeakContract _contractOnInput;
 
 	Filter(SetSignal<T> input, ReactivePredicate<T> predicate) {
 		_input = input;
@@ -60,7 +60,7 @@ final class Filter<T> {
 
 	void add(final T element) {
 		Signal<Boolean> signal = _predicate.evaluate(element);
-		Contract contract = signal.addReceiver(new Consumer<Boolean>() { @Override public void consume(Boolean value) {
+		WeakContract contract = signal.addReceiver(new Consumer<Boolean>() { @Override public void consume(Boolean value) {
 			if (value)
 				_output.add(element);
 			else

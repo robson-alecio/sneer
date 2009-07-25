@@ -8,7 +8,7 @@ import org.jmock.Expectations;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
@@ -68,7 +68,7 @@ public class ListSorterTest extends BrickTest {
 		src.remove(_60);
 
 		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), _chooser);
-		@SuppressWarnings("unused")	Contract contract = sortedList.addListReceiver(new Consumer<ListChange<Signal<Integer>>>(){ @Override public void consume(ListChange<Signal<Integer>> value) {
+		@SuppressWarnings("unused")	WeakContract contract = sortedList.addListReceiver(new Consumer<ListChange<Signal<Integer>>>(){ @Override public void consume(ListChange<Signal<Integer>> value) {
 			value.accept(_visitor);
 		}});
 

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.ram.ref.weak.keeper.WeakReferenceKeeper;
 import sneer.bricks.pulp.reactive.collections.CollectionChange;
 import sneer.bricks.pulp.reactive.collections.CollectionSignal;
@@ -30,7 +30,7 @@ final class ReactiveSorter<T> implements ListOfSignalsReceiver<T>{
 	private final SignalChooser<T> _chooser;	
 	private final Comparator<T> _comparator;
 	private final ListRegister<T> _sorted;
-	@SuppressWarnings("unused")	private final Contract _contractToAvoidGc;
+	@SuppressWarnings("unused")	private final WeakContract _contractToAvoidGc;
 	
 	private final Object _monitor = new Object();
 	

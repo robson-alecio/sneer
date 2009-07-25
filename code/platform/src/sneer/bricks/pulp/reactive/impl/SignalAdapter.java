@@ -1,7 +1,7 @@
 package sneer.bricks.pulp.reactive.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.ram.ref.weak.keeper.WeakReferenceKeeper;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
@@ -11,7 +11,7 @@ import sneer.foundation.lang.Functor;
 class SignalAdapter<IN, OUT> {
 
 	@SuppressWarnings("unused")	private final Object _refToAvoidGC;
-	private Contract _refToAvoidGC2;
+	private WeakContract _refToAvoidGC2;
 
 	private Register<OUT> _register = new RegisterImpl<OUT>(null);
 

@@ -1,13 +1,13 @@
 package sneer.bricks.hardware.cpu.threads.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Latch;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
-import sneer.bricks.pulp.events.EventNotifiers;
-import sneer.bricks.pulp.events.PulseSource;
-import sneer.bricks.pulp.events.Pulser;
+import sneer.bricks.pulp.events.pulsers.PulseSource;
+import sneer.bricks.pulp.events.pulsers.Pulser;
+import sneer.bricks.pulp.events.pulsers.Pulsers;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
 import sneer.foundation.testsupport.Daemon;
@@ -16,7 +16,7 @@ import sneer.foundation.testsupport.Daemon;
 class ThreadsImpl implements Threads {
 
 	private final Latch _crash = newLatch();
-	private final Pulser _crashingPulser = my(EventNotifiers.class).newPulser();
+	private final Pulser _crashingPulser = my(Pulsers.class).newInstance();
 
 	@Override
 	public void waitWithoutInterruptions(Object object) {
@@ -67,7 +67,7 @@ class ThreadsImpl implements Threads {
 	}
 
 	@Override
-	public Contract startStepping(Steppable steppable) {
+	public WeakContract startStepping(Steppable steppable) {
 		Stepper result = new Stepper(steppable);
 		startDaemon(inferThreadName(), result);
 		return result.contract();

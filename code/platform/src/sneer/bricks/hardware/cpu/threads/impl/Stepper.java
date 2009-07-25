@@ -4,7 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import java.lang.ref.WeakReference;
 
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.lang.contracts.Disposable;
 import sneer.bricks.hardware.cpu.lang.contracts.Contracts;
 import sneer.bricks.hardware.cpu.threads.Steppable;
@@ -34,7 +34,7 @@ class Stepper implements Runnable, Disposable {
 		my(Logger.class).log("Stepper {} has been disposed.", _stepperToString);
 	}
 
-	Contract contract() {
+	WeakContract contract() {
 		return my(Contracts.class).newContractFor(this, _steppable.get());
 	}
 

@@ -4,7 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Latch;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
@@ -45,7 +45,7 @@ public class ThreadsTest extends BrickTest {
 		
 		final Latch crashingLatch = my(Threads.class).newLatch();
 		@SuppressWarnings("unused")
-		Contract crashingContract = my(Threads.class).crashing().addPulseReceiver(crashingLatch);
+		WeakContract crashingContract = my(Threads.class).crashing().addPulseReceiver(crashingLatch);
 		
 		Thread thread = new Thread() { @Override public void run(){
 			_subject.crashAllThreads();

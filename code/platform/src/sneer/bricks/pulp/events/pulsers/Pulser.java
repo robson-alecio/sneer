@@ -1,4 +1,5 @@
-package sneer.bricks.pulp.events;
+package sneer.bricks.pulp.events.pulsers;
+
 
 public interface Pulser {
 

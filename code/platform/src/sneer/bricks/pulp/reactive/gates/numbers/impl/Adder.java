@@ -1,11 +1,12 @@
 package sneer.bricks.pulp.reactive.gates.numbers.impl;
 
 import static sneer.foundation.environments.Environments.my;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.ram.ref.weak.keeper.WeakReferenceKeeper;
+import sneer.bricks.pulp.events.pulsers.Pulsers;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
-import sneer.foundation.lang.Consumer;
 
 class Adder {
 
@@ -13,13 +14,13 @@ class Adder {
 	private final Signal<Integer> _a;
 	private final Signal<Integer> _b;
 
-	@SuppressWarnings("unused")	private final Object _referenceToAvoidGc;
+	@SuppressWarnings("unused")	private final WeakContract _referenceToAvoidGc;
 
 	Adder(Signal<Integer> a, Signal<Integer> b) {
 		_a = a;
 		_b = b;
 
-		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Integer>() {@Override public void consume(Integer newValueIgnored) {
+		_referenceToAvoidGc = my(Pulsers.class).receive(new Runnable() {@Override public void run() {
 			refresh();
 		}}, a, b);
 	}

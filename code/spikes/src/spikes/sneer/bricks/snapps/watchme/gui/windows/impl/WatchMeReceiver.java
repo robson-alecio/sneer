@@ -14,7 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.pulp.events.EventSource;
@@ -36,7 +36,7 @@ class WatchMeReceiver{
 	private Widget<JFrame> _windowWidget;
 	private JLabel _imageLabel = new JLabel();
 
-	private Contract _screensReception;
+	private WeakContract _screensReception;
 
 	WatchMeReceiver(Contact contact) {
 		_contact = contact;

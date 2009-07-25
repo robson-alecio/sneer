@@ -15,7 +15,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.IO;
@@ -28,7 +28,7 @@ class SoundPlayerImpl implements SoundPlayer, Steppable {
 
 	private final Audio _audio = my(Audio.class);
 	private final List<URL> urls = Collections.synchronizedList(new ArrayList<URL>());
-	private Contract _stepperContract;
+	private WeakContract _stepperContract;
 
 	@Override
 	public void play(URL url) {

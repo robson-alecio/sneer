@@ -7,14 +7,14 @@ import java.io.ByteArrayOutputStream;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import spikes.sneer.bricks.skin.audio.kernel.Audio;
 class Recorder {
 	
 	static private ByteArrayOutputStream _buffer;
-	private static Contract _refToAvoidGc;
+	private static WeakContract _refToAvoidGc;
 	private static TargetDataLine _targetDataLine;
 
 	static void stop() {

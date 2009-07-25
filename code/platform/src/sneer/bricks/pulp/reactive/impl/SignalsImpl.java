@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.reactive.impl;
 
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
@@ -38,12 +38,7 @@ class SignalsImpl implements Signals {
 	}
 
 	@Override
-	public <T> Contract receive(Consumer<? super T> receiver, EventSource<? extends T>... sources) {
-		return new UmbrellaContract(receiver, sources);
-	}
-
-	@Override
-	public <T> Contract receive(EventSource<? extends T> source, Consumer<? super T> receiver) {
+	public <T> WeakContract receive(EventSource<? extends T> source, Consumer<? super T> receiver) {
 		return source.addReceiver(receiver);
 	}
 }

@@ -1,13 +1,14 @@
 ﻿TASKS
 =========
 
-	- [Klaus] Revise Threads#waitUntilCrash in the light of Threads#crashing
-
 	- [Klaus] Revise garbage collectable handles
 		- Stepper - Consider weak referencing it from the daemon. Doesnt Work. Remove Contract.
 		- Timer
 		- TupleSpace subscription
 		- Collection Signals Reception
+
+	- [Klaus] Thread leaks in sneer (not spikes) tests - Fix
+		- Implement ThreadsImpl.crashAllThreads. Move thread killing logic from TestThatMightUseResources.
 	
 	- [Klaus] Revise entire package structure.  
 	
@@ -42,9 +43,6 @@
 		- Gui become a text field (ask Sandro for help)
 		- Make persistent (ask Sandro for help).
 	
-	- [Igor] Thread leaks in sneer (not spikes) tests - Fix
-		- Implement ThreadsImpl.crashAllThreads. Move thread killing logic from TestThatMightUseResources.
-
 	- [Igor] ConnectionManager - tests
 
         

@@ -15,8 +15,6 @@
 
 	- [Sandro] Rodrigo's SSH Public Key - Add to your git repository
 
-	- [Sandro] Webstart point to last STABLE build. ;)
-
 	- [Sandro] Sneer Responsiveness
 		- Uncomment this line in SnappStarterImpl: //my(GuiThread.class).registerThreadThatShouldNotWaitForGui(Thread.currentThread());
 			run Sneer and fix all Exceptions.

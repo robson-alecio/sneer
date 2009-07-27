@@ -1,7 +1,9 @@
 package sneer.bricks.software.diff.impl;
 
+import java.util.AbstractList;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import name.fraser.neil.plaintext.diff_match_patch;
 import name.fraser.neil.plaintext.diff_match_patch.Diff;
@@ -12,22 +14,22 @@ import sneer.foundation.lang.exceptions.NotImplementedYet;
 class TextComparatorImpl implements TextComparator{
 	
 	@Override
-	public Iterator<TextBlock> diff(String text1, String text2){
+	public List<TextBlock> diff(String text1, String text2){
 		return diff(text1, text2, 32);
 	}
 	
 	@Override
-	public Iterator<TextBlock> semanticCleanup(Iterator<TextBlock> iterator){
-		if(!(iterator instanceof TextBlockIterator)) throw new NotImplementedYet();
+	public List<TextBlock> semanticCleanup(List<TextBlock> iterator){
+		if(!(iterator instanceof TextBlockList)) throw new NotImplementedYet();
 		
-		LinkedList<Diff> diffs = ((TextBlockIterator) iterator)._diffs;
+		LinkedList<Diff> diffs = ((TextBlockList) iterator)._diffs;
 		new diff_match_patch().diff_cleanupSemantic(diffs);
 		
-		return new TextBlockIterator(diffs);
+		return new TextBlockList(diffs);
 	}
 	
 	@Override
-	public Iterator<TextBlock> diff(String text1, String text2, int dualThreshold){
+	public List<TextBlock> diff(String text1, String text2, int dualThreshold){
 		diff_match_patch delegate = new diff_match_patch();
 		delegate.Diff_DualThreshold = (short) dualThreshold;
 		LinkedList<Diff> diffs = delegate.diff_main(text1, text2);
@@ -35,9 +37,12 @@ class TextComparatorImpl implements TextComparator{
 	}
 	
 	@Override
-	public String toPrettyHtml(Iterator<TextBlock> blocksIterator){
+	public String toPrettyHtml(List<TextBlock> blocks){
 	    StringBuilder html = new StringBuilder();
 	    html.append("<html><body>");
+	    
+	    Iterator<TextBlock> blocksIterator = blocks.iterator();
+	    
 	    while(blocksIterator.hasNext()){
 	    	TextBlock block = blocksIterator.next();
 	    	String text = block.content().replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\n", "&para;<BR>");
@@ -57,22 +62,19 @@ class TextComparatorImpl implements TextComparator{
 	    return html.toString();
 	}
 	
-	private Iterator<TextBlock> adaptIterator( LinkedList<name.fraser.neil.plaintext.diff_match_patch.Diff> diffs) {
-		return new TextBlockIterator(diffs);
+	private List<TextBlock> adaptIterator( LinkedList<name.fraser.neil.plaintext.diff_match_patch.Diff> diffs) {
+		return new TextBlockList(diffs);
 	}
 	
-	private class TextBlockIterator implements Iterator<TextBlock>{
+	private class TextBlockList extends AbstractList<TextBlock>{
 		private final LinkedList<name.fraser.neil.plaintext.diff_match_patch.Diff> _diffs;
-		private final Iterator<name.fraser.neil.plaintext.diff_match_patch.Diff> _iterator;
 		
-		public TextBlockIterator(LinkedList<name.fraser.neil.plaintext.diff_match_patch.Diff> diffs) {
+		TextBlockList(LinkedList<name.fraser.neil.plaintext.diff_match_patch.Diff> diffs) {
 			_diffs = diffs;
-			_iterator = _diffs.iterator();
 		}
-		
-		@Override public boolean hasNext() {return _iterator.hasNext(); }
-		@Override public TextBlock next() {return new TextBlockImpl(_iterator.next()); }
-		@Override public void remove() { _iterator.remove(); }
+
+		@Override public TextBlock get(int index) { return new TextBlockImpl(_diffs.get(index)); }
+		@Override public int size() {return _diffs.size();}
 	}
 	
 	private class TextBlockImpl implements TextBlock{

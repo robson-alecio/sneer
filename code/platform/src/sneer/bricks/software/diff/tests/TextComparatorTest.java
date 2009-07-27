@@ -130,7 +130,7 @@ public class TextComparatorTest extends BrickTest {
 	}
 
 	private void check(String text1, String text2) {
-		Iterator<TextBlock> iterator = _subject.diff(text1, text2);
+		List<TextBlock> iterator = _subject.diff(text1, text2);
 //		System.out.println(_subject.toPrettyHtml(iterator));
 		check(iterator);
 	}
@@ -139,7 +139,8 @@ public class TextComparatorTest extends BrickTest {
 		check(_subject.diff(text1, text2, dualThreshold));
 	}
 
-	private void check(Iterator<TextBlock> iterator) {
+	private void check(List<TextBlock> list) {
+		Iterator<TextBlock> iterator = list.iterator();
 		for (Object expectation[] : _expectations) {
 			TextBlock diff = iterator.next(); 
 			assertEquals(expectation[0], diff.type());

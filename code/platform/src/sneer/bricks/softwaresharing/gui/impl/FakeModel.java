@@ -20,18 +20,18 @@ class FakeModel {
 		List<BrickVersion> versions = new ArrayList<BrickVersion>();
 		List<BrickInfo> infos = new ArrayList<BrickInfo>();
 
-		files.add(newFileVersion("3333333\nadsafimww\n222222\n555555\n6666666", "adsafimww\n222222\n3333333\n44444444\n555555", 
-				"MODIFIED", sneer.bricks.softwaresharing.FileVersion.Status.MODIFIED));
-		
+		files.add(newFileVersion(FakeContent.first(), FakeContent.second(), 
+				"Clockjava", sneer.bricks.softwaresharing.FileVersion.Status.MODIFIED));
+
 		files.add(newFileVersion("adsafimww\n222222\n3333333\n44444444\n555555", "adsafimww\n222222\n3333333\n44444444\n555555", 
-				"CURRENT", sneer.bricks.softwaresharing.FileVersion.Status.CURRENT));
-		
+				"impl/ClockImpl.java", sneer.bricks.softwaresharing.FileVersion.Status.CURRENT));
+
 		files.add(newFileVersion("adsafimww\n222222\n3333333\n44444444\n555555", "", 
-				"MISSING", sneer.bricks.softwaresharing.FileVersion.Status.MISSING));
+				"impl/lib/mylib.jar", sneer.bricks.softwaresharing.FileVersion.Status.MISSING));
 
 		files.add(newFileVersion("", "adsafimww\n222222\n3333333\n44444444\n555555", 
-				"EXTRA", sneer.bricks.softwaresharing.FileVersion.Status.EXTRA));
-		
+				"impl/lib/otherlib.jar", sneer.bricks.softwaresharing.FileVersion.Status.EXTRA));
+
 		versions.add(newBrickVersion(Status.CURRENT, 1, files)); 
 		versions.add(newBrickVersion(Status.DIVERGING, 2, files)); 
 		versions.add(newBrickVersion(Status.DIFFERENT, 20, files)); 
@@ -47,7 +47,7 @@ class FakeModel {
 		infos.add(newBrickInfo("BrickInfo9", versions, BrickInfo.Status.REJECTED));
 		infos.add(newBrickInfo("BrickInfo1", versions, BrickInfo.Status.NEW));
 		infos.add(newBrickInfo("BrickInfo6", versions, BrickInfo.Status.DIFFERENT));
-		
+
 		return infos;
 	}
 
@@ -103,5 +103,40 @@ class FakeModel {
 			@Override public List<BrickVersion> versions() { return versions;}
 			@Override public BrickInfo.Status status() { return status; }
 		};
+	}
+}
+
+class FakeContent{
+	
+	static String first(){
+		return 	"" + 			"package sneer.bricks.hardware.clock;" +
+		
+					"\n\n" + 	"import sneer.bricks.pulp.reactive.Signal;" +
+					"\n" + 		"import sneer.foundation.brickness.Brick;" +
+
+					"\n" + 		"@Brick" +
+					"\n" + 		"public interface Clock {"+
+			
+					"\n\n\t" + 	"void stop();" +
+					"\n\t" + 	"Signal<Date> time();" +
+					"\n\t" + 	"void advanceTime(long deltaMillis);" +
+
+					"\n\n" + 	"}";
+	}
+
+	static String second(){
+		return 	"" + 			"package sneer.bricks.hardware.clock;" +
+		
+					"\n\n" + 	"import sneer.bricks.pulp.reactive.Signal;" +
+					"\n" + 		"import sneer.foundation.brickness.Brick;" +
+
+					"\n" + 		"@Brick" +
+					"\n" + 		"public interface Clock {"+
+			
+					"\n\n\t" + 	"Signal<Long> time();" +
+					"\n\t" + 		"void advanceTimeTo(long absoluteTimeMillis);" +
+					"\n\t" + 		"void advanceTime(long deltaMillis);" +
+
+					"\n\n" + 	"}";
 	}
 }

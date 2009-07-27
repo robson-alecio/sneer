@@ -10,6 +10,8 @@
 		- Collection Signals Reception
 	
 	- [Klaus] Revise entire package structure.  
+	
+	- [Sandro] Hudson Linux Reboot
 
 	- [Sandro] Rodrigo's SSH Public Key - Add to your git repository
 

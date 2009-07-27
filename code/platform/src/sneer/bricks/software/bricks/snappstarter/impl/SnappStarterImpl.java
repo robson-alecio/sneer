@@ -3,9 +3,11 @@ package sneer.bricks.software.bricks.snappstarter.impl;
 import static sneer.foundation.environments.Environments.my;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.software.bricks.finder.BrickFinder;
 import sneer.bricks.software.bricks.snappstarter.Snapp;
 import sneer.bricks.software.bricks.snappstarter.SnappStarter;
@@ -13,12 +15,10 @@ import sneer.bricks.software.bricks.snappstarter.SnappStarter;
 class SnappStarterImpl implements SnappStarter {
 
 	private final ClassLoader _apiClassLoader = SnappStarter.class.getClassLoader();
-	private final Collection<Object> _referenceToAvoidGC = new ArrayList<Object>();
+	private final Collection<Object> _referenceToAvoidGC = Collections.synchronizedSet(new HashSet<Object>());
 
 	@Override
 	public void startSnapps() {
-		
-		//my(GuiThread.class).registerThreadThatShouldNotWaitForGui(Thread.currentThread());
 		
 		try {
 			tryToStartSnapps();
@@ -34,8 +34,10 @@ class SnappStarterImpl implements SnappStarter {
 		}
 	}
 
-	private void startAndKeep(Class<?> brick) {
-		_referenceToAvoidGC.add(my(brick));
+	private void startAndKeep(final Class<?> brick) {
+		my(Threads.class).startDaemon("Starting Snapp: " + brick.getName(), new Runnable() { @Override public void run() {
+			_referenceToAvoidGC.add(my(brick));
+		}});
 	}
 
 	private boolean isSnapp(Class<?> brick) {

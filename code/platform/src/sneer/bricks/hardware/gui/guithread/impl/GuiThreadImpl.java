@@ -66,11 +66,6 @@ class GuiThreadImpl implements GuiThread {
 		}};
 	}
 
-	@Override
-	public void registerThreadThatShouldNotWaitForGui(Thread thread) {
-		_threadsThatShouldNotWaitForGui.add(thread);
-	}
-	
 	private void assertThreadCanWaitForGui() {
 		if (_threadsThatShouldNotWaitForGui.contains(Thread.currentThread())) throw new IllegalStateException("The current thread should not have to wait for the GUI thread."); 
 	}

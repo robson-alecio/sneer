@@ -12,6 +12,4 @@ public interface GuiThread {
 	void assertInGuiThread();
 	void assertNotInGuiThread();
 	
-	void registerThreadThatShouldNotWaitForGui(Thread currentThread);
-
 }

@@ -5,12 +5,16 @@ import static sneer.foundation.environments.Environments.my;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -33,6 +37,7 @@ import sneer.bricks.softwaresharing.gui.MeTooGui;
 
 class MeTooGuiImpl extends JFrame implements MeTooGui{
 
+	private static final JToggleButton _meTooButton = new JToggleButton("MeToo");
 	private final JTree _tree = new JTree();
 	private final JList _files = new JList();
 	private final TextDiffPanel _diffPanel = my(TextDiffPanels.class).newPanel();
@@ -41,6 +46,7 @@ class MeTooGuiImpl extends JFrame implements MeTooGui{
 	private final int _OFFSET_Y;
 	private final int _HEIGHT;
 	private final int _X;
+	protected Object _lastSelectedNode;
 	
 	MeTooGuiImpl(){
 		super("MeToo");
@@ -68,12 +74,36 @@ class MeTooGuiImpl extends JFrame implements MeTooGui{
 	
 	private void initListeners() {
 		_tree.addTreeSelectionListener(new TreeSelectionListener(){ @Override public void valueChanged(TreeSelectionEvent event) {
-			tryShowFiles();	
+			_lastSelectedNode = event.getPath().getLastPathComponent();
+			tryShowFiles();
+			adjustToolbar();
 		}});
 	
 		_files.addListSelectionListener(new ListSelectionListener(){ @Override public void valueChanged(ListSelectionEvent event) {
 			tryCompare();
 		}});
+		
+		_meTooButton.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
+			BrickVersion version = selectedBrickVersion();
+			version.setStagedForExecution(!version.isStagedForExecution());
+			_meTooButton.setSelected(version.isStagedForExecution());
+		}});
+	}
+
+	protected void adjustToolbar() {
+		_meTooButton.setSelected(false);
+		_meTooButton.setEnabled(false);
+		
+		if(!(_lastSelectedNode instanceof BrickVersionTreeNode))
+			return;
+		
+		BrickVersion version = selectedBrickVersion();
+		_meTooButton.setEnabled(true);
+		_meTooButton.setSelected(version.isStagedForExecution());
+	}
+
+	private BrickVersion selectedBrickVersion() {
+		return (BrickVersion) ((BrickVersionTreeNode) _lastSelectedNode).sourceObject();
 	}
 
 	private void tryShowFiles() {
@@ -115,6 +145,10 @@ class MeTooGuiImpl extends JFrame implements MeTooGui{
 		
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
+		
+		JToolBar toolbar = new JToolBar();
+		contentPane.add(toolbar, BorderLayout.NORTH);
+		toolbar.add(_meTooButton);
 		
 		JScrollPane scrollTree = my(SynthScrolls.class).create();
 		JScrollPane scrollFiles = my(SynthScrolls.class).create();

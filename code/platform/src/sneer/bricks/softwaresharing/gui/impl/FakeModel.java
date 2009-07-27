@@ -17,7 +17,6 @@ class FakeModel {
 
 	static List<BrickInfo> bricks(){
 		List<FileVersion> files = new ArrayList<FileVersion>();
-		List<BrickVersion> versions = new ArrayList<BrickVersion>();
 		List<BrickInfo> infos = new ArrayList<BrickInfo>();
 
 		files.add(newFileVersion(FakeContent.first(), FakeContent.second(), 
@@ -32,23 +31,27 @@ class FakeModel {
 		files.add(newFileVersion("", "adsafimww\n222222\n3333333\n44444444\n555555", 
 				"impl/lib/otherlib.jar", sneer.bricks.softwaresharing.FileVersion.Status.EXTRA));
 
+		infos.add(newBrickInfo("BrickInfo5", newVersions(files), BrickInfo.Status.DIFFERENT));
+		infos.add(newBrickInfo("BrickInfo2", newVersions(files), BrickInfo.Status.NEW));
+		infos.add(newBrickInfo("BrickInfo10", newVersions(files), BrickInfo.Status.REJECTED));
+		infos.add(newBrickInfo("BrickInfo8", newVersions(files), BrickInfo.Status.DIVERGING));
+		infos.add(newBrickInfo("BrickInfo4", newVersions(files), BrickInfo.Status.CURRENT));
+		infos.add(newBrickInfo("BrickInfo7", newVersions(files), BrickInfo.Status.DIVERGING));
+		infos.add(newBrickInfo("BrickInfo3", newVersions(files), BrickInfo.Status.CURRENT));
+		infos.add(newBrickInfo("BrickInfo9", newVersions(files), BrickInfo.Status.REJECTED));
+		infos.add(newBrickInfo("BrickInfo1", newVersions(files), BrickInfo.Status.NEW));
+		infos.add(newBrickInfo("BrickInfo6", newVersions(files), BrickInfo.Status.DIFFERENT));
+
+		return infos;
+	}
+
+	private static List<BrickVersion> newVersions(List<FileVersion> files) {
+		List<BrickVersion> versions = new ArrayList<BrickVersion>();
 		versions.add(newBrickVersion(Status.CURRENT, 1, files)); 
 		versions.add(newBrickVersion(Status.DIVERGING, 2, files)); 
 		versions.add(newBrickVersion(Status.DIFFERENT, 20, files)); 
-		versions.add(newBrickVersion(Status.REJECTED, 3, files)); 
-
-		infos.add(newBrickInfo("BrickInfo5", versions, BrickInfo.Status.DIFFERENT));
-		infos.add(newBrickInfo("BrickInfo2", versions, BrickInfo.Status.NEW));
-		infos.add(newBrickInfo("BrickInfo10", versions, BrickInfo.Status.REJECTED));
-		infos.add(newBrickInfo("BrickInfo8", versions, BrickInfo.Status.DIVERGING));
-		infos.add(newBrickInfo("BrickInfo4", versions, BrickInfo.Status.CURRENT));
-		infos.add(newBrickInfo("BrickInfo7", versions, BrickInfo.Status.DIVERGING));
-		infos.add(newBrickInfo("BrickInfo3", versions, BrickInfo.Status.CURRENT));
-		infos.add(newBrickInfo("BrickInfo9", versions, BrickInfo.Status.REJECTED));
-		infos.add(newBrickInfo("BrickInfo1", versions, BrickInfo.Status.NEW));
-		infos.add(newBrickInfo("BrickInfo6", versions, BrickInfo.Status.DIFFERENT));
-
-		return infos;
+		versions.add(newBrickVersion(Status.REJECTED, 3, files));
+		return versions;
 	}
 
 	private static FileVersion newFileVersion(final String contents, final String currentContents, 

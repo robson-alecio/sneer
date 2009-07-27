@@ -75,4 +75,11 @@ class BrickInfoTreeNode extends AbstractTreeNodeWrapper<BrickVersion> {
 		return _brickInfo.versions(); 
 	}
 
+	boolean isBrickStagedForExecution() {
+		for (BrickVersion version : _brickInfo.versions()) 
+			if(version.isStagedForExecution())
+				return true;
+			
+		return false;
+	}
 }

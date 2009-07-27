@@ -1,17 +1,17 @@
 package sneer.bricks.software.diff;
 
-import java.util.Iterator;
+import java.util.List;
 
 import sneer.foundation.brickness.Brick;
 
 @Brick
 public interface TextComparator {
 
-	Iterator<TextBlock> diff(String text1, String text2);
-	Iterator<TextBlock> diff(String text1, String text2, int dualThreshold);
+	List<TextBlock> diff(String text1, String text2);
+	List<TextBlock> diff(String text1, String text2, int dualThreshold);
 
-	Iterator<TextBlock> semanticCleanup(Iterator<TextBlock> iterator);
-	String toPrettyHtml(Iterator<TextBlock> blocksIterator);
+	List<TextBlock> semanticCleanup(List<TextBlock> iterator);
+	String toPrettyHtml(List<TextBlock> blocksIterator);
 
 	public interface TextBlock {
 		TextBlockType type();

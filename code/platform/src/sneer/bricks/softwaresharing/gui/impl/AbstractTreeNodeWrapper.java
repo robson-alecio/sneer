@@ -13,7 +13,6 @@ abstract class AbstractTreeNodeWrapper<CHILD> implements TreeNode{
 
 	private final Object _source;
 	protected final TreeNode _parent;
-	protected ImageIcon _icon;
 
 	AbstractTreeNodeWrapper(TreeNode parent, Object source){
 		_parent = parent;
@@ -46,7 +45,7 @@ abstract class AbstractTreeNodeWrapper<CHILD> implements TreeNode{
 		}
 	}
 	
-	public ImageIcon getIcon() { return _icon; }
+	public abstract ImageIcon getIcon();
 
 	protected abstract List<CHILD> listChildren();
 	protected abstract AbstractTreeNodeWrapper<CHILD> wrapChild(int childIndex);

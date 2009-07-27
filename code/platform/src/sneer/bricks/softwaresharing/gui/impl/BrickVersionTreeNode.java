@@ -35,22 +35,21 @@ class BrickVersionTreeNode extends AbstractTreeNodeWrapper<String> {
 		_brickVersion = brickVersion;
 		
 		_toString = _ddMMyyHHmmss.format(new Date(_brickVersion.publicationDate())) + " (users = " + usersCount() + ")";
-		
-		if(brickVersion.status()==Status.DIFFERENT){
-			_icon = _differentVersion;
-			return;
-		}
-		if(brickVersion.status()==Status.DIVERGING){
-			_icon = _divergingVersion;
-			return;
-		}
-		if(brickVersion.status()==Status.REJECTED){
-			_icon = _rejectedVersion;
-			return;
-		}
-		_icon = _currentVersion;
 	}
 
+	@Override public ImageIcon getIcon() {
+		if(_brickVersion.status()==Status.DIFFERENT)
+			return _differentVersion;
+
+		if(_brickVersion.status()==Status.DIVERGING)
+			return _divergingVersion;
+
+		if(_brickVersion.status()==Status.REJECTED)
+			return _rejectedVersion;
+
+		return _currentVersion;
+	}
+	
 	private int usersCount() {
 		return _brickVersion.unknownUsers() + _brickVersion.knownUsers().size();
 	}

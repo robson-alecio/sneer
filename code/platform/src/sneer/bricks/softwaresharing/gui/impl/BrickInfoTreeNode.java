@@ -31,27 +31,23 @@ class BrickInfoTreeNode extends AbstractTreeNodeWrapper<BrickVersion> {
 		super(parent, brickInfo);
 		_brickInfo = brickInfo;
 		
-		if(_brickInfo.status() == Status.DIFFERENT ) {
-			_icon = _differentBrick;
-			return;
-		}		
+		getIcon();
+	}
+
+	@Override public ImageIcon getIcon() {
+		if(_brickInfo.status() == Status.DIFFERENT ) 
+			return _differentBrick;
 		
-		if(_brickInfo.status() == Status.DIVERGING ) {
-			_icon = _divergingBrick;
-			return;
-		}
+		if(_brickInfo.status() == Status.DIVERGING )
+			return _divergingBrick;
 		
-		if(_brickInfo.status() == Status.NEW ) {
-			_icon = _newBrick;
-			return;
-		}
+		if(_brickInfo.status() == Status.NEW ) 
+			return  _newBrick;
 		
-		if(_brickInfo.status() == Status.REJECTED ) {
-			_icon = _rejectedBrick;
-			return;
-		}
+		if(_brickInfo.status() == Status.REJECTED ) 
+			return _rejectedBrick;
 		
-		_icon = _currentBrick;
+		return _currentBrick;
 	}
 	
 	@Override public String toString() {  return _brickInfo.name(); }

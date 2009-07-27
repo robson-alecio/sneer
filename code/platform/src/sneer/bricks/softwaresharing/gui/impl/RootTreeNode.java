@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+
 import sneer.bricks.softwaresharing.BrickInfo;
 
 class RootTreeNode extends AbstractTreeNodeWrapper<BrickInfo> {
@@ -31,4 +33,6 @@ class RootTreeNode extends AbstractTreeNodeWrapper<BrickInfo> {
 	@Override protected AbstractTreeNodeWrapper wrapChild(int childIndex) {
 		return new BrickInfoTreeNode(this, listChildren().get(childIndex));
 	}
+
+	@Override public ImageIcon getIcon() { return null; }
 }

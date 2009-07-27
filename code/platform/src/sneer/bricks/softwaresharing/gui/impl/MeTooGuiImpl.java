@@ -33,11 +33,13 @@ import sneer.bricks.snapps.diff.text.gui.TextDiffPanels;
 import sneer.bricks.snapps.system.log.gui.LogConsole;
 import sneer.bricks.softwaresharing.BrickVersion;
 import sneer.bricks.softwaresharing.FileVersion;
+import sneer.bricks.softwaresharing.BrickVersion.Status;
 import sneer.bricks.softwaresharing.gui.MeTooGui;
 
 class MeTooGuiImpl extends JFrame implements MeTooGui{
 
 	private static final JToggleButton _meTooButton = new JToggleButton("MeToo");
+	private static final JToggleButton _rejectButton = new JToggleButton("Reject");
 	private final JTree _tree = new JTree();
 	private final JList _files = new JList();
 	private final TextDiffPanel _diffPanel = my(TextDiffPanels.class).newPanel();
@@ -87,19 +89,36 @@ class MeTooGuiImpl extends JFrame implements MeTooGui{
 			BrickVersion version = selectedBrickVersion();
 			version.setStagedForExecution(!version.isStagedForExecution());
 			_meTooButton.setSelected(version.isStagedForExecution());
+			_tree.repaint();
+		}});
+		
+		_rejectButton.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
+			BrickVersion version = selectedBrickVersion();
+			version.setRejected(version.status()!=Status.REJECTED);
+			_rejectButton.setSelected(version.status()==Status.REJECTED);
+			_tree.repaint();
 		}});
 	}
 
 	protected void adjustToolbar() {
 		_meTooButton.setSelected(false);
 		_meTooButton.setEnabled(false);
+		_rejectButton.setSelected(false);
+		_rejectButton.setEnabled(false);
 		
 		if(!(_lastSelectedNode instanceof BrickVersionTreeNode))
 			return;
 		
 		BrickVersion version = selectedBrickVersion();
+		
+		if(version.status()==Status.CURRENT)
+			return;
+		
 		_meTooButton.setEnabled(true);
 		_meTooButton.setSelected(version.isStagedForExecution());
+
+		_rejectButton.setEnabled(true);
+		_rejectButton.setSelected(version.status()==Status.REJECTED);
 	}
 
 	private BrickVersion selectedBrickVersion() {
@@ -142,6 +161,9 @@ class MeTooGuiImpl extends JFrame implements MeTooGui{
 		
 		_files.setBorder(new EmptyBorder(5,5,5,5));
 		_files.setCellRenderer(new MeeTooListCellRenderer());
+
+		_meTooButton.setEnabled(false);
+		_rejectButton.setEnabled(false);
 		
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
@@ -149,6 +171,7 @@ class MeTooGuiImpl extends JFrame implements MeTooGui{
 		JToolBar toolbar = new JToolBar();
 		contentPane.add(toolbar, BorderLayout.NORTH);
 		toolbar.add(_meTooButton);
+		toolbar.add(_rejectButton);
 		
 		JScrollPane scrollTree = my(SynthScrolls.class).create();
 		JScrollPane scrollFiles = my(SynthScrolls.class).create();

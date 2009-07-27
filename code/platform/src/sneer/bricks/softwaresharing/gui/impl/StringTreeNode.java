@@ -24,11 +24,10 @@ class StringTreeNode extends AbstractTreeNodeWrapper<Object> {
 	StringTreeNode(TreeNode parent, String name) {
 		super(parent, null);
 		_name = name;
-		_icon = _users;
 	}
 
 	@Override protected List<Object> listChildren() {return _empty;}
 	@Override protected AbstractTreeNodeWrapper<Object> wrapChild(int childIndex) {throw new NotImplementedYet();}
 	@Override public String toString() {return _name;	}
-	
+	@Override public ImageIcon getIcon() { return _users; }
 }

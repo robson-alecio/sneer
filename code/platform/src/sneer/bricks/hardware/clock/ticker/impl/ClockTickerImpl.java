@@ -10,11 +10,10 @@ class ClockTickerImpl implements ClockTicker {
 
 	private final Threads _threads = my(Threads.class);
 	private final Clock _clock = my(Clock.class);
-	@SuppressWarnings("unused")	private final Object _refToAvoidGc;
 
 	ClockTickerImpl() {
 		tick();
-		_refToAvoidGc = _threads.startStepping(new Steppable() { @Override public void step() {
+		_threads.startStepping(new Steppable() { @Override public void step() {
 			tick();
 		}});
 	}

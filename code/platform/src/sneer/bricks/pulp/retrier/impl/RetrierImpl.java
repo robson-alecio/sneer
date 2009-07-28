@@ -3,7 +3,7 @@ package sneer.bricks.pulp.retrier.impl;
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.clock.timer.Timer;
 import sneer.bricks.hardware.cpu.exceptions.Hiccup;
-import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
@@ -20,12 +20,12 @@ class RetrierImpl implements Retrier {
 	
 	private volatile boolean _isStillTrying = true;
 	private final Light _light = _lights.prepare(LightType.ERROR);
-	private final WeakContract _refToAvoidGc;
+	private final Contract _steppingContract;
 	
 	RetrierImpl(final int periodBetweenAttempts, final Task task) {
-		_refToAvoidGc = _threads.startStepping(new Steppable() { @Override public void step() {
+		_steppingContract = _threads.startStepping(new Steppable() { @Override public void step() {
 			if (wasSuccessful(task))
-				_refToAvoidGc.dispose();
+				_steppingContract.dispose();
 			else
 				my(Timer.class).sleepAtLeast(periodBetweenAttempts);
 		}});

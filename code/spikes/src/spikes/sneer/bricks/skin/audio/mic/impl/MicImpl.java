@@ -1,7 +1,7 @@
 package spikes.sneer.bricks.skin.audio.mic.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.ram.arrays.ImmutableByteArray;
@@ -23,7 +23,7 @@ class MicImpl implements Mic {
 	private final RetrierManager _retriers = my(RetrierManager.class);
 	
 	private boolean _isOpenRequested;
-	private WeakContract _refToAvoidGc;
+	private Contract _stepperContract;
 	
 	private Register<Boolean> _isOpen = my(Signals.class).newRegister(false);
 	private EventNotifier<ImmutableByteArray> _sound = my(EventNotifiers.class).newInstance();
@@ -46,9 +46,9 @@ class MicImpl implements Mic {
 	}
 
 	private void startToWorkIfNecessary() {
-		if (_refToAvoidGc != null) return;
+		if (_stepperContract != null) return;
 
-		_refToAvoidGc = _threads.startStepping(new Steppable() { @Override public void step() {
+		_stepperContract = _threads.startStepping(new Steppable() { @Override public void step() {
 			work();
 		}});
 	}
@@ -62,8 +62,8 @@ class MicImpl implements Mic {
 
 		synchronized (this) {
 			if (!_isOpenRequested) {
-				_refToAvoidGc.dispose();
-				_refToAvoidGc = null;
+				_stepperContract.dispose();
+				_stepperContract = null;
 				return;
 			}
 		}

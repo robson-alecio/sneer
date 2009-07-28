@@ -5,7 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.util.ArrayList;
 import java.util.List;
 
-import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.cpu.threads.Latch;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
@@ -21,7 +21,7 @@ public class ThreadsMock implements Threads {
 
 
 	@Override
-	public synchronized WeakContract startStepping(final Steppable stepper) {
+	public synchronized Contract startStepping(final Steppable stepper) {
 		_steppers.add(stepper);
 		return null;
 	}

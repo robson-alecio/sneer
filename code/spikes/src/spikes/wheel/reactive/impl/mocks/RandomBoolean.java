@@ -14,10 +14,9 @@ public class RandomBoolean {
 
 	private static final Random RANDOM = new Random();
 	private Register<Boolean> _register = my(Signals.class).newRegister(false);
-	@SuppressWarnings("unused")	private final Object _refToAvoidGc;
 
 	{
-		_refToAvoidGc = my(Threads.class).startStepping(new Steppable() { @Override public void step() {
+		my(Threads.class).startStepping(new Steppable() { @Override public void step() {
 			sleepAndFlip();
 		}});
 	}

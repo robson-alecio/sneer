@@ -3,8 +3,5 @@ package sneer.bricks.hardware.cpu.lang.contracts;
 import sneer.foundation.brickness.Brick;
 
 @Brick
-public interface Contracts {
-
-	WeakContract newContractFor(Disposable service, Object annex);
-
-}
+/** Place holder brick for the other interfaces in this package.*/
+public interface Contracts {}

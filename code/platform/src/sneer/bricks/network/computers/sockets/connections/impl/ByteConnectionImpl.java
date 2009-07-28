@@ -5,7 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.IOException;
 import java.util.Arrays;
 
-import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
@@ -35,8 +35,8 @@ class ByteConnectionImpl implements ByteConnection {
 	private PacketScheduler _scheduler;
 	private Consumer<byte[]> _receiver;
 	
-	private WeakContract _refToAvoidGc;
-	private WeakContract _refToAvoidGc2;
+	private Contract _contractToSend;
+	private Contract _contractToReceive;
 
 
 	ByteConnectionImpl(String label, Contact contact) {
@@ -106,7 +106,7 @@ class ByteConnectionImpl implements ByteConnection {
 
 
 	private void startSending() {
-		_refToAvoidGc = _threads.startStepping(new Steppable() { @Override public void step() {
+		_contractToSend = _threads.startStepping(new Steppable() { @Override public void step() {
 			if (tryToSend(_scheduler.highestPriorityPacketToSend()))
 				_scheduler.previousPacketWasSent();
 			else
@@ -115,7 +115,7 @@ class ByteConnectionImpl implements ByteConnection {
 	}
 	
 	private void startReceiving() {
-		_refToAvoidGc2 = _threads.startStepping(new Steppable() { @Override public void step() {
+		_contractToReceive = _threads.startStepping(new Steppable() { @Override public void step() {
 			if (!tryToReceive())
 				_threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify
 		}});
@@ -154,8 +154,8 @@ class ByteConnectionImpl implements ByteConnection {
 	}
 
 	void close() {
-		_refToAvoidGc.dispose();
-		_refToAvoidGc2.dispose();
+		_contractToSend.dispose();
+		_contractToReceive.dispose();
 		
 		ByteArraySocket socket = _socketHolder.socket();
 		if (socket == null) return;

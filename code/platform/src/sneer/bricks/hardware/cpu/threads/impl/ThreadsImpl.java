@@ -1,7 +1,7 @@
 package sneer.bricks.hardware.cpu.threads.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.cpu.threads.Latch;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
@@ -67,10 +67,10 @@ class ThreadsImpl implements Threads {
 	}
 
 	@Override
-	public WeakContract startStepping(Steppable steppable) {
+	public Contract startStepping(Steppable steppable) {
 		Stepper result = new Stepper(steppable);
 		startDaemon(inferThreadName(), result);
-		return result.contract();
+		return result;
 	}
 
 	private String inferThreadName() {

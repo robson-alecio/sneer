@@ -4,7 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import java.io.IOException;
 
-import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
+import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
@@ -41,15 +41,14 @@ class SocketAccepterImpl implements SocketAccepter {
 	private final Light _cantAcceptSocket = _lights.prepare(LightType.ERROR);
 
 	@SuppressWarnings("unused") private final Object _receptionRefToAvoidGc;
-	@SuppressWarnings("unused")	private final WeakContract _stepperRefToAvoidGc;
-	private WeakContract _refToAvoidGc;
+	private Contract _stepperContract;
 
 	SocketAccepterImpl() {
 		_receptionRefToAvoidGc = _portKeeper.port().addReceiver(new Consumer<Integer>() { @Override public void consume(Integer port) {
 			setPort(port);
 		}});
 
-		_stepperRefToAvoidGc = _threads.startStepping(new Steppable() { @Override public void step() {
+		_threads.startStepping(new Steppable() { @Override public void step() {
 			listenToSneerPort();
 		}});
 	}
@@ -80,7 +79,7 @@ class SocketAccepterImpl implements SocketAccepter {
     }
 	
 	private void startAccepting() {
-		_refToAvoidGc = _threads.startStepping(new Steppable() { @Override public void step() {
+		_stepperContract = _threads.startStepping(new Steppable() { @Override public void step() {
 			try {
 				dealWith(_serverSocket.accept());
 			} catch (IOException e) {
@@ -96,7 +95,7 @@ class SocketAccepterImpl implements SocketAccepter {
 	}
 
 	private void dealWith(IOException e) {
-		if (_refToAvoidGc != null) 
+		if (_stepperContract != null) 
 			_lights.turnOnIfNecessary(_cantAcceptSocket, "Unable to accept client connection", null, e);
 	}
 
@@ -107,7 +106,7 @@ class SocketAccepterImpl implements SocketAccepter {
 			_lights.turnOffIfNecessary(_cantOpenServerSocket);
 			_lights.turnOn(LightType.GOOD_NEWS, "TCP port opened: " + port, "Sneer has successfully opened TCP port " + port + " to receive incoming connections from others.", 7000);
 		} catch (IOException e) {
-			if (_refToAvoidGc != null)
+			if (_stepperContract != null)
 				_lights.turnOnIfNecessary(_cantOpenServerSocket, "Unable to listen on TCP port " + port, helpMessage(), e);
 		}
 	}
@@ -125,8 +124,8 @@ class SocketAccepterImpl implements SocketAccepter {
 		if(_serverSocket == null) return;
 
 		my(Logger.class).log("crashing server socket");
-		if (_refToAvoidGc != null) _refToAvoidGc.dispose();
-		_refToAvoidGc = null;
+		if (_stepperContract != null) _stepperContract.dispose();
+		_stepperContract = null;
 		_serverSocket.crash();
 	}
 }

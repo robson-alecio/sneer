@@ -7,12 +7,12 @@ import java.util.TreeSet;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.clock.timer.Timer;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Latch;
-import sneer.bricks.hardware.cpu.threads.OldSteppable;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.cpu.timebox.Timebox;
 import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
-import sneer.foundation.lang.ByRef;
 import sneer.foundation.lang.Consumer;
 
 class TimerImpl implements Timer {
@@ -48,14 +48,16 @@ class TimerImpl implements Timer {
 	}
 
 	@Override
-	synchronized public void wakeUpNowAndEvery(long period, OldSteppable stepper) {
-		if (!step(stepper)) return;
-		wakeUpEvery(period, stepper);
+	synchronized public WeakContract wakeUpNowAndEvery(long period, Steppable stepper) {
+		step(stepper);
+		return wakeUpEvery(period, stepper);
 	}
 
 	@Override
-	synchronized public void wakeUpEvery(long period, OldSteppable stepper) {
-		_alarms.add(new Alarm(stepper, period));
+	synchronized public WeakContract wakeUpEvery(long period, Steppable stepper) {
+		Alarm result = new Alarm(stepper, period, true);
+		_alarms.add(result);
+		return result.contract();
 	}
 
 	@Override
@@ -75,43 +77,50 @@ class TimerImpl implements Timer {
 	}
 
 	
-	private boolean step(final OldSteppable stepper) {
-		final ByRef<Boolean> result = ByRef.newInstance(false); 
+	private void step(final Steppable stepper) {
 		_exceptionHandler.shield(new Runnable() { @Override public void run() {
 			my(Timebox.class).run(10000, new Runnable() { @Override public void run() {
-				result.value = stepper.step();
+				stepper.step();
 			}}, null);
 		}});
-		return result.value;
 	}
 
 	
 	static private long _nextSequence = 0;
 
-	private class Alarm implements Comparable<Alarm>{
+	private class Alarm implements Comparable<Alarm>, WeakContract{
 
-		final long _sequence = _nextSequence++;
-		
-		final long _period;
-		
-		long _wakeUpTime;
-		final OldSteppable _stepper;
+		private final Steppable _stepper;
 
+		private final boolean _isPeriodic;
+		private final long _period;
+		private long _wakeUpTime;
+		private final long _sequence = _nextSequence++;
+
+		volatile
+		private boolean _isDisposed = false;
+
+		
 		Alarm(final Runnable runnable, long millisFromNow) {
-			this(singleStepperFor(runnable), millisFromNow);
+			this(asSteppable(runnable), millisFromNow, false);
 		}
 
-		public Alarm(OldSteppable stepper, long period) {
+		public Alarm(Steppable stepper, long period, boolean isPeriodic) {
 			if (period < 0) throw new IllegalArgumentException("" + period);
+			_stepper = stepper;
 			_period = period;
 			_wakeUpTime = currentTime() + period;
-			_stepper = stepper;
+			_isPeriodic = isPeriodic;
 		}
 
+		
 		void wakeUp() {
 			_alarms.remove(this);
-			if (!step(_stepper)) return;
+			if (_isDisposed) return;
+			
+			step(_stepper);
 
+			if (!_isPeriodic) return;
 			_wakeUpTime = currentTime() + _period;
 			_alarms.add(this);
 		}
@@ -131,13 +140,33 @@ class TimerImpl implements Timer {
 		public String toString() {
 			return "Alarm: " + _wakeUpTime;
 		}
+
+		@Override
+		public void dispose() {
+			_isDisposed = true;
+		}
+
+		public WeakContract contract() {
+			return new WeakContract() {
+
+				@Override
+				public void dispose() {
+					_isDisposed = true;
+				}
+
+				@Override
+				protected void finalize() {
+					dispose();
+				}
+			};
+		}
 	}
 
-	private static OldSteppable singleStepperFor(final Runnable runnable) {
-		return new OldSteppable() { @Override public boolean step() {
+	private static Steppable asSteppable(final Runnable runnable) {
+		return new Steppable() { @Override public void step() {
 			runnable.run();
-			return false;
 		}};
 	}
+
 
 }

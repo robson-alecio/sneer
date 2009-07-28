@@ -6,7 +6,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.clock.timer.Timer;
-import sneer.bricks.hardware.cpu.threads.OldSteppable;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.pulp.bandwidth.BandwidthCounter;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
@@ -14,7 +15,7 @@ import sneer.bricks.pulp.reactive.Signals;
 
 class BandwidthCounterImpl implements BandwidthCounter {
 
-	private final int CONSOLIDATION_TIME = 3000;
+	static private final int CONSOLIDATION_TIME = 3000;
 	
 	private final Clock _clock = my(Clock.class);
 	
@@ -23,15 +24,16 @@ class BandwidthCounterImpl implements BandwidthCounter {
 	
 	private final Register<Integer> _download = my(Signals.class).newRegister(0); 
 	private final Register<Integer> _upload = my(Signals.class).newRegister(0); 
-	
+
+	@SuppressWarnings("unused")
+	private final WeakContract _alarmContract;
 	private long _lastConsolidationTime;
 
 	
 	BandwidthCounterImpl(){
 		_lastConsolidationTime = _clock.time().currentValue();
-		my(Timer.class).wakeUpEvery(CONSOLIDATION_TIME, new OldSteppable(){ @Override public boolean step() {
+		_alarmContract = my(Timer.class).wakeUpEvery(CONSOLIDATION_TIME, new Steppable(){ @Override public void step() {
 			consolidate();
-			return true;
 		}});
 	}
 	

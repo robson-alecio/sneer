@@ -9,8 +9,10 @@ import org.junit.Test;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.clock.timer.Timer;
-import sneer.bricks.hardware.cpu.threads.OldSteppable;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.foundation.brickness.testsupport.BrickTest;
+import sneer.foundation.lang.ByRef;
 
 public class TimerTest extends BrickTest {
 
@@ -18,14 +20,17 @@ public class TimerTest extends BrickTest {
 	private final Timer _subject = my(Timer.class);
 	private StringBuilder _events = new StringBuilder();
 	
+	@SuppressWarnings("unused")	private WeakContract _c1;
+	@SuppressWarnings("unused")	private WeakContract _c2;
+	
 	@Test
 	public void testAlarms() throws Exception {
 		final List<Integer> _order = new ArrayList<Integer>();
 		
 		_subject.wakeUpInAtLeast(50, new Worker(50, _order));
-		_subject.wakeUpEvery(20, new Worker(20, _order));
+		_c1 = _subject.wakeUpEvery(20, new Worker(20, _order));
 		_subject.wakeUpInAtLeast(10, new Worker(10, _order));
-		_subject.wakeUpEvery(35, new Worker(35, _order));
+		_c2 = _subject.wakeUpEvery(35, new Worker(35, _order));
 		_subject.wakeUpInAtLeast(30, new Worker(30,_order));
 		
 		_clock.advanceTime(81);
@@ -51,8 +56,30 @@ public class TimerTest extends BrickTest {
 		assertEquals(2, _order.size());
 	}
 
+	@Test (timeout = 2000)
+	public void testContractWeakness() throws Exception {
+		final ByRef<Boolean> finalized = ByRef.newInstance(false);
+		
+		_subject.wakeUpEvery(42, new Steppable() {
+			@Override
+			public void step() {
+				return;
+			}
+
+			@Override
+			protected void finalize() throws Throwable {
+				finalized.value = true; 
+			}
+		});
+
+		while (!finalized.value) {
+			System.gc();
+			_clock.advanceTime(42);
+		}
+	}
+
 	
-	private class Worker implements OldSteppable, Runnable {
+	private class Worker implements Steppable, Runnable {
 
 		private final int _timeout;
 		private final List<Integer> _order;
@@ -64,10 +91,9 @@ public class TimerTest extends BrickTest {
 		}
 
 		@Override
-		public boolean step() {
+		public void step() {
 			_count++;
 			_order.add(_timeout * _count);
-			return true;
 		}
 
 		@Override

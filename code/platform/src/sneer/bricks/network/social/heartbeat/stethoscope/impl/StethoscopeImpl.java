@@ -3,7 +3,8 @@ package sneer.bricks.network.social.heartbeat.stethoscope.impl;
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.clock.timer.Timer;
-import sneer.bricks.hardware.cpu.threads.OldSteppable;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.hardware.ram.maps.cachemaps.CacheMap;
 import sneer.bricks.hardware.ram.maps.cachemaps.CacheMaps;
@@ -20,7 +21,7 @@ import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.lang.Consumer;
 import sneer.foundation.lang.Producer;
 
-class StethoscopeImpl implements Stethoscope, Consumer<Heartbeat>, OldSteppable {
+class StethoscopeImpl implements Stethoscope, Consumer<Heartbeat>, Steppable {
 
 	private static final int TIME_TILL_DEATH = 30 * 1000;
 	private static final int MAX_BEAT_AGE = 10 * 60 * 1000;
@@ -28,10 +29,13 @@ class StethoscopeImpl implements Stethoscope, Consumer<Heartbeat>, OldSteppable 
 	
 	private CacheMap<Contact, Long> _lastBeatTimesByContact = my(CacheMaps.class).newInstance();
 	private CacheMap<Contact, Register<Boolean>> _registersByContact = my(CacheMaps.class).newInstance();
+
+	@SuppressWarnings("unused")	private final WeakContract _timerContract;
+	
 	
 	{
 		my(TupleSpace.class).addSubscription(Heartbeat.class, this);
-		my(Timer.class).wakeUpEvery(TIME_TILL_DEATH, this);
+		_timerContract = my(Timer.class).wakeUpEvery(TIME_TILL_DEATH, this);
 	}
 	
 	
@@ -115,9 +119,8 @@ class StethoscopeImpl implements Stethoscope, Consumer<Heartbeat>, OldSteppable 
 
 
 	@Override
-	public boolean step() {
+	public void step() {
 		notifyDeathOfStaleContacts();
-		return true;
 	}
 
 }

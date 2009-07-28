@@ -2,7 +2,6 @@
 =========
 
 	- [Klaus] Revise garbage collectable handles
-		- Timer
 		- TupleSpace subscription
 		- Collection Signals Reception
 

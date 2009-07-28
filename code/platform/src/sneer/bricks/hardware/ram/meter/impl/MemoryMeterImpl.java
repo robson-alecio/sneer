@@ -2,7 +2,8 @@ package sneer.bricks.hardware.ram.meter.impl;
 
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.clock.timer.Timer;
-import sneer.bricks.hardware.cpu.threads.OldSteppable;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
+import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.ram.meter.MemoryMeter;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
@@ -16,10 +17,12 @@ class MemoryMeterImpl implements MemoryMeter {
 	private final Register<Integer> _usedMBs = my(Signals.class).newRegister(0);
 	private final Register<Integer> _usedMBsPeak = my(Signals.class).newRegister(0);
 	
-	MemoryMeterImpl(){
-		my(Timer.class).wakeUpNowAndEvery(PERIOD_IN_MILLIS, new OldSteppable() { @Override public boolean step() {
+	@SuppressWarnings("unused")
+	private final WeakContract _timerContract;
+	
+	{
+		_timerContract = my(Timer.class).wakeUpNowAndEvery(PERIOD_IN_MILLIS, new Steppable() { @Override public void step() {
 			measureMemory();
-			return true;
 		}});
 	}
 	

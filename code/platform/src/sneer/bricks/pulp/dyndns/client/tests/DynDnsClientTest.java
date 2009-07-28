@@ -74,17 +74,17 @@ Unacceptable Client Behavior
 		}});
 		
 		startDynDnsClientOnNewEnvironment();
-		_threads.runAllDaemons();
+		_threads.runAllDaemonsNamed("DynDns Requesting");
 		
 		startDynDnsClientOnNewEnvironment();
-		_threads.runAllDaemons();
+		_threads.runAllDaemonsNamed("DynDns Requesting");
 	}
 
 	private void startDynDnsClientOnNewEnvironment() {
 		EnvironmentUtils.retrieveFrom(newTestEnvironment(), DynDnsClient.class);
 	}
 	
-	@Test
+	@Test (timeout = 4000)
 	public void retryAfterIOException() throws Exception {
 		
 		final IOException error = new IOException();
@@ -105,13 +105,13 @@ Unacceptable Client Behavior
 		
 
 		startDynDnsClient();
-		_threads.runAllDaemons();
+		_threads.runAllDaemonsNamed("DynDns Requesting");
 		
 		final Light light = assertBlinkingLight(error);
 		
 		my(Clock.class).advanceTime(300001);
 		
-		_threads.runAllDaemons();
+		_threads.runAllDaemonsNamed("DynDns Requesting");
 		assertFalse(light.isOn());
 	}
 	
@@ -135,7 +135,7 @@ Unacceptable Client Behavior
 		}});
 		
 		startDynDnsClient();
-		_threads.runAllDaemons();
+		_threads.runAllDaemonsNamed("DynDns Requesting");
 		
 		final Light light = assertBlinkingLight(error);
 		
@@ -145,7 +145,7 @@ Unacceptable Client Behavior
 		DynDnsAccount changed = new DynDnsAccount("test.dyndns.org", "test", "*test");
 		_ownAccount.setter().consume(changed);
 
-		_threads.runAllDaemons();
+		_threads.runAllDaemonsNamed("DynDns Requesting");
 		assertFalse(light.isOn());
 		
 	}
@@ -165,7 +165,7 @@ Unacceptable Client Behavior
 		}});
 		
 		startDynDnsClient();
-		_threads.runAllDaemons();
+		_threads.runAllDaemonsNamed("DynDns Requesting");
 		
 		assertBlinkingLight(error);
 	}

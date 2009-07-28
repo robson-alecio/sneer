@@ -7,7 +7,6 @@ import java.util.Set;
 
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
-import sneer.foundation.testsupport.Daemon;
 
 @SuppressWarnings("deprecation")
 class TimeboxRunner {
@@ -21,16 +20,15 @@ class TimeboxRunner {
 	static {
 		final Threads threads = my(Threads.class);
 
-		final Thread killer = new Daemon("Timebox Killer") { @Override public void run() {
+		threads.startDaemon("Timebox Killer", new Runnable() { @Override public void run() {
+			Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 			while (true) {
 				threads.sleepWithoutInterruptions(PRECISION_IN_MILLIS);
 
 				for (TimeboxRunner victim : _activeTimeboxes.toArray(ARRAY_TYPE))
 					victim.payOrDie(PRECISION_IN_MILLIS);
 			}			
-		}};
-
-		killer.setPriority(Thread.MAX_PRIORITY);
+		}});
 	}
 
 	public TimeboxRunner(int durationInMillis, Runnable toRun, Runnable toCallWhenBlocked) {

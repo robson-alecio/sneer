@@ -8,8 +8,8 @@ public class Pair<A, B> implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((_a == null) ? 0 : _a.hashCode());
-		result = prime * result + ((_b == null) ? 0 : _b.hashCode());
+		result = prime * result + ((a == null) ? 0 : a.hashCode());
+		result = prime * result + ((b == null) ? 0 : b.hashCode());
 		return result;
 	}
 
@@ -22,32 +22,32 @@ public class Pair<A, B> implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Pair<?, ?> other = (Pair<?, ?>) obj;
-		if (_a == null) {
-			if (other._a != null)
+		if (a == null) {
+			if (other.a != null)
 				return false;
-		} else if (!_a.equals(other._a))
+		} else if (!a.equals(other.a))
 			return false;
-		if (_b == null) {
-			if (other._b != null)
+		if (b == null) {
+			if (other.b != null)
 				return false;
-		} else if (!_b.equals(other._b))
+		} else if (!b.equals(other.b))
 			return false;
 		return true;
 	}
 
-	public final A _a;
-	public final B _b;
+	public final A a;
+	public final B b;
 
-	public Pair(A a, B b) {
-		_a = a;
-		_b = b;
+	public Pair(A a_, B b_) {
+		a = a_;
+		b = b_;
 	}
 
 	private static final long serialVersionUID = 1L;
 	
 	@Override
 	public String toString() {
-		return "Pair[" + _a + ", " + _b + "]";
+		return "Pair[" + a + ", " + b + "]";
 	}
 
 	public static <A, B> Pair<A, B> of(A a, B b) {
@@ -57,7 +57,7 @@ public class Pair<A, B> implements Serializable {
 	public static <A, B> Functor<Pair<A, B>, A> first() {
 		return new Functor<Pair<A, B>, A>() {
 			@Override public A evaluate(Pair<A, B> pair){
-				return pair._a;
+				return pair.a;
 			}
 		};
 	}
@@ -65,7 +65,7 @@ public class Pair<A, B> implements Serializable {
 	public static <A, B> Functor<Pair<A, B>, B> second() {
 		return new Functor<Pair<A, B>, B>() {
 			@Override public B evaluate(Pair<A, B> pair){
-				return pair._b;
+				return pair.b;
 			}
 		};
 	}

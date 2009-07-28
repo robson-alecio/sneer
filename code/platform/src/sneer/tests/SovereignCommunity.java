@@ -7,4 +7,6 @@ public interface SovereignCommunity {
 
 	void connect(SovereignParty a, SovereignParty b);
 
+	void crash();
+
 }

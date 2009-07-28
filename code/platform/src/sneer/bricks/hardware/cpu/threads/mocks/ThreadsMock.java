@@ -3,7 +3,10 @@ package sneer.bricks.hardware.cpu.threads.mocks;
 import static sneer.foundation.environments.Environments.my;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.cpu.threads.Latch;
@@ -16,7 +19,7 @@ import sneer.bricks.pulp.events.pulsers.PulseSource;
 public class ThreadsMock implements Threads {
 
 	List<Steppable> _steppers = new ArrayList<Steppable>();
-	private List<Runnable> _daemons = new ArrayList<Runnable>();
+	private Map<Runnable, String> _daemonNamesByRunnable = new HashMap<Runnable, String>();
 	private final EventNotifier<Object> _crashingPulser = my(EventNotifiers.class).newInstance();
 
 
@@ -30,11 +33,15 @@ public class ThreadsMock implements Threads {
 		return _steppers.get(i);
 	}
 
-	public synchronized void runAllDaemons() {
-		ArrayList<Runnable> daemonsCopy = new ArrayList<Runnable>(_daemons);
-		_daemons.clear();
+	public synchronized void runAllDaemonsNamed(String daemonName) {
+		Collection<Runnable> daemonsCopy = new ArrayList<Runnable>(_daemonNamesByRunnable.keySet());
 
-		for (Runnable daemon : daemonsCopy) daemon.run();
+		for (Runnable daemon : daemonsCopy) {
+			String name = _daemonNamesByRunnable.get(daemon);
+			if (!daemonName.equals(name)) continue;
+			_daemonNamesByRunnable.remove(daemon);
+			daemon.run();
+		}
 	}
 
 	@Override
@@ -50,12 +57,16 @@ public class ThreadsMock implements Threads {
 
 	@Override
 	public void sleepWithoutInterruptions(long milliseconds) {
-		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
+		try {
+			Thread.sleep(milliseconds);
+		} catch (InterruptedException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 	@Override
 	public void startDaemon(String threadName, Runnable runnable) {
-		_daemons.add(runnable);
+		_daemonNamesByRunnable.put(runnable, threadName);
 	}
 
 	@Override

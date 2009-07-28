@@ -1,12 +1,15 @@
 ﻿TASKS
 =========
 
-	- [Klaus] Thread leaks in sneer (not spikes) tests - Fix
-		- Implement ThreadsImpl.crashAllThreads. Move thread killing logic from TestThatMightUseResources.
-	
+	- [Klaus] Clean console for all tests
+		- Stethoscope logging isOnline - Clean.
+		- TestThatMightUseResources - Fail on resource usage including sysout and syserr.
+			
 	- [Klaus] Revise entire package structure.  
 	
 	- [Sandro and Rodrigo] Enable Rod to commit to Sandro's repository.
+
+	- [Sandro] ListSignalModelTest - Suggest a way to eliminate the thread that is leaked (see console) when this test is run.
 	
 	- [Sandro] Directory -> Folder - Rename all places: classes, methods, fields, variables, parameters.
 

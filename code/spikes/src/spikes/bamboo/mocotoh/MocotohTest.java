@@ -12,7 +12,7 @@ import sneer.bricks.hardware.clock.Clock;
 public class MocotohTest extends Assert {
 	@Test
 	public void test() {
-		assertEquals(0, my(Clock.class).time());
+		assertEquals(new Long(0), my(Clock.class).time().currentValue());
 	}
 }
 

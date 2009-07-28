@@ -105,7 +105,7 @@ public class GUIMethodEnhancer {
 			final ArrayList<Pair<String, String>> thunkFields)
 			throws CannotCompileException, NotFoundException {
 		for (Pair<String, String> thunkField : thunkFields)
-			thunkClass.addField(CtField.make("private final " + thunkField._a + " " + thunkField._b + ";", thunkClass));
+			thunkClass.addField(CtField.make("private final " + thunkField.a + " " + thunkField.b + ";", thunkClass));
 		
 		if (hasReturnValue())
 			thunkClass.addField(CtField.make("public " + _method.getReturnType().getName() + " result;", thunkClass));
@@ -132,7 +132,7 @@ public class GUIMethodEnhancer {
 		return my(Lang.class).strings().join(
 			my(Collections.class).map(
 			thunkFields, new Functor<Pair<String, String>, String>() { @Override public String evaluate(Pair<String, String> input) {
-				return "this." + input._b + " = " + input._b + ";";
+				return "this." + input.b + " = " + input.b + ";";
 			}}), "\n");
 	}
 
@@ -140,7 +140,7 @@ public class GUIMethodEnhancer {
 		return my(Lang.class).strings().join(
 			my(Collections.class).map(
 			thunkFields, new Functor<Pair<String, String>, String>() { @Override public String evaluate(Pair<String, String> input) {
-					return input._a + " " + input._b;
+					return input.a + " " + input.b;
 			}}), ", ");
 	}
 

@@ -2,7 +2,6 @@ package spikes.klaus;
 
 import java.lang.ref.WeakReference;
 
-import sneer.foundation.testsupport.Daemon;
 
 @SuppressWarnings("deprecation")
 public class Anything {

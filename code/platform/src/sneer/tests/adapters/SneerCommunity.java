@@ -6,6 +6,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.HashSet;
+import java.util.Set;
 
 import sneer.bricks.pulp.network.ByteArrayServerSocket;
 import sneer.bricks.pulp.network.ByteArraySocket;
@@ -25,10 +27,14 @@ public class SneerCommunity implements SovereignCommunity {
 	private int _nextPort = 10000;
 
 	private final File _tmpDirectory;
+
+	private final Set<SneerParty> _allParties = new HashSet<SneerParty>();
+	
 	
 	public SneerCommunity(File tmpDirectory) {
 		_tmpDirectory = tmpDirectory;
 	}
+	
 	
 	@Override
 	public SovereignParty createParty(final String name) {
@@ -51,6 +57,8 @@ public class SneerCommunity implements SovereignCommunity {
 		
 		party.startSnapps();
 		party.accelerateHeartbeat();
+		
+		_allParties.add(party);
 		return party;
 	}
 
@@ -125,6 +133,13 @@ public class SneerCommunity implements SovereignCommunity {
 		SneerParty partyB = (SneerParty)b;
 		partyA.connectTo(partyB);
 		partyB.connectTo(partyA);
+	}
+
+	@Override
+	public void crash() {
+		for (SneerParty party : _allParties)
+			party.crash();
+		_allParties.clear();
 	}
 
 }

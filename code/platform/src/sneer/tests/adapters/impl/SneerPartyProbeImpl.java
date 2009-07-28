@@ -230,5 +230,10 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 		my(BrickPublisher.class).publishBrick(brickName);
 	}
 
+	@Override
+	public void crash() {
+		my(Threads.class).crashAllThreads();
+	}
+
 }
 

@@ -45,6 +45,7 @@ public abstract class SovereignFunctionalTestBase extends BrickTest {
 	
 	@After
 	public void releaseCommunity() {
+		_community.crash();
 		_community = null;
 		_a = null;
 		_b = null;

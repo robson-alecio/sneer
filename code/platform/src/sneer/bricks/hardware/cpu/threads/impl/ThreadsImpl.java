@@ -10,9 +10,7 @@ import sneer.bricks.pulp.events.pulsers.Pulser;
 import sneer.bricks.pulp.events.pulsers.Pulsers;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
-import sneer.foundation.testsupport.Daemon;
 
-@SuppressWarnings("deprecation")
 class ThreadsImpl implements Threads {
 
 	private final Latch _crash = newLatch();
@@ -93,19 +91,13 @@ class ThreadsImpl implements Threads {
 
 	@Override
 	public void crashAllThreads() {
-		//doCrashAllThreads();
-		
-		_crash.open();
-		
 		_crashingPulser.sendPulse();
+		Daemon.killAllInstances();
+		_crash.open();
 	}
 
 	@Override
 	public PulseSource crashing() {
 		return _crashingPulser.output();
 	}
-	
-//	private void doCrashAllThreads() {
-//		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
-//	}
 }

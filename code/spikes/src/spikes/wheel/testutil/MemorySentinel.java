@@ -4,7 +4,7 @@ import static java.lang.System.gc;
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
-import sneer.foundation.testsupport.Daemon;
+import spikes.klaus.Daemon;
 
 
 @SuppressWarnings("deprecation")

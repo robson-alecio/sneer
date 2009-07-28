@@ -10,6 +10,8 @@ class ExceptionHandlerImpl implements ExceptionHandler {
 	public void shield(Runnable runnable) {
 		try {
 			runnable.run();
+		} catch (ThreadDeath t) {
+			throw t;
 		} catch (Throwable t) {
 			my(Logger.class).log(t, "Exception shielded.");
 		}

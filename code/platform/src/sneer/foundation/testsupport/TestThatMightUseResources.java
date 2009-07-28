@@ -59,10 +59,8 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@After
 	public void afterTestThatMightUseResources() {
-		Daemon.killAllInstances();
 		checkThreadLeak();
 		deleteFiles();
 	}

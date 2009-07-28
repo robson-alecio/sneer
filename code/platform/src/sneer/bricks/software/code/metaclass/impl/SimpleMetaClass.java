@@ -4,8 +4,8 @@ import java.io.File;
 
 class SimpleMetaClass extends MetaClassSupport {
 
-	public SimpleMetaClass(File rootDirectory, File classFile) {
-		super(rootDirectory, classFile);
+	public SimpleMetaClass(File rootFolder, File classFile) {
+		super(rootFolder, classFile);
 	}
 
 	@Override
@@ -13,7 +13,7 @@ class SimpleMetaClass extends MetaClassSupport {
 		String rootPath = _root.getAbsolutePath();
 		String path = _classFile.getAbsolutePath();
 		if (!path.startsWith(rootPath))
-			throw new MetaClassException("Class file " + path + " on wrong directory");
+			throw new MetaClassException("Class file " + path + " on wrong folder");
 
 		_className = path.substring(rootPath.length() + 1).replace('\\', '/');
 		_className = _className.substring(0, _className.indexOf(".class"));

@@ -3,8 +3,6 @@ package sneer.tests;
 import java.io.File;
 import java.io.IOException;
 
-
-
 public interface SovereignParty {
 
 	//Freedom1
@@ -22,9 +20,8 @@ public interface SovereignParty {
 	void waitForShouts(String shoutsExpected);
 
 	//Freedom7
-	void installBricks(File sourceDirectory) throws IOException;
+	void installBricks(File sourceFolder) throws IOException;
 	void publishBrick(String brickName) throws IOException;
 	void waitForAvailableBrick(String brickName);
 	void installTheOnlyAvailableVersionOfBrick(String brickName) throws IOException;
-	
 }

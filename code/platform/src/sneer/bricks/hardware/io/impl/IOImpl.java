@@ -35,11 +35,11 @@ class IOImpl implements IO {
 			return file.length() == 0;
 		}
 		
-		@Override public void copyDirectory(File srcDir, File destDir) throws IOException { FileUtils.copyDirectory(srcDir, destDir); }
-		@Override public Collection<File> listFiles(File directory, String[] extensions, boolean recursive) { return FileUtils.listFiles(directory, extensions, recursive); }
+		@Override public void copyFolder(File srcFolder, File destFolder) throws IOException { FileUtils.copyDirectory(srcFolder, destFolder); }
+		@Override public Collection<File> listFiles(File folder, String[] extensions, boolean recursive) { return FileUtils.listFiles(folder, extensions, recursive); }
 		@Override public void writeString(File file, String data) throws IOException { FileUtils.writeStringToFile(file, data); }
-		@Override public void deleteDirectory(File directory) throws IOException { FileUtils.deleteDirectory(directory); }
-		@Override public Iterator<File> iterate(File directory, String[] extensions, boolean recursive){ return FileUtils.iterateFiles(directory, extensions, recursive); }
+		@Override public void deleteFolder(File folder) throws IOException { FileUtils.deleteDirectory(folder); }
+		@Override public Iterator<File> iterate(File folder, String[] extensions, boolean recursive){ return FileUtils.iterateFiles(folder, extensions, recursive); }
 		
 		@Override public String readString(File file) throws IOException {return new String(readBytes(file)); }
 		@Override public void readString(final File file, final Consumer<String> content) {
@@ -47,19 +47,15 @@ class IOImpl implements IO {
 		@Override public void readString(final File file, final Consumer<String> content, final Consumer<IOException> exception) {
 			readBytes(file, new Consumer<byte[]>(){ @Override public void consume(byte[] value) {  content.consume(new String(value)); } }, exception);}
 
-		@Override public byte[] readBytes(File file) throws IOException { 
-			return FileUtils.readFileToByteArray(file); 
-		}
+		@Override public byte[] readBytes(File file) throws IOException {  return FileUtils.readFileToByteArray(file);  }
 		@Override public void readBytes(final File file, Consumer<byte[]> content) {
 			readBytes(file, content, new Consumer<IOException>(){ @Override public void consume(IOException exception) {
 				my(BlinkingLights.class).turnOn(LightType.ERROR, "Error", "Unable to read file: " + file.getAbsolutePath(),  exception, 5*60*1000);
 			}});		
 		}
 		
-		@Override
-		public void writeByteArrayToFile(File file, byte[] data) throws IOException {
-			FileUtils.writeByteArrayToFile(file, data);
-		}
+		@Override public void writeByteArrayToFile(File file, byte[] data) throws IOException { FileUtils.writeByteArrayToFile(file, data); }
+		@Override public boolean contentEquals(File file1, File file2) throws IOException { return FileUtils.contentEquals(file1, file2); }
 
 		@Override public void readBytes(File file, Consumer<byte[]> content, Consumer<IOException> exception) {
 			try {
@@ -68,13 +64,6 @@ class IOImpl implements IO {
 				exception.consume(e);
 			}
 		}
-
-		@Override
-		public boolean contentEquals(File file1, File file2) throws IOException {
-			return FileUtils.contentEquals(file1, file2);
-		}
-
-
 	};
 	
 	private Streams _streams = new Streams(){
@@ -94,8 +83,8 @@ class IOImpl implements IO {
 		@Override public Filter not(Filter filter) { return adapt(FileFilterUtils.notFileFilter((IOFileFilter) filter)); }
 		@Override public Filter suffix(String sulfix) { return adapt(FileFilterUtils.suffixFileFilter(sulfix)); }
 
-		@Override public Collection<File> listFiles(File directory, Filter fileFilter, Filter dirFilter){ 
-			return FileUtils.listFiles(directory, (IOFileFilter)fileFilter, (IOFileFilter)dirFilter);}
+		@Override public Collection<File> listFiles(File folder, Filter fileFilter, Filter dirFilter){ 
+			return FileUtils.listFiles(folder, (IOFileFilter)fileFilter, (IOFileFilter)dirFilter);}
 		
 		private Filter adapt(IOFileFilter filter) { return new IOFileFilterAdapter(filter); }
 		
@@ -107,25 +96,13 @@ class IOImpl implements IO {
 		}
 	};
 	
-	@Override
-	public Files files() {
-		return _files;
-	}
-
-	@Override
-	public Streams streams() {
-		return _streams;
-	}
-
+	@Override public Files files() { return _files; }
+	@Override public Streams streams() { return _streams; }
+	@Override public FileFilters fileFilters() { return _fileFilters; }
 	@Override
 	public void crash(Closeable closeable) {
 		try {
 			if(closeable!=null) closeable.close();
 		} catch (IOException ignored) {}
-	}
-
-	@Override
-	public FileFilters fileFilters() {
-		return _fileFilters;
 	}
 }

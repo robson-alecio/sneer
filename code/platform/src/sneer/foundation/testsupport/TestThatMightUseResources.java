@@ -12,14 +12,14 @@ import org.junit.Before;
 
 public abstract class TestThatMightUseResources extends AssertUtils {
 
-	private File _tmpDirectory;
+	private File _tmpFolder;
 	private Set<Thread> _activeThreadsBeforeTest;
 
-	protected File tmpDirectory() {
-		if (_tmpDirectory == null)
-			_tmpDirectory = createTmpDirectory();
+	protected File tmpFolder() {
+		if (_tmpFolder == null)
+			_tmpFolder = createTmpFolder();
 
-		return _tmpDirectory;
+		return _tmpFolder;
 	}
 
 	@Before
@@ -66,11 +66,11 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 	}
 
 	private void deleteFiles() {
-		if (_tmpDirectory == null) return;
+		if (_tmpFolder == null) return;
 		try {
-			tryToClean(_tmpDirectory);
+			tryToClean(_tmpFolder);
 		} finally {
-			_tmpDirectory = null;
+			_tmpFolder = null;
 		}
 	}
 	
@@ -78,7 +78,7 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 		long t0 = System.currentTimeMillis();
 		while (true) {
 			try {
-				deleteDirectory(tmp);
+				deleteFolder(tmp);
 				return;
 			} catch (IOException e) {
 				if (System.currentTimeMillis() - t0 > 1000) {
@@ -90,7 +90,7 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 		}
 	}
 	
-	private File createTmpDirectory() {
+	private File createTmpFolder() {
 		File result = new File(System.getProperty("java.io.tmpdir"), "" + System.nanoTime());
 		assertTrue(result.mkdirs());
 		return result;
@@ -109,26 +109,26 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 		}
 	}
 
-	void deleteDirectory(File directory) throws IOException {
-		if (!directory.exists()) return;
-		if (!directory.isDirectory()) 
-			throw new IllegalArgumentException(directory.getAbsolutePath() + " is not a directory");
+	void deleteFolder(File folder) throws IOException {
+		if (!folder.exists()) return;
+		if (!folder.isDirectory()) 
+			throw new IllegalArgumentException(folder.getAbsolutePath() + " is not a folder");
 
-		recursiveDelete(directory);
+		recursiveDelete(folder);
 
-		if (!directory.delete()) 
-			throw new IOException("Unable to delete directory: " + directory.getAbsolutePath());
+		if (!folder.delete()) 
+			throw new IOException("Unable to delete folder: " + folder.getAbsolutePath());
 	}
 
-	private void recursiveDelete(File directory) throws IOException, FileNotFoundException {
-		for (File file : directory.listFiles()) {
+	private void recursiveDelete(File folder) throws IOException, FileNotFoundException {
+		for (File file : folder.listFiles()) {
 			if (!file.exists()) 
 				throw new FileNotFoundException("File does not exist: " + file.getAbsolutePath());
 			
 			if (file.isFile() && !file.delete()) 
 				throw new IOException(("Unable to delete file: " + file.getAbsolutePath()));
 			
-			deleteDirectory(file);
+			deleteFolder(file);
 		}
 	}
 

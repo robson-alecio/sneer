@@ -34,7 +34,7 @@ import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.reactive.collections.CollectionSignals;
 import sneer.bricks.pulp.reactive.collections.ListRegister;
 import sneer.bricks.pulp.tuples.TupleSpace;
-import sneer.bricks.software.directoryconfig.DirectoryConfig;
+import sneer.bricks.software.folderconfig.FolderConfig;
 import sneer.foundation.brickness.Seal;
 import sneer.foundation.brickness.Tuple;
 import sneer.foundation.environments.Environment;
@@ -159,7 +159,7 @@ class TupleSpaceImpl implements TupleSpace {
 	private PrevaylerFactory prevaylerFactory(Object system) {
 		PrevaylerFactory factory = new PrevaylerFactory();
 		factory.configurePrevalentSystem(system);
-		factory.configurePrevalenceDirectory(directory().getAbsolutePath());
+		factory.configurePrevalenceDirectory(folder().getAbsolutePath());
 		factory.configureTransactionFiltering(false);
 		factory.configureJournalSerializer("xstreamjournal", new Serializer(){
 			@Override public Object readObject(InputStream stream) throws IOException, ClassNotFoundException {
@@ -174,8 +174,8 @@ class TupleSpaceImpl implements TupleSpace {
 	}
 
 
-	private File directory() {
-		return my(DirectoryConfig.class).getStorageDirectoryFor(TupleSpace.class);
+	private File folder() {
+		return my(FolderConfig.class).getStorageFolderFor(TupleSpace.class);
 	}
 
 	

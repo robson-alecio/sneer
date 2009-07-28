@@ -9,7 +9,7 @@ import sneer.bricks.hardware.cpu.lang.Lang;
 import sneer.bricks.hardwaresharing.files.FileSpace;
 import sneer.bricks.pulp.crypto.Sneer1024;
 import sneer.bricks.pulp.tuples.TupleSpace;
-import sneer.bricks.software.directoryconfig.DirectoryConfig;
+import sneer.bricks.software.folderconfig.FolderConfig;
 import sneer.bricks.softwaresharing.publisher.BrickPublisher;
 import sneer.bricks.softwaresharing.publisher.BrickUsage;
 
@@ -17,22 +17,22 @@ class BrickPublisherImpl implements BrickPublisher {
 
 	@Override
 	public void publishBrick(String brickName) throws IOException {
-		File brickDirectory = brickDirectoryFor(brickName);
-		Sneer1024 hash = my(FileSpace.class).publishContents(brickDirectory);
+		File brickFolder = brickFolderFor(brickName);
+		Sneer1024 hash = my(FileSpace.class).publishContents(brickFolder);
 		my(TupleSpace.class).publish(new BrickUsage(brickName, hash));
 	}
 
 	
-	private File brickDirectoryFor(String brickName) {
-		String brickDirectory = packageFor(brickName).replace('.', File.separatorChar);
+	private File brickFolderFor(String brickName) {
+		String brickFolder = packageFor(brickName).replace('.', File.separatorChar);
 		
-		File ownBrickDirectory = new File(my(DirectoryConfig.class).ownSrcDirectory().get(), brickDirectory);
-		if (ownBrickDirectory.exists())
-			return ownBrickDirectory;
+		File ownBrickFolder = new File(my(FolderConfig.class).ownSrcFolder().get(), brickFolder);
+		if (ownBrickFolder.exists())
+			return ownBrickFolder;
 		
-		File platformBrickDirectory = new File(my(DirectoryConfig.class).platformSrcDirectory().get(), brickDirectory);
-		if (platformBrickDirectory.exists())
-			return platformBrickDirectory;
+		File platformBrickFolder = new File(my(FolderConfig.class).platformSrcFolder().get(), brickFolder);
+		if (platformBrickFolder.exists())
+			return platformBrickFolder;
 		
 		throw new IllegalStateException("Brick not found: " + brickName);
 	}

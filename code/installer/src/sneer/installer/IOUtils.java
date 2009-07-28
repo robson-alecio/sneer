@@ -43,19 +43,19 @@ public class IOUtils {
          write(file, text.getBytes());
 	}	
 	
-	static void deleteDirectory(File directory) throws IOException {
-		if (!directory.exists()) return;
-		if (!directory.isDirectory()) 
-			throw new IllegalArgumentException(directory.getAbsolutePath() + " is not a directory");
+	static void deleteFolder(File folder) throws IOException {
+		if (!folder.exists()) return;
+		if (!folder.isDirectory()) 
+			throw new IllegalArgumentException(folder.getAbsolutePath() + " is not a folder");
 
-		deleteContents(directory);
+		deleteContents(folder);
 
-		if (!directory.delete()) 
-			throw new IOException("Unable to delete directory: " + directory.getAbsolutePath());
+		if (!folder.delete()) 
+			throw new IOException("Unable to delete folder: " + folder.getAbsolutePath());
 	}
 
-	private static void deleteContents(File directory) throws IOException, FileNotFoundException {
-		File[] files = directory.listFiles();
+	private static void deleteContents(File folder) throws IOException, FileNotFoundException {
+		File[] files = folder.listFiles();
 		if (files == null) return;
 		
 		for (File file : files) deleteFile(file);
@@ -68,7 +68,7 @@ public class IOUtils {
 		if (file.isFile() && !file.delete()) 
 			throw new IOException(("Unable to delete file: " + file.getAbsolutePath()));
 		
-		deleteDirectory(file);
+		deleteFolder(file);
 	}
 
 	static void copyToFile(InputStream input, File file) throws IOException {

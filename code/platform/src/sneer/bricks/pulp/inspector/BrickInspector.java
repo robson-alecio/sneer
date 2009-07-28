@@ -4,6 +4,6 @@ import java.io.File;
 
 public interface BrickInspector {
 
-	BrickInfo loadBrickInfo(File brickDirectory);
+	BrickInfo loadBrickInfo(File brickFolder);
 
 }

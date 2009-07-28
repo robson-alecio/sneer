@@ -8,7 +8,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-public class DirectorySync {
+public class FolderSync {
     private InputStream _in;
     private OutputStream _out;
     private String localPath;
@@ -19,7 +19,7 @@ public class DirectorySync {
     private List<FileInfo> diff;
     private boolean wait=true;
     
-    public DirectorySync() {
+    public FolderSync() {
     }
     
     public void sync(String path, InputStream in, OutputStream out) {

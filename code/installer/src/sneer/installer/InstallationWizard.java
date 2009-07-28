@@ -59,7 +59,7 @@ public class InstallationWizard extends JFrame {
 		showDialog(
 		"Each user of this computer can have his own Sneer setup.\n\n" +
 		"To store your setup, the following folder will be created:\n" +
-		Directories.SNEER_HOME().getAbsolutePath(), 
+		Folders.SNEER_HOME().getAbsolutePath(), 
 		
 		"Whatever >");
 	}

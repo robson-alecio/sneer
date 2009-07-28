@@ -26,17 +26,17 @@ public class FileSpaceTest extends BrickTest {
 
 	@Ignore
 	@Test (timeout = 3000)
-	public void publishDirectoryWithAFewFiles() throws IOException {
-		publishAndFetch(directoryWithAFewFiles());
+	public void publishFolderWithAFewFiles() throws IOException {
+		publishAndFetch(folderWithAFewFiles());
 	}
 
-	private void publishAndFetch(File fileOrDirectory) throws IOException {
-		Sneer1024 hash = _subject.publishContents(fileOrDirectory);
+	private void publishAndFetch(File fileOrFolder) throws IOException {
+		Sneer1024 hash = _subject.publishContents(fileOrFolder);
 		
 		my(TupleSpace.class).waitForAllDispatchingToFinish();
 		File destination = newTempFile();
 		_subject.fetchContentsInto(destination, hash);
-		assertSameContents(fileOrDirectory, destination);
+		assertSameContents(fileOrFolder, destination);
 	}
 	
 	private void assertSameContents(File file1, File file2) throws IOException {
@@ -44,7 +44,7 @@ public class FileSpaceTest extends BrickTest {
 	}
 
 	private File newTempFile() {
-		return new File(tmpDirectory(), "destination" + System.nanoTime());
+		return new File(tmpFolder(), "destination" + System.nanoTime());
 	}
 
 	private File anySmallFile() {
@@ -55,7 +55,7 @@ public class FileSpaceTest extends BrickTest {
 		return my(ClassUtils.class).toFile(getClass());
 	}
 
-	private File directoryWithAFewFiles() {
+	private File folderWithAFewFiles() {
 		return new File(myClassFile().getParent(), "fixtures");
 	}
 	

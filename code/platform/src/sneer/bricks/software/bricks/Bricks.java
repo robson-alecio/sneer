@@ -8,6 +8,6 @@ import sneer.foundation.brickness.Brick;
 @Brick
 public interface Bricks {
 	
-	void install(File sourceDirectory) throws IOException;
+	void install(File sourceFolder) throws IOException;
 	
 }

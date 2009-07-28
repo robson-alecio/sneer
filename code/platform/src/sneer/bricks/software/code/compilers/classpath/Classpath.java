@@ -8,7 +8,7 @@ public interface Classpath {
 	String asJavacArgument();
 
 	/**
-	 * @param element is a single directory with .class files or jar file
+	 * @param element is a single folder with .class files or jar file
 	 */
 	void add(File element);
 

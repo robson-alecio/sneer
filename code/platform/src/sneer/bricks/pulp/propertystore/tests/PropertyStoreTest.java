@@ -5,7 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import org.junit.Test;
 
 import sneer.bricks.pulp.propertystore.PropertyStore;
-import sneer.bricks.software.directoryconfig.DirectoryConfig;
+import sneer.bricks.software.folderconfig.FolderConfig;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.environments.Environments;
 
@@ -30,7 +30,7 @@ public class PropertyStoreTest extends BrickTest {
 	}
 
 	private void runInNewEnvironment(Runnable runnable) {
-		Environments.runWith(newTestEnvironment(my(DirectoryConfig.class)), runnable);
+		Environments.runWith(newTestEnvironment(my(FolderConfig.class)), runnable);
 	}
 	
 }

@@ -5,7 +5,7 @@ import sneer.main.Sneer;
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		if(Directories.SNEER_HOME().exists())
+		if(Folders.SNEER_HOME().exists())
 			new Installation();
 		else
 			new InstallationWizard();

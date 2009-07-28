@@ -194,7 +194,7 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	}
 	
 	private File sourceFolder(String sourceFolder) {
-		return new File(tmpDirectory(), sourceFolder);
+		return new File(tmpFolder(), sourceFolder);
 	}
 
 }

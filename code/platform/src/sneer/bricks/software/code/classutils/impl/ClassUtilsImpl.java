@@ -9,7 +9,7 @@ class ClassUtilsImpl implements ClassUtils {
 
 	@Override
 	public File classpathRootFor(Class<?> clazz) {
-		return rootDirectoryFor(clazz, toFile(clazz));
+		return rootFolderFor(clazz, toFile(clazz));
 	}
 
 	@Override
@@ -21,7 +21,7 @@ class ClassUtilsImpl implements ClassUtils {
 		}
 	}
 
-	private File rootDirectoryFor(Class<?> clazz, File classFile) {
+	private File rootFolderFor(Class<?> clazz, File classFile) {
 		final int packageCount = packageName(clazz).split("\\.").length;
 
 		File parent = classFile.getParentFile();

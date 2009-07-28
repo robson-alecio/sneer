@@ -67,22 +67,22 @@ class Installation {
 			sneerHome().mkdirs();
 		
 		if(platformCode().exists())
-			deleteDirectory(platformCode());
+			deleteFolder(platformCode());
 		
 		platformCode().mkdirs();
 	}
 
-	private void deleteDirectory(File directory) throws IOException {
-        if (!directory.exists()) return;
+	private void deleteFolder(File folder) throws IOException {
+        if (!folder.exists()) return;
 
-        for (File file : directory.listFiles())  recursiveDelete(file);
+        for (File file : folder.listFiles())  recursiveDelete(file);
         
-        if (!directory.delete()) throw new IOException(("Unable to delete directory " + directory + "."));
+        if (!folder.delete()) throw new IOException(("Unable to delete folder " + folder + "."));
     }		
 	
     private void recursiveDelete(File file) throws IOException {
         if (file.isDirectory()) {
-            deleteDirectory(file);
+            deleteFolder(file);
             return;
         }
         
@@ -131,10 +131,10 @@ class Installation {
         }
 	}
 
-	private File ownCode() { return Directories.OWN_CODE(); }
-	private File platformCode() { return Directories.PLATFORM_CODE(); }
-	private File sneerHome() { return Directories.SNEER_HOME(); }
-	private File logFile() { return Directories.LOG_FILE(); }
+	private File ownCode() { return Folders.OWN_CODE(); }
+	private File platformCode() { return Folders.PLATFORM_CODE(); }
+	private File sneerHome() { return Folders.SNEER_HOME(); }
+	private File logFile() { return Folders.LOG_FILE(); }
 	
 	public static void main(String[] args) throws IOException {
 		new Installation();

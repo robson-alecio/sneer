@@ -8,6 +8,6 @@ public class SneerFreedom1Test extends Freedom1TestBase {
 
 	@Override
 	protected SovereignCommunity createNewCommunity() {
-		return new SneerCommunity(tmpDirectory());
+		return new SneerCommunity(tmpFolder());
 	}
 }

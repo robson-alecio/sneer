@@ -16,7 +16,7 @@ import sneer.bricks.software.code.metaclass.asm.ASM;
 import sneer.bricks.software.code.metaclass.asm.AnnotationInfo;
 import sneer.bricks.software.code.metaclass.asm.AnnotationVisitor;
 import sneer.bricks.software.code.metaclass.asm.ClassVisitor;
-import sneer.bricks.software.directoryconfig.DirectoryConfig;
+import sneer.bricks.software.folderconfig.FolderConfig;
 import sneer.foundation.brickness.Brick;
 
 public class BrickFinderImpl implements BrickFinder {
@@ -27,8 +27,8 @@ public class BrickFinderImpl implements BrickFinder {
 	public Collection<String> findBricks() {
 		Collection<String> unique = new HashSet<String>();
 		
-		collectBricks(unique, my(DirectoryConfig.class).ownBinDirectory().get());
-		collectBricks(unique, my(DirectoryConfig.class).platformBinDirectory().get());
+		collectBricks(unique, my(FolderConfig.class).ownBinFolder().get());
+		collectBricks(unique, my(FolderConfig.class).platformBinFolder().get());
 
 		return sorted(unique);
 	}
@@ -39,20 +39,20 @@ public class BrickFinderImpl implements BrickFinder {
 		return result;
 	}
 
-	private void collectBricks(Collection<String> result, File binDirectory) {
-		for (File candidate : findClassFileCandidates(binDirectory)) {
+	private void collectBricks(Collection<String> result, File binFolder) {
+		for (File candidate : findClassFileCandidates(binFolder)) {
 			Visitor visitor = new Visitor(candidate);
 			if (visitor._foundBrick)
 				result.add(visitor._className);
 		}
 	}
 
-	private Collection<File> findClassFileCandidates(File binDirectory) {
+	private Collection<File> findClassFileCandidates(File binFolder) {
 		FileFilters filters = my(IO.class).fileFilters();
 		
 		Filter dirFilter = filters.not(filters.name("impl"));
 		Filter fileFilter = filters.suffix(".class");
-		return filters.listFiles(binDirectory, fileFilter, dirFilter);
+		return filters.listFiles(binFolder, fileFilter, dirFilter);
 	}
 
 	private class Visitor implements ClassVisitor, AnnotationVisitor{

@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import sneer.bricks.software.bricks.finder.BrickFinder;
 import sneer.bricks.software.code.compilers.java.tests.JarUtils;
-import sneer.bricks.software.directoryconfig.DirectoryConfig;
+import sneer.bricks.software.folderconfig.FolderConfig;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.testsupport.AssertUtils;
 
@@ -21,8 +21,8 @@ public class BrickFinderTest extends BrickTest {
 	@Test
 	public void findBricks() throws IOException {
 		File testDir = JarUtils.fileFor(getClass()).getParentFile();
-		my(DirectoryConfig.class).ownBinDirectory().set(testDir);
-		my(DirectoryConfig.class).platformBinDirectory().set(testDir);
+		my(FolderConfig.class).ownBinFolder().set(testDir);
+		my(FolderConfig.class).platformBinFolder().set(testDir);
 		
 		Collection<String> bricks = _subject.findBricks();
 

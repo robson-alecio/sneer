@@ -6,4 +6,4 @@ import sneer.foundation.environments.EnvironmentProperty;
 
 
 /** The place where you should persist your files. */
-public interface StorageDirectory extends EnvironmentProperty<File> {}
+public interface StorageFolder extends EnvironmentProperty<File> {}

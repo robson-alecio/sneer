@@ -23,21 +23,21 @@ public interface IO {
 		Filter not(Filter filter);
 		Filter suffix(String sulfix);
 		Filter name(String name);
-		Collection<File> listFiles(File directory, Filter file, Filter dir);
+		Collection<File> listFiles(File folder, Filter fileFilter, Filter folderFilter);
 	}
 	
 	interface Filter{
 		public boolean accept(File file);
-		public boolean accept(File dir, String name);
+		public boolean accept(File folder, String name);
 	}
 	
 	interface Files{
 		boolean isEmpty(File file);
-		Collection<File> listFiles(File directory, String[] extensions, boolean recursive);
+		Collection<File> listFiles(File folder, String[] extensions, boolean recursive);
 		
-		void copyDirectory(File srcDir, File destDir) throws IOException;
-		void deleteDirectory(File directory) throws IOException;
-		Iterator<File> iterate(File directory, String[] extensions, boolean recursive);
+		void copyFolder(File srcFolder, File destFolder) throws IOException;
+		void deleteFolder(File folder) throws IOException;
+		Iterator<File> iterate(File folder, String[] extensions, boolean recursive);
 
 		void writeString(File file, String data) throws IOException;
 		

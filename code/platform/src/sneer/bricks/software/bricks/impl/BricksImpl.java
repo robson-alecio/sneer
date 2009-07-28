@@ -14,28 +14,28 @@ import sneer.bricks.software.code.compilers.classpath.ClasspathFactory;
 import sneer.bricks.software.code.compilers.java.JavaCompiler;
 import sneer.bricks.software.code.compilers.java.Result;
 import sneer.bricks.software.code.metaclass.MetaClass;
-import sneer.bricks.software.directoryconfig.DirectoryConfig;
+import sneer.bricks.software.folderconfig.FolderConfig;
 
 public class BricksImpl implements Bricks {
 
 	@Override
-	public void install(File sourceDirectory) throws IOException {
+	public void install(File sourceFolder) throws IOException {
 		
-		final Result result = compile(sourceDirectory, ownBinDirectory());
+		final Result result = compile(sourceFolder, ownBinFolder());
 		if (!result.success())
 			throw new CompilationError(result.getErrorString());
 		
-		copyToOwnSrc(sourceDirectory);
+		copyToOwnSrc(sourceFolder);
 		
 		final String brickName = brickNameFor(result);
 		if (null == brickName)
-			throw new IllegalArgumentException("Directory '" + sourceDirectory + "' contains no bricks.");
+			throw new IllegalArgumentException("Folder '" + sourceFolder + "' contains no bricks.");
 		
 		instatiate(brickName);
 	}
 
-	private void copyToOwnSrc(File sourceDirectory) throws IOException {
-		my(IO.class).files().copyDirectory(sourceDirectory, my(DirectoryConfig.class).ownSrcDirectory().get());
+	private void copyToOwnSrc(File sourceFolder) throws IOException {
+		my(IO.class).files().copyFolder(sourceFolder, my(FolderConfig.class).ownSrcFolder().get());
 	}
 
 	private void instatiate(final String brickName) {
@@ -53,21 +53,21 @@ public class BricksImpl implements Bricks {
 		return null;
 	}
 
-	private Result compile(File sourceDirectory, final File tempOutputDir) {
-		final List<File> sourceFiles = sourceFilesIn(sourceDirectory);
+	private Result compile(File sourceFolder, final File tempOutputDir) {
+		final List<File> sourceFiles = sourceFilesIn(sourceFolder);
 		final Classpath classPath = my(ClasspathFactory.class).sneerApi();
 		return my(JavaCompiler.class).compile(sourceFiles, tempOutputDir, classPath);
 	}
 
-	private List<File> sourceFilesIn(File sourceDirectory) {
+	private List<File> sourceFilesIn(File sourceFolder) {
 		String[] extensions = { "java" };
-		return new ArrayList<File>(my(IO.class).files().listFiles(sourceDirectory, extensions, true));
+		return new ArrayList<File>(my(IO.class).files().listFiles(sourceFolder, extensions, true));
 	}
 
-	private File ownBinDirectory() {
-		File result = my(DirectoryConfig.class).ownBinDirectory().get();
+	private File ownBinFolder() {
+		File result = my(FolderConfig.class).ownBinFolder().get();
 		if (!result.exists() && !result.mkdirs())
-			throw new IllegalStateException("Could not create own brick bin directory: '" + result + "'!");
+			throw new IllegalStateException("Could not create own brick bin folder: '" + result + "'!");
 		return result;
 	}
 

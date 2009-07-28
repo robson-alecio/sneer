@@ -13,7 +13,7 @@ import java.util.Properties;
 
 import sneer.bricks.hardware.io.IO;
 import sneer.bricks.pulp.propertystore.PropertyStore;
-import sneer.bricks.software.directoryconfig.DirectoryConfig;
+import sneer.bricks.software.folderconfig.FolderConfig;
 
 class PropertyStoreImpl implements PropertyStore {
 
@@ -75,8 +75,8 @@ class PropertyStoreImpl implements PropertyStore {
 	}
 
 	private File file() {
-		File directory = my(DirectoryConfig.class).getStorageDirectoryFor(PropertyStore.class);
-		return new File(directory, FILE_NAME);
+		File folder = my(FolderConfig.class).getStorageFolderFor(PropertyStore.class);
+		return new File(folder, FILE_NAME);
 	}
 
 }

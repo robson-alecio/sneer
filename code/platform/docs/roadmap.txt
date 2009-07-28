@@ -11,8 +11,6 @@
 
 	- [Sandro] ListSignalModelTest - Suggest a way to eliminate the thread that is leaked (see console) when this test is run.
 	
-	- [Sandro] Directory -> Folder - Rename all places: classes, methods, fields, variables, parameters.
-
 	- [Sandro] Hudson Linux Reboot
 
 	- [Sandro] Auto-scroll fix: it does not work when LogConsole is minimized.

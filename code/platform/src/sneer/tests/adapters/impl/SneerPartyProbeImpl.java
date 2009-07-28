@@ -25,7 +25,7 @@ import sneer.bricks.pulp.reactive.SignalUtils;
 import sneer.bricks.snapps.wind.Shout;
 import sneer.bricks.snapps.wind.Wind;
 import sneer.bricks.software.bricks.Bricks;
-import sneer.bricks.software.directoryconfig.DirectoryConfig;
+import sneer.bricks.software.folderconfig.FolderConfig;
 import sneer.bricks.softwaresharing.BrickInfo;
 import sneer.bricks.softwaresharing.BrickSpace;
 import sneer.bricks.softwaresharing.BrickVersion;
@@ -130,8 +130,8 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 
 	@Override
-	public void installBricks(File sourceDirectory) throws IOException {
-		my(Bricks.class).install(sourceDirectory);
+	public void installBricks(File sourceFolder) throws IOException {
+		my(Bricks.class).install(sourceFolder);
 	}
 
 
@@ -159,12 +159,12 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	}
 
 	@Override
-	public void configDirectories(File dataDirectory, File ownSrcDirectory, File ownBinDirectory, File platformSrcDirectory, File platformBinDirectory) {
-		my(DirectoryConfig.class).dataDirectory().set(dataDirectory);
-		my(DirectoryConfig.class).ownSrcDirectory().set(ownSrcDirectory);
-		my(DirectoryConfig.class).ownBinDirectory().set(ownBinDirectory);
-		my(DirectoryConfig.class).platformSrcDirectory().set(platformSrcDirectory);
-		my(DirectoryConfig.class).platformBinDirectory().set(platformBinDirectory);
+	public void configDirectories(File dataFolder, File ownSrcFolder, File ownBinFolder, File platformSrcFolder, File platformBinFolder) {
+		my(FolderConfig.class).dataFolder().set(dataFolder);
+		my(FolderConfig.class).ownSrcFolder().set(ownSrcFolder);
+		my(FolderConfig.class).ownBinFolder().set(ownBinFolder);
+		my(FolderConfig.class).platformSrcFolder().set(platformSrcFolder);
+		my(FolderConfig.class).platformBinFolder().set(platformBinFolder);
 	}
 
 

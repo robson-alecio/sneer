@@ -35,7 +35,7 @@ import static sneer.foundation.environments.Environments.my;
 //Refactor: Break this into several classes.
 public class Language {
 	
-	private static final String TRANSLATION_DIRECTORY = "translations";
+	private static final String TRANSLATION_FOLDER = "translations";
 	
 	private static final String MSGSTR = "msgstr \"";
 
@@ -88,7 +88,7 @@ public class Language {
 
 	public void loadTranslationTemplate() {
 		try {
-			InputStream stream = this.getClass().getResourceAsStream("/" + TRANSLATION_DIRECTORY + "/" + TRANSLATION_FILENAME + ".pot");
+			InputStream stream = this.getClass().getResourceAsStream("/" + TRANSLATION_FOLDER + "/" + TRANSLATION_FILENAME + ".pot");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 			parseTranslation(reader);
 		} catch (Exception anything) {
@@ -113,7 +113,7 @@ public class Language {
 	}
 
 	private void loadTranslation() throws IOException {
-		InputStream stream = getClass().getClassLoader().getResourceAsStream( TRANSLATION_DIRECTORY + "/" + TRANSLATION_FILENAME + "_" + _currentLanguage + ".po");
+		InputStream stream = getClass().getClassLoader().getResourceAsStream( TRANSLATION_FOLDER + "/" + TRANSLATION_FILENAME + "_" + _currentLanguage + ".po");
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream,Charset.forName("UTF-8")));
 		parseTranslation(reader);
 	}
@@ -165,7 +165,7 @@ public class Language {
 	private static void createLanguageFile() { //Refactor: low priority. lots of redundant code in this class... unify...
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		chooser.setDialogTitle("Choose the Sources Directory");
+		chooser.setDialogTitle("Choose the Sources Folder");
 		int returnVal = chooser.showOpenDialog(null);
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -174,8 +174,8 @@ public class Language {
 			InputStream streamIn;
 			OutputStream streamOut;
 			try {
-				streamIn = new FileInputStream(dirFile.getAbsolutePath() + "/" + TRANSLATION_DIRECTORY + "/" + TRANSLATION_FILENAME + ".pot");
-				streamOut = new FileOutputStream(dirFile.getAbsolutePath() + "/" + TRANSLATION_DIRECTORY + "/" + TRANSLATION_FILENAME + "_" + language_country + ".po");
+				streamIn = new FileInputStream(dirFile.getAbsolutePath() + "/" + TRANSLATION_FOLDER + "/" + TRANSLATION_FILENAME + ".pot");
+				streamOut = new FileOutputStream(dirFile.getAbsolutePath() + "/" + TRANSLATION_FOLDER + "/" + TRANSLATION_FILENAME + "_" + language_country + ".po");
 				BufferedReader reader = new BufferedReader(new InputStreamReader(streamIn,Charset.forName("UTF-8")));
 				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(streamOut,"UTF-8"));
 				String line = "";
@@ -196,17 +196,17 @@ public class Language {
 	private static void createTemplateFile() { //Refactor: low priority. lots of redundant code in this class... unify...
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		chooser.setDialogTitle("Choose the Sources Directory");
+		chooser.setDialogTitle("Choose the Sources Folder");
 		int returnVal = chooser.showOpenDialog(null);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File dirFile = chooser.getSelectedFile();
-			extractFromDirectory(dirFile);
+			extractFromFolder(dirFile);
 			JOptionPane.showMessageDialog(null, "Done!");
 		}
 	}
 
-	private static void extractFromDirectory(File dirFile) {
-		File targetFile = new File(dirFile.getPath() + "/" + TRANSLATION_DIRECTORY + "/" + "Translation.pot");
+	private static void extractFromFolder(File dirFile) {
+		File targetFile = new File(dirFile.getPath() + "/" + TRANSLATION_FOLDER + "/" + "Translation.pot");
 		generateTranslation(dirFile, targetFile);
 	}
 
@@ -346,7 +346,7 @@ public class Language {
 	private static void merge() { //Refactor: low priority. lots of redundant code in this class... unify...
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		chooser.setDialogTitle("Choose the Sources Directory");
+		chooser.setDialogTitle("Choose the Sources Folder");
 		int returnVal = chooser.showOpenDialog(null);
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -354,9 +354,9 @@ public class Language {
 			String language_country = JOptionPane.showInputDialog("What language? (Examples: pt_BR, fr_FR )");
 
 			try {
-				InputStream templateStreamIn = new FileInputStream(dirFile.getAbsolutePath() + "/" + TRANSLATION_DIRECTORY + "/" + TRANSLATION_FILENAME + ".pot");
-				InputStream languageStreamIn = new FileInputStream(dirFile.getAbsolutePath() + "/" + TRANSLATION_DIRECTORY + "/" + TRANSLATION_FILENAME + "_" + language_country + ".po");
-				OutputStream streamOut = new FileOutputStream(dirFile.getAbsolutePath() + "/" + TRANSLATION_DIRECTORY + "/" + TRANSLATION_FILENAME + "_" + language_country + ".po_merge");
+				InputStream templateStreamIn = new FileInputStream(dirFile.getAbsolutePath() + "/" + TRANSLATION_FOLDER + "/" + TRANSLATION_FILENAME + ".pot");
+				InputStream languageStreamIn = new FileInputStream(dirFile.getAbsolutePath() + "/" + TRANSLATION_FOLDER + "/" + TRANSLATION_FILENAME + "_" + language_country + ".po");
+				OutputStream streamOut = new FileOutputStream(dirFile.getAbsolutePath() + "/" + TRANSLATION_FOLDER + "/" + TRANSLATION_FILENAME + "_" + language_country + ".po_merge");
 
 				List<String> msgids = new ArrayList<String>();
 				List<String> lines = new ArrayList<String>();

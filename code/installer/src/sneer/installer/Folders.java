@@ -4,7 +4,7 @@ import java.io.File;
 
 import sneer.main.SneerDirectories;
 
-public class Directories extends SneerDirectories {
+public class Folders extends SneerDirectories {
 
 	static File SNEER_HOME() { return SNEER_HOME; }
 	static File DATA() { return DATA; }

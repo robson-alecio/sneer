@@ -10,7 +10,7 @@ import org.junit.Test;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.IO;
 import sneer.bricks.pulp.tuples.TupleSpace;
-import sneer.bricks.software.directoryconfig.DirectoryConfig;
+import sneer.bricks.software.folderconfig.FolderConfig;
 import sneer.foundation.brickness.Tuple;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.environments.Environment;
@@ -51,7 +51,7 @@ public class TuplePersistenceTest extends BrickTest {
 		
 		my(Threads.class).crashAllThreads();
 		
-		my(IO.class).files().deleteDirectory(tmpDirectory());
+		my(IO.class).files().deleteFolder(tmpFolder());
 	}
 
 
@@ -60,7 +60,7 @@ public class TuplePersistenceTest extends BrickTest {
 	}
 	
 	private void runInNewEnvironment(Runnable runnable) {
-		Environment newEnvironment = newTestEnvironment(my(DirectoryConfig.class));
+		Environment newEnvironment = newTestEnvironment(my(FolderConfig.class));
 		Environments.runWith(newEnvironment, runnable);
 	}
 	

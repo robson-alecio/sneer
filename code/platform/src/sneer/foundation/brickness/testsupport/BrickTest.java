@@ -11,7 +11,7 @@ import org.junit.After;
 import org.junit.runner.RunWith;
 
 import sneer.bricks.hardware.cpu.threads.Threads;
-import sneer.bricks.software.directoryconfig.DirectoryConfig;
+import sneer.bricks.software.folderconfig.FolderConfig;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.testsupport.TestThatMightUseResources;
 
@@ -22,7 +22,7 @@ public abstract class BrickTest extends TestThatMightUseResources {
     
 	{
 		my(BrickTestRunner.class).instanceBeingInitialized(this);
-		my(DirectoryConfig.class).dataDirectory().set(tmpDirectory());
+		my(FolderConfig.class).dataFolder().set(tmpFolder());
 	}
 	
 	

@@ -12,7 +12,7 @@ public class SideB {
             int port = 2000;
             Socket socket = new Socket(addr, port);
             
-            DirectorySync sync=new DirectorySync();
+            FolderSync sync=new FolderSync();
             sync.sync("/tmp/sideb",socket.getInputStream(),socket.getOutputStream());
             
             while(!sync.isFinished()){

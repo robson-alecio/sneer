@@ -20,7 +20,7 @@ class ClasspathFactoryImpl implements ClasspathFactory {
 
 	@Override
 	public Classpath fromClassDir(File rootFolder) {
-		return new DirectoryBasedClasspath(rootFolder);
+		return new FolderBasedClasspath(rootFolder);
 	}
 
 	@Override
@@ -46,7 +46,7 @@ class ClasspathFactoryImpl implements ClasspathFactory {
 	}
 
 	private Classpath buildEclipseClasspath() {
-		Classpath kernelPlusWheel = new DirectoryBasedClasspath(my(ClassUtils.class).classpathRootFor(Brick.class));
+		Classpath kernelPlusWheel = new FolderBasedClasspath(my(ClassUtils.class).classpathRootFor(Brick.class));
 		return kernelPlusWheel;
 	}
 

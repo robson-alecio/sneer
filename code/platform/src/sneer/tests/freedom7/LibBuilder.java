@@ -18,18 +18,18 @@ public class LibBuilder {
 
 	private final JavaCompiler _compiler;
 	private final File _srcFolder;
-	private File _tmpDirectory;
+	private File _tmpFolder;
 
-	public LibBuilder(JavaCompiler compiler, File srcFolder, File tmpDirectory) {
+	public LibBuilder(JavaCompiler compiler, File srcFolder, File tmpFolder) {
 		_compiler = compiler;
 		_srcFolder = srcFolder;
-		_tmpDirectory = tmpDirectory;
+		_tmpFolder = tmpFolder;
 	}
 
 	public void build(File targetJar) throws IOException {
-		_tmpDirectory.mkdirs();
+		_tmpFolder.mkdirs();
 		
-		final Result result = _compiler.compile(my(Iterables.class).toList(iterateSourceFiles()), _tmpDirectory);
+		final Result result = _compiler.compile(my(Iterables.class).toList(iterateSourceFiles()), _tmpFolder);
 		if (!result.success())
 			throw new IllegalArgumentException(result.getErrorString());
 		

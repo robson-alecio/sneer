@@ -26,32 +26,32 @@ public class SneerCommunity implements SovereignCommunity {
 	private final Network _network = new InProcessNetwork();
 	private int _nextPort = 10000;
 
-	private final File _tmpDirectory;
+	private final File _tmpFolder;
 
 	private final Set<SneerParty> _allParties = new HashSet<SneerParty>();
 	
 	
-	public SneerCommunity(File tmpDirectory) {
-		_tmpDirectory = tmpDirectory;
+	public SneerCommunity(File tmpFolder) {
+		_tmpFolder = tmpFolder;
 	}
 	
 	
 	@Override
 	public SovereignParty createParty(final String name) {
-		File sneerHome = rootDirectory(name);
-		File ownBinDirectory = makeDirectory(sneerHome, "own/bin");
-		File ownSrcDirectory = makeDirectory(sneerHome, "own/src");
-		File platformBinDirectory = my(ClassUtils.class).classpathRootFor(SneerCommunity.class);
-		File platformSrcDirectory = new File(platformBinDirectory.getParent(), "src");
-		File dataDirectory = makeDirectory(sneerHome, "data");
+		File sneerHome = rootFolder(name);
+		File ownBinFolder = makeFolder(sneerHome, "own/bin");
+		File ownSrcFolder = makeFolder(sneerHome, "own/src");
+		File platformBinFolder = my(ClassUtils.class).classpathRootFor(SneerCommunity.class);
+		File platformSrcFolder = new File(platformBinFolder.getParent(), "src");
+		File dataFolder = makeFolder(sneerHome, "data");
 		
 		Environment container = Brickness.newBrickContainer(_network);
-		URLClassLoader apiClassLoader = apiClassLoader(ownBinDirectory, platformBinDirectory, name);
+		URLClassLoader apiClassLoader = apiClassLoader(ownBinFolder, platformBinFolder, name);
 		
 		Object partyImpl = EnvironmentUtils.retrieveFrom(container, loadProbeClassUsing(apiClassLoader));
 		final SneerParty party = (SneerParty)ProxyInEnvironment.newInstance(container, partyImpl);
 		
-		party.configDirectories(dataDirectory, ownSrcDirectory, ownBinDirectory, platformSrcDirectory, platformBinDirectory);
+		party.configDirectories(dataFolder, ownSrcFolder, ownBinFolder, platformSrcFolder, platformBinFolder);
 		party.setOwnName(name);
 		party.setSneerPort(_nextPort++);
 		
@@ -63,10 +63,10 @@ public class SneerCommunity implements SovereignCommunity {
 	}
 
 
-	private File makeDirectory(File parent, String child) {
+	private File makeFolder(File parent, String child) {
 		File result = new File(parent, child);
 		if (!result.mkdirs())
-			throw new IllegalStateException("Could not create directory '" + result + "'!");
+			throw new IllegalStateException("Could not create folder '" + result + "'!");
 		return result;
 	}
 
@@ -122,9 +122,9 @@ public class SneerCommunity implements SovereignCommunity {
 		}
 	}
 
-	private File rootDirectory(String name) {
+	private File rootFolder(String name) {
 		String home = "sneer-" + name.replace(' ', '_');
-		return makeDirectory(_tmpDirectory, home);
+		return makeFolder(_tmpFolder, home);
 	}
 
 	@Override

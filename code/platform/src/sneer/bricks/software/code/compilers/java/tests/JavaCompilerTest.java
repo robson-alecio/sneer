@@ -55,7 +55,7 @@ public class JavaCompilerTest extends BrickTest {
 			Result result = compile("class Foo extends " + TestLib.class.getName() + " {}", libFolder);
 			assertSuccess(result);
 		} finally {
-			my(IO.class).files().deleteDirectory(libFolder);
+			my(IO.class).files().deleteFolder(libFolder);
 		}
 	}
 		
@@ -64,7 +64,7 @@ public class JavaCompilerTest extends BrickTest {
 	}
 	
 	private File createLibFolder() {
-		final File dir = new File(tmpDirectory(), "lib");
+		final File dir = new File(tmpFolder(), "lib");
 		dir.mkdirs();
 		return dir;
 	}
@@ -72,7 +72,7 @@ public class JavaCompilerTest extends BrickTest {
 	private Result compile(String code, File libDir) {
 		File java = writeSourceFile(code);
 		Classpath classpath = classPathForLibs(libDir);
-		return _compiler.compile(Collections.singletonList(java), tmpDirectory(), classpath);
+		return _compiler.compile(Collections.singletonList(java), tmpFolder(), classpath);
 	}
 
 	private File writeSourceFile(String code) {
@@ -87,7 +87,7 @@ public class JavaCompilerTest extends BrickTest {
 	}
 
 	private File createTempFile() throws IOException {
-		return File.createTempFile(TEST_FILE_PREFIX, ".java", tmpDirectory());
+		return File.createTempFile(TEST_FILE_PREFIX, ".java", tmpFolder());
 	}
 
 	private Classpath classPathForLibs(File libDir) {

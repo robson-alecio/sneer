@@ -11,8 +11,8 @@ import sneer.bricks.software.code.metaclass.MetaClasses;
 class MetaClassesImpl implements MetaClasses {
 
 	@Override
-	public MetaClass metaClass(File rootDirectory, File classFile) {
-	    return new SimpleMetaClass(rootDirectory, classFile);
+	public MetaClass metaClass(File rootFolder, File classFile) {
+	    return new SimpleMetaClass(rootFolder, classFile);
 	}
 
 	@Override

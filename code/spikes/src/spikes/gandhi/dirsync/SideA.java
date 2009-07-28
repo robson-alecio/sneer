@@ -11,7 +11,7 @@ public class SideA {
             ServerSocket srv = new ServerSocket(port);
             Socket socket = srv.accept();
             
-            DirectorySync sync=new DirectorySync();
+            FolderSync sync=new FolderSync();
             sync.sync("/tmp/sidea",socket.getInputStream(),socket.getOutputStream());
             
             while(!sync.isFinished()){

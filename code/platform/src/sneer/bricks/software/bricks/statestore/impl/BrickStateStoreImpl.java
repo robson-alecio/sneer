@@ -15,7 +15,7 @@ import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.pulp.serialization.Serializer;
 import sneer.bricks.software.bricks.statestore.BrickStateStore;
-import sneer.bricks.software.directoryconfig.DirectoryConfig;
+import sneer.bricks.software.folderconfig.FolderConfig;
 
 public class BrickStateStoreImpl implements BrickStateStore {
 
@@ -26,7 +26,7 @@ public class BrickStateStoreImpl implements BrickStateStore {
 
 	@Override
 	public Object readObjectFor(Class<?> brick, ClassLoader classloader) throws BrickStateStoreException {
-		File file = my(DirectoryConfig.class).getStorageDirectoryFor(brick);
+		File file = my(FolderConfig.class).getStorageFolderFor(brick);
 		if(!file.exists()) file.mkdirs();
 		
 		FileInputStream stream = null;
@@ -51,7 +51,7 @@ public class BrickStateStoreImpl implements BrickStateStore {
 
 	@Override
 	public void writeObjectFor(Class<?> brick, Object object) {
-		File file = my(DirectoryConfig.class).getStorageDirectoryFor(brick);
+		File file = my(FolderConfig.class).getStorageFolderFor(brick);
 		if(!file.exists()) file.mkdirs();
 		
 		FileOutputStream stream = null;

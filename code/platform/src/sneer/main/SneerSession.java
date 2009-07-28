@@ -12,7 +12,7 @@ import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.workers.notifier.LogNotifier;
 import sneer.bricks.hardware.ram.ref.immutable.Immutable;
 import sneer.bricks.software.bricks.snappstarter.SnappStarter;
-import sneer.bricks.software.directoryconfig.DirectoryConfig;
+import sneer.bricks.software.folderconfig.FolderConfig;
 import sneer.foundation.brickness.Brickness;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
@@ -24,7 +24,7 @@ public class SneerSession implements Runnable {
 	}
 
 	public void run() {
-		configure(my(DirectoryConfig.class));
+		configure(my(FolderConfig.class));
 
 		startLogging();
 		my(SnappStarter.class).startSnapps();
@@ -41,17 +41,17 @@ public class SneerSession implements Runnable {
 	}
 	
 	
-	private static void configure(DirectoryConfig dirs) {
-		set(dirs.ownBinDirectory(), OWN_BIN);
-		set(dirs.platformBinDirectory(), PLATFORM_BIN);
-		set(dirs.dataDirectory(), DATA);
+	private static void configure(FolderConfig dirs) {
+		set(dirs.ownBinFolder(), OWN_BIN);
+		set(dirs.platformBinFolder(), PLATFORM_BIN);
+		set(dirs.dataFolder(), DATA);
 		
 		dirs.logFile().set(LOG_FILE);
 	}
 
-	private static void set(Immutable<File> property, File directory) {
-		if (!directory.exists() && !directory.mkdirs()) throw new IllegalStateException("Unable to create directory " + property);
-		property.set(directory);
+	private static void set(Immutable<File> property, File folder) {
+		if (!folder.exists() && !folder.mkdirs()) throw new IllegalStateException("Unable to create folder " + property);
+		property.set(folder);
 	}
 
 }

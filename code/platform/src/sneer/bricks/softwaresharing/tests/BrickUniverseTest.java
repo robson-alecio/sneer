@@ -6,7 +6,7 @@ import java.io.File;
 
 import org.junit.Ignore;
 
-import sneer.bricks.software.directoryconfig.DirectoryConfig;
+import sneer.bricks.software.folderconfig.FolderConfig;
 import sneer.bricks.softwaresharing.BrickSpace;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
@@ -15,24 +15,14 @@ import sneer.foundation.lang.exceptions.NotImplementedYet;
 public class BrickUniverseTest extends BrickTest {
 
 	{
-		my(DirectoryConfig.class).ownBinDirectory().set(ownBinDirectory());
-		my(DirectoryConfig.class).platformBinDirectory().set(platformBinDirectory());
+		my(FolderConfig.class).ownBinFolder().set(ownBinFolder());
+		my(FolderConfig.class).platformBinFolder().set(platformBinFolder());
 	}
 	
 	@SuppressWarnings("unused")
 	private BrickSpace _subject = my(BrickSpace.class);
 
-	
-	
-	
-	private File ownBinDirectory() {
-		throw new NotImplementedYet(); // Implement
-	}
-
-	private File platformBinDirectory() {
-		throw new NotImplementedYet(); // Implement
-	}
-
-	
+	private File ownBinFolder() { throw new NotImplementedYet(); /* Implement*/ }
+	private File platformBinFolder() {throw new NotImplementedYet(); /* Implement*/ }
 	
 }

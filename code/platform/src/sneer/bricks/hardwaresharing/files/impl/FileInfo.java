@@ -6,13 +6,13 @@ import sneer.foundation.brickness.Tuple;
 class FileInfo extends Tuple {
 
 	public final String name;
-	public final boolean isDirectory;
+	public final boolean isFolder;
 	public final long lastModified;
 	public final ImmutableByteArray hashOfContents;
 
-	public FileInfo(String name_, boolean isDirectory_, long lastModified_, ImmutableByteArray hashOfContents_) {
+	public FileInfo(String name_, boolean isFolder_, long lastModified_, ImmutableByteArray hashOfContents_) {
 		name = name_;
-		isDirectory = isDirectory_;
+		isFolder = isFolder_;
 		lastModified = lastModified_;
 		hashOfContents = hashOfContents_;
 	}

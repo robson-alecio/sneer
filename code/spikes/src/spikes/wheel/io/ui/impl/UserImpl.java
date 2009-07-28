@@ -246,7 +246,7 @@ public class UserImpl implements User {
 	}
 	
 	@Override
-	public void chooseDirectory(final String title, final String buttonTitle, final Consumer<File> callback) {
+	public void chooseFolder(final String title, final String buttonTitle, final Consumer<File> callback) {
 		my(GuiThread.class).invokeLater(new Runnable(){ public void run(){
 			final JFileChooser fc = new JFileChooser();
 			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);

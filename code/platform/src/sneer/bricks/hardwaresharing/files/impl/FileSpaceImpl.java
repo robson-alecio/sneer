@@ -42,10 +42,10 @@ public class FileSpaceImpl implements FileSpace {
 	}
 	
 	@Override
-	public Sneer1024 publishContents(File fileOrDirectory) throws IOException {
-		return (fileOrDirectory.isDirectory())
-			? publishDirectoryContents(fileOrDirectory)
-			: publishFileContents(fileOrDirectory);
+	public Sneer1024 publishContents(File fileOrFolder) throws IOException {
+		return (fileOrFolder.isDirectory())
+			? publishFolderContents(fileOrFolder)
+			: publishFileContents(fileOrFolder);
 	}
 
 	private Sneer1024 publishFileContents(File file)	throws IOException {
@@ -53,9 +53,9 @@ public class FileSpaceImpl implements FileSpace {
 		return my(Crypto.class).digest(file); //Optimize byte[] is being read already.
 	}
 	
-	private Sneer1024 publishDirectoryContents(File directory) throws IOException {
+	private Sneer1024 publishFolderContents(File folder) throws IOException {
 		@SuppressWarnings("unused")
-		List<Sneer1024> files = publishEachFile(directory);
+		List<Sneer1024> files = publishEachFile(folder);
 		
 		
 		//	meta dir: hashes de todos os meta arquivos (blocos de hashes recursivos)
@@ -65,12 +65,12 @@ public class FileSpaceImpl implements FileSpace {
 		throw new NotImplementedYet();
 	}
 
-	private List<Sneer1024> publishEachFile(File directory) throws IOException {
+	private List<Sneer1024> publishEachFile(File folder) throws IOException {
 		List<Sneer1024> result = new ArrayList<Sneer1024>();
-		for (File fileOrDirectory : directory.listFiles()) {
-			Sneer1024 hashOfContents = publishContents(fileOrDirectory);
+		for (File fileOrFolder : folder.listFiles()) {
+			Sneer1024 hashOfContents = publishContents(fileOrFolder);
 			
-			FileInfo fileInfo = fileInfoFor(fileOrDirectory, hashOfContents);
+			FileInfo fileInfo = fileInfoFor(fileOrFolder, hashOfContents);
 			my(TupleSpace.class).publish(fileInfo);
 						
 			result.add(hash(fileInfo));
@@ -81,7 +81,7 @@ public class FileSpaceImpl implements FileSpace {
 	private Sneer1024 hash(FileInfo fileInfo) {
 		Digester digester = my(Crypto.class).newDigester();
 		digester.update(bytesUtf8(fileInfo.name));
-		digester.update(fileInfo.isDirectory ? TRUE_AS_BYTES : FALSE_AS_BYTES);
+		digester.update(fileInfo.isFolder ? TRUE_AS_BYTES : FALSE_AS_BYTES);
 		digester.update(BigInteger.valueOf(fileInfo.lastModified).toByteArray());
 		digester.update(fileInfo.hashOfContents.copy());
 		return digester.digest();
@@ -95,11 +95,11 @@ public class FileSpaceImpl implements FileSpace {
 		}
 	}
 
-	private FileInfo fileInfoFor(File fileOrDirectory, Sneer1024 hashOfContents) {
+	private FileInfo fileInfoFor(File fileOrFolder, Sneer1024 hashOfContents) {
 		return new FileInfo(
-			fileOrDirectory.getName(),
-			fileOrDirectory.isDirectory(),
-			fileOrDirectory.lastModified(),
+			fileOrFolder.getName(),
+			fileOrFolder.isDirectory(),
+			fileOrFolder.lastModified(),
 			my(ImmutableArrays.class).newImmutableByteArray(hashOfContents.bytes())
 		);
 	}
@@ -110,8 +110,8 @@ public class FileSpaceImpl implements FileSpace {
 		my(IO.class).files().writeByteArrayToFile(destination, contents);
 	}
 	
-	private DataBlock newDataBlock(File fileOrDirectory) throws IOException {
-		byte[] bytes = my(IO.class).files().readBytes(fileOrDirectory);
+	private DataBlock newDataBlock(File fileOrFolder) throws IOException {
+		byte[] bytes = my(IO.class).files().readBytes(fileOrFolder);
 		return new DataBlock(my(ImmutableArrays.class).newImmutableByteArray(bytes));
 	}
 

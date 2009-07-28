@@ -29,7 +29,7 @@ public interface User {
 	void acknowledgeFriendlyException(FriendlyException e);
 	
 	void saveAs(String title, String buttonTitle, String[] suffixes, String description, Consumer<File> callback);
-	void chooseDirectory(String title, String buttonTitle, Consumer<File> callback) ;
+	void chooseFolder(String title, String buttonTitle, Consumer<File> callback) ;
 	
 	Catcher catcher();
 

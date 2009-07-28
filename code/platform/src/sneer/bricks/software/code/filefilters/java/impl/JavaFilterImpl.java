@@ -46,15 +46,15 @@ class JavaFilterImpl implements JavaFilter {
 		return _cache;
 	}
 	
-	protected final void walk(File startDirectory, Collection<MetaClass> results) {
-		if (startDirectory == null) 
-			throw new NullPointerException("Start Directory is null");
+	protected final void walk(File startFolder, Collection<MetaClass> results) {
+		if (startFolder == null) 
+			throw new NullPointerException("Start Folder is null");
 		
-		walk(startDirectory, 0, results);
+		walk(startFolder, 0, results);
 	}
 
-	private void walk(File directory, int depth, Collection<MetaClass> results) {
-		File[] childFiles = directory.listFiles();
+	private void walk(File folder, int depth, Collection<MetaClass> results) {
+		File[] childFiles = folder.listFiles();
 		if (childFiles == null) 
 			return;
 		

@@ -9,7 +9,7 @@ import sneer.foundation.brickness.Brick;
 @Brick
 public interface FileSpace {
 
-	Sneer1024 publishContents(File fileOrDirectory) throws IOException;
+	Sneer1024 publishContents(File fileOrFolder) throws IOException;
 
 	void fetchContentsInto(File destination, Sneer1024 hash) throws IOException;
 

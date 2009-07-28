@@ -30,10 +30,10 @@ public class ReactiveAutoScrollImpl implements ReactiveAutoScroll {
 		return result;
 	}
 
-	private void holdReceivers(JScrollPane scroll, final WeakContract reception) {
+	private void holdReceivers(JScrollPane scroll, final WeakContract contract) {
 		scroll.addFocusListener(new FocusAdapter(){
 			@SuppressWarnings({ "unused" })
-			WeakContract _refToAvoidGc = reception;
+			WeakContract _refToAvoidGc = contract;
 		});
 	}
 }

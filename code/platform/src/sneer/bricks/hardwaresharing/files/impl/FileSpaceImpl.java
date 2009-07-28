@@ -33,32 +33,21 @@ public class FileSpaceImpl implements FileSpace {
 	
 	private Map<Sneer1024, Object> _contentsByHash = new ConcurrentHashMap<Sneer1024, Object>();
 	
-	private Map<Sneer1024, FolderEntry> _folderEntriesByHash = new ConcurrentHashMap<Sneer1024, FolderEntry>();
-	
 	@SuppressWarnings("unused") private final WeakContract _fileContract;
-	
 	@SuppressWarnings("unused") private final WeakContract _folderContract;
 	
-	@SuppressWarnings("unused") private final WeakContract _folderEntryContract;
-
+	
 	{
 		my(TupleSpace.class).keep(FileContents.class);
-		
 		_fileContract = my(TupleSpace.class).addSubscription(FileContents.class, new Consumer<FileContents>() { @Override public void consume(FileContents contents) {
 			_contentsByHash.put(hash(contents), contents.bytes);
 		}});
 		
 		my(TupleSpace.class).keep(FolderContents.class);
-		
 		_folderContract = my(TupleSpace.class).addSubscription(FolderContents.class, new Consumer<FolderContents>() { @Override public void consume(FolderContents contents) {
 			_contentsByHash.put(hash(contents), contents);
 		}});
 		
-		my(TupleSpace.class).keep(FolderEntry.class);
-		
-		_folderEntryContract = my(TupleSpace.class).addSubscription(FolderEntry.class, new Consumer<FolderEntry>() { @Override public void consume(FolderEntry entry) {
-			_folderEntriesByHash.put(hash(entry), entry);
-		}});
 	}
 	
 	@Override
@@ -74,20 +63,20 @@ public class FileSpaceImpl implements FileSpace {
 	}
 	
 	private Sneer1024 publishFolderContents(File folder) throws IOException {
-		List<Sneer1024> files = publishEachFile(folder);
+		List<FolderEntry> files = publishEachFile(folder);
 		final FolderContents contents = new FolderContents(my(ImmutableArrays.class).newImmutableArray(files));
 		my(TupleSpace.class).publish(contents);
 		return hash(contents);
 	}
 
-	private List<Sneer1024> publishEachFile(File folder) throws IOException {
-		List<Sneer1024> result = new ArrayList<Sneer1024>();
+	private List<FolderEntry> publishEachFile(File folder) throws IOException {
+		List<FolderEntry> result = new ArrayList<FolderEntry>();
 		for (File fileOrFolder : folder.listFiles()) {
 			Sneer1024 hashOfContents = publishContents(fileOrFolder);
 			FolderEntry entry = folderEntryFor(fileOrFolder, hashOfContents);
 			my(TupleSpace.class).publish(entry);
 						
-			result.add(hash(entry));
+			result.add(entry);
 		}
 		return result;
 	}
@@ -103,8 +92,8 @@ public class FileSpaceImpl implements FileSpace {
 	
 	private Sneer1024 hash(FolderContents folder) {
 		Digester digester = my(Crypto.class).newDigester();
-		for (Sneer1024 fileInfoHash : folder.contents)
-			digester.update(fileInfoHash.bytes());
+		for (FolderEntry entry : folder.contents)
+			digester.update(hash(entry).bytes());
 		return digester.digest();
 	}
 
@@ -139,16 +128,11 @@ public class FileSpaceImpl implements FileSpace {
 
 	private void fetchFolderContentsInto(File folder, FolderContents contents) throws IOException {
 		folder.mkdirs();
-		for (Sneer1024 hash : contents.contents)
-			fetchFolderEntryInto(folder, hash);
+		for (FolderEntry entry : contents.contents)
+			fetchFolderEntryInto(folder, entry);
 	}
 
-	private void fetchFolderEntryInto(File folder, Sneer1024 entryHash) throws IOException {
-		
-		FolderEntry entry = _folderEntriesByHash.get(entryHash);
-		if (null == entry)
-			throw new NotImplementedYet();
-		
+	private void fetchFolderEntryInto(File folder, FolderEntry entry) throws IOException {
 		fetchContentsInto(new File(folder, entry.name), entry.hashOfContents);
 	}
 

@@ -1,6 +1,8 @@
 ﻿TASKS
 =========
 
+	- [Klaus] IO.files().contenteEquals() - take lastModified date into account.
+
 	- [Klaus] Clean console for all tests
 		- Stethoscope logging isOnline - Clean.
 		- TestThatMightUseResources - Fail on resource usage including sysout and syserr.

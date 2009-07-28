@@ -11,6 +11,6 @@ public interface FileSpace {
 
 	Sneer1024 publishContents(File fileOrFolder) throws IOException;
 
-	void fetchContentsInto(File destination, Sneer1024 hash) throws IOException;
+	void fetchContentsInto(File destinationFileOrFolder, Sneer1024 hash) throws IOException;
 
 }

@@ -6,6 +6,7 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -55,7 +56,39 @@ class IOImpl implements IO {
 		}
 		
 		@Override public void writeByteArrayToFile(File file, byte[] data) throws IOException { FileUtils.writeByteArrayToFile(file, data); }
-		@Override public boolean contentEquals(File file1, File file2) throws IOException { return FileUtils.contentEquals(file1, file2); }
+		
+		@Override public boolean contentEquals(File file1, File file2) throws IOException {
+			if (file1.isDirectory() != file2.isDirectory()) return false;
+			
+			return file1.isDirectory()
+				? folderContentEquals(file1, file2)
+				: FileUtils.contentEquals(file1, file2);
+		}
+
+		private boolean folderContentEquals(File folder1, File folder2) throws IOException {
+			File[] files1 = sortedFiles(folder1);
+			File[] files2 = sortedFiles(folder2);
+			
+			if (files1.length != files2.length) return false;
+			
+			for (int i = 0; i < files1.length; i++) {
+				if (!nameEquals(files1[i], files2[i])) return false;
+				if (!contentEquals(files1[i], files2[i])) return false;
+			}
+			
+			return true;
+		}
+
+		private boolean nameEquals(File file, File file2) {
+			return file.getName().equals(file2.getName());
+		}
+
+		private File[] sortedFiles(File folder) {
+			File[] result = folder.listFiles();
+			if (result == null) result = new File[0];
+			Arrays.sort(result);
+			return result;
+		}
 
 		@Override public void readBytes(File file, Consumer<byte[]> content, Consumer<IOException> exception) {
 			try {

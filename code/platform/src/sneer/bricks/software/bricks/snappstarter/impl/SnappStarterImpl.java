@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 
-import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.software.bricks.finder.BrickFinder;
 import sneer.bricks.software.bricks.snappstarter.Snapp;
 import sneer.bricks.software.bricks.snappstarter.SnappStarter;
@@ -35,9 +34,9 @@ class SnappStarterImpl implements SnappStarter {
 	}
 
 	private void startAndKeep(final Class<?> brick) {
-		my(Threads.class).startDaemon("Starting Snapp: " + brick.getName(), new Runnable() { @Override public void run() {
+//		my(Threads.class).startDaemon("Starting Snapp: " + brick.getName(), new Runnable() { @Override public void run() {
 			_referenceToAvoidGC.add(my(brick));
-		}});
+//		}});
 	}
 
 	private boolean isSnapp(Class<?> brick) {

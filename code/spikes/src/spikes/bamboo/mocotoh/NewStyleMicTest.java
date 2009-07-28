@@ -7,6 +7,7 @@ import javax.sound.sampled.TargetDataLine;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.tuples.TupleSpace;
@@ -27,13 +28,14 @@ public class NewStyleMicTest {
 			final Threads threads = mock();
 			final Audio audio = mock();
 			TargetDataLine line;
+			@SuppressWarnings("unused")	private WeakContract _tupleSpaceContract;
 			
 			final Consumer<PcmSoundPacket> subscriber = mock();
 			
 			@Override
 			public void stimuli() throws Exception {	
 				new Stimulus() {{
-					tuples.addSubscription(PcmSoundPacket.class, subscriber);
+					_tupleSpaceContract = tuples.addSubscription(PcmSoundPacket.class, subscriber);
 				}};
 	
 				final Steppable stepper = capture();

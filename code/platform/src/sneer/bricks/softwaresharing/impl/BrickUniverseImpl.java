@@ -1,5 +1,7 @@
 package sneer.bricks.softwaresharing.impl;
 
+import static sneer.foundation.environments.Environments.my;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.pulp.reactive.collections.SetRegister;
 import sneer.bricks.pulp.reactive.collections.SetSignal;
 import sneer.bricks.pulp.reactive.collections.impl.SetRegisterImpl;
@@ -8,15 +10,15 @@ import sneer.bricks.softwaresharing.BrickInfo;
 import sneer.bricks.softwaresharing.BrickUniverse;
 import sneer.bricks.softwaresharing.publisher.BrickUsage;
 import sneer.foundation.lang.Consumer;
-import static sneer.foundation.environments.Environments.my;
 
 class BrickUniverseImpl implements BrickUniverse, Consumer<BrickUsage> {
 
 	private SetRegister<BrickInfo> _availableBricks = new SetRegisterImpl<BrickInfo>();
+	@SuppressWarnings("unused")	private final WeakContract _tupleSpaceContract;
 
 	{
 		//my(TupleSpace.class).keep(BrickUsage.class);
-		my(TupleSpace.class).addSubscription(BrickUsage.class, this);
+		_tupleSpaceContract = my(TupleSpace.class).addSubscription(BrickUsage.class, this);
 	}
 	
 	@Override

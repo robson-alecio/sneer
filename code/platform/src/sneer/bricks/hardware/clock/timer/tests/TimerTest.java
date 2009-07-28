@@ -11,6 +11,7 @@ import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.clock.timer.Timer;
 import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.lang.ByRef;
 
@@ -56,7 +57,7 @@ public class TimerTest extends BrickTest {
 		assertEquals(2, _order.size());
 	}
 
-	@Test (timeout = 2000)
+	@Test (timeout = 4000)
 	public void testContractWeakness() throws Exception {
 		final ByRef<Boolean> finalized = ByRef.newInstance(false);
 		
@@ -74,6 +75,7 @@ public class TimerTest extends BrickTest {
 
 		while (!finalized.value) {
 			System.gc();
+			my(Threads.class).sleepWithoutInterruptions(100);
 			_clock.advanceTime(42);
 		}
 	}

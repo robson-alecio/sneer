@@ -5,6 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.util.Comparator;
 
 import sneer.bricks.hardware.clock.Clock;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.pulp.reactive.collections.CollectionSignals;
 import sneer.bricks.pulp.reactive.collections.ListRegister;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
@@ -18,15 +19,15 @@ class WindImpl implements Wind, Consumer<Shout> {
 
 	private final ListSignal<Shout> _sortedShouts;
 	private final ListRegister<Shout> _shoutsHeard = my(CollectionSignals.class).newListRegister();
+	@SuppressWarnings("unused")	private final WeakContract _tupleSpaceContract;
 
 	WindImpl(){
-		my(TupleSpace.class).addSubscription(Shout.class, this);
+		_tupleSpaceContract = my(TupleSpace.class).addSubscription(Shout.class, this);
 		my(TupleSpace.class).keep(Shout.class);
 		
-		Comparator<Shout> _comparator = new Comparator<Shout>(){ @Override public int compare(Shout o1, Shout o2) {
+		_sortedShouts = my(ListSorter.class).sort(_shoutsHeard.output(), new Comparator<Shout>(){ @Override public int compare(Shout o1, Shout o2) {
 			return (int) (o1.publicationTime() - o2.publicationTime());
-		}};
-		_sortedShouts = my(ListSorter.class).sort(_shoutsHeard.output(), _comparator);
+		}});
 	}
 
 	@Override

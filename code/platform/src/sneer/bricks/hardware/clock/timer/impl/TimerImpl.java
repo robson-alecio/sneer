@@ -7,6 +7,8 @@ import java.util.TreeSet;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.clock.timer.Timer;
+import sneer.bricks.hardware.cpu.lang.contracts.Contracts;
+import sneer.bricks.hardware.cpu.lang.contracts.Disposable;
 import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Latch;
 import sneer.bricks.hardware.cpu.threads.Steppable;
@@ -57,7 +59,7 @@ class TimerImpl implements Timer {
 	synchronized public WeakContract wakeUpEvery(long period, Steppable stepper) {
 		Alarm result = new Alarm(stepper, period, true);
 		_alarms.add(result);
-		return result.contract();
+		return my(Contracts.class).weakContractFor(result);
 	}
 
 	@Override
@@ -88,7 +90,7 @@ class TimerImpl implements Timer {
 	
 	static private long _nextSequence = 0;
 
-	private class Alarm implements Comparable<Alarm>, WeakContract{
+	private class Alarm implements Comparable<Alarm>, Disposable {
 
 		private final Steppable _stepper;
 
@@ -146,20 +148,6 @@ class TimerImpl implements Timer {
 			_isDisposed = true;
 		}
 
-		public WeakContract contract() {
-			return new WeakContract() {
-
-				@Override
-				public void dispose() {
-					_isDisposed = true;
-				}
-
-				@Override
-				protected void finalize() {
-					dispose();
-				}
-			};
-		}
 	}
 
 	private static Steppable asSteppable(final Runnable runnable) {

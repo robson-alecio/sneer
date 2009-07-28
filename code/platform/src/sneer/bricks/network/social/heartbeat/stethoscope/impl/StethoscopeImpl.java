@@ -31,10 +31,11 @@ class StethoscopeImpl implements Stethoscope, Consumer<Heartbeat>, Steppable {
 	private CacheMap<Contact, Register<Boolean>> _registersByContact = my(CacheMaps.class).newInstance();
 
 	@SuppressWarnings("unused")	private final WeakContract _timerContract;
+	@SuppressWarnings("unused")	private final WeakContract _tupleSpaceContract;
 	
 	
 	{
-		my(TupleSpace.class).addSubscription(Heartbeat.class, this);
+		_tupleSpaceContract = my(TupleSpace.class).addSubscription(Heartbeat.class, this);
 		_timerContract = my(Timer.class).wakeUpEvery(TIME_TILL_DEATH, this);
 	}
 	

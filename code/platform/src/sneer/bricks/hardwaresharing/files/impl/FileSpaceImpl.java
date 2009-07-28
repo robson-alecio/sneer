@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.io.IO;
 import sneer.bricks.hardware.ram.arrays.ImmutableArrays;
 import sneer.bricks.hardware.ram.arrays.ImmutableByteArray;
@@ -28,16 +29,16 @@ public class FileSpaceImpl implements FileSpace {
 	private static final byte[] TRUE_AS_BYTES = new byte[]{1};
 	private static final byte[] FALSE_AS_BYTES = new byte[]{0};
 	
-	private Consumer<DataBlock> _refToAvoidGc;
 	private Map<Sneer1024, ImmutableByteArray> _blocksByHash = new ConcurrentHashMap<Sneer1024, ImmutableByteArray>();
+	
+	@SuppressWarnings("unused") private final WeakContract _tupleSpaceContract;
 
 	{
 		my(TupleSpace.class).keep(DataBlock.class);
 		
-		_refToAvoidGc = new Consumer<DataBlock>() { @Override public void consume(DataBlock block) {
+		_tupleSpaceContract = my(TupleSpace.class).addSubscription(DataBlock.class, new Consumer<DataBlock>() { @Override public void consume(DataBlock block) {
 			_blocksByHash.put(hash(block), block.bytes);
-		}};
-		my(TupleSpace.class).addSubscription(DataBlock.class, _refToAvoidGc);
+		}});
 	}
 	
 	@Override

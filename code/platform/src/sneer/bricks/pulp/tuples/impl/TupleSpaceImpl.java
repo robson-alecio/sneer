@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -23,10 +22,11 @@ import org.prevayler.foundation.serialization.Serializer;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.Contracts;
+import sneer.bricks.hardware.cpu.lang.contracts.Disposable;
 import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
-import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
@@ -44,9 +44,9 @@ import sneer.foundation.lang.Consumer;
 class TupleSpaceImpl implements TupleSpace {
 
 	//Refactor The synchronization will no longer be necessary when the container guarantees synchronization of model bricks.
-	class Subscription {
+	class Subscription implements Disposable {
 
-		private final WeakReference<Consumer<? super Tuple>> _subscriber;
+		private final Consumer<? super Tuple> _subscriber;
 		private final Class<? extends Tuple> _tupleType;
 		private final Environment _environment;
 		private final List<Tuple> _tuplesToNotify = new LinkedList<Tuple>(); 
@@ -54,7 +54,7 @@ class TupleSpaceImpl implements TupleSpace {
 		private final Contract _stepperContract;
 		
 		<T extends Tuple> Subscription(Consumer<? super T> subscriber, Class<T> tupleType) {
-			_subscriber = new WeakReference<Consumer<? super Tuple>>((Consumer<? super Tuple>) subscriber);
+			_subscriber = (Consumer<? super Tuple>)subscriber;
 			_tupleType = tupleType;
 			_environment = my(Environment.class);
 			
@@ -63,20 +63,15 @@ class TupleSpaceImpl implements TupleSpace {
 
 		private Steppable notifier() {
 			return new Steppable() { @Override public void step() {
-				Tuple tuple = waitToPopTuple();
-				
-				Consumer<? super Tuple> subscriber = _subscriber.get();
-				if (subscriber == null)
-					_stepperContract.dispose();
-				else
-					notifySubscriber(subscriber, tuple);
+				Tuple nextTuple = waitToPopTuple();
+				notifySubscriber(nextTuple);
 			}};
 		}
 
-		private void notifySubscriber(final Consumer<? super Tuple> subscriber, final Tuple tuple) {
+		private void notifySubscriber(final Tuple tuple) {
 			_exceptionHandler.shield(new Runnable() { @Override public void run() {
 				Environments.runWith(_environment, new Runnable() { @Override public void run() {
-					subscriber.consume(tuple);
+					_subscriber.consume(tuple);
 				}});
 			}});
 			dispatchCounterDecrement();
@@ -106,9 +101,13 @@ class TupleSpaceImpl implements TupleSpace {
 			}
 		}
 
-		private boolean wasGcd() {
-			return _subscriber.get() == null;
+		@Override
+		/** Removes this subscription as soon as possible. The subscription might still receive tuple notifications from other threads AFTER this method returns, though. It is impossible to guarantee synchronicity of this method without risking deadlocks, especially with the GUI thread. If you really need to know when the subscription was removed, get in touch with us. We can change the API to provide for a callback.*/
+		public void dispose() {
+			_stepperContract.dispose();
+			_subscriptions.remove(this);
 		}
+	
 	}
 
 	private static final int TRANSIENT_CACHE_SIZE = 1000;
@@ -219,14 +218,8 @@ class TupleSpaceImpl implements TupleSpace {
 
 
 	private void notifySubscriptions(Tuple tuple) {
-		for (Subscription subscription : _subscriptions.toArray(SUBSCRIPTION_ARRAY)) {
-			if (subscription.wasGcd()) {
-				_subscriptions.remove(subscription);
-				my(Logger.class).log("Subscriber gc'd for tupleType: " + subscription._tupleType);
-				continue;
-			}
+		for (Subscription subscription : _subscriptions.toArray(SUBSCRIPTION_ARRAY))
 			subscription.filterAndNotify(tuple);
-		}
 	}
 
 
@@ -268,25 +261,14 @@ class TupleSpaceImpl implements TupleSpace {
 	}
 
 	@Override
-	public <T extends Tuple> void addSubscription(Class<T> tupleType,	Consumer<? super T> subscriber) {
+	public <T extends Tuple> WeakContract addSubscription(Class<T> tupleType,	Consumer<? super T> subscriber) {
 		Subscription subscription = new Subscription(subscriber, tupleType);
 
 		for (Tuple kept : keptTuples())
 			subscription.filterAndNotify(kept);
 
 		_subscriptions.add(subscription);
-	}
-	
-	/** Removes this subscription as soon as possible. The subscription might still receive tuple notifications from other threads AFTER this method returns, though. It is impossible to guarantee synchronicity of this method without risking deadlocks, especially with the GUI thread. If you really need to know when the subscription was removed, get in touch with us. We can change the API to provide for a callback.*/
-	@Override
-	public <T extends Tuple> void removeSubscriptionAsync(Object subscriber) {
-		for (Subscription victim : _subscriptions.toArray(SUBSCRIPTION_ARRAY))
-			if (victim._subscriber.get() == subscriber) {
-				_subscriptions.remove(victim);
-				return;
-			} 
-
-		throw new IllegalArgumentException("Subscription not found.");
+		return my(Contracts.class).weakContractFor(subscription);
 	}
 	
 	@Override

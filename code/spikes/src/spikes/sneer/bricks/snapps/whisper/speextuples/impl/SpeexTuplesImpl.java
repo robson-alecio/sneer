@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.sound.sampled.LineUnavailableException;
 
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.ram.arrays.ImmutableArrays;
 import sneer.bricks.hardware.ram.arrays.ImmutableByteArray;
 import sneer.bricks.hardware.ram.arrays.ImmutableByteArray2D;
@@ -45,28 +46,25 @@ class SpeexTuplesImpl implements SpeexTuples { //Refactor Break this into the en
 	private final Decoder _decoder = _speex.createDecoder();
 	
 	private final AtomicInteger _ids = new AtomicInteger();
-	@SuppressWarnings("unused")	private Object _refToAvoidGc;
-	private Consumer<SpeexPacket> _refToAvoidGc2;
+	@SuppressWarnings("unused")	private WeakContract _micSoundContract;
 	
 	private final CacheMap<Seal, Sequencer<SpeexPacket>> _sequencersByPublisher = my(CacheMaps.class).newInstance();
 	private Producer<Sequencer<SpeexPacket>> _sequencerProducer = sequencerProducer();
+	@SuppressWarnings("unused")	private final WeakContract _tupleSpaceContract;
 	
 	public SpeexTuplesImpl() {
 
-		_refToAvoidGc = my(Mic.class).sound().addReceiver(new Consumer<ImmutableByteArray>() { @Override public void consume(ImmutableByteArray packet) {
+		_micSoundContract = my(Mic.class).sound().addReceiver(new Consumer<ImmutableByteArray>() { @Override public void consume(ImmutableByteArray packet) {
 			if (encode(packet.copy()))
 				flush();
 		}});
 
-		_refToAvoidGc2 = new Consumer<SpeexPacket>() {
-
-		@Override public void consume(SpeexPacket packet) {
+		_tupleSpaceContract = _tupleSpace.addSubscription(SpeexPacket.class, new Consumer<SpeexPacket>() { @Override public void consume(SpeexPacket packet) {
 			if (isMine(packet))	return;
 			if (!_room.currentValue().equals(packet.room)) return;
 
 			playInSequence(packet);
-		}};
-		_tupleSpace.addSubscription(SpeexPacket.class, _refToAvoidGc2);
+		}});
 	}
 	
 	

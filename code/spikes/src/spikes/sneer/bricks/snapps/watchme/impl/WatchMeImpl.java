@@ -8,6 +8,7 @@ import java.util.List;
 import sneer.bricks.hardware.clock.timer.Timer;
 import sneer.bricks.hardware.cpu.exceptions.Hiccup;
 import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
@@ -51,8 +52,10 @@ class WatchMeImpl implements WatchMe {
 	private Cache<ImmutableByteArray> _cache;
 
 	private Consumer<ImageDeltaPacket> _consumerToAvoidGc;
+	@SuppressWarnings("unused")	private WeakContract _tupleSpaceContract;
 
 	private Contract _stepperContract;
+
 
 	@Override
 	public EventSource<BufferedImage> screenStreamFor(final Seal publisher) {
@@ -62,7 +65,7 @@ class WatchMeImpl implements WatchMe {
 		EventNotifier<BufferedImage> result = my(EventNotifiers.class).newInstance();
 		
 		_consumerToAvoidGc = imageDeltaPacketConsumer(publisher, result);
-		_tupleSpace.addSubscription(ImageDeltaPacket.class, _consumerToAvoidGc);
+		_tupleSpaceContract = _tupleSpace.addSubscription(ImageDeltaPacket.class, _consumerToAvoidGc);
 		
 		return result.output();
 	}

@@ -4,6 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.lang.Consumer;
@@ -16,10 +17,10 @@ public class TupleKeepingTest extends BrickTest {
 	@Test (timeout = 5000)
 	public void tuplesLimitAmount() {
 
-		Consumer<KeptTuple> consumerToAvoidGc = new Consumer<KeptTuple>() { @Override public void consume(KeptTuple ignored) {
+		@SuppressWarnings("unused")
+		WeakContract contract = subject().addSubscription(KeptTuple.class, new Consumer<KeptTuple>() { @Override public void consume(KeptTuple ignored) {
 			_notificationCounter++;
-		}};
-		subject().addSubscription(KeptTuple.class, consumerToAvoidGc);
+		}});
 		
 		subject().keep(KeptTuple.class);
 		subject().publish(new KeptTuple(1));

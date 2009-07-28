@@ -4,6 +4,7 @@
 package sneer.bricks.pulp.probe.impl;
 
 import static sneer.foundation.environments.Environments.my;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.pulp.distribution.filtering.TupleFilterManager;
 import sneer.bricks.pulp.keymanager.Seals;
@@ -28,6 +29,7 @@ final class ProbeImpl implements Consumer<Tuple> {
 	final SchedulerImpl _scheduler = new SchedulerImpl();
 
 	@SuppressWarnings("unused") private final Object _referenceToAvoidGc;
+	private WeakContract _tupleSpaceContract;
 
 	ProbeImpl(Contact contact, Signal<Boolean> isConnectedSignal) {
 		_contact = contact;
@@ -42,9 +44,9 @@ final class ProbeImpl implements Consumer<Tuple> {
 			_isConnected = isConnected;
 
 			if (isConnected) {
-				_tuples.addSubscription(Tuple.class, this);
+				_tupleSpaceContract = _tuples.addSubscription(Tuple.class, this);
 			} else if (wasConnected) {
-				_tuples.removeSubscriptionAsync(this);
+				_tupleSpaceContract.dispose();
 				_scheduler.drain();
 			}
 		}

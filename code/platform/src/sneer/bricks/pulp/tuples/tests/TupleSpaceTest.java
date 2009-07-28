@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.brickness.Tuple;
 import sneer.foundation.brickness.testsupport.BrickTest;
@@ -18,15 +19,15 @@ public class TupleSpaceTest extends BrickTest {
 	@Test (timeout = 2000)
 	public void subscriptionRemoval() {
 		final ArrayList<Tuple> tuples = new ArrayList<Tuple>();
-		final Consumer<TestTuple> consumer = new Consumer<TestTuple>() { @Override public void consume(TestTuple value) {
+		WeakContract contract = _subject.addSubscription(TestTuple.class, new Consumer<TestTuple>() { @Override public void consume(TestTuple value) {
 			tuples.add(value);
-		}};
-		_subject.addSubscription(TestTuple.class, consumer);
+		}});
 		
 		final TestTuple tuple = new TestTuple(42);
 		_subject.publish(tuple);
 		my(TupleSpace.class).waitForAllDispatchingToFinish();
-		_subject.removeSubscriptionAsync(consumer);
+
+		contract.dispose();
 		
 		_subject.publish(new TestTuple(-1));
 		my(TupleSpace.class).waitForAllDispatchingToFinish();

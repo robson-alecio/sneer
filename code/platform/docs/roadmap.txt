@@ -1,8 +1,9 @@
 ﻿TASKS
 =========
 
+	- [Klaus] BrickUniverse -> BrickSpace
+
 	- [Klaus] Revise garbage collectable handles
-		- TupleSpace subscription
 		- Collection Signals Reception
 
 	- [Klaus] Thread leaks in sneer (not spikes) tests - Fix

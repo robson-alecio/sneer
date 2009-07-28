@@ -1,11 +1,6 @@
 ﻿TASKS
 =========
 
-	- [Klaus] BrickUniverse -> BrickSpace
-
-	- [Klaus] Revise garbage collectable handles
-		- Collection Signals Reception
-
 	- [Klaus] Thread leaks in sneer (not spikes) tests - Fix
 		- Implement ThreadsImpl.crashAllThreads. Move thread killing logic from TestThatMightUseResources.
 	

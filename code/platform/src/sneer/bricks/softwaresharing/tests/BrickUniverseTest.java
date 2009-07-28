@@ -7,7 +7,7 @@ import java.io.File;
 import org.junit.Ignore;
 
 import sneer.bricks.software.directoryconfig.DirectoryConfig;
-import sneer.bricks.softwaresharing.BrickUniverse;
+import sneer.bricks.softwaresharing.BrickSpace;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
 
@@ -20,7 +20,7 @@ public class BrickUniverseTest extends BrickTest {
 	}
 	
 	@SuppressWarnings("unused")
-	private BrickUniverse _subject = my(BrickUniverse.class);
+	private BrickSpace _subject = my(BrickSpace.class);
 
 	
 	

@@ -7,11 +7,11 @@ import sneer.bricks.pulp.reactive.collections.SetSignal;
 import sneer.bricks.pulp.reactive.collections.impl.SetRegisterImpl;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.bricks.softwaresharing.BrickInfo;
-import sneer.bricks.softwaresharing.BrickUniverse;
+import sneer.bricks.softwaresharing.BrickSpace;
 import sneer.bricks.softwaresharing.publisher.BrickUsage;
 import sneer.foundation.lang.Consumer;
 
-class BrickUniverseImpl implements BrickUniverse, Consumer<BrickUsage> {
+class BrickSpaceImpl implements BrickSpace, Consumer<BrickUsage> {
 
 	private SetRegister<BrickInfo> _availableBricks = new SetRegisterImpl<BrickInfo>();
 	@SuppressWarnings("unused")	private final WeakContract _tupleSpaceContract;

@@ -27,7 +27,7 @@ import sneer.bricks.snapps.wind.Wind;
 import sneer.bricks.software.bricks.Bricks;
 import sneer.bricks.software.directoryconfig.DirectoryConfig;
 import sneer.bricks.softwaresharing.BrickInfo;
-import sneer.bricks.softwaresharing.BrickUniverse;
+import sneer.bricks.softwaresharing.BrickSpace;
 import sneer.bricks.softwaresharing.BrickVersion;
 import sneer.bricks.softwaresharing.publisher.BrickPublisher;
 import sneer.foundation.brickness.Seal;
@@ -175,7 +175,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 		startAndKeep(sneer.bricks.network.computers.sockets.connections.receiver.SocketReceiver.class);
 		startAndKeep(sneer.bricks.pulp.probe.ProbeManager.class);
 		startAndKeep(sneer.bricks.snapps.wind.Wind.class);
-		startAndKeep(sneer.bricks.softwaresharing.BrickUniverse.class);
+		startAndKeep(sneer.bricks.softwaresharing.BrickSpace.class);
 		startAndKeep(sneer.bricks.network.social.heartbeat.stethoscope.Stethoscope.class);
 		startAndKeep(sneer.bricks.network.social.heartbeat.Heart.class);
 	}
@@ -200,7 +200,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 	@Override
 	public void waitForAvailableBrick(final String brickName) {
-		my(SignalUtils.class).waitForElement(my(BrickUniverse.class).availableBricks(), new Predicate<BrickInfo>() { @Override public boolean evaluate(BrickInfo brickInfo) {
+		my(SignalUtils.class).waitForElement(my(BrickSpace.class).availableBricks(), new Predicate<BrickInfo>() { @Override public boolean evaluate(BrickInfo brickInfo) {
 			return brickInfo.name().equals(brickName);
 		}});
 	}
@@ -219,7 +219,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	}
 
 	private BrickInfo availableBrick(String brickName) {
-		for (BrickInfo brick : my(BrickUniverse.class).availableBricks())
+		for (BrickInfo brick : my(BrickSpace.class).availableBricks())
 			if (brick.name().equals(brickName))
 				return brick;
 		throw new IllegalArgumentException();

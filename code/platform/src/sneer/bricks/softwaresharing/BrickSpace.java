@@ -6,7 +6,7 @@ import sneer.foundation.brickness.Brick;
 
 @Snapp
 @Brick
-public interface BrickUniverse {
+public interface BrickSpace {
 
 	SetSignal<BrickInfo> availableBricks();
 	

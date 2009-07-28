@@ -2,7 +2,6 @@
 =========
 
 	- [Klaus] Revise garbage collectable handles
-		- Stepper - Consider weak referencing it from the daemon. Doesnt Work. Remove Contract.
 		- Timer
 		- TupleSpace subscription
 		- Collection Signals Reception
@@ -12,13 +11,11 @@
 	
 	- [Klaus] Revise entire package structure.  
 	
+	- [Sandro and Rodrigo] Enable Rod to commit to Sandro's repository.
+	
+	- [Sandro] Directory -> Folder - Rename all places: classes, methods, fields, variables, parameters.
+
 	- [Sandro] Hudson Linux Reboot
-
-	- [Sandro] Rodrigo's SSH Public Key - Add to your git repository
-
-	- [Sandro] Sneer Responsiveness
-		- Uncomment this line in SnappStarterImpl: //my(GuiThread.class).registerThreadThatShouldNotWaitForGui(Thread.currentThread());
-			run Sneer and fix all Exceptions.
 
 	- [Sandro] Auto-scroll fix: it does not work when LogConsole is minimized.
 

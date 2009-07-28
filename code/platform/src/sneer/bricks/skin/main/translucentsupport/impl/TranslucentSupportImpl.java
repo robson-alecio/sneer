@@ -18,6 +18,7 @@ public class TranslucentSupportImpl implements TranslucentSupport {
     private Object _perpixelTranslucent;
     private Object _translucent;
 	private Light _light;
+	private boolean _isDisabled = false;
     
     TranslucentSupportImpl(){
     	Class<?> awtUtilitiesClass = utilitiesClass();
@@ -75,6 +76,8 @@ public class TranslucentSupportImpl implements TranslucentSupport {
 	}
     
     private void set(Window window, Object value, String methodName, Class<?>...types) {
+    	if(_isDisabled) return;
+    	
     	Method method;
 		try {
 			method = utilitiesClass().getMethod(methodName, types);
@@ -83,6 +86,7 @@ public class TranslucentSupportImpl implements TranslucentSupport {
         	my(BlinkingLights.class).turnOnIfNecessary(_light, "Translucent Windows Disabled", 
         		   "Translucent windows are supported only on JavaSE release 6u10 or superior." +
         		   " Check your JVM and your video aceleration.", throwable, 30000);
+        	_isDisabled = true;
         } 
     }
 

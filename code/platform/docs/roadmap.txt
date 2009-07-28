@@ -15,8 +15,6 @@
 
 	- [Sandro] Auto-scroll fix: it does not work when LogConsole is minimized.
 
-	- [Sandro] Translucent Windows Disabled BL: Show only once, not every time.
-
 	- Metoo
 		- [Sandro] Gui
 		- [Klaus] Business

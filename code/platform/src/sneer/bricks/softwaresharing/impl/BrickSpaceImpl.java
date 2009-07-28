@@ -14,11 +14,11 @@ import sneer.foundation.lang.Consumer;
 class BrickSpaceImpl implements BrickSpace, Consumer<BrickUsage> {
 
 	private SetRegister<BrickInfo> _availableBricks = new SetRegisterImpl<BrickInfo>();
-	@SuppressWarnings("unused")	private final WeakContract _tupleSpaceContract;
+	@SuppressWarnings("unused")	private final WeakContract _brickUsageContract;
 
 	{
-		//my(TupleSpace.class).keep(BrickUsage.class);
-		_tupleSpaceContract = my(TupleSpace.class).addSubscription(BrickUsage.class, this);
+		my(TupleSpace.class).keep(BrickUsage.class);
+		_brickUsageContract = my(TupleSpace.class).addSubscription(BrickUsage.class, this);
 	}
 	
 	@Override
@@ -28,7 +28,7 @@ class BrickSpaceImpl implements BrickSpace, Consumer<BrickUsage> {
 
 	@Override
 	public void consume(BrickUsage brickUsage) {
-		_availableBricks.add(new BrickInfoImpl(brickUsage.brickName));
+		_availableBricks.add(new BrickInfoImpl(brickUsage.brickName, brickUsage.hash));
 	}
 
 }

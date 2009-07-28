@@ -208,8 +208,8 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	@Override
 	public void installTheOnlyAvailableVersionOfBrick(String brickName) throws IOException {
 		final BrickInfo brick = availableBrick(brickName);
-		final BrickVersion latestVersion = onlyVersionOf(brick);
-		installBricks(latestVersion.sourceFolder());
+		final BrickVersion onlyVersion = onlyVersionOf(brick);
+		installBricks(onlyVersion.sourceFolder());
 	}
 
 	private BrickVersion onlyVersionOf(BrickInfo brick) {

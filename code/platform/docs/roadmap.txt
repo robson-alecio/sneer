@@ -1,7 +1,7 @@
 ﻿TASKS
 =========
 
-	- [Klaus] IO.files().contenteEquals() - take lastModified date into account.
+	- [Klaus] IO.files().contentEquals() - take lastModified date into account.
 
 	- [Klaus] Clean console for all tests
 		- Stethoscope logging isOnline - Clean.

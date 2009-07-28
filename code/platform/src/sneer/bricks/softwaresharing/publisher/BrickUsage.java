@@ -18,8 +18,4 @@ public class BrickUsage extends Tuple {
 		return "BrickUsage: " + brickName;
 	}
 
-	public Sneer1024 hash() {
-		return hash;
-	}
-	
 }

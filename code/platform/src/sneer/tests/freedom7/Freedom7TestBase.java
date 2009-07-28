@@ -24,7 +24,6 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 		assertEquals("true", System.getProperty("freedom7.y.Y.installed"));
 	}
 
-	@Ignore
 	@Test (timeout = 10000)
 	public void meToo() throws Exception {
 		a().installBricks(generateY());

@@ -80,7 +80,7 @@ public abstract class Tuple {
 		try {
 			return checkForArray(field.get(object));
 		} catch (IllegalAccessException e) {
-			throw new IllegalStateException("All fields in a Tuple should be public and not static. This was not the case with: " + object.getClass() + "." + field.getName() + " Also, tuple classes declared as inner classes dont work.", e);
+			throw new IllegalStateException("Tuple classes should be public and all of their fields should be public and not static. This was not the case with: " + object.getClass() + "." + field.getName() + " Also, tuple classes declared as inner classes dont work.", e);
 		}
 	}
 

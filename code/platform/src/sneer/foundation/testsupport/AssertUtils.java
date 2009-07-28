@@ -13,6 +13,9 @@ public abstract class AssertUtils extends Assert {
 	public static <T> void assertSameContents(Iterable<T> actual, T... expected) {
 		int i = 0;
 		for (T actualItem : actual) {
+			if (i == expected.length) {
+				fail("Unexpected extra element '" + actualItem + "' at index " + i);
+			}
 			assertEquals("Different values at index " + i, expected[i], actualItem);
 			i++;
 		}

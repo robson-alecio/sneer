@@ -32,8 +32,10 @@ public class FileSpaceTest extends BrickTest {
 
 	private void publishAndFetch(File fileOrFolder) throws IOException {
 		Sneer1024 hash = _subject.publishContents(fileOrFolder);
+		assertNotNull(hash);
 		
 		my(TupleSpace.class).waitForAllDispatchingToFinish();
+		
 		File destination = newTempFile();
 		_subject.fetchContentsInto(destination, hash);
 		assertSameContents(fileOrFolder, destination);

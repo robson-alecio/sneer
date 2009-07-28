@@ -21,7 +21,6 @@ class RootTreeNode extends AbstractTreeNodeWrapper<BrickInfo> {
 	
 	@Override protected List<BrickInfo> listChildren() { 
 		Collections.sort(_infos, new Comparator<BrickInfo>(){ @Override public int compare(BrickInfo brick1, BrickInfo brick2) {
-			
 			if(brick1.status().ordinal()==brick2.status().ordinal())
 				return brick1.name().compareTo(brick2.name());
 			

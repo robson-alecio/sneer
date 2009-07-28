@@ -22,9 +22,13 @@ class BrickVersionTreeNode extends AbstractTreeNodeWrapper<String> {
 	
 	private static SimpleDateFormat _ddMMyyHHmmss = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
 	private static final ImageIcon _currentVersion = loadIcon("currentVersion.png");
-	private static final ImageIcon _differentVersion = loadIcon("differentVersion.png");
 	private static final ImageIcon _rejectedVersion = loadIcon("rejectedVersion.png");
+
+	private static final ImageIcon _differentVersion = loadIcon("differentVersion.png");
 	private static final ImageIcon _divergingVersion = loadIcon("divergingVersion.png");
+
+	private static final ImageIcon _addDifferentVersion = loadIcon("addDifferentVersion.png");
+	private static final ImageIcon _addDivergingVersion = loadIcon("addDivergingVersion.png");
 
 	private static ImageIcon loadIcon(String fileName){
 		return my(ImageFactory.class).getIcon(BrickInfoTreeNode.class, fileName);
@@ -38,11 +42,19 @@ class BrickVersionTreeNode extends AbstractTreeNodeWrapper<String> {
 	}
 
 	@Override public ImageIcon getIcon() {
-		if(_brickVersion.status()==Status.DIFFERENT)
+		if(_brickVersion.status()==Status.DIFFERENT){
+			if(_brickVersion.isStagedForExecution())
+				return _addDifferentVersion;
+			
 			return _differentVersion;
+		}
 
-		if(_brickVersion.status()==Status.DIVERGING)
+		if(_brickVersion.status()==Status.DIVERGING){
+			if(_brickVersion.isStagedForExecution())
+				return _addDivergingVersion;
+			
 			return _divergingVersion;
+		}
 
 		if(_brickVersion.status()==Status.REJECTED)
 			return _rejectedVersion;

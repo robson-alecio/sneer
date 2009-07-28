@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -24,6 +25,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
+import sneer.bricks.skin.image.ImageFactory;
 import sneer.bricks.skin.main.menu.MainMenu;
 import sneer.bricks.skin.main.synth.Synth;
 import sneer.bricks.skin.main.synth.scroll.SynthScrolls;
@@ -38,8 +40,8 @@ import sneer.bricks.softwaresharing.gui.MeTooGui;
 
 class MeTooGuiImpl extends JFrame implements MeTooGui{
 
-	private static final JToggleButton _meTooButton = new JToggleButton("MeToo");
-	private static final JToggleButton _rejectButton = new JToggleButton("Reject");
+	private static final JToggleButton _meTooButton = new JToggleButton(loadIcon("add.png"));
+	private static final JToggleButton _rejectButton = new JToggleButton(loadIcon("rejectedVersion.png"));
 	private final JTree _tree = new JTree();
 	private final JList _files = new JList();
 	private final TextDiffPanel _diffPanel = my(TextDiffPanels.class).newPanel();
@@ -49,6 +51,10 @@ class MeTooGuiImpl extends JFrame implements MeTooGui{
 	private final int _HEIGHT;
 	private final int _X;
 	protected Object _lastSelectedNode;
+	
+	private static ImageIcon loadIcon(String fileName){
+		return my(ImageFactory.class).getIcon(MeTooGuiImpl.class, fileName);
+	}
 	
 	MeTooGuiImpl(){
 		super("MeToo");

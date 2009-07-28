@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import sneer.bricks.softwaresharing.BrickInfo;
 import sneer.bricks.softwaresharing.BrickVersion;
 
 class MeTooTreeCellRenderer extends DefaultTreeCellRenderer {
@@ -23,7 +24,7 @@ class MeTooTreeCellRenderer extends DefaultTreeCellRenderer {
     	result.setIcon(icon);
 
     if(value instanceof BrickInfoTreeNode)
-    	if(((BrickInfoTreeNode)value).isBrickStagedForExecution())
+    	if(Util.isBrickStagedForExecution((BrickInfo) ((BrickInfoTreeNode)value).sourceObject()))
 			isStaged(result);
     
     if(value instanceof BrickVersionTreeNode)
@@ -34,6 +35,6 @@ class MeTooTreeCellRenderer extends DefaultTreeCellRenderer {
   }
 
 	private void isStaged(JLabel result) {
-		result.setForeground(Color.BLUE);
+		result.setForeground(new Color(35,160,35));
 	}
 }

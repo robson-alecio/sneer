@@ -17,11 +17,16 @@ import sneer.bricks.softwaresharing.BrickInfo.Status;
 class BrickInfoTreeNode extends AbstractTreeNodeWrapper<BrickVersion> {
 
 	private final BrickInfo _brickInfo;
-	private static final ImageIcon _newBrick = loadIcon("newBrick.png");
 	private static final ImageIcon _currentBrick = loadIcon("currentBrick.png");
 	private static final ImageIcon _rejectedBrick = loadIcon("rejectedBrick.png");
+	
+	private static final ImageIcon _newBrick = loadIcon("newBrick.png");
 	private static final ImageIcon _differentBrick = loadIcon("differentBrick.png");
 	private static final ImageIcon _divergingBrick = loadIcon("divergingBrick.png");
+
+	private static final ImageIcon _addNewBrick = loadIcon("addNewBrick.png");
+	private static final ImageIcon _addDifferentBrick = loadIcon("addDifferentBrick.png");
+	private static final ImageIcon _addDivergingBrick = loadIcon("addDivergingBrick.png");
 
 	private static ImageIcon loadIcon(String fileName){
 		return my(ImageFactory.class).getIcon(BrickInfoTreeNode.class, fileName);
@@ -35,14 +40,26 @@ class BrickInfoTreeNode extends AbstractTreeNodeWrapper<BrickVersion> {
 	}
 
 	@Override public ImageIcon getIcon() {
-		if(_brickInfo.status() == Status.DIFFERENT ) 
+		if(_brickInfo.status() == Status.DIFFERENT ) {
+			if(Util.isBrickStagedForExecution(_brickInfo))
+				return _addDifferentBrick;
+			
 			return _differentBrick;
+		}
 		
-		if(_brickInfo.status() == Status.DIVERGING )
+		if(_brickInfo.status() == Status.DIVERGING ){
+			if(Util.isBrickStagedForExecution(_brickInfo))
+				return _addDivergingBrick;
+
 			return _divergingBrick;
+		}
 		
-		if(_brickInfo.status() == Status.NEW ) 
+		if(_brickInfo.status() == Status.NEW ) {
+			if(Util.isBrickStagedForExecution(_brickInfo))
+				return _addNewBrick;
+
 			return  _newBrick;
+		}
 		
 		if(_brickInfo.status() == Status.REJECTED ) 
 			return _rejectedBrick;
@@ -69,13 +86,5 @@ class BrickInfoTreeNode extends AbstractTreeNodeWrapper<BrickVersion> {
 			return v1.unknownUsers() + v1.knownUsers().size();
 		}});
 		return _brickInfo.versions(); 
-	}
-
-	boolean isBrickStagedForExecution() {
-		for (BrickVersion version : _brickInfo.versions()) 
-			if(version.isStagedForExecution())
-				return true;
-			
-		return false;
 	}
 }

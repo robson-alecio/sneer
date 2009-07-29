@@ -13,13 +13,18 @@ import sneer.bricks.hardware.cpu.lang.Lang;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.ram.iterables.Iterables;
+import sneer.bricks.hardwaresharing.files.FileSpace;
+import sneer.bricks.network.computers.sockets.connections.originator.SocketOriginator;
+import sneer.bricks.network.computers.sockets.connections.receiver.SocketReceiver;
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.network.social.ContactManager;
+import sneer.bricks.network.social.heartbeat.Heart;
 import sneer.bricks.network.social.heartbeat.stethoscope.Stethoscope;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.own.name.OwnNameKeeper;
 import sneer.bricks.pulp.port.PortKeeper;
+import sneer.bricks.pulp.probe.ProbeManager;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.SignalUtils;
 import sneer.bricks.snapps.wind.Shout;
@@ -168,16 +173,20 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	}
 
 
-	@Override
-	public void startSnapps() {
-//		startAndKeep(sneer.bricks.snapps.system.log.sysout.LogToSysout.class);
-		startAndKeep(sneer.bricks.network.computers.sockets.connections.originator.SocketOriginator.class);
-		startAndKeep(sneer.bricks.network.computers.sockets.connections.receiver.SocketReceiver.class);
-		startAndKeep(sneer.bricks.pulp.probe.ProbeManager.class);
-		startAndKeep(sneer.bricks.snapps.wind.Wind.class);
-		startAndKeep(sneer.bricks.softwaresharing.BrickSpace.class);
-		startAndKeep(sneer.bricks.network.social.heartbeat.stethoscope.Stethoscope.class);
-		startAndKeep(sneer.bricks.network.social.heartbeat.Heart.class);
+	private void startLogging() {
+//		startAndKeep(LogToSysout.class);
+//		startAndKeep(TupleLogger.class);
+	}
+
+	private void startSnapps() {
+		startAndKeep(SocketOriginator.class);
+		startAndKeep(SocketReceiver.class);
+		startAndKeep(ProbeManager.class);
+		startAndKeep(Wind.class);
+		startAndKeep(FileSpace.class);
+		startAndKeep(BrickSpace.class);
+		startAndKeep(Stethoscope.class);
+		startAndKeep(Heart.class);
 	}
 
 	private void startAndKeep(Class<?> snapp) {
@@ -190,8 +199,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 		return isAlive(contact).currentValue();
 	}
 
-	@Override
-	public void accelerateHeartbeat() {
+	private void accelerateHeartbeat() {
 		my(Threads.class).startStepping(new Steppable() { @Override public void step() {
 			my(Clock.class).advanceTime(10 * 1000);
 			my(Threads.class).sleepWithoutInterruptions(500);
@@ -233,6 +241,13 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	@Override
 	public void crash() {
 		my(Threads.class).crashAllThreads();
+	}
+
+	@Override
+	public void start() {
+		startLogging();
+		startSnapps();
+		accelerateHeartbeat();
 	}
 
 }

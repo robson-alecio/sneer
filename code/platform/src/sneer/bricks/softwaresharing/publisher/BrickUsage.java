@@ -6,11 +6,11 @@ import sneer.foundation.brickness.Tuple;
 public class BrickUsage extends Tuple {
 
 	public final String brickName;
-	public final Sneer1024 hash;
+	public final Sneer1024 hashOfCurrentVersion;
 
-	public BrickUsage(String brickName_, Sneer1024 hash_) {
+	public BrickUsage(String brickName_, Sneer1024 hashOfCurrentVersion_) {
 		brickName = brickName_;
-		hash = hash_;
+		hashOfCurrentVersion = hashOfCurrentVersion_;
 	}
 
 	@Override

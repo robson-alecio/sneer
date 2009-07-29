@@ -26,7 +26,7 @@ class BrickVersionImpl implements BrickVersion {
 	public List<FileVersion> files() {
 		try {
 			File tmpFolder = File.createTempFile("tmpSrcForBrick_" + _brickName + "_", "");
-			my(FileSpace.class).fetchContentsInto(tmpFolder, _hash);
+			my(FileSpace.class).fetchContentsInto(tmpFolder, System.currentTimeMillis(), _hash);
 		} catch (IOException e) {
 			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}

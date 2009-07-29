@@ -72,11 +72,23 @@ class IOImpl implements IO {
 			if (files1.length != files2.length) return false;
 			
 			for (int i = 0; i < files1.length; i++) {
-				if (!nameEquals(files1[i], files2[i])) return false;
-				if (!contentEquals(files1[i], files2[i])) return false;
+				File file1 = files1[i];
+				File file2 = files2[i];
+				if (!folderEntryEquals(file1, file2)) return false;
 			}
 			
 			return true;
+		}
+
+		private boolean folderEntryEquals(File file1, File file2) throws IOException {
+			if (!nameEquals(file1, file2)) return false;
+			//if (!dateEquals(file1, file2)) return false;
+			if (!contentEquals(file1, file2)) return false;
+			return true;
+		}
+
+		private boolean dateEquals(File file, File file2) {
+			return file.lastModified() == file2.lastModified();
 		}
 
 		private boolean nameEquals(File file, File file2) {

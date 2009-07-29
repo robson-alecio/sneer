@@ -16,9 +16,9 @@ import sneer.bricks.hardware.io.IO;
 import sneer.bricks.hardware.ram.arrays.ImmutableArrays;
 import sneer.bricks.hardware.ram.arrays.ImmutableByteArray;
 import sneer.bricks.hardwaresharing.files.FileContents;
-import sneer.bricks.hardwaresharing.files.FolderEntry;
 import sneer.bricks.hardwaresharing.files.FileSpace;
 import sneer.bricks.hardwaresharing.files.FolderContents;
+import sneer.bricks.hardwaresharing.files.FolderEntry;
 import sneer.bricks.pulp.crypto.Crypto;
 import sneer.bricks.pulp.crypto.Digester;
 import sneer.bricks.pulp.crypto.Sneer1024;
@@ -28,9 +28,6 @@ import sneer.foundation.lang.exceptions.NotImplementedYet;
 
 public class FileSpaceImpl implements FileSpace {
 
-	private static final byte[] TRUE_AS_BYTES = new byte[]{1};
-	private static final byte[] FALSE_AS_BYTES = new byte[]{0};
-	
 	private Map<Sneer1024, Object> _contentsByHash = new ConcurrentHashMap<Sneer1024, Object>();
 	
 	@SuppressWarnings("unused") private final WeakContract _fileContract;
@@ -84,7 +81,6 @@ public class FileSpaceImpl implements FileSpace {
 	private Sneer1024 hash(FolderEntry entry) {
 		Digester digester = my(Crypto.class).newDigester();
 		digester.update(bytesUtf8(entry.name));
-		digester.update(entry.isFolder ? TRUE_AS_BYTES : FALSE_AS_BYTES);
 		digester.update(BigInteger.valueOf(entry.lastModified).toByteArray());
 		digester.update(entry.hashOfContents.bytes());
 		return digester.digest();
@@ -108,14 +104,13 @@ public class FileSpaceImpl implements FileSpace {
 	private FolderEntry folderEntryFor(File fileOrFolder, Sneer1024 hashOfContents) {
 		return new FolderEntry(
 			fileOrFolder.getName(),
-			fileOrFolder.isDirectory(),
 			fileOrFolder.lastModified(),
 			hashOfContents
 		);
 	}
 
 	@Override
-	public void fetchContentsInto(File destination, Sneer1024 hash) throws IOException {
+	public void fetchContentsInto(File destination, long lastModified, Sneer1024 hash) throws IOException {
 		final Object data = _contentsByHash.get(hash);
 		if (null == data)
 			throw new NotImplementedYet();
@@ -133,7 +128,11 @@ public class FileSpaceImpl implements FileSpace {
 	}
 
 	private void fetchFolderEntryInto(File folder, FolderEntry entry) throws IOException {
-		fetchContentsInto(new File(folder, entry.name), entry.hashOfContents);
+		fetchContentsInto(
+			new File(folder, entry.name),
+			entry.lastModified,
+			entry.hashOfContents
+		);
 	}
 
 	private void fetchFileContentsInto(File destination, final ImmutableByteArray contents) throws IOException {

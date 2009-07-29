@@ -35,10 +35,10 @@ public class FileSpaceTest extends BrickTest {
 		my(TupleSpace.class).waitForAllDispatchingToFinish();
 		
 		File destination = newTempFile();
-		_subject.fetchContentsInto(destination, hash);
+		_subject.fetchContentsInto(destination, anyReasonableDate(), hash);
 		assertSameContents(fileOrFolder, destination);
 	}
-	
+
 	private void assertSameContents(File file1, File file2) throws IOException {
 		assertTrue(my(IO.class).files().contentEquals(file1, file2));
 	}
@@ -57,6 +57,10 @@ public class FileSpaceTest extends BrickTest {
 
 	private File folderWithAFewFiles() {
 		return new File(myClassFile().getParent(), "fixtures");
+	}
+
+	private long anyReasonableDate() {
+		return System.currentTimeMillis();
 	}
 	
 }

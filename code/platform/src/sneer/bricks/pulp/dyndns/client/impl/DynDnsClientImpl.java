@@ -145,14 +145,17 @@ class DynDnsClientImpl implements DynDnsClient {
 	private final class Waiting extends Sad {
 		
 		static final int retryTimeoutInMinutes = 5;
+		@SuppressWarnings("unused") private WeakContract _contractToWakeUp;
 	
+		
 		Waiting(IOException e) {
 			super("Dyndns Error:", "It was not possible to connect to the dyndns server. Sneer will retry again in " + retryTimeoutInMinutes + " minutes.", e);
 			addAlarm(retryTimeoutImMillis());
 		}
 
+		
 		private void addAlarm(long millisFromNow) {
-			my(Timer.class).wakeUpInAtLeast((int)millisFromNow, new Runnable() { @Override public void run() {
+			_contractToWakeUp = my(Timer.class).wakeUpInAtLeast((int)millisFromNow, new Runnable() { @Override public void run() {
 				synchronized (_stateMonitor) {
 					_state = _state.wakeUp();
 				}
@@ -174,6 +177,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		}
 
 	}
+	
 	
 	private final class BadAccountState extends Sad {
 

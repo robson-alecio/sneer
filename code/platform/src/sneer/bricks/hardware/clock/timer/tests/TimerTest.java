@@ -23,16 +23,19 @@ public class TimerTest extends BrickTest {
 	
 	@SuppressWarnings("unused")	private WeakContract _c1;
 	@SuppressWarnings("unused")	private WeakContract _c2;
+	@SuppressWarnings("unused")	private WeakContract _c3;
+	@SuppressWarnings("unused")	private WeakContract _c4;
+	@SuppressWarnings("unused")	private WeakContract _c5;
 	
 	@Test
 	public void testAlarms() throws Exception {
 		final List<Integer> _order = new ArrayList<Integer>();
 		
-		_subject.wakeUpInAtLeast(50, new Worker(50, _order));
-		_c1 = _subject.wakeUpEvery(20, new Worker(20, _order));
-		_subject.wakeUpInAtLeast(10, new Worker(10, _order));
-		_c2 = _subject.wakeUpEvery(35, new Worker(35, _order));
-		_subject.wakeUpInAtLeast(30, new Worker(30,_order));
+		_c1 = _subject.wakeUpInAtLeast(50, new Worker(50, _order));
+		_c2 = _subject.wakeUpEvery(20, new Worker(20, _order));
+		_c3 = _subject.wakeUpInAtLeast(10, new Worker(10, _order));
+		_c4 = _subject.wakeUpEvery(35, new Worker(35, _order));
+		_c5 = _subject.wakeUpInAtLeast(30, new Worker(30,_order));
 		
 		_clock.advanceTime(81);
 		assertTrue(81 == _clock.time().currentValue());
@@ -49,8 +52,8 @@ public class TimerTest extends BrickTest {
 	public void testSimultaneousAlarms() throws Exception {
 		final List<Integer> _order = new ArrayList<Integer>();
 		
-		_subject.wakeUpInAtLeast(10, new Worker(10, _order));
-		_subject.wakeUpInAtLeast(10, new Worker(10, _order));
+		_c1 = _subject.wakeUpInAtLeast(10, new Worker(10, _order));
+		_c2 = _subject.wakeUpInAtLeast(10, new Worker(10, _order));
 		
 		_clock.advanceTime(10);
 		
@@ -106,9 +109,9 @@ public class TimerTest extends BrickTest {
 	
 	@Test
 	public void testAlarmThatAddsAlarm() throws Exception {
-		_subject.wakeUpInAtLeast(1, new Runnable(){ @Override public void run() {
+		_c1 = _subject.wakeUpInAtLeast(1, new Runnable(){ @Override public void run() {
 			_events.append("first");
-			_subject.wakeUpInAtLeast(1, new Runnable(){ @Override public void run() {
+			_c2 = _subject.wakeUpInAtLeast(1, new Runnable(){ @Override public void run() {
 				_events.append("second");
 			}});
 		}});

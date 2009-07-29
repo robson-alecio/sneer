@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.clock.timer.Timer;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
@@ -23,17 +24,13 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	private static final String LAST_IP_KEY = "ownIp.ip";
 	private static final String LAST_CHECK_TIME_KEY = "ownIp.lastUpdateRequestTime";
 
-	private final Clock _clock = my(Clock.class);
-	
-	private final CheckIp _checkip = my(CheckIp.class);
-	
+	private final Register<String> _ownIp;
 	private final DataStore _store = my(DataStore.class);
 	
 	private final BlinkingLights _blinkingLights = my(BlinkingLights.class);
-	
-	private final Register<String> _ownIp;
-
 	private Light _light = null;
+	
+	@SuppressWarnings("unused") private WeakContract _timerContract;
 	
 	
 	private OwnIpDiscovererImpl() {
@@ -57,7 +54,7 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	}
 
 	private void scheduleNextDiscovery() {
-		my(Timer.class).wakeUpNoEarlierThan(timeForNextDiscovery(), new Runnable() { @Override public void run() {
+		_timerContract = my(Timer.class).wakeUpNoEarlierThan(timeForNextDiscovery(), new Runnable() { @Override public void run() {
 			tryIpDiscovery();
 			scheduleNextDiscovery();
 		}});
@@ -70,9 +67,9 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	}
 
 	protected void ipDiscovery() throws IOException {
-		_store.set(LAST_CHECK_TIME_KEY, _clock.time().currentValue());
+		_store.set(LAST_CHECK_TIME_KEY, my(Clock.class).time().currentValue());
 
-		final String ip = _checkip.check();
+		final String ip = my(CheckIp.class).check();
 		final String current = _store.get(LAST_IP_KEY);
 		
 		if (ip.equals(current))

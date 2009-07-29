@@ -7,8 +7,8 @@ import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 class ContractsImpl implements Contracts {
 
 	@Override
-	public WeakContract weakContractFor(Disposable service) {
-		return new WeakContractImpl(service);
+	public WeakContract weakContractFor(Disposable service, Object annexToAvoidGc) {
+		return new WeakContractImpl(service, annexToAvoidGc);
 	}
 
 }

@@ -2,6 +2,7 @@ package sneer.bricks.hardware.clock.timer.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
+import java.lang.ref.WeakReference;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -23,30 +24,27 @@ class TimerImpl implements Timer {
 	private final SortedSet<Alarm> _alarms = new TreeSet<Alarm>();
 	private final  ExceptionHandler _exceptionHandler = my(ExceptionHandler.class);
 	
-	@SuppressWarnings("unused")
-	private final  Object _refToAvoidGC;
+	@SuppressWarnings("unused") private final WeakContract _timeContract;
+	
 	
 	TimerImpl(){
-		_refToAvoidGC = _clock.time().addReceiver(new Consumer<Long>(){ @Override public void consume(Long value) {
+		_timeContract = _clock.time().addReceiver(new Consumer<Long>(){ @Override public void consume(Long value) {
 			wakeUpAlarmsIfNecessary();
 		}});
 	}
 	
+	
 	@Override
-	synchronized public void wakeUpNoEarlierThan(long timeToWakeUp, Runnable runnable) {
+	synchronized public WeakContract wakeUpNoEarlierThan(long timeToWakeUp, Runnable runnable) {
 		long millisFromNow = timeToWakeUp <= currentTime()
 			? 0
 			: timeToWakeUp - currentTime();
-		wakeUpInAtLeast(millisFromNow, runnable);
-	}
-
-	private long currentTime() {
-		return _clock.time().currentValue();
+		return wakeUpInAtLeast(millisFromNow, runnable);
 	}
 
 	@Override
-	synchronized public void wakeUpInAtLeast(long millisFromCurrentTime, Runnable runnable) {
-		_alarms.add(new Alarm(runnable, millisFromCurrentTime));
+	synchronized public WeakContract wakeUpInAtLeast(long millisFromCurrentTime, Runnable runnable) {
+		return wakeUp(millisFromCurrentTime, asSteppable(runnable), false);
 	}
 
 	@Override
@@ -57,9 +55,13 @@ class TimerImpl implements Timer {
 
 	@Override
 	synchronized public WeakContract wakeUpEvery(long period, Steppable stepper) {
-		Alarm result = new Alarm(stepper, period, true);
+		return wakeUp(period, stepper, true);
+	}
+
+	private WeakContract wakeUp(long period, Steppable stepper, boolean isPeriodic) {
+		Alarm result = new Alarm(stepper, period, isPeriodic);
 		_alarms.add(result);
-		return my(Contracts.class).weakContractFor(result);
+		return my(Contracts.class).weakContractFor(result, stepper);
 	}
 
 	@Override
@@ -92,7 +94,7 @@ class TimerImpl implements Timer {
 
 	private class Alarm implements Comparable<Alarm>, Disposable {
 
-		private final Steppable _stepper;
+		private final WeakReference<Steppable> _stepper;
 
 		private final boolean _isPeriodic;
 		private final long _period;
@@ -103,13 +105,9 @@ class TimerImpl implements Timer {
 		private boolean _isDisposed = false;
 
 		
-		Alarm(final Runnable runnable, long millisFromNow) {
-			this(asSteppable(runnable), millisFromNow, false);
-		}
-
 		public Alarm(Steppable stepper, long period, boolean isPeriodic) {
 			if (period < 0) throw new IllegalArgumentException("" + period);
-			_stepper = stepper;
+			_stepper = new WeakReference<Steppable>(stepper);
 			_period = period;
 			_wakeUpTime = currentTime() + period;
 			_isPeriodic = isPeriodic;
@@ -118,9 +116,12 @@ class TimerImpl implements Timer {
 		
 		void wakeUp() {
 			_alarms.remove(this);
+
+			Steppable stepper = _stepper.get();
+			if (stepper == null) return;
 			if (_isDisposed) return;
 			
-			step(_stepper);
+			step(stepper);
 
 			if (!_isPeriodic) return;
 			_wakeUpTime = currentTime() + _period;
@@ -154,6 +155,11 @@ class TimerImpl implements Timer {
 		return new Steppable() { @Override public void step() {
 			runnable.run();
 		}};
+	}
+
+	
+	private long currentTime() {
+		return _clock.time().currentValue();
 	}
 
 

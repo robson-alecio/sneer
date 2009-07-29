@@ -2,6 +2,7 @@ package sneer.bricks.pulp.blinkinglights.impl;
 
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.clock.timer.Timer;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.blinkinglights.LightType;
@@ -14,6 +15,7 @@ import sneer.foundation.lang.exceptions.FriendlyException;
 class BlinkingLightsImpl implements BlinkingLights {
 	
 	private final ListRegister<Light> _lights = my(CollectionSignals.class).newListRegister();
+	@SuppressWarnings("unused")	private WeakContract _turnOffContract;
 	
 	@Override
 	public Light turnOn(LightType type, String caption, String helpMessage, Throwable t, int timeout) {
@@ -51,7 +53,7 @@ class BlinkingLightsImpl implements BlinkingLights {
 	}
 	
 	private void turnOffIn(final Light light, int millisFromNow) {
-		my(Timer.class).wakeUpInAtLeast(millisFromNow, new Runnable() { @Override public void run() {
+		_turnOffContract = my(Timer.class).wakeUpInAtLeast(millisFromNow, new Runnable() { @Override public void run() {
 			turnOffIfNecessary(light);	
 		}});
 	}

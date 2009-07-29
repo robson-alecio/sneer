@@ -268,7 +268,7 @@ class TupleSpaceImpl implements TupleSpace {
 			subscription.filterAndNotify(kept);
 
 		_subscriptions.add(subscription);
-		return my(Contracts.class).weakContractFor(subscription);
+		return my(Contracts.class).weakContractFor(subscription, subscriber);
 	}
 	
 	@Override

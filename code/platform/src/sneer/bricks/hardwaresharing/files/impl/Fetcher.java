@@ -14,7 +14,6 @@ import sneer.bricks.hardwaresharing.files.FileContents;
 import sneer.bricks.hardwaresharing.files.FolderContents;
 import sneer.bricks.hardwaresharing.files.FolderEntry;
 import sneer.bricks.pulp.crypto.Sneer1024;
-import sneer.bricks.pulp.own.name.OwnNameKeeper;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.lang.Consumer;
 

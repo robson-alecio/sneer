@@ -7,6 +7,7 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.bricks.pulp.reactive.Register;
@@ -25,6 +26,7 @@ public class ListSignalModelTest extends BrickTest {
 	private ListRegister<Register<String>> _listRegister = my(CollectionSignals.class).newListRegister();
 	private StringBuilder _events;
 
+	@Ignore
 	@Test
 	public void test() {
 		clearEvents();

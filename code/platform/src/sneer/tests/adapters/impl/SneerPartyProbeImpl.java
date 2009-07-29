@@ -170,7 +170,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 	@Override
 	public void startSnapps() {
-		startAndKeep(sneer.bricks.snapps.system.log.sysout.LogToSysout.class);
+//		startAndKeep(sneer.bricks.snapps.system.log.sysout.LogToSysout.class);
 		startAndKeep(sneer.bricks.network.computers.sockets.connections.originator.SocketOriginator.class);
 		startAndKeep(sneer.bricks.network.computers.sockets.connections.receiver.SocketReceiver.class);
 		startAndKeep(sneer.bricks.pulp.probe.ProbeManager.class);

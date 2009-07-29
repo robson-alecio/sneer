@@ -6,13 +6,13 @@ import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.hardware.io.log.formatter.LogFormatter;
 import sneer.bricks.hardware.io.log.workers.sysout.SysoutLogWorker;
 
-public class SysoutLogWorkerImpl implements SysoutLogWorker {
+class SysoutLogWorkerImpl implements SysoutLogWorker {
 
 	SysoutLogWorkerImpl(){
-		my(Logger.class).setDelegate(new SysoutLogWorker());
+		my(Logger.class).setDelegate(new WorkerImpl());
 	}
 	
-	class SysoutLogWorker implements LogWorker{
+	class WorkerImpl implements LogWorker {
 		@Override
 		public void log(Throwable throwable, String message, Object... messageInsets){
 			logMessage(message, messageInsets);
@@ -21,12 +21,12 @@ public class SysoutLogWorkerImpl implements SysoutLogWorker {
 		}
 
 		private void logThrowable(Throwable throwable) {
-			if (throwable==null) return;
+			if (throwable == null) return;
 			throwable.printStackTrace(System.out);
 		}
 
 		private void logMessage(String message, Object... messageInsets) {
-			if (message==null) return;
+			if (message == null) return;
 			System.out.print(my(LogFormatter.class).format(message, messageInsets));
 		}
 		

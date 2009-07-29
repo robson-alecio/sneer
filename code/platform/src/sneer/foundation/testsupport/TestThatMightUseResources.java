@@ -3,6 +3,7 @@ package sneer.foundation.testsupport;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Set;
 
 import org.junit.After;
@@ -13,8 +14,13 @@ import org.junit.Before;
 public abstract class TestThatMightUseResources extends AssertUtils {
 
 	private File _tmpFolder;
+	
 	private Set<Thread> _activeThreadsBeforeTest;
 
+	private PrintStream _systemOutBeforeTest;
+	private PrintStream _systemErrBeforeTest;
+
+	
 	protected File tmpFolder() {
 		if (_tmpFolder == null)
 			_tmpFolder = createTmpFolder();
@@ -22,11 +28,19 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 		return _tmpFolder;
 	}
 
+	
 	@Before
 	public void beforeTestThatMightUseResources() {
 		_activeThreadsBeforeTest = Thread.getAllStackTraces().keySet();
+		
+		_systemOutBeforeTest = System.out;
+		_systemErrBeforeTest = System.err;
+		
+//		System.setOut(null);
+//		System.setErr(null);
 	}
 
+	
 	@SuppressWarnings("deprecation")
 	private void checkThreadLeak() {
 		Set<Thread> activeThreadsAfterTest = Thread.getAllStackTraces().keySet();
@@ -36,9 +50,10 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 
 			if (waitForTermination(thread)) continue;
 
-			final LeakingThreadStopped plug = new LeakingThreadStopped(thread, "This thread was leaked by test: " + this.getClass() + " and it's now being stopped!");
-			plug.printStackTrace();
+			final LeakingThreadStopped plug = new LeakingThreadStopped(thread, "" + thread + " was leaked by test: " + this.getClass() + " and is now being stopped!");
 			thread.stop(plug);
+			
+			throw new IllegalStateException(plug);
 		}
 	}
 
@@ -61,6 +76,11 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 
 	@After
 	public void afterTestThatMightUseResources() {
+		System.setOut(_systemOutBeforeTest);
+		System.setErr(_systemErrBeforeTest);
+		
+		//Fail if sysout or syserr were used.
+		
 		checkThreadLeak();
 		deleteFiles();
 	}
@@ -82,8 +102,7 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 				return;
 			} catch (IOException e) {
 				if (System.currentTimeMillis() - t0 > 1000) {
-					e.printStackTrace();
-					return;
+					throw new IllegalStateException(e);
 				}
 				System.gc();
 			}

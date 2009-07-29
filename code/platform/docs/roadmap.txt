@@ -1,15 +1,15 @@
 ﻿TASKS
 =========
 
-	- [Klaus] Clean console for all tests
-		- Stethoscope logging isOnline - Clean.
-		- TestThatMightUseResources - Fail on resource usage including sysout and syserr.
+	- [Klaus and Sandro] Sneer Responsiveness - Find a way to avoid snapp starter thread from waiting for gui thread.
 			
 	- [Klaus] Revise entire package structure.  
 	
 	- [Sandro and Rodrigo] Enable Rod to commit to Sandro's repository.
 
-	- [Sandro] ListSignalModelTest - Suggest a way to eliminate the thread that is leaked (see console) when this test is run.
+	- [Sandro] ListSignalModelTest - Unignore. Suggest a way to eliminate the thread that is leaked when this test is run.
+
+	- [Sandro] TestThatMightUseResources - Fail on usage of sysout and syserr. Talk to Klaus.
 	
 	- [Sandro] Hudson Linux Reboot
 

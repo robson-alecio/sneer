@@ -35,9 +35,6 @@ public class WindTest extends BrickTest {
 	
 	@Test(timeout = 4000)
 	public void testSortedShoutsHeard() {
-		
-		System.out.println(my(Clock.class).time());
-		
 		tupleSpace().publish(new ShoutMock(""+15, 15));
 
 		for (int i = 30; i > 20; i--) {

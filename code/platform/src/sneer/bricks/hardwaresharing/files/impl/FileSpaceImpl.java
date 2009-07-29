@@ -47,6 +47,7 @@ public class FileSpaceImpl implements FileSpace {
 		
 	}
 	
+	
 	@Override
 	public Sneer1024 publishContents(File fileOrFolder) throws IOException {
 		return (fileOrFolder.isDirectory())
@@ -54,30 +55,39 @@ public class FileSpaceImpl implements FileSpace {
 			: publishFileContents(fileOrFolder);
 	}
 
+	
 	private Sneer1024 publishFileContents(File file)	throws IOException {
 		my(TupleSpace.class).publish(newDataBlock(file));
 		return my(Crypto.class).digest(file); //Optimize byte[] is being read already.
 	}
 	
+	
 	private Sneer1024 publishFolderContents(File folder) throws IOException {
-		List<FolderEntry> files = publishEachFile(folder);
+		List<FolderEntry> files = publishEachFolderEntry(folder);
 		final FolderContents contents = new FolderContents(my(ImmutableArrays.class).newImmutableArray(files));
 		my(TupleSpace.class).publish(contents);
 		return hash(contents);
 	}
 
-	private List<FolderEntry> publishEachFile(File folder) throws IOException {
+	
+	private List<FolderEntry> publishEachFolderEntry(File folder) throws IOException {
 		List<FolderEntry> result = new ArrayList<FolderEntry>();
-		for (File fileOrFolder : folder.listFiles()) {
-			Sneer1024 hashOfContents = publishContents(fileOrFolder);
-			FolderEntry entry = folderEntryFor(fileOrFolder, hashOfContents);
-			my(TupleSpace.class).publish(entry);
-						
-			result.add(entry);
-		}
+		
+		for (File fileOrFolder : listFiles(folder))
+			result.add(publishFolderEntry(fileOrFolder));
+
 		return result;
 	}
 
+	
+	private FolderEntry publishFolderEntry(File fileOrFolder) throws IOException {
+		Sneer1024 hashOfContents = publishContents(fileOrFolder);
+		FolderEntry result = folderEntryFor(fileOrFolder, hashOfContents);
+		my(TupleSpace.class).publish(result);
+		return result;
+	}
+
+	
 	private Sneer1024 hash(FolderEntry entry) {
 		Digester digester = my(Crypto.class).newDigester();
 		digester.update(bytesUtf8(entry.name));
@@ -86,6 +96,7 @@ public class FileSpaceImpl implements FileSpace {
 		return digester.digest();
 	}
 	
+	
 	private Sneer1024 hash(FolderContents folder) {
 		Digester digester = my(Crypto.class).newDigester();
 		for (FolderEntry entry : folder.contents)
@@ -93,6 +104,7 @@ public class FileSpaceImpl implements FileSpace {
 		return digester.digest();
 	}
 
+	
 	private byte[] bytesUtf8(String string) {
 		try {
 			return string.getBytes("UTF-8");
@@ -101,6 +113,7 @@ public class FileSpaceImpl implements FileSpace {
 		}
 	}
 
+	
 	private FolderEntry folderEntryFor(File fileOrFolder, Sneer1024 hashOfContents) {
 		return new FolderEntry(
 			fileOrFolder.getName(),
@@ -109,24 +122,30 @@ public class FileSpaceImpl implements FileSpace {
 		);
 	}
 
+	
 	@Override
-	public void fetchContentsInto(File destination, long lastModified, Sneer1024 hash) throws IOException {
-		final Object data = _contentsByHash.get(hash);
-		if (null == data)
+	public void fetchContentsInto(File fileOrFolder, long lastModified, Sneer1024 hash) throws IOException {
+		final Object contents = _contentsByHash.get(hash);
+		if (null == contents)
 			throw new NotImplementedYet();
 		
-		if (data instanceof ImmutableByteArray)
-			fetchFileContentsInto(destination, (ImmutableByteArray)data);
+		if (contents instanceof ImmutableByteArray)
+			fetchFileContentsInto(fileOrFolder, lastModified, (ImmutableByteArray)contents);
 		else
-			fetchFolderContentsInto(destination, (FolderContents)data);
+			fetchFolderContentsInto(fileOrFolder, lastModified, (FolderContents)contents);
 	}
 
-	private void fetchFolderContentsInto(File folder, FolderContents contents) throws IOException {
+	
+	private void fetchFolderContentsInto(File folder, long lastModified, FolderContents contents) throws IOException {
 		folder.mkdirs();
+		
 		for (FolderEntry entry : contents.contents)
 			fetchFolderEntryInto(folder, entry);
+		
+		folder.setLastModified(lastModified);
 	}
 
+	
 	private void fetchFolderEntryInto(File folder, FolderEntry entry) throws IOException {
 		fetchContentsInto(
 			new File(folder, entry.name),
@@ -135,17 +154,29 @@ public class FileSpaceImpl implements FileSpace {
 		);
 	}
 
-	private void fetchFileContentsInto(File destination, final ImmutableByteArray contents) throws IOException {
+	
+	private void fetchFileContentsInto(File destination, long lastModified, final ImmutableByteArray contents) throws IOException {
 		my(IO.class).files().writeByteArrayToFile(destination, contents.copy());
+		destination.setLastModified(lastModified);
 	}
+	
 	
 	private FileContents newDataBlock(File fileOrFolder) throws IOException {
 		byte[] bytes = my(IO.class).files().readBytes(fileOrFolder);
 		return new FileContents(my(ImmutableArrays.class).newImmutableByteArray(bytes));
 	}
 
+	
 	private Sneer1024 hash(FileContents block) {
 		return my(Crypto.class).digest(block.bytes.copy());
 	};
+
+	
+	private File[] listFiles(File folder) {
+		File[] result = folder.listFiles();
+		return result == null
+			? new File[0]
+			: result;
+	}
 
 }

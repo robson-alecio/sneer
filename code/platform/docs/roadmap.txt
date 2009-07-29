@@ -1,7 +1,7 @@
 ﻿TASKS
 =========
 
-	- [Klaus] IO.files().contentEquals() - take lastModified date into account.
+	- [Klaus] WeakContracts - Revise weak references
 
 	- [Klaus] Clean console for all tests
 		- Stethoscope logging isOnline - Clean.

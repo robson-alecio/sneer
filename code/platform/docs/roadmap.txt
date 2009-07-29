@@ -13,8 +13,6 @@
 	
 	- [Sandro] Hudson Linux Reboot
 
-	- [Sandro] Auto-scroll fix: it does not work when LogConsole is minimized.
-
 	- Metoo
 		- [Sandro] Gui
 		- [Klaus] Business

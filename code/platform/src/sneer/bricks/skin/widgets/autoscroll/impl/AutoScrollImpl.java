@@ -12,16 +12,16 @@ public class AutoScrollImpl implements AutoScroll {
 
 	@Override
 	public void runWithAutoscroll(final JScrollPane scrollPane, Runnable runnable) {
-		final int position = model(scrollPane).getValue();
 		final boolean wasAtEnd = isAtEnd(scrollPane);
+//		System.out.println(wasAtEnd);
 		
 		runnable.run();
 		
 		my(GuiThread.class).invokeLater(new Runnable() { @Override public void run() {
 			if (wasAtEnd)
 				placeAtEnd(scrollPane);
-			else
-				model(scrollPane).setValue(position);
+			
+//			System.out.println(model(scrollPane).getValue());
 		}});
 	}
 	

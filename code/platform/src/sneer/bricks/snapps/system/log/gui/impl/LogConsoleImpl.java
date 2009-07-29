@@ -10,7 +10,10 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
+import javax.swing.BoundedRangeModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -73,9 +76,28 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 		my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
 			initGui();
 			initTranslucentWindow();
+			initWindowListener();
 		}});
 	}
 	
+	protected void initWindowListener() {
+		this.addWindowListener(new WindowAdapter(){
+			boolean isAutoScrollOn = false;
+			BoundedRangeModel model = model();
+			
+			@Override public void windowDeiconified(WindowEvent e) { if(isAutoScrollOn) placeAtEnd(); }
+			@Override public void windowIconified(WindowEvent e) { isAutoScrollOn = isAtEnd(); }
+			
+			private BoundedRangeModel model() { return _autoScroll.getVerticalScrollBar().getModel(); }	
+			
+			private boolean isAtEnd() {
+				return model.getValue() + model.getExtent() == model.getMaximum(); }
+			
+			private void placeAtEnd() {
+				model.setValue(model.getMaximum() - model.getExtent()); 
+		}});
+	}
+
 	private void initTranslucentWindow() {
 		my(TranslucentSupport.class).setWindowOpacity(this, 0.3f);
 		

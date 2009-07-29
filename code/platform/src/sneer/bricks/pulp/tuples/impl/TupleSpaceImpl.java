@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -46,7 +47,7 @@ class TupleSpaceImpl implements TupleSpace {
 	//Refactor The synchronization will no longer be necessary when the container guarantees synchronization of model bricks.
 	class Subscription implements Disposable {
 
-		private final Consumer<? super Tuple> _subscriber;
+		private final WeakReference<Consumer<? super Tuple>> _subscriber;
 		private final Class<? extends Tuple> _tupleType;
 		private final Environment _environment;
 		private final List<Tuple> _tuplesToNotify = new LinkedList<Tuple>(); 
@@ -54,7 +55,7 @@ class TupleSpaceImpl implements TupleSpace {
 		private final Contract _stepperContract;
 		
 		<T extends Tuple> Subscription(Consumer<? super T> subscriber, Class<T> tupleType) {
-			_subscriber = (Consumer<? super Tuple>)subscriber;
+			_subscriber = new WeakReference<Consumer<? super Tuple>>((Consumer<? super Tuple>)subscriber);
 			_tupleType = tupleType;
 			_environment = my(Environment.class);
 			
@@ -65,16 +66,19 @@ class TupleSpaceImpl implements TupleSpace {
 			return new Steppable() { @Override public void step() {
 				Tuple nextTuple = waitToPopTuple();
 				notifySubscriber(nextTuple);
+				dispatchCounterDecrement();
 			}};
 		}
 
 		private void notifySubscriber(final Tuple tuple) {
+			final Consumer<? super Tuple> subscriber = _subscriber.get();
+			if (subscriber == null) return;
+			
 			_exceptionHandler.shield(new Runnable() { @Override public void run() {
 				Environments.runWith(_environment, new Runnable() { @Override public void run() {
-					_subscriber.consume(tuple);
+					subscriber.consume(tuple);
 				}});
 			}});
-			dispatchCounterDecrement();
 		}
 
 		void filterAndNotify(final Tuple tuple) {

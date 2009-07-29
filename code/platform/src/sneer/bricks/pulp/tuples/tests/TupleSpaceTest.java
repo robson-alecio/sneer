@@ -7,9 +7,11 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.brickness.Tuple;
 import sneer.foundation.brickness.testsupport.BrickTest;
+import sneer.foundation.lang.ByRef;
 import sneer.foundation.lang.Consumer;
 
 public class TupleSpaceTest extends BrickTest {
@@ -33,7 +35,30 @@ public class TupleSpaceTest extends BrickTest {
 		my(TupleSpace.class).waitForAllDispatchingToFinish();
 		assertArrayEquals(new Object[] { tuple }, tuples.toArray());
 	}
+
 	
+	@Test (timeout = 4000)
+	public void testContractWeakness() throws Exception {
+		final ByRef<Boolean> finalized = ByRef.newInstance(false);
+		
+		_subject.addSubscription(TestTuple.class, new Consumer<TestTuple>() {
+			
+			@Override
+			public void consume(TestTuple value) {}
+
+			@Override
+			protected void finalize() throws Throwable {
+				finalized.value = true; 
+			}
+
+		});
+
+		while (!finalized.value) {
+			System.gc();
+			my(Threads.class).sleepWithoutInterruptions(100);
+		}
+	}
+
 }
 
 

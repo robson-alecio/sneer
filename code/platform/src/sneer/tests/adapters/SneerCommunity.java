@@ -54,9 +54,8 @@ public class SneerCommunity implements SovereignCommunity {
 		party.configDirectories(dataFolder, ownSrcFolder, ownBinFolder, platformSrcFolder, platformBinFolder);
 		party.setOwnName(name);
 		party.setSneerPort(_nextPort++);
-		
-		party.startSnapps();
-		party.accelerateHeartbeat();
+
+		party.start();
 		
 		_allParties.add(party);
 		return party;

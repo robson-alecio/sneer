@@ -28,7 +28,7 @@ class BrickSpaceImpl implements BrickSpace, Consumer<BrickUsage> {
 
 	@Override
 	public void consume(BrickUsage brickUsage) {
-		_availableBricks.add(new BrickInfoImpl(brickUsage.brickName, brickUsage.hash));
+		_availableBricks.add(new BrickInfoImpl(brickUsage.brickName, brickUsage.hashOfCurrentVersion));
 	}
 
 }

@@ -1,8 +1,13 @@
 package sneer.bricks.softwaresharing.impl;
 
-import java.util.ArrayList;
+import static sneer.foundation.environments.Environments.my;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
+import sneer.bricks.hardwaresharing.files.FileSpace;
 import sneer.bricks.pulp.crypto.Sneer1024;
 import sneer.bricks.softwaresharing.BrickInfo;
 import sneer.bricks.softwaresharing.BrickVersion;
@@ -11,11 +16,37 @@ import sneer.foundation.lang.exceptions.NotImplementedYet;
 class BrickInfoImpl implements BrickInfo {
 
 	private final String _brickName;
-	private final Sneer1024 _hash;
+	private final Sneer1024 _hashOfCurrentVersion;
+	private final BrickVersion _version;
 
+	
 	public BrickInfoImpl(String brickName, Sneer1024 hash) {
 		_brickName = brickName;
-		_hash = hash;
+		_hashOfCurrentVersion = hash;
+		
+		_version = fetchSingleVersion();
+	}
+
+
+	private BrickVersion fetchSingleVersion() {
+		try {
+			return tryToFetchSingleVersion();
+		} catch (IOException e) {
+			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+		}
+	}
+
+
+	private BrickVersion tryToFetchSingleVersion() throws IOException {
+		File srcFolder = File.createTempFile("tmpSrcForBrick_" + _brickName + "_", "");
+		srcFolder.delete();
+		fetchInto(srcFolder);
+		return new BrickVersionImpl(srcFolder);
+	}
+
+
+	private void fetchInto(File folder) throws IOException {
+		my(FileSpace.class).fetchContentsInto(folder, System.currentTimeMillis(), _hashOfCurrentVersion);
 	}
 
 	@Override
@@ -31,9 +62,7 @@ class BrickInfoImpl implements BrickInfo {
 
 	@Override
 	public List<BrickVersion> versions() {
-		List<BrickVersion> result = new ArrayList<BrickVersion>();
-		result.add(new BrickVersionImpl(_brickName, _hash));
-		return result;
+		return Arrays.asList(_version);
 	}
 
 	@Override

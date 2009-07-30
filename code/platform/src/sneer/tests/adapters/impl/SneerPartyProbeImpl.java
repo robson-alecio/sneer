@@ -214,13 +214,13 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	}
 	
 	@Override
-	public void installTheOnlyAvailableVersionOfBrick(String brickName) throws IOException {
+	public void stageBrickForExecution(String brickName) {
 		final BrickInfo brick = availableBrick(brickName);
-		final BrickVersion onlyVersion = onlyVersionOf(brick);
-		installBricks(onlyVersion.sourceFolder());
+		final BrickVersion singleVersion = singleVersionOf(brick);
+		brick.setStagedForExecution(singleVersion, true);
 	}
 
-	private BrickVersion onlyVersionOf(BrickInfo brick) {
+	private BrickVersion singleVersionOf(BrickInfo brick) {
 		if (brick.versions().size() != 1)
 			throw new IllegalStateException();
 		return brick.versions().get(0);
@@ -246,8 +246,30 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	@Override
 	public void start() {
 		startLogging();
+		
+		installStagedBricks();
+		
 		startSnapps();
 		accelerateHeartbeat();
+	}
+
+	private void installStagedBricks() {
+		try {
+			tryToInstallStagedBricks();
+		} catch (IOException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
+	private void tryToInstallStagedBricks() throws IOException {
+		for(BrickInfo brickInfo: my(BrickSpace.class).availableBricks())
+			for (BrickVersion version : brickInfo.versions())
+				if (version.isStagedForExecution())
+					installStagedVersion(version);
+	}
+
+	private void installStagedVersion(BrickVersion version) throws IOException {
+		installBricks(version.sourceFolder());
 	}
 
 }

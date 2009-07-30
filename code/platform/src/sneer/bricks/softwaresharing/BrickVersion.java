@@ -18,7 +18,6 @@ public interface BrickVersion {
 	
 	Status status();
 	boolean isStagedForExecution();
-	void setStagedForExecution(boolean staged);
 	void setRejected(boolean rejected);
 	
 	long publicationDate();

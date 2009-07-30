@@ -73,7 +73,6 @@ class FakeModel {
 			
 			@Override public List<FileVersion> files() {return _fileVersions;}
 			@Override public boolean isStagedForExecution() {return _staged;}
-			@Override public void setStagedForExecution(boolean staged) { _staged = staged; }
 			@Override public Status status() {return _status; }
 			@Override public int unknownUsers() { return _unknownUsersCount; }
 			@Override public List<String> knownUsers() {  return  _users;}			
@@ -104,6 +103,7 @@ class FakeModel {
 			@Override public boolean isSnapp() { return false; }
 			@Override public String name() {return name; }
 			@Override public List<BrickVersion> versions() { return versions;}
+			@Override public void setStagedForExecution(BrickVersion version, boolean staged) {}
 			@Override public BrickInfo.Status status() { return status; }
 		};
 	}

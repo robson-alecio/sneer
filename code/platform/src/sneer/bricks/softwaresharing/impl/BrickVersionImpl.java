@@ -48,11 +48,6 @@ class BrickVersionImpl implements BrickVersion {
 	}
 
 	@Override
-	public void setStagedForExecution(boolean staged) {
-		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
-	}
-
-	@Override
 	public File sourceFolder() {
 		return _sourceFolder;
 	}

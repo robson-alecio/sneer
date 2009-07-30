@@ -50,6 +50,16 @@ public abstract class SovereignFunctionalTestBase extends BrickTest {
 		_a = null;
 		_b = null;
 	}
+
+
+	protected void newSession(SovereignParty party) {
+		if (party != _a && party != _b)	throw new IllegalArgumentException("Party to be restarted must be either a() or b().");
+
+		SovereignParty restarted = _community.newSession(party);
+		
+		if (party == _a) _a = restarted;
+		if (party == _b) _b = restarted;
+	}
 	
 	
 }

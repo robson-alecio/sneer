@@ -23,5 +23,5 @@ public interface SovereignParty {
 	void installBricks(File sourceFolder) throws IOException;
 	void publishBrick(String brickName) throws IOException;
 	void waitForAvailableBrick(String brickName);
-	void installTheOnlyAvailableVersionOfBrick(String brickName) throws IOException;
+	void stageBrickForExecution(String brickName);
 }

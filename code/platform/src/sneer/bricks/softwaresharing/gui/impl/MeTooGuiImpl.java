@@ -94,7 +94,7 @@ class MeTooGuiImpl extends JFrame implements MeTooGui{
 		
 		_meTooButton.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			BrickVersion version = selectedBrickVersion();
-			version.setStagedForExecution(!version.isStagedForExecution());
+			//version.setStagedForExecution(!version.isStagedForExecution());
 			_meTooButton.setSelected(version.isStagedForExecution());
 			_tree.repaint();
 		}});

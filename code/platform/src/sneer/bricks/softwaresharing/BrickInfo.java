@@ -13,8 +13,10 @@ public interface BrickInfo {
 	}
 	
 	String name();
-	List<BrickVersion> versions();
 	
+	List<BrickVersion> versions();
+	void setStagedForExecution(BrickVersion version, boolean staged);
+
 	Status status();
 	boolean isSnapp();
 }

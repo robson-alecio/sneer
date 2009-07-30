@@ -24,16 +24,18 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 		assertEquals("true", System.getProperty("freedom7.y.Y.installed"));
 	}
 
+	@Ignore
 	@Test (timeout = 10000)
 	public void meToo() throws Exception {
 		a().installBricks(generateY());
 		a().publishBrick("freedom7.y.Y");
 		a().waitForAvailableBrick("freedom7.y.Y");
+
 		b().waitForAvailableBrick("freedom7.y.Y");
-		
+		b().stageBrickForExecution("freedom7.y.Y");
+
 		System.clearProperty("freedom7.y.Y.installed");
-		assertNull(System.getProperty("freedom7.y.Y.installed"));
-		b().installTheOnlyAvailableVersionOfBrick("freedom7.y.Y");
+		newSession(b());
 		assertEquals("true", System.getProperty("freedom7.y.Y.installed"));
 	}
 

@@ -9,7 +9,9 @@ import java.util.List;
 
 import sneer.bricks.hardwaresharing.files.FileSpace;
 import sneer.bricks.pulp.crypto.Sneer1024;
+import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.bricks.softwaresharing.BrickInfo;
+import sneer.bricks.softwaresharing.BrickStaging;
 import sneer.bricks.softwaresharing.BrickVersion;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
 
@@ -68,6 +70,12 @@ class BrickInfoImpl implements BrickInfo {
 	@Override
 	public Status status() {
 		throw new NotImplementedYet(); // Implement
+	}
+
+
+	@Override
+	public void setStagedForExecution(BrickVersion version, boolean staged) {
+		my(TupleSpace.class).publish(new BrickStaging(_brickName, version.hash()));
 	}
 
 }

@@ -38,6 +38,12 @@ public class SneerCommunity implements SovereignCommunity {
 	
 	@Override
 	public SovereignParty createParty(final String name) {
+		int port = _nextPort++;
+		return createParty(name, port);
+	}
+
+
+	private SovereignParty createParty(final String name, int port) {
 		File sneerHome = rootFolder(name);
 		File ownBinFolder = makeFolder(sneerHome, "own/bin");
 		File ownSrcFolder = makeFolder(sneerHome, "own/src");
@@ -53,12 +59,26 @@ public class SneerCommunity implements SovereignCommunity {
 		
 		party.configDirectories(dataFolder, ownSrcFolder, ownBinFolder, platformSrcFolder, platformBinFolder);
 		party.setOwnName(name);
-		party.setSneerPort(_nextPort++);
+		party.setSneerPort(port);
 
 		party.start();
 		
 		_allParties.add(party);
 		return party;
+	}
+
+	
+	@Override
+	public SovereignParty newSession(SovereignParty party) {
+		SneerParty sneerParty = (SneerParty)party;
+		crash(sneerParty);
+		return createParty(sneerParty.ownName(), sneerParty.sneerPort());
+	}
+
+
+	private void crash(SneerParty sneerParty) {
+		sneerParty.crash();
+		_allParties.remove(sneerParty);
 	}
 
 
@@ -136,9 +156,9 @@ public class SneerCommunity implements SovereignCommunity {
 
 	@Override
 	public void crash() {
-		for (SneerParty party : _allParties)
-			party.crash();
+		for (SneerParty party : _allParties) party.crash();
 		_allParties.clear();
 	}
+
 
 }

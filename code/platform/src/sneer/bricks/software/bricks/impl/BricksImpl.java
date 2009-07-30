@@ -20,7 +20,6 @@ public class BricksImpl implements Bricks {
 
 	@Override
 	public void install(File sourceFolder) throws IOException {
-		
 		final Result result = compile(sourceFolder, ownBinFolder());
 		if (!result.success())
 			throw new CompilationError(result.getErrorString());

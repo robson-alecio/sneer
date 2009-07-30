@@ -46,8 +46,6 @@ class TextDiffPanelsImpl implements TextDiffPanels{
 		private final  TextBlockPainter _painter = new TextBlockPainter((DefaultStyledDocument) _htmlDif.getStyledDocument(), _textOnlyDiff);
 		private String _text1;
 		private String _text2;
-		private JButton _nextButton = new JButton("v");
-		private JButton _prevButton = new JButton("^");
 		
 		TextDiffPanelImpl(){
 			_htmlDif.setEditable(false);
@@ -57,59 +55,12 @@ class TextDiffPanelsImpl implements TextDiffPanels{
 			_scroll.getViewport().add(_htmlDif);	
 			
 			_buttonsPanel.setLayout(new FlowLayout());
-			_buttonsPanel.add(_nextButton);
-			_buttonsPanel.add(_prevButton);
+			new SelectionSupport();
 			_buttonsPanel.add(_textOnlyDiff);
 			
 			_textOnlyDiff.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 				compare(_text1, _text2);
-				_nextButton.setEnabled(!_textOnlyDiff.isSelected());
-				_prevButton.setEnabled(!_textOnlyDiff.isSelected());
 			}});
-			
-			ActionListener listener = new ActionListener(){ 
-				LinkedTextBlock _current = null;
-				
-				@Override public void actionPerformed(ActionEvent e) {
-					if(_current==null){
-						_current = _painter.root;
-						selectText(_current);
-						return;
-					}
-					
-					if(e.getSource()==_nextButton){
-						_current = _current._next;
-						selectText(_current);
-						return;
-					}
-					
-					_current = _current._previous;
-					selectText(_current);
-
-			}};
-			_nextButton.addActionListener(listener);
-			_prevButton.addActionListener(listener);
-		}
-		
-		private void selectText(LinkedTextBlock toSelect) {
-			_htmlDif.requestFocus();
-			changeSelectionColor(toSelect._textBlock.type());
-			int[] positions = toSelect.positions();
-			_htmlDif.select(positions[0]  , positions[1]);
-		}
-		
-		private void changeSelectionColor(TextBlockType type) {
-			if(type==TextBlockType.DELETE){
-				_htmlDif.setSelectionColor(Color.RED);
-				return;
-			}
-			
-			if(type==TextBlockType.INSERT){
-				_htmlDif.setSelectionColor(Color.GREEN);
-				return;
-			}
-			
-			_htmlDif.setSelectionColor(Color.LIGHT_GRAY);
 		}
 
 		@Override public void compare(File file1, File file2) {
@@ -145,5 +96,79 @@ class TextDiffPanelsImpl implements TextDiffPanels{
 		}
 
 		@Override public Component component() { return this; }
-	}
+		
+		@SuppressWarnings("unused")
+		private class SelectionSupport {
+
+			private JButton _nextButton = new JButton("v");
+			private JButton _prevButton = new JButton("^");
+			
+			SelectionSupport(){
+				_buttonsPanel.add(_nextButton);
+				_buttonsPanel.add(_prevButton);
+				initListeners();
+			}
+
+			void tryEnableButtons(){
+				_nextButton.setEnabled(!_textOnlyDiff.isSelected());
+				_prevButton.setEnabled(!_textOnlyDiff.isSelected());
+			}
+			
+			private void initListeners() {
+				_textOnlyDiff.addActionListener(new ActionListener(){ 
+					
+					Object _refToAvoidGc = SelectionSupport.this;
+					
+					@Override public void actionPerformed(ActionEvent e) {
+					tryEnableButtons();
+				}});
+				
+				ActionListener listener = new ActionListener() {
+					LinkedTextBlock _current = null;
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						if (_current == null) {
+							_current = _painter.root;
+							selectText(_current);
+							return;
+						}
+
+						if (e.getSource() == _nextButton) {
+							_current = _current._next;
+							selectText(_current);
+							return;
+						}
+
+						_current = _current._previous;
+						selectText(_current);
+
+					}
+				};
+				_nextButton.addActionListener(listener);
+				_prevButton.addActionListener(listener);
+			}
+
+			private void selectText(LinkedTextBlock toSelect) {
+				_htmlDif.requestFocus();
+				changeSelectionColor(toSelect._textBlock.type());
+				int[] positions = toSelect.positions();
+				_htmlDif.select(positions[0], positions[1]);
+			}
+
+			private void changeSelectionColor(TextBlockType type) {
+				if (type == TextBlockType.DELETE) {
+					_htmlDif.setSelectionColor(Color.RED);
+					return;
+				}
+
+				if (type == TextBlockType.INSERT) {
+					_htmlDif.setSelectionColor(Color.GREEN);
+					return;
+				}
+
+				_htmlDif.setSelectionColor(Color.LIGHT_GRAY);
+			}
+		}
+	}	
 }

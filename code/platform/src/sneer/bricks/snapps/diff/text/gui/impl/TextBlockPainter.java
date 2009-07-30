@@ -81,16 +81,16 @@ class TextBlockPainter {
 
 	private void textAppend(TextBlock block) throws BadLocationException {
 		if(block.type()==TextBlockType.DELETE){
-			_document.insertString(_document.getLength(), "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< DELETED\n",  _delete);
+			_document.insertString(_document.getLength(), "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< MISSING\n",  _delete);
 			_document.insertString(_document.getLength(), block.content() ,  _delete);
-			_document.insertString(_document.getLength(), "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< DELETED\n",  _delete);
+			_document.insertString(_document.getLength(), "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< MISSING\n",  _delete);
 			return;
 		}
 		
 		if(block.type()==TextBlockType.INSERT){
-			_document.insertString(_document.getLength(), "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> INSERTED\n",  _insert);
+			_document.insertString(_document.getLength(), "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> EXTRA\n",  _insert);
 			_document.insertString(_document.getLength(), block.content() ,  _insert);
-			_document.insertString(_document.getLength(), "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> INSERTED\n",  _insert);
+			_document.insertString(_document.getLength(), "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> EXTRA\n",  _insert);
 			return;
 		}
 		

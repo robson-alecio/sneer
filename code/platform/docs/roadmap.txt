@@ -7,8 +7,6 @@
 	
 	- [Sandro and Rodrigo] Enable Rod to commit to Sandro's repository.
 
-	- [Sandro] ListSignalModelTest - Unignore. Suggest a way to eliminate the thread that is leaked when this test is run.
-
 	- [Sandro] Hudson Linux Reboot
 
 	- Metoo

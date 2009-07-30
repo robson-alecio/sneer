@@ -4,7 +4,6 @@ import static sneer.foundation.environments.Environments.my;
 
 import javax.swing.AbstractListModel;
 
-import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.collections.ListSignal;
 import sneer.bricks.pulp.reactive.collections.impl.VisitingListReceiver;
@@ -34,45 +33,12 @@ class ListSignalModel<T> extends AbstractListModel {
 			super(input);
 		}
 
-		@Override
-		public void elementAdded(final int index, T value) {
-			my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {
-				fireIntervalAdded(ListSignalModel.this, index, index);
-			}});		
-		}
-
-		@Override
-		public void elementRemoved(final int index, T value) {
-			my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {
-				fireIntervalRemoved(ListSignalModel.this, index, index);
-			}});		
-		}
-
-		@Override
-		public void elementReplaced(final int index, T oldValue, T newValue) {
-			my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {
-				contentsChanged(index);
-			}});
-		}
-
-		@Override
-		public void elementSignalChanged(final T value) {
-			my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {
-				elementChanged(value);
-			}});			
-		}
-		
-		@Override
-		public void elementMoved(final int index, final int newIndex, T newElement) {
-			my(GuiThread.class).invokeAndWaitForWussies(new Runnable(){ @Override public void run() {
-				fireContentsChanged(ListSignalModel.this, index, newIndex);
-			}});
-		}
-
-		@Override
-		public SignalChooser<T> signalChooser() {
-			return _chooser;
-		}
+		@Override public void elementAdded(final int index, T value) { fireIntervalAdded(ListSignalModel.this, index, index); }
+		@Override public void elementRemoved(final int index, T value) { fireIntervalRemoved(ListSignalModel.this, index, index); }
+		@Override public void elementReplaced(final int index, T oldValue, T newValue) { contentsChanged(index); }
+		@Override public void elementSignalChanged(final T value) { elementChanged(value); }
+		@Override public void elementMoved(final int index, final int newIndex, T newElement) { fireContentsChanged(ListSignalModel.this, index, newIndex); }
+		@Override public SignalChooser<T> signalChooser() { return _chooser; }
 	}
 	
 	@Override

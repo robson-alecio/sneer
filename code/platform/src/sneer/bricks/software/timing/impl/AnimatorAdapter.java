@@ -47,10 +47,6 @@ public class AnimatorAdapter implements Animator{
 		_delegate.pause();
 		float fraction = _delegate.getTimingFraction();
 		
-		System.out.println(direction);
-		System.out.println(duration);
-		System.out.println(fraction);
-				
 		_delegate.stop();
 		_delegate.setStartDirection(direction);
 		_delegate.setDuration(duration);

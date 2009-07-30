@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
@@ -22,6 +23,7 @@ import javax.swing.text.DefaultStyledDocument;
 import sneer.bricks.hardware.io.IO;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.LightType;
+import sneer.bricks.skin.image.ImageFactory;
 import sneer.bricks.skin.main.synth.scroll.SynthScrolls;
 import sneer.bricks.snapps.diff.text.gui.TextDiffPanel;
 import sneer.bricks.snapps.diff.text.gui.TextDiffPanels;
@@ -36,7 +38,11 @@ class TextDiffPanelsImpl implements TextDiffPanels{
 	public TextDiffPanel newPanel() {
 		return new TextDiffPanelImpl();
 	}
-
+	
+	private static ImageIcon loadIcon(String fileName){
+		return my(ImageFactory.class).getIcon(TextDiffPanelsImpl.class, fileName);
+	}
+	
 	class TextDiffPanelImpl extends JPanel implements TextDiffPanel{
 
 		private final JPanel _buttonsPanel = new JPanel();
@@ -100,8 +106,8 @@ class TextDiffPanelsImpl implements TextDiffPanels{
 		@SuppressWarnings("unused")
 		private class SelectionSupport {
 
-			private JButton _nextButton = new JButton("v");
-			private JButton _prevButton = new JButton("^");
+			private JButton _nextButton = new JButton(loadIcon("down.png"));
+			private JButton _prevButton = new JButton(loadIcon("up.png"));
 			
 			SelectionSupport(){
 				_buttonsPanel.add(_nextButton);

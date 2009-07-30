@@ -188,6 +188,7 @@ class MeTooGuiImpl extends JFrame implements MeTooGui{
 		reload.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			root.load();
 			_tree.setModel(new DefaultTreeModel(root));
+			_files.setModel(new DefaultListModel());
 		}});
 		
 		JScrollPane scrollTree = my(SynthScrolls.class).create();

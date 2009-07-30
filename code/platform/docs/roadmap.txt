@@ -9,8 +9,6 @@
 
 	- [Sandro] ListSignalModelTest - Unignore. Suggest a way to eliminate the thread that is leaked when this test is run.
 
-	- [Sandro] TestThatMightUseResources - Fail on usage of sysout and syserr. Talk to Klaus.
-	
 	- [Sandro] Hudson Linux Reboot
 
 	- Metoo

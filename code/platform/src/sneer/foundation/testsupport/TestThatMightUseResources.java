@@ -1,5 +1,6 @@
 package sneer.foundation.testsupport;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,6 +13,8 @@ import org.junit.Before;
 
 
 public abstract class TestThatMightUseResources extends AssertUtils {
+
+	private final Proxy _sysoutCheck = new Proxy(){};
 
 	private File _tmpFolder;
 	
@@ -36,8 +39,8 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 		_systemOutBeforeTest = System.out;
 		_systemErrBeforeTest = System.err;
 		
-//		System.setOut(null);
-//		System.setErr(null);
+		System.setOut(_sysoutCheck);
+		System.setErr(_sysoutCheck);
 	}
 
 	
@@ -79,7 +82,8 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 		System.setOut(_systemOutBeforeTest);
 		System.setErr(_systemErrBeforeTest);
 		
-		//Fail if sysout or syserr were used.
+		if(_sysoutCheck._used)
+			throw _sysoutCheck._exception;
 		
 		checkThreadLeak();
 		deleteFiles();
@@ -153,3 +157,18 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 
 }
 
+class Proxy extends PrintStream{
+	
+	boolean _used = false;
+	RuntimeException _exception;
+	
+	Proxy(){	super(new ByteArrayOutputStream());}
+	@Override public void write(byte[] buf, int off, int len) {
+		_used = true;
+		try{
+			throw new RuntimeException("System.out/System.err Exception.");
+		}catch (RuntimeException e) {
+			_exception = e;
+		}
+	}
+};

@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -158,8 +159,11 @@ class MeTooGuiImpl extends JFrame implements MeTooGui{
 	}
 	
 	private void initGui() {
+//		final RootTreeNode root = new RootTreeNode();
+		final RootTreeNode root = new RootTreeNode(FakeModel.bricks());
+
 		_tree.setRootVisible(false);
-		_tree.setModel(new DefaultTreeModel(new RootTreeNode(FakeModel.bricks())));
+		_tree.setModel(new DefaultTreeModel(root));
 		_tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		_tree.setCellRenderer(new MeTooTreeCellRenderer());
 		_tree.setBorder(new EmptyBorder(5,5,5,5));
@@ -178,6 +182,13 @@ class MeTooGuiImpl extends JFrame implements MeTooGui{
 		contentPane.add(toolbar, BorderLayout.NORTH);
 		toolbar.add(_meTooButton);
 		toolbar.add(_rejectButton);
+		
+		JButton reload = new JButton(loadIcon("reload.png"));
+		toolbar.add(reload);
+		reload.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
+			root.load();
+			_tree.setModel(new DefaultTreeModel(root));
+		}});
 		
 		JScrollPane scrollTree = my(SynthScrolls.class).create();
 		JScrollPane scrollFiles = my(SynthScrolls.class).create();

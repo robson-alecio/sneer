@@ -8,6 +8,4 @@ public interface TimingFramework {
 	WindowOpacitySetter windowOpacity();
 	PropertySetter property();
 	
-	Triggers triggers();
-
 }

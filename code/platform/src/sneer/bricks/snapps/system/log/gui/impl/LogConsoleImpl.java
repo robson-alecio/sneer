@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 
 import javax.swing.BoundedRangeModel;
 import javax.swing.ImageIcon;
@@ -37,7 +38,6 @@ import sneer.bricks.skin.main.dashboard.Dashboard;
 import sneer.bricks.skin.main.menu.MainMenu;
 import sneer.bricks.skin.main.synth.Synth;
 import sneer.bricks.skin.main.synth.scroll.SynthScrolls;
-import sneer.bricks.skin.main.translucentsupport.TranslucentSupport;
 import sneer.bricks.skin.menu.MenuFactory;
 import sneer.bricks.skin.menu.MenuGroup;
 import sneer.bricks.skin.popuptrigger.PopupTrigger;
@@ -99,25 +99,18 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	}
 
 	private void initTranslucentWindow() {
-		my(TranslucentSupport.class).setWindowOpacity(this, 0.3f);
-		
 		TimingFramework timing = my(TimingFramework.class);
+		final Animator fade = timing.windowOpacity().animator(this, 1f, 0.2f, 1000, 200);
+		fade.playForward();
 		
-//		this.addWindowFocusListener(new WindowFocusListener(){
-//			@Override public void windowGainedFocus(WindowEvent e) {
-//				fade.playForward();
-//			}
-//
-//			@Override public void windowLostFocus(WindowEvent e) {
-//				fade.playBackward();
-//			}});
-		
-		
-		Animator fadeIn =timing.windowOpacity().animator(1000, this, 1f,0.2f);
-		timing.triggers().focus().onLost(this, fadeIn);
-		
-		Animator fadeOut =timing.windowOpacity().animator(200, this, 0.2f,1f);
-		timing.triggers().focus().onGain(this, fadeOut);
+		this.addWindowFocusListener(new WindowFocusListener(){
+			@Override public void windowLostFocus(WindowEvent e) { 
+				fade.playForward(); 
+			}
+			@Override public void windowGainedFocus(WindowEvent e) { 
+				fade.playBackward();
+			}
+		});
 	}
 	
 	private void addMenuAction() {

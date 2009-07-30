@@ -1,44 +1,64 @@
 package sneer.bricks.software.timing.impl;
 
+import org.jdesktop.animation.timing.Animator.Direction;
+
 import sneer.bricks.software.timing.Animator;
 import sneer.bricks.software.timing.TimingTarget;
 
 public class AnimatorAdapter implements Animator{
 	
-	final org.jdesktop.animation.timing.Animator _delegate ;
-
-	AnimatorAdapter(org.jdesktop.animation.timing.Animator delegate){
-		_delegate = delegate;
+	private final org.jdesktop.animation.timing.Animator _delegate;
+	
+	private final int _backwardDuration;
+	private final int _forwardDuration;
+	
+	AnimatorAdapter(org.jdesktop.animation.timing.Animator animator) {
+		_delegate = animator;
+		_forwardDuration = animator.getDuration();
+		_backwardDuration = animator.getDuration();
 	}
 	
-	@Override public void addTarget(TimingTarget target) {_delegate.addTarget(adapt(target));}
-	@Override public void removeTarget(TimingTarget target) { _delegate.removeTarget(adapt(target)); }
+	AnimatorAdapter(org.jdesktop.animation.timing.Animator forwardAnimator, int backwardDuration) {
+		_delegate = forwardAnimator;
+		_forwardDuration = forwardAnimator.getDuration();
+		_backwardDuration = backwardDuration;
+	}
+		
+	AnimatorAdapter(org.jdesktop.animation.timing.TimingTargetAdapter tta, int duration) {
+		this(tta, duration, duration);
+	}
 	
-	@Override public void setStartDirection(Direction startDirection) { 
-		_delegate.setStartDirection( (startDirection==Direction.BACKWARD) ? 
-				org.jdesktop.animation.timing.Animator.Direction.BACKWARD :  
-				org.jdesktop.animation.timing.Animator.Direction.FORWARD ); }
-	
-	@Override public Direction startDirection() { 
-		return (_delegate.getStartDirection() == org.jdesktop.animation.timing.Animator.Direction.BACKWARD) ?
-				Direction.BACKWARD : Direction.FORWARD;
+	AnimatorAdapter(org.jdesktop.animation.timing.TimingTargetAdapter tta, int forwardDuration, int backwardDuration) {
+		_forwardDuration = forwardDuration;
+		_backwardDuration = backwardDuration;
+		_delegate= new org.jdesktop.animation.timing.Animator(forwardDuration, tta);
 	}
 
-	@Override public float timingFraction() { return  _delegate.getTimingFraction();}
+	@Override public void addTarget(TimingTarget target) { _delegate.addTarget(adapt(target)); }
+	@Override public void removeTarget(TimingTarget target) {  _delegate.removeTarget(adapt(target)); }
+	@Override public void pause() {  _delegate.pause(); }
+	@Override public void resume() { _delegate.resume(); }
+	@Override public void stop() {  _delegate.stop(); }
+	
+	@Override public void playForward(){ play(Direction.FORWARD , _forwardDuration); }
+	@Override public void playBackward() { play(Direction.BACKWARD, _backwardDuration); }
 
-	@Override public long cycleElapsedTime() { return  _delegate.getCycleElapsedTime();}
-	@Override public long cycleElapsedTime(long currentTime) { return  _delegate.getCycleElapsedTime(currentTime);}
-
-	@Override public long totalElapsedTime() { return  _delegate.getTotalElapsedTime(); }
-	@Override public long totalElapsedTime(long currentTime) {return  _delegate.getTotalElapsedTime(currentTime); }
-
-	@Override public void pause() { _delegate.pause(); }
-	@Override public void resume() {_delegate.resume();}
-	@Override public void start() { _delegate.start();}
-	@Override public void stop() { _delegate.stop();}
-	@Override public void cancel() { _delegate.cancel();}
+	private void play(Direction direction, int duration) {
+		_delegate.pause();
+		float fraction = _delegate.getTimingFraction();
+		
+		System.out.println(direction);
+		System.out.println(duration);
+		System.out.println(fraction);
+				
+		_delegate.stop();
+		_delegate.setStartDirection(direction);
+		_delegate.setDuration(duration);
+		_delegate.setStartFraction(fraction);
+		_delegate.start();
+	}
 
 	private TimingTargetAdapter adapt(TimingTarget target) {
-		return new TimingTargetAdapter(target);
+		return new sneer.bricks.software.timing.impl.TimingTargetAdapter(target);
 	}
 }

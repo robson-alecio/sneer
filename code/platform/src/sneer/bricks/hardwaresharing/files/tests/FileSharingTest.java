@@ -5,18 +5,20 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.File;
 import java.io.IOException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.bricks.hardware.io.IO;
-import sneer.bricks.hardwaresharing.files.FileSpace;
+import sneer.bricks.hardwaresharing.files.client.FileClient;
+import sneer.bricks.hardwaresharing.files.server.FileServer;
 import sneer.bricks.pulp.crypto.Sneer1024;
-import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.bricks.software.code.classutils.ClassUtils;
 import sneer.foundation.brickness.testsupport.BrickTest;
 
-public class FileSpaceTest extends BrickTest {
+@Ignore
+public class FileSharingTest extends BrickTest {
 
-	private final FileSpace _subject = my(FileSpace.class);
+	private final FileServer _subject = my(FileServer.class);
 
 	@Test (timeout = 3000)
 	public void publishSmallFile() throws IOException {
@@ -29,13 +31,11 @@ public class FileSpaceTest extends BrickTest {
 	}
 
 	private void publishAndFetch(File fileOrFolder) throws IOException {
-		Sneer1024 hash = _subject.publishContents(fileOrFolder);
+		Sneer1024 hash = _subject.serve(fileOrFolder);
 		assertNotNull(hash);
 		
-		my(TupleSpace.class).waitForAllDispatchingToFinish();
-		
 		File destination = newTempFile();
-		_subject.fetchContentsInto(destination, anyReasonableDate(), hash);
+		my(FileClient.class).fetchContentsInto(destination, anyReasonableDate(), hash);
 		assertSameContents(fileOrFolder, destination);
 	}
 

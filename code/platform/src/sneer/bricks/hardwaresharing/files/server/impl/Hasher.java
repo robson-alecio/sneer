@@ -1,13 +1,13 @@
-package sneer.bricks.hardwaresharing.files.impl;
+package sneer.bricks.hardwaresharing.files.server.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 
-import sneer.bricks.hardwaresharing.files.FileContents;
-import sneer.bricks.hardwaresharing.files.FolderContents;
-import sneer.bricks.hardwaresharing.files.FolderEntry;
+import sneer.bricks.hardwaresharing.files.server.FileContents;
+import sneer.bricks.hardwaresharing.files.server.FolderContents;
+import sneer.bricks.hardwaresharing.files.server.FolderEntry;
 import sneer.bricks.pulp.crypto.Crypto;
 import sneer.bricks.pulp.crypto.Digester;
 import sneer.bricks.pulp.crypto.Sneer1024;

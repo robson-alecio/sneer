@@ -10,9 +10,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
-import sneer.bricks.hardware.io.IO;
 import sneer.bricks.hardware.ram.arrays.ImmutableArrays;
-import sneer.bricks.hardwaresharing.files.server.FileContents;
 import sneer.bricks.hardwaresharing.files.server.FileRequest;
 import sneer.bricks.hardwaresharing.files.server.FileServer;
 import sneer.bricks.hardwaresharing.files.server.FolderContents;
@@ -86,14 +84,14 @@ public class FileServerImpl implements FileServer {
 		);
 	}
 	
-	protected void publishContents(Object fileOrFolder) {
+	protected void publishContents(@SuppressWarnings("unused") Object fileOrFolder) {
 		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
 	
-	private FileContents newDataBlock(File fileOrFolder) throws IOException {
-		byte[] bytes = my(IO.class).files().readBytes(fileOrFolder);
-		return new FileContents(my(ImmutableArrays.class).newImmutableByteArray(bytes));
-	}
+//	private FileContents newDataBlock(File fileOrFolder) throws IOException {
+//		byte[] bytes = my(IO.class).files().readBytes(fileOrFolder);
+//		return new FileContents(my(ImmutableArrays.class).newImmutableByteArray(bytes));
+//	}
 	
 	private File[] listFiles(File folder) {
 		File[] result = folder.listFiles();

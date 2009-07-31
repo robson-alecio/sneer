@@ -51,12 +51,12 @@ public class FileClientImpl implements FileClient {
 	}
 
 
-	private void putContentsByHash(Sneer1024 hash, Object contents) {
-		synchronized (_contentsByHash) {
-			_contentsByHash.put(hash, contents);
-			_contentsByHash.notifyAll();
-		}
-	}
+//	private void putContentsByHash(Sneer1024 hash, Object contents) {
+//		synchronized (_contentsByHash) {
+//			_contentsByHash.put(hash, contents);
+//			_contentsByHash.notifyAll();
+//		}
+//	}
 
 	
 	private Object waitForContents(Sneer1024 hash) {

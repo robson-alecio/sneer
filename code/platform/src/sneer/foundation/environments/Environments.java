@@ -1,14 +1,26 @@
 package sneer.foundation.environments;
 
+import sneer.foundation.lang.Closure;
+
 public class Environments {
 	
 	private final static ThreadLocal<Environment> _environment = new ThreadLocal<Environment>() { @Override	protected Environment initialValue() { return null;};};
 	
-	public static <T> void runWith(Environment environment, Runnable runnable) {
+	public static void runWith(Environment environment, Runnable runnable) {
 		final Environment previous = current();
 		_environment.set(environment);
 		try {
 			runnable.run();
+		} finally {
+			_environment.set(previous);
+		}
+	}
+
+	public static <X extends Throwable> void runWith(Environment environment, Closure<X> closure) throws X {
+		final Environment previous = current();
+		_environment.set(environment);
+		try {
+			closure.run();
 		} finally {
 			_environment.set(previous);
 		}

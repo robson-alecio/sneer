@@ -18,7 +18,8 @@ import sneer.foundation.brickness.testsupport.BrickTest;
 @Ignore
 public class FileSharingTest extends BrickTest {
 
-	private final FileServer _subject = my(FileServer.class);
+	private final FileServer _server = my(FileServer.class);
+	private final FileClient _client = my(FileClient.class);
 
 	@Test (timeout = 3000)
 	public void publishSmallFile() throws IOException {
@@ -31,11 +32,11 @@ public class FileSharingTest extends BrickTest {
 	}
 
 	private void publishAndFetch(File fileOrFolder) throws IOException {
-		Sneer1024 hash = _subject.serve(fileOrFolder);
+		Sneer1024 hash = _server.serve(fileOrFolder);
 		assertNotNull(hash);
 		
 		File destination = newTempFile();
-		my(FileClient.class).fetchContentsInto(destination, anyReasonableDate(), hash);
+		_client.fetchContentsInto(destination, anyReasonableDate(), hash);
 		assertSameContents(fileOrFolder, destination);
 	}
 

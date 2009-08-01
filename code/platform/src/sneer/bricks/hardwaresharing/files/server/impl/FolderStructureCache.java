@@ -22,6 +22,7 @@ class FolderStructureCache {
 	
 	
 	static Sneer1024 cache(File fileOrFolder) throws IOException {
+		System.out.println(fileOrFolder);
 		return (fileOrFolder.isDirectory())
 			? cacheFolderContents(fileOrFolder)
 			: cacheFile(fileOrFolder);

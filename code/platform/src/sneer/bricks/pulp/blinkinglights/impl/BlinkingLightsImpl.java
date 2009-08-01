@@ -3,6 +3,7 @@ package sneer.bricks.pulp.blinkinglights.impl;
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.clock.timer.Timer;
 import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
+import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.blinkinglights.LightType;
@@ -89,21 +90,24 @@ class BlinkingLightsImpl implements BlinkingLights {
 	}
 	
 	@Override
-	public void turnOnIfNecessary(Light pLight, String caption, String helpMessage, Throwable t, int timeout) {
-		if (!(pLight instanceof LightImpl)) throw new IllegalArgumentException();
-		if (pLight.isOn()) return;
-		
-		final LightImpl light = (LightImpl)pLight;
+	public void turnOnIfNecessary(Light light_, String caption, String helpMessage, Throwable t, int timeout) {
+		if (!(light_ instanceof LightImpl)) throw new IllegalArgumentException();
+		LightImpl light = (LightImpl)light_;
+
+		if (light.isOn()) return;
 		light._isOn = true;
-		_lights.add(light);
-		
 		light._caption = caption;
 		light._error = t;
 		light._helpMessage = helpMessage == null ? "If this problem doesn't go away on its own, get an expert sovereign friend to help you. ;)" : helpMessage;
 		
+		logIfNecessary(t);
+		
+		_lights.add(light);
+		
 		if (timeout != LightImpl.NEVER)
 			turnOffIn(light, timeout);
 	}
+
 
 	@Override
 	public void askForConfirmation(LightType type, String caption, String helpMessage, Consumer<Boolean> confirmationReceiver) {
@@ -112,4 +116,11 @@ class BlinkingLightsImpl implements BlinkingLights {
 		light._helpMessage = helpMessage;
 		turnOnIfNecessary(light, caption, helpMessage);
 	}
+	
+
+	private void logIfNecessary(Throwable throwable) {
+		if (throwable == null) return;
+		my(Logger.class).log(throwable, "Blinking light turned on.");
+	}
+
 }

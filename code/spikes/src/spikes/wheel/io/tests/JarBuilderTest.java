@@ -1,8 +1,8 @@
 package spikes.wheel.io.tests;
 
-import sneer.foundation.testsupport.TestThatMightUseResources;
+import sneer.foundation.testsupport.CleanTest;
 
-public class JarBuilderTest extends TestThatMightUseResources {
+public class JarBuilderTest extends CleanTest {
 
 //	@Test
 //	public void testSimpleJar() throws Exception {

@@ -10,9 +10,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 
-
-@RunWith(TestThatMightUseResourcesRunner.class)
-public abstract class TestThatMightUseResources extends AssertUtils {
+/** A test that does not pollute the environment: it deletes all files it creates, it does not leak threads, it does not write do the console (out and err). */
+@RunWith(CleanTestRunner.class)
+public abstract class CleanTest extends AssertUtils {
 
 	private File _tmpFolder;
 	

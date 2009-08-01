@@ -13,9 +13,9 @@ import org.junit.internal.runners.TestClass;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
 import sneer.foundation.lang.Closure;
-import sneer.foundation.testsupport.TestMethodThatMightUseResources;
+import sneer.foundation.testsupport.CleanTestMethod;
 
-class TestMethodWithEnvironment extends TestMethodThatMightUseResources {
+class TestMethodWithEnvironment extends CleanTestMethod {
 
 	private final Environment _environment;
 

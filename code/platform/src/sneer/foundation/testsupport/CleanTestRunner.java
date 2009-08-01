@@ -6,15 +6,15 @@ import org.junit.internal.runners.InitializationError;
 import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.internal.runners.TestMethod;
 
-public class TestThatMightUseResourcesRunner extends JUnit4ClassRunner {
+public class CleanTestRunner extends JUnit4ClassRunner {
 
-	public TestThatMightUseResourcesRunner(Class<?> testClass) throws InitializationError {
+	public CleanTestRunner(Class<?> testClass) throws InitializationError {
 		super(testClass);
 	}
 
 	@Override
 	protected TestMethod wrapMethod(Method method) {
-		return new TestMethodThatMightUseResources(method, getTestClass());
+		return new CleanTestMethod(method, getTestClass());
 	}
 
 	

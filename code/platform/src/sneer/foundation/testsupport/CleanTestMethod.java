@@ -6,9 +6,9 @@ import java.lang.reflect.Method;
 import org.junit.internal.runners.TestClass;
 import org.junit.internal.runners.TestMethod;
 
-public class TestMethodThatMightUseResources extends TestMethod {
+public class CleanTestMethod extends TestMethod {
 
-	public TestMethodThatMightUseResources(Method method, TestClass testClass) {
+	public CleanTestMethod(Method method, TestClass testClass) {
 		super(method, testClass);
 	}
 
@@ -17,8 +17,8 @@ public class TestMethodThatMightUseResources extends TestMethod {
 		super.invoke(test);
 		
 		//Will only happen if the test passes (InvocationTargetException is not thrown above).
-		if (!(test instanceof TestThatMightUseResources)) return;
-		((TestThatMightUseResources)test).afterSuccessfulTest();
+		if (!(test instanceof CleanTest)) return;
+		((CleanTest)test).afterSuccessfulTest();
 	}
 
 }

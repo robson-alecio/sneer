@@ -17,9 +17,10 @@ public class BrickTestWithMockRunner extends BrickTestRunner {
 	@Override
 	protected TestMethod wrapMethod(Method method) {
 		return new TestMethodWithEnvironment(method, getTestClass()) {
+			
 			@Override
-			protected void doInvoke(Object test) throws InvocationTargetException {
-				super.doInvoke(test);
+			public void invoke(Object test) throws InvocationTargetException {
+				super.invoke(test);
 				assertMockeryHasBeenSatisfied(test);
 			}
 
@@ -28,7 +29,7 @@ public class BrickTestWithMockRunner extends BrickTestRunner {
 				mockery.assertIsSatisfied();
 			}
 			
-			protected Mockery mockeryFor(Object test) {
+			private Mockery mockeryFor(Object test) {
 				Class<?> klass = test.getClass();
 				while (klass != Object.class) {
 					for (Field field : klass.getDeclaredFields()) {

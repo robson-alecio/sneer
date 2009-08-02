@@ -5,7 +5,6 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.bricks.hardware.io.IO;
@@ -15,7 +14,6 @@ import sneer.bricks.pulp.crypto.Sneer1024;
 import sneer.bricks.software.code.classutils.ClassUtils;
 import sneer.foundation.brickness.testsupport.BrickTest;
 
-@Ignore
 public class FileSharingTest extends BrickTest {
 
 	private final FileServer _server = my(FileServer.class);

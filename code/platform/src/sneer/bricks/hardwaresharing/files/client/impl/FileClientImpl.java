@@ -11,9 +11,11 @@ import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.IO;
 import sneer.bricks.hardwaresharing.files.client.FileClient;
-import sneer.bricks.hardwaresharing.files.server.FileContents;
-import sneer.bricks.hardwaresharing.files.server.FolderContents;
-import sneer.bricks.hardwaresharing.files.server.FolderEntry;
+import sneer.bricks.hardwaresharing.files.hasher.Hasher;
+import sneer.bricks.hardwaresharing.files.protocol.FileContents;
+import sneer.bricks.hardwaresharing.files.protocol.FileRequest;
+import sneer.bricks.hardwaresharing.files.protocol.FolderContents;
+import sneer.bricks.hardwaresharing.files.protocol.FolderEntry;
 import sneer.bricks.pulp.crypto.Sneer1024;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.lang.Consumer;
@@ -21,50 +23,49 @@ import sneer.foundation.lang.Consumer;
 
 public class FileClientImpl implements FileClient {
 
-	private Map<Sneer1024, Object> _contentsByHash = new HashMap<Sneer1024, Object>();
+	private Map<Sneer1024, Object> _contentsBufferByHash = new HashMap<Sneer1024, Object>();
 	
 	@SuppressWarnings("unused") private final WeakContract _fileContract;
 	@SuppressWarnings("unused") private final WeakContract _folderContract;
 	
 
 	{
-		my(TupleSpace.class).keep(FileContents.class);
 		_fileContract = my(TupleSpace.class).addSubscription(FileContents.class, new Consumer<FileContents>() { @Override public void consume(FileContents contents) {
-//			putContentsByHash(Hasher.hashFile(contents), contents);
+			putContentsByHash(hashFile(contents), contents);
 		}});
-		
-		my(TupleSpace.class).keep(FolderContents.class);
+
 		_folderContract = my(TupleSpace.class).addSubscription(FolderContents.class, new Consumer<FolderContents>() { @Override public void consume(FolderContents contents) {
-//			putContentsByHash(Hasher.hashFolder(contents), contents);
+			putContentsByHash(hashFolder(contents), contents);
 		}});
 	}
 
 
 	@Override
 	public void fetchContentsInto(File fileOrFolder, long lastModified, Sneer1024 hash) throws IOException {
+		my(TupleSpace.class).publish(new FileRequest(hash));
 		final Object contents = waitForContents(hash);
 		
-		if (contents instanceof FileContents)
-			fetchFileContentsInto(fileOrFolder, lastModified, (FileContents)contents);
-		else
+		if (contents instanceof FolderContents)
 			fetchFolderContentsInto(fileOrFolder, lastModified, (FolderContents)contents);
+		else
+			fetchFileContentsInto(fileOrFolder, lastModified, (FileContents)contents);
 	}
 
 
-//	private void putContentsByHash(Sneer1024 hash, Object contents) {
-//		synchronized (_contentsByHash) {
-//			_contentsByHash.put(hash, contents);
-//			_contentsByHash.notifyAll();
-//		}
-//	}
+	private void putContentsByHash(Sneer1024 hash, Object contents) {
+		synchronized (_contentsBufferByHash) {
+			_contentsBufferByHash.put(hash, contents);
+			_contentsBufferByHash.notifyAll();
+		}
+	}
 
 	
 	private Object waitForContents(Sneer1024 hash) {
-		synchronized (_contentsByHash) {
+		synchronized (_contentsBufferByHash) {
 			while (true) {
-				Object contents = _contentsByHash.get(hash);
+				Object contents = _contentsBufferByHash.get(hash);
 				if (contents != null) return contents;
-				my(Threads.class).waitWithoutInterruptions(_contentsByHash);
+				my(Threads.class).waitWithoutInterruptions(_contentsBufferByHash);
 			}
 		}
 	}
@@ -89,8 +90,18 @@ public class FileClientImpl implements FileClient {
 	}
 
 	
-	private void fetchFileContentsInto(File destination, long lastModified, final FileContents contents) throws IOException {
+	private void fetchFileContentsInto(File destination, long lastModified, FileContents contents) throws IOException {
 		my(IO.class).files().writeByteArrayToFile(destination, contents.bytes.copy());
 		destination.setLastModified(lastModified);
 	}
+
+	
+	private Sneer1024 hashFile(FileContents contents) {
+		return my(Hasher.class).hashFile(contents);
+	}
+	
+	private Sneer1024 hashFolder(FolderContents contents) {
+		return my(Hasher.class).hashFolder(contents);
+	}
+
 }

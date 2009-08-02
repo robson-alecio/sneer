@@ -11,8 +11,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import sneer.bricks.hardware.io.IO;
 import sneer.bricks.hardware.ram.arrays.ImmutableArrays;
-import sneer.bricks.hardwaresharing.files.server.FolderContents;
-import sneer.bricks.hardwaresharing.files.server.FolderEntry;
+import sneer.bricks.hardwaresharing.files.hasher.Hasher;
+import sneer.bricks.hardwaresharing.files.protocol.FolderContents;
+import sneer.bricks.hardwaresharing.files.protocol.FolderEntry;
 import sneer.bricks.pulp.crypto.Sneer1024;
 
 class FolderStructureCache {
@@ -22,7 +23,6 @@ class FolderStructureCache {
 	
 	
 	static Sneer1024 cache(File fileOrFolder) throws IOException {
-		System.out.println(fileOrFolder);
 		return (fileOrFolder.isDirectory())
 			? cacheFolderContents(fileOrFolder)
 			: cacheFile(fileOrFolder);
@@ -33,12 +33,12 @@ class FolderStructureCache {
 		Object result = _cache.get(hashOfContents);
 		return result instanceof FolderContents
 			? result
-			: readFileContents((File) result);
+			: readFileContents((File)result);
 	}
 
 	
 	private static Sneer1024 cacheFile(File file) throws IOException {
-		final Sneer1024 hash = Hasher.hashFileContents(file);
+		final Sneer1024 hash = my(Hasher.class).hashFile(readFileContents(file));
 		_cache.put(hash, file);
 		return hash; 
 	}
@@ -47,7 +47,7 @@ class FolderStructureCache {
 	private static Sneer1024 cacheFolderContents(File folder) throws IOException {
 		List<FolderEntry> entries = cacheEachFolderEntry(folder);
 		final FolderContents contents = new FolderContents(my(ImmutableArrays.class).newImmutableArray(entries));
-		final Sneer1024 hash = Hasher.hashFolderContents(contents);
+		final Sneer1024 hash = my(Hasher.class).hashFolder(contents);
 		_cache.put(hash, contents);
 		return hash;
 	}

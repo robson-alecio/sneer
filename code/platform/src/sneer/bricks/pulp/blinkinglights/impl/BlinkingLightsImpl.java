@@ -91,7 +91,6 @@ class BlinkingLightsImpl implements BlinkingLights {
 	
 	@Override
 	public void turnOnIfNecessary(Light light_, String caption, String helpMessage, Throwable t, int timeout) {
-		if (!(light_ instanceof LightImpl)) throw new IllegalArgumentException();
 		LightImpl light = (LightImpl)light_;
 
 		if (light.isOn()) return;

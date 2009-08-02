@@ -70,6 +70,7 @@ class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 		
 		addMouseListener(new MouseAdapter(){@Override public void mouseReleased(MouseEvent e) {
 			int index = locationToIndex(e.getPoint());
+			if (index == -1) return;
 			final ELEMENT element = (ELEMENT) getModel().getElementAt(index);
 			if(getSelectedValue()  != element)
 				setSelectedValue(element, true);

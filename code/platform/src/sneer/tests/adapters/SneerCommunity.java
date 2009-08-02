@@ -84,7 +84,7 @@ public class SneerCommunity implements SovereignCommunity {
 
 	private File makeFolder(File parent, String child) {
 		File result = new File(parent, child);
-		if (!result.mkdirs())
+		if (!result.exists() && !result.mkdirs())
 			throw new IllegalStateException("Could not create folder '" + result + "'!");
 		return result;
 	}

@@ -18,15 +18,16 @@ import sneer.foundation.lang.exceptions.NotImplementedYet;
 class BrickInfoImpl implements BrickInfo {
 
 	private final String _brickName;
+	
 	private final Sneer1024 _hashOfCurrentVersion;
-	private final BrickVersion _version;
+	private final BrickVersion _currentVersion;
 
 	
 	public BrickInfoImpl(String brickName, Sneer1024 hash) {
 		_brickName = brickName;
-		_hashOfCurrentVersion = hash;
 		
-		_version = fetchSingleVersion();
+		_hashOfCurrentVersion = hash;
+		_currentVersion = fetchSingleVersion();
 	}
 
 
@@ -43,7 +44,7 @@ class BrickInfoImpl implements BrickInfo {
 		File srcFolder = File.createTempFile("tmpSrcForBrick_" + _brickName + "_", "");
 		srcFolder.delete();
 		fetchInto(srcFolder);
-		return new BrickVersionImpl(srcFolder);
+		return new BrickVersionImpl(srcFolder, _hashOfCurrentVersion);
 	}
 
 
@@ -64,7 +65,7 @@ class BrickInfoImpl implements BrickInfo {
 
 	@Override
 	public List<BrickVersion> versions() {
-		return Arrays.asList(_version);
+		return Arrays.asList(_currentVersion);
 	}
 
 	@Override

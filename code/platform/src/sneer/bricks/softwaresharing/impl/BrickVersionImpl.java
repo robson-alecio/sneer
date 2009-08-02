@@ -12,9 +12,12 @@ class BrickVersionImpl implements BrickVersion {
 
 
 	private File _sourceFolder;
+	private final Sneer1024 _hash;
 
-	public BrickVersionImpl(File sourceFolder) {
+	
+	BrickVersionImpl(File sourceFolder, Sneer1024 hash) {
 		_sourceFolder = sourceFolder;
+		_hash = hash;
 	}
 
 	@Override
@@ -24,7 +27,7 @@ class BrickVersionImpl implements BrickVersion {
 
 	@Override
 	public Sneer1024 hash() {
-		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
+		return _hash;
 	}
 
 	@Override

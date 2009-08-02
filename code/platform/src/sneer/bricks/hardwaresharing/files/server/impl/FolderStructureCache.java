@@ -31,6 +31,7 @@ class FolderStructureCache {
 	
 	static Object getContents(Sneer1024 hashOfContents) throws IOException {
 		Object result = _cache.get(hashOfContents);
+		if (result == null) return result;
 		return result instanceof FolderContents
 			? result
 			: readFileContents((File)result);

@@ -171,7 +171,7 @@ class PrintStreamSentinel extends PrintStream {
 	
 	@Override public void write(byte[] buf, int off, int len) {
 		try {
-			throw new IllegalStateException("Test has passed but is writing to the console.");
+			throw new IllegalStateException("Test would have passed if it were not polluting the console.");
 		} catch (IllegalStateException e) {
 			_exception = e;
 		}

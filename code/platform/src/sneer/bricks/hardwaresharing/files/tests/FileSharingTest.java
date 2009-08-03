@@ -10,6 +10,7 @@ import org.junit.Test;
 import sneer.bricks.hardware.io.IO;
 import sneer.bricks.hardwaresharing.files.client.FileClient;
 import sneer.bricks.hardwaresharing.files.publisher.FilePublisher;
+import sneer.bricks.hardwaresharing.files.server.FileServer;
 import sneer.bricks.pulp.crypto.Sneer1024;
 import sneer.bricks.software.code.classutils.ClassUtils;
 import sneer.foundation.brickness.testsupport.BrickTest;
@@ -19,6 +20,9 @@ public class FileSharingTest extends BrickTest {
 	private final FilePublisher _publisher = my(FilePublisher.class);
 	private final FileClient _client = my(FileClient.class);
 
+	@SuppressWarnings("unused") private final FileServer _server = my(FileServer.class);
+
+	
 	@Test (timeout = 3000)
 	public void publishSmallFile() throws IOException {
 		publishAndFetch(anySmallFile());

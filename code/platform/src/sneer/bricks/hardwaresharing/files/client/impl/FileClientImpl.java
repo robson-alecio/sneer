@@ -16,7 +16,6 @@ import sneer.bricks.hardwaresharing.files.protocol.FileContents;
 import sneer.bricks.hardwaresharing.files.protocol.FileRequest;
 import sneer.bricks.hardwaresharing.files.protocol.FolderContents;
 import sneer.bricks.hardwaresharing.files.protocol.FolderEntry;
-import sneer.bricks.hardwaresharing.files.server.FileServer;
 import sneer.bricks.pulp.crypto.Sneer1024;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.lang.Consumer;
@@ -25,8 +24,6 @@ import sneer.foundation.lang.Consumer;
 public class FileClientImpl implements FileClient {
 
 	private Map<Sneer1024, Object> _contentsBufferByHash = new HashMap<Sneer1024, Object>();
-
-	@SuppressWarnings("unused") private final FileServer _server = my(FileServer.class);
 
 	@SuppressWarnings("unused") private final WeakContract _fileContract;
 	@SuppressWarnings("unused") private final WeakContract _folderContract;

@@ -62,7 +62,7 @@ public class BlinkingLightsTest extends BrickTest {
 
 	private void expectingToLogOneThrowable() {
 		checking(new Expectations() {{
-			exactly(1).of(_logger).log(with(any(Throwable.class)), with(any(String.class)), with(any(Object.class)));
+			exactly(1).of(_logger).log(with(any(String.class)), with(any(String.class)));
 		}});
 	}
 

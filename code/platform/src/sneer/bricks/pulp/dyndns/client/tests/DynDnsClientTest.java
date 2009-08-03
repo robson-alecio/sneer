@@ -103,7 +103,7 @@ Unacceptable Client Behavior
 				will(throwException(error));
 				
 			exactly(1).of(_updater).update(account.host, account.user, account.password, _ownIp.output().currentValue());
-			exactly(1).of(_logger).log(with(any(Throwable.class)), with(any(String.class)), with(any(Object.class)));
+			exactly(1).of(_logger).log(with(any(String.class)), with(any(String.class)));
 		}});
 		
 
@@ -136,7 +136,7 @@ Unacceptable Client Behavior
 				
 			exactly(1).of(_updater).update(account.host, account.user, "*" + account.password, newIp);
 
-			exactly(1).of(_logger).log(with(any(Throwable.class)), with(any(String.class)), with(any(Object.class)));
+			exactly(1).of(_logger).log(with(any(String.class)), with(any(String.class)));
 		}});
 		
 		startDynDnsClient();
@@ -168,7 +168,7 @@ Unacceptable Client Behavior
 			exactly(1).of(_updater).update(account.host, account.user, account.password, _ownIp.output().currentValue());
 				will(throwException(error));
 
-			exactly(1).of(_logger).log(with(any(Throwable.class)), with(any(String.class)), with(any(Object.class)));
+			exactly(1).of(_logger).log(with(any(String.class)), with(any(String.class)));
 		}});
 		
 		startDynDnsClient();

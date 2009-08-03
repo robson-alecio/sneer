@@ -99,14 +99,13 @@ class BlinkingLightsImpl implements BlinkingLights {
 		light._error = t;
 		light._helpMessage = helpMessage == null ? "If this problem doesn't go away on its own, get an expert sovereign friend to help you. ;)" : helpMessage;
 		
-		logIfNecessary(t);
+		log(caption);
 		
 		_lights.add(light);
 		
 		if (timeout != LightImpl.NEVER)
 			turnOffIn(light, timeout);
 	}
-
 
 	@Override
 	public void askForConfirmation(LightType type, String caption, String helpMessage, Consumer<Boolean> confirmationReceiver) {
@@ -115,11 +114,9 @@ class BlinkingLightsImpl implements BlinkingLights {
 		light._helpMessage = helpMessage;
 		turnOnIfNecessary(light, caption, helpMessage);
 	}
-	
 
-	private void logIfNecessary(Throwable throwable) {
-		if (throwable == null) return;
-		my(Logger.class).log(throwable, "Blinking light turned on.");
+	private void log(String caption) {
+		my(Logger.class).log("Blinking light turned on: {}", caption);
 	}
 
 }

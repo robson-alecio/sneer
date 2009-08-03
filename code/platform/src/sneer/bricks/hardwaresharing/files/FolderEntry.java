@@ -1,4 +1,4 @@
-package sneer.bricks.hardwaresharing.files.server;
+package sneer.bricks.hardwaresharing.files;
 
 import sneer.bricks.pulp.crypto.Sneer1024;
 import sneer.foundation.brickness.Tuple;

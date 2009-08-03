@@ -1,4 +1,4 @@
-package sneer.bricks.hardwaresharing.files.server;
+package sneer.bricks.hardwaresharing.files;
 
 import sneer.bricks.hardware.ram.arrays.ImmutableByteArray;
 import sneer.foundation.brickness.Tuple;

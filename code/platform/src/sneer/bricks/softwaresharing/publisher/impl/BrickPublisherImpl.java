@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 import sneer.bricks.hardware.cpu.lang.Lang;
-import sneer.bricks.hardwaresharing.files.server.FileServer;
+import sneer.bricks.hardwaresharing.files.publisher.FilePublisher;
 import sneer.bricks.pulp.crypto.Sneer1024;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.bricks.software.folderconfig.FolderConfig;
@@ -18,7 +18,7 @@ class BrickPublisherImpl implements BrickPublisher {
 	@Override
 	public void publishBrick(String brickName) throws IOException {
 		File brickFolder = brickFolderFor(brickName);
-		Sneer1024 hash = my(FileServer.class).serve(brickFolder);
+		Sneer1024 hash = my(FilePublisher.class).publish(brickFolder);
 		my(TupleSpace.class).publish(new BrickUsage(brickName, hash));
 	}
 

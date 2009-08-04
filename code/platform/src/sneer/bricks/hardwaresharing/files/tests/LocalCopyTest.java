@@ -10,12 +10,9 @@ import sneer.bricks.pulp.crypto.Sneer1024;
 
 public class LocalCopyTest extends FileCopyTest {
 
-	private final FileWriter _writer = my(FileWriter.class);
-
-	
 	@Override
 	protected void copyFromFileCache(Sneer1024 hashOfContents, File destination) throws IOException {
-		_writer.writeTo(destination, anyReasonableDate(), hashOfContents);
+		my(FileWriter.class).writeTo(destination, anyReasonableDate(), hashOfContents);
 	}
 
 	

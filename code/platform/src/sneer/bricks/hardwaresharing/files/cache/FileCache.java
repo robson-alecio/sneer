@@ -2,6 +2,7 @@ package sneer.bricks.hardwaresharing.files.cache;
 
 import sneer.bricks.hardwaresharing.files.protocol.FolderContents;
 import sneer.bricks.pulp.crypto.Sneer1024;
+import sneer.bricks.pulp.events.EventSource;
 import sneer.foundation.brickness.Brick;
 
 @Brick
@@ -12,4 +13,5 @@ public interface FileCache {
 
 	Object getContents(Sneer1024 hashOfFileOrFolder);
 	
+	EventSource<FolderContents> foldersAdded();
 }

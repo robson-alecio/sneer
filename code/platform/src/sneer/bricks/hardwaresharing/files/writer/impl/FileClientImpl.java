@@ -1,4 +1,4 @@
-package sneer.bricks.hardwaresharing.files.client.impl;
+package sneer.bricks.hardwaresharing.files.writer.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
@@ -10,18 +10,18 @@ import java.util.Map;
 import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.IO;
-import sneer.bricks.hardwaresharing.files.client.FileClient;
 import sneer.bricks.hardwaresharing.files.hasher.Hasher;
 import sneer.bricks.hardwaresharing.files.protocol.FileContents;
 import sneer.bricks.hardwaresharing.files.protocol.FileRequest;
 import sneer.bricks.hardwaresharing.files.protocol.FolderContents;
 import sneer.bricks.hardwaresharing.files.protocol.FolderEntry;
+import sneer.bricks.hardwaresharing.files.writer.FileWriter;
 import sneer.bricks.pulp.crypto.Sneer1024;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.lang.Consumer;
 
 
-public class FileClientImpl implements FileClient {
+public class FileClientImpl implements FileWriter {
 
 	private Map<Sneer1024, Object> _contentsBufferByHash = new HashMap<Sneer1024, Object>();
 
@@ -41,7 +41,7 @@ public class FileClientImpl implements FileClient {
 
 
 	@Override
-	public void fetchContentsInto(File fileOrFolder, long lastModified, Sneer1024 hash) throws IOException {
+	public void writeTo(File fileOrFolder, long lastModified, Sneer1024 hash) throws IOException {
 		my(TupleSpace.class).publish(new FileRequest(hash));
 		final Object contents = waitForContents(hash);
 		
@@ -82,7 +82,7 @@ public class FileClientImpl implements FileClient {
 
 	
 	private void fetchFolderEntryInto(File folder, FolderEntry entry) throws IOException {
-		fetchContentsInto(
+		writeTo(
 			new File(folder, entry.name),
 			entry.lastModified,
 			entry.hashOfContents

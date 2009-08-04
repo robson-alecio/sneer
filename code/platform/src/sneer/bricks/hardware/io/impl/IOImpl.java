@@ -25,21 +25,15 @@ class IOImpl implements IO {
 	
 	private Files _files = new Files(){
 		
-		@Override public boolean isEmpty(File file) {
-			if(file == null || !file.exists()) return true;
-			
-			if(file.isDirectory()) {
-				String[] children = file.list();
-				return children == null || children.length == 0;
-			}
-			
-			return file.length() == 0;
-		}
-		
 		@Override public void copyFolder(File srcFolder, File destFolder) throws IOException { FileUtils.copyDirectory(srcFolder, destFolder); }
 		@Override public Collection<File> listFiles(File folder, String[] extensions, boolean recursive) { return FileUtils.listFiles(folder, extensions, recursive); }
 		@Override public void writeString(File file, String data) throws IOException { FileUtils.writeStringToFile(file, data); }
-		@Override public void deleteFolder(File folder) throws IOException { FileUtils.deleteDirectory(folder); }
+		
+		@Override public void forceDelete(File fileOrFolder) throws IOException {
+			if (!fileOrFolder.exists()) return;
+			FileUtils.forceDelete(fileOrFolder);
+		}
+		
 		@Override public Iterator<File> iterate(File folder, String[] extensions, boolean recursive){ return FileUtils.iterateFiles(folder, extensions, recursive); }
 		
 		@Override public String readString(File file) throws IOException {return new String(readBytes(file)); }

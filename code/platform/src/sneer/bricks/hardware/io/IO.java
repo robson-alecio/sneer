@@ -32,11 +32,10 @@ public interface IO {
 	}
 	
 	interface Files{
-		boolean isEmpty(File file);
 		Collection<File> listFiles(File folder, String[] extensions, boolean recursive);
 		
 		void copyFolder(File srcFolder, File destFolder) throws IOException;
-		void deleteFolder(File folder) throws IOException;
+		void forceDelete(File fileOrFolder) throws IOException;
 		Iterator<File> iterate(File folder, String[] extensions, boolean recursive);
 
 		void writeString(File file, String data) throws IOException;

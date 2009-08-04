@@ -7,6 +7,9 @@ import java.util.Collection;
 
 import org.junit.Test;
 
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
+import sneer.bricks.hardware.cpu.threads.Latch;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.ram.arrays.ImmutableArray;
 import sneer.bricks.hardware.ram.arrays.ImmutableArrays;
 import sneer.bricks.hardwaresharing.files.cache.FileCache;
@@ -15,6 +18,7 @@ import sneer.bricks.hardwaresharing.files.protocol.FolderEntry;
 import sneer.bricks.pulp.crypto.Crypto;
 import sneer.bricks.pulp.crypto.Sneer1024;
 import sneer.foundation.brickness.testsupport.BrickTest;
+import sneer.foundation.lang.Consumer;
 
 public class FileCacheTest extends BrickTest {
 
@@ -28,6 +32,13 @@ public class FileCacheTest extends BrickTest {
 
 	@Test
 	public void cacheFolderContents() {
+		final Latch latch = my(Threads.class).newLatch();
+		
+		@SuppressWarnings("unused")	WeakContract contract =
+			_subject.foldersAdded().addReceiver(new Consumer<FolderContents>() { @Override public void consume(FolderContents value) {
+				latch.open();
+			}});
+		
 		FolderContents folderContents = new FolderContents(immutable(Arrays.asList(new FolderEntry[]{
 			new FolderEntry("readme.txt", anyReasonableDate(), hash(1)),
 			new FolderEntry("src", anyReasonableDate(), hash(2)),
@@ -36,6 +47,7 @@ public class FileCacheTest extends BrickTest {
 
 		Sneer1024 hash = _subject.putFolderContents(folderContents);
 		
+		latch.waitTillOpen();
 		assertEquals(folderContents, _subject.getContents(hash));
 	}
 

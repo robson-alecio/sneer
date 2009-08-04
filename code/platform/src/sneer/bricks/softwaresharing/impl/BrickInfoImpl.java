@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import sneer.bricks.hardwaresharing.files.client.FileClient;
+import sneer.bricks.hardwaresharing.files.writer.FileWriter;
 import sneer.bricks.pulp.crypto.Sneer1024;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.bricks.softwaresharing.BrickInfo;
@@ -49,7 +49,7 @@ class BrickInfoImpl implements BrickInfo {
 
 
 	private void fetchInto(File folder) throws IOException {
-		my(FileClient.class).fetchContentsInto(folder, System.currentTimeMillis(), _hashOfCurrentVersion);
+		my(FileWriter.class).writeTo(folder, System.currentTimeMillis(), _hashOfCurrentVersion);
 	}
 
 	@Override

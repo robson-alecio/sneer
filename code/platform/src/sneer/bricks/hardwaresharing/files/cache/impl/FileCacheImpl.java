@@ -17,13 +17,13 @@ class FileCacheImpl implements FileCache {
 	
 	
 	private final Map<Sneer1024, Object> _contents = new ConcurrentHashMap<Sneer1024, Object>();
-	private final EventNotifier<FolderContents> _foldersAdded = my(EventNotifiers.class).newInstance();
+	private final EventNotifier<Sneer1024> _contentsAdded = my(EventNotifiers.class).newInstance();
 
 	
 	@Override
 	public Sneer1024 putFileContents(byte[] contents) {
 		Sneer1024 hash = my(Hasher.class).hashFile(contents);
-		_contents.put(hash, contents);
+		put(hash, contents);
 		return hash; 
 	}
 
@@ -31,8 +31,7 @@ class FileCacheImpl implements FileCache {
 	@Override
 	public Sneer1024 putFolderContents(FolderContents contents) {
 		Sneer1024 hash = my(Hasher.class).hashFolder(contents);
-		_contents.put(hash, contents);
-		_foldersAdded.notifyReceivers(contents);
+		put(hash, contents);
 		return hash; 
 	}
 
@@ -44,8 +43,14 @@ class FileCacheImpl implements FileCache {
 	
 	
 	@Override
-	public EventSource<FolderContents> foldersAdded() {
-		return _foldersAdded.output();
+	public EventSource<Sneer1024> contentsAdded() {
+		return _contentsAdded.output();
 	}
 
+	
+	private void put(Sneer1024 hash, Object contents) {
+		_contents.put(hash, contents);
+		_contentsAdded.notifyReceivers(hash);
+	}
+	
 }

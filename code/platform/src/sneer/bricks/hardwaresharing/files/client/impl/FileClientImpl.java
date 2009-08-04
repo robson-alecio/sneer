@@ -2,58 +2,88 @@ package sneer.bricks.hardwaresharing.files.client.impl;
 
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
+import sneer.bricks.hardware.cpu.threads.Latch;
+import sneer.bricks.hardware.cpu.threads.Threads;
+import sneer.bricks.hardware.ram.maps.cachemaps.CacheMap;
+import sneer.bricks.hardware.ram.maps.cachemaps.CacheMaps;
 import sneer.bricks.hardwaresharing.files.cache.FileCache;
 import sneer.bricks.hardwaresharing.files.client.FileClient;
-import sneer.bricks.hardwaresharing.files.hasher.Hasher;
 import sneer.bricks.hardwaresharing.files.protocol.FileContents;
+import sneer.bricks.hardwaresharing.files.protocol.FileRequest;
 import sneer.bricks.hardwaresharing.files.protocol.FolderContents;
 import sneer.bricks.pulp.crypto.Sneer1024;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.lang.Consumer;
-import sneer.foundation.lang.exceptions.NotImplementedYet;
+import sneer.foundation.lang.Producer;
 
 class FileClientImpl implements FileClient {
+	
+	private final CacheMap<Sneer1024, Latch> _latchesByHash = my(CacheMaps.class).newInstance();
 
 	@SuppressWarnings("unused") private final WeakContract _fileContract;
 	@SuppressWarnings("unused") private final WeakContract _folderContract;
-	
+	@SuppressWarnings("unused") private final WeakContract _cacheContract;
 	
 	{
 		_fileContract = my(TupleSpace.class).addSubscription(FileContents.class, new Consumer<FileContents>() { @Override public void consume(FileContents contents) {
-			putContentsByHash(hashFile(contents), contents);
+			receiveFile(contents);
 		}});
 		
 		_folderContract = my(TupleSpace.class).addSubscription(FolderContents.class, new Consumer<FolderContents>() { @Override public void consume(FolderContents contents) {
-			putContentsByHash(hashFolder(contents), contents);
+			receiveFolder(contents);
+		}});
+		
+		_cacheContract = my(FileCache.class).contentsAdded().addReceiver(new Consumer<Sneer1024>() { @Override public void consume(Sneer1024 hashOfContents) {
+			contentsReceived(hashOfContents);
 		}});
 	}
 
 	
 	@Override
 	public void fetch(Sneer1024 hashOfContents) {
-		if (my(FileCache.class).getContents(hashOfContents) == null) throw new NotImplementedYet();
+		Latch latch;
+
+		synchronized (this) {
+			if (my(FileCache.class).getContents(hashOfContents) != null)
+				return;
+			
+			my(TupleSpace.class).publish(new FileRequest(hashOfContents));
+			
+			latch = _latchesByHash.get(hashOfContents, new Producer<Latch>() { @Override public Latch produce() {
+				return my(Threads.class).newLatch();
+			}});
+		}
+		
+		latch.waitTillOpen();
 	}
 
 	
-	
-	
-	
-	
-	
-	
 
 	
-
-
-
-
-
-	private void putContentsByHash(@SuppressWarnings("unused") Sneer1024 hash, @SuppressWarnings("unused") Object contents) {
-//		synchronized (_contentsBufferByHash) {
-//			_contentsBufferByHash.put(hash, contents);
-//			_contentsBufferByHash.notifyAll();
-//		}
+	synchronized
+	private void contentsReceived(Sneer1024 hashOfContents) {
+		Latch latch = _latchesByHash.remove(hashOfContents);
+		if (latch != null) latch.open();
 	}
+	
+
+	private void receiveFile(FileContents contents) {
+		my(FileCache.class).putFileContents(contents.bytes.copy());
+	}
+
+	
+	private void receiveFolder(FolderContents contents) {
+		my(FileCache.class).putFolderContents(contents);
+	}
+
+	
+
+	
+
+
+
+
+
 
 
 	
@@ -94,16 +124,6 @@ class FileClientImpl implements FileClient {
 //	}
 //
 //	
-	private Sneer1024 hashFile(FileContents contents) {
-		return my(Hasher.class).hashFile(contents);
-	}
-	
-	private Sneer1024 hashFolder(FolderContents contents) {
-		return my(Hasher.class).hashFolder(contents);
-	}
-
-
-	
 	
 	
 	

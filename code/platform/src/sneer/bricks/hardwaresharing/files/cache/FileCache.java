@@ -13,5 +13,5 @@ public interface FileCache {
 
 	Object getContents(Sneer1024 hashOfFileOrFolder);
 	
-	EventSource<FolderContents> foldersAdded();
+	EventSource<Sneer1024> contentsAdded();
 }

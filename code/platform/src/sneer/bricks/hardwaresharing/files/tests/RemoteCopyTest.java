@@ -10,6 +10,7 @@ import org.junit.Ignore;
 import sneer.bricks.hardwaresharing.files.client.FileClient;
 import sneer.bricks.hardwaresharing.files.server.FileServer;
 import sneer.bricks.pulp.crypto.Sneer1024;
+import sneer.bricks.pulp.own.name.OwnNameKeeper;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.Environments;
@@ -23,8 +24,7 @@ public class RemoteCopyTest extends LocalCopyTest {
 		@SuppressWarnings("unused")
 		FileServer server = my(FileServer.class);
 		
-		TupleSpace sharedTupleSpace = my(TupleSpace.class);
-		Environment remote = newTestEnvironment(sharedTupleSpace);
+		Environment remote = newTestEnvironment(my(TupleSpace.class), my(OwnNameKeeper.class));
 		Environments.runWith(remote, new Closure<IOException>() { @Override public void run() throws IOException {
 			fetch(hashOfContents, destination);
 		}});

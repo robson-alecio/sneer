@@ -1,6 +1,5 @@
 package sneer.foundation.testsupport;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,19 +8,18 @@ import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.runner.RunWith;
 
-
-
-public abstract class TestThatMightUseResources extends AssertUtils {
-
-	private final Proxy _sysoutCheck = new Proxy(){};
+/** A test that does not pollute the environment: it deletes all files it creates, it does not leak threads, it does not write do the console (out and err). */
+@RunWith(CleanTestRunner.class)
+public abstract class CleanTest extends AssertUtils {
 
 	private File _tmpFolder;
 	
 	private Set<Thread> _activeThreadsBeforeTest;
 
-	private PrintStream _systemOutBeforeTest;
-	private PrintStream _systemErrBeforeTest;
+	private final PrintStreamSentinel _outSentinel = new PrintStreamSentinel(System.out);
+	private final PrintStreamSentinel _errSentinel = new PrintStreamSentinel(System.err);
 
 	
 	protected File tmpFolder() {
@@ -36,11 +34,8 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 	public void beforeTestThatMightUseResources() {
 		_activeThreadsBeforeTest = Thread.getAllStackTraces().keySet();
 		
-		_systemOutBeforeTest = System.out;
-		_systemErrBeforeTest = System.err;
-		
-		System.setOut(_sysoutCheck);
-		System.setErr(_sysoutCheck);
+		System.setOut(_outSentinel);
+		System.setErr(_errSentinel);
 	}
 
 	
@@ -79,14 +74,17 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 
 	@After
 	public void afterTestThatMightUseResources() {
-		System.setOut(_systemOutBeforeTest);
-		System.setErr(_systemErrBeforeTest);
-		
-		if(_sysoutCheck._used)
-			throw _sysoutCheck._exception;
-		
+		System.setOut(_outSentinel._delegate);
+		System.setErr(_errSentinel._delegate);
+
 		checkThreadLeak();
 		deleteFiles();
+	}
+
+
+	private void checkConsolePollution() {
+		_outSentinel.complainIfUsed();
+		_errSentinel.complainIfUsed();
 	}
 
 	private void deleteFiles() {
@@ -155,20 +153,33 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 		}
 	}
 
+	protected void afterSuccessfulTest() {
+		checkConsolePollution();
+	}
+
 }
 
-class Proxy extends PrintStream{
+class PrintStreamSentinel extends PrintStream {
 	
-	boolean _used = false;
-	RuntimeException _exception;
+	IllegalStateException _exception;
+	final PrintStream _delegate;
 	
-	Proxy(){	super(new ByteArrayOutputStream());}
+	PrintStreamSentinel(PrintStream delegate) {
+		super(delegate);
+		_delegate = delegate;
+	}
+	
 	@Override public void write(byte[] buf, int off, int len) {
-		_used = true;
-		try{
-			throw new RuntimeException("System.out/System.err Exception.");
-		}catch (RuntimeException e) {
+		try {
+			throw new IllegalStateException("Test would have passed if it were not polluting the console.");
+		} catch (IllegalStateException e) {
 			_exception = e;
 		}
+		super.write(buf, off, len);
 	}
+	
+	void complainIfUsed() {
+		if (_exception != null)	throw _exception;
+	}
+	
 };

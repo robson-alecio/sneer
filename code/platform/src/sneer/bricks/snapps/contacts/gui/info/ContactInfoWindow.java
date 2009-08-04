@@ -5,9 +5,4 @@ import sneer.foundation.brickness.Brick;
 
 @Snapp
 @Brick
-public interface ContactInfoWindow {
-
-	void open();
-	void close();
-
-}
+public interface ContactInfoWindow {}

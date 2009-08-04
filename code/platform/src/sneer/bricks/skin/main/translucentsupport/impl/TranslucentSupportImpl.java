@@ -21,6 +21,8 @@ public class TranslucentSupportImpl implements TranslucentSupport {
 	private boolean _isDisabled = false;
     
     TranslucentSupportImpl(){
+    	_light = my(BlinkingLights.class).prepare(LightType.WARN);
+
     	Class<?> awtUtilitiesClass = utilitiesClass();
     	if(awtUtilitiesClass==null) return;
     	
@@ -35,8 +37,6 @@ public class TranslucentSupportImpl implements TranslucentSupport {
     			_perpixelTranslucent = constants[2];
     		}
     	}
-    	
-    	_light = my(BlinkingLights.class).prepare(LightType.WARN);
     }
     
     @Override public Object perpixelTransparent() { return _perpixelTransparent; }

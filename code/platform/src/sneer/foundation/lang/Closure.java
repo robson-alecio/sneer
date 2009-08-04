@@ -1,7 +1,7 @@
 package sneer.foundation.lang;
 
-public interface Closure {
+public interface Closure<X extends Throwable> {
 	
-	void run() throws Throwable;
+	void run() throws X;
 
 }

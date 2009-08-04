@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import sneer.bricks.hardwaresharing.files.FileSpace;
+import sneer.bricks.hardwaresharing.files.writer.FileWriter;
 import sneer.bricks.pulp.crypto.Sneer1024;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.bricks.softwaresharing.BrickInfo;
@@ -18,15 +18,16 @@ import sneer.foundation.lang.exceptions.NotImplementedYet;
 class BrickInfoImpl implements BrickInfo {
 
 	private final String _brickName;
+	
 	private final Sneer1024 _hashOfCurrentVersion;
-	private final BrickVersion _version;
+	private final BrickVersion _currentVersion;
 
 	
 	public BrickInfoImpl(String brickName, Sneer1024 hash) {
 		_brickName = brickName;
-		_hashOfCurrentVersion = hash;
 		
-		_version = fetchSingleVersion();
+		_hashOfCurrentVersion = hash;
+		_currentVersion = fetchSingleVersion();
 	}
 
 
@@ -43,12 +44,12 @@ class BrickInfoImpl implements BrickInfo {
 		File srcFolder = File.createTempFile("tmpSrcForBrick_" + _brickName + "_", "");
 		srcFolder.delete();
 		fetchInto(srcFolder);
-		return new BrickVersionImpl(srcFolder);
+		return new BrickVersionImpl(srcFolder, _hashOfCurrentVersion);
 	}
 
 
 	private void fetchInto(File folder) throws IOException {
-		my(FileSpace.class).fetchContentsInto(folder, System.currentTimeMillis(), _hashOfCurrentVersion);
+		my(FileWriter.class).writeTo(folder, System.currentTimeMillis(), _hashOfCurrentVersion);
 	}
 
 	@Override
@@ -64,7 +65,7 @@ class BrickInfoImpl implements BrickInfo {
 
 	@Override
 	public List<BrickVersion> versions() {
-		return Arrays.asList(_version);
+		return Arrays.asList(_currentVersion);
 	}
 
 	@Override

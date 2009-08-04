@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.threads.mocks.ThreadsMock;
+import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.dyndns.client.DynDnsClient;
@@ -59,6 +60,7 @@ Unacceptable Client Behavior
 	@Bind final Updater _updater = mock(Updater.class);
 	@Bind final TransientPropertyStore _propertyStore = new TransientPropertyStore();
 	@Bind final ThreadsMock _threads = new ThreadsMock();
+	@Bind final Logger _logger = mock(Logger.class);
 	
 	@Test
 	public void updateOnIpChange() throws Exception {
@@ -101,6 +103,7 @@ Unacceptable Client Behavior
 				will(throwException(error));
 				
 			exactly(1).of(_updater).update(account.host, account.user, account.password, _ownIp.output().currentValue());
+			exactly(1).of(_logger).log(with(any(String.class)), with(any(String.class)));
 		}});
 		
 
@@ -132,6 +135,8 @@ Unacceptable Client Behavior
 				will(throwException(error));
 				
 			exactly(1).of(_updater).update(account.host, account.user, "*" + account.password, newIp);
+
+			exactly(1).of(_logger).log(with(any(String.class)), with(any(String.class)));
 		}});
 		
 		startDynDnsClient();
@@ -162,6 +167,8 @@ Unacceptable Client Behavior
 			
 			exactly(1).of(_updater).update(account.host, account.user, account.password, _ownIp.output().currentValue());
 				will(throwException(error));
+
+			exactly(1).of(_logger).log(with(any(String.class)), with(any(String.class)));
 		}});
 		
 		startDynDnsClient();

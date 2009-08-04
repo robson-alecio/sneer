@@ -22,13 +22,13 @@ public abstract class AssertUtils extends Assert {
 		assertEquals("Collections not same size", expected.length, i);
 	}
 
-	public static void expect(Class<? extends Throwable> throwable, Closure closure) {
+	public static <X extends Throwable> void expect(Class<X> throwable, Closure<X> closure) {
 		try {
 			closure.run();
 		} catch (Throwable t) {
 			assertTrue(
-					"Expecting '" + throwable + "' but got '" + t.getClass() + "'.",
-					throwable.isInstance(t));
+				"Expecting '" + throwable + "' but got '" + t.getClass() + "'.",
+				throwable.isInstance(t));
 			return;
 		}
 		

@@ -55,7 +55,7 @@ public class JavaCompilerTest extends BrickTest {
 			Result result = compile("class Foo extends " + TestLib.class.getName() + " {}", libFolder);
 			assertSuccess(result);
 		} finally {
-			my(IO.class).files().deleteFolder(libFolder);
+			my(IO.class).files().forceDelete(libFolder);
 		}
 	}
 		

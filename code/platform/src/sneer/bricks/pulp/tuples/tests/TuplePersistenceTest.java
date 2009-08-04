@@ -51,7 +51,7 @@ public class TuplePersistenceTest extends BrickTest {
 		
 		my(Threads.class).crashAllThreads();
 		
-		my(IO.class).files().deleteFolder(tmpFolder());
+		my(IO.class).files().forceDelete(tmpFolder());
 	}
 
 

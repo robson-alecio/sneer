@@ -81,12 +81,11 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 			@Override public boolean isEnabled() { return true; }
 			@Override public boolean isVisible() { return true; }
 			@Override public String caption() { return "Edit Contact...";}
-			@Override public void run() { my(ContactInfoWindow.class).open();
-		}}, true);
+			@Override public void run() { open(); }
+		}, true);
 	}
 	
-	@Override
-	public void open() {
+	private void open() {
 		if(!_isGuiInitialized) {
 			_isGuiInitialized = true;
 			initGui();
@@ -256,8 +255,4 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 		return my(ContactsGui.class).selectedContact().currentValue();
 	}
 
-	@Override
-	public void close() {
-		setVisible(false);
-	}
 }

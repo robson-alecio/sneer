@@ -1,24 +1,32 @@
-package sneer.bricks.hardwaresharing.files.impl;
+package sneer.bricks.hardwaresharing.files.hasher.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 
-import sneer.bricks.hardwaresharing.files.FileContents;
-import sneer.bricks.hardwaresharing.files.FolderContents;
-import sneer.bricks.hardwaresharing.files.FolderEntry;
+import sneer.bricks.hardwaresharing.files.hasher.Hasher;
+import sneer.bricks.hardwaresharing.files.protocol.FileContents;
+import sneer.bricks.hardwaresharing.files.protocol.FolderContents;
+import sneer.bricks.hardwaresharing.files.protocol.FolderEntry;
 import sneer.bricks.pulp.crypto.Crypto;
 import sneer.bricks.pulp.crypto.Digester;
 import sneer.bricks.pulp.crypto.Sneer1024;
 
-class Hasher {
+class HasherImpl implements Hasher {
 
-	static Sneer1024 hashFile(FileContents block) {
-		return my(Crypto.class).digest(block.bytes.copy());
-	};
+	@Override
+	public Sneer1024 hashFile(FileContents contents) {
+		return hashFile(contents.bytes.copy());
+	}
+
+	@Override
+	public Sneer1024 hashFile(byte[] contents) {
+		return my(Crypto.class).digest(contents);
+	}
 	
-	static Sneer1024 hashFolder(FolderContents folder) {
+	@Override
+	public Sneer1024 hashFolder(FolderContents folder) {
 		Digester digester = my(Crypto.class).newDigester();
 		for (FolderEntry entry : folder.contents)
 			digester.update(hash(entry).bytes());
@@ -40,5 +48,5 @@ class Hasher {
 			throw new IllegalStateException(e);
 		}
 	}
-	
+
 }

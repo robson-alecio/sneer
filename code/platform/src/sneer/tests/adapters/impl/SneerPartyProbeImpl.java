@@ -13,7 +13,7 @@ import sneer.bricks.hardware.cpu.lang.Lang;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.ram.iterables.Iterables;
-import sneer.bricks.hardwaresharing.files.FileSpace;
+import sneer.bricks.hardwaresharing.files.server.FileServer;
 import sneer.bricks.network.computers.sockets.connections.originator.SocketOriginator;
 import sneer.bricks.network.computers.sockets.connections.receiver.SocketReceiver;
 import sneer.bricks.network.social.Contact;
@@ -183,7 +183,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 		startAndKeep(SocketReceiver.class);
 		startAndKeep(ProbeManager.class);
 		startAndKeep(Wind.class);
-		startAndKeep(FileSpace.class);
+		startAndKeep(FileServer.class);
 		startAndKeep(BrickSpace.class);
 		startAndKeep(Stethoscope.class);
 		startAndKeep(Heart.class);

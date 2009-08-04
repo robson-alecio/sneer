@@ -13,10 +13,10 @@ import org.junit.runner.RunWith;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.software.folderconfig.FolderConfig;
 import sneer.foundation.environments.Environment;
-import sneer.foundation.testsupport.TestThatMightUseResources;
+import sneer.foundation.testsupport.CleanTest;
 
 @RunWith(BrickTestWithMockRunner.class)
-public abstract class BrickTest extends TestThatMightUseResources {
+public abstract class BrickTest extends CleanTest {
 	
 	private final Mockery _mockery = new JUnit4Mockery();
     

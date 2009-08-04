@@ -3,13 +3,10 @@ package sneer.foundation.brickness.testsupport;
 import static sneer.foundation.environments.Environments.my;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import org.junit.internal.runners.InitializationError;
-import org.junit.internal.runners.JUnit4ClassRunner;
-import org.junit.internal.runners.TestClass;
 import org.junit.internal.runners.TestMethod;
 import org.junit.runner.notification.RunNotifier;
 
@@ -19,58 +16,22 @@ import sneer.foundation.environments.CachingEnvironment;
 import sneer.foundation.environments.Environment;
 import sneer.foundation.environments.EnvironmentUtils;
 import sneer.foundation.environments.Environments;
+import sneer.foundation.testsupport.CleanTestRunner;
 
-public class BrickTestRunner extends JUnit4ClassRunner {
+public class BrickTestRunner extends CleanTestRunner {
 
-	protected static class TestMethodWithEnvironment extends TestMethod {
-
-		private final Environment _environment;
-
-		public TestMethodWithEnvironment(Method method, TestClass testClass) {
-			super(method, testClass);
-			_environment = my(Environment.class);
-		}
-
-		static class InvocationTargetExceptionEnvelope extends RuntimeException {
-			public InvocationTargetExceptionEnvelope(InvocationTargetException e) {
-				super(e);
-			}
-		}
-
-		@Override
-		public void invoke(final Object test) throws InvocationTargetException {
-			try {
-				invokeInEnvironment(test);
-			} catch (InvocationTargetExceptionEnvelope e) {
-				throw (InvocationTargetException)e.getCause();
-			}
-		}
-
-		private void invokeInEnvironment(final Object test) {
-			Environments.runWith(_environment, new Runnable() { @Override public void run() {
-				try {
-					doInvoke(test);
-				} catch (InvocationTargetException e) {
-					throw new InvocationTargetExceptionEnvelope(e);
-				}
-			}});
-		}
-
-		protected void doInvoke(Object test) throws InvocationTargetException {
-			try {
-				superInvoke(test);
-			} catch (IllegalArgumentException e) {
-				throw new RuntimeException(e);
-			} catch (IllegalAccessException e) {
-				throw new RuntimeException(e);
-			}
-		}
-
-		private void superInvoke(Object test) throws IllegalAccessException,
-				InvocationTargetException {
-			super.invoke(test);
-		}
+	@Override
+	protected void invokeTestMethod(final Method method, final RunNotifier notifier) {
+		Environments.runWith(newEnvironment(), new Runnable() { @Override public void run() {
+			BrickTestRunner.super.invokeTestMethod(method, notifier);
+		}});
 	}
+
+	@Override
+	protected TestMethod wrapMethod(Method method) {
+		return new TestMethodWithEnvironment(method, getTestClass());
+	}
+
 
 	class TestInstanceEnvironment implements Environment {
 
@@ -167,22 +128,6 @@ public class BrickTestRunner extends JUnit4ClassRunner {
 				EnvironmentUtils.compose(
 					new TestInstanceEnvironment(),
 					Brickness.newBrickContainer()));
-	}
-
-	@Override
-	protected void invokeTestMethod(final Method method, final RunNotifier notifier) {
-		Environments.runWith(newEnvironment(), new Runnable() { @Override public void run() {
-			superInvokeTestMethod(method, notifier);
-		}});
-	}
-
-	@Override
-	protected TestMethod wrapMethod(Method method) {
-		return new TestMethodWithEnvironment(method, getTestClass());
-	}
-
-	protected void superInvokeTestMethod(Method method, RunNotifier notifier) {
-		super.invokeTestMethod(method, notifier);
 	}
 
 	void dispose() {

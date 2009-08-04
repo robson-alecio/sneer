@@ -10,10 +10,7 @@ public class FileCacheVisitorsTest extends BrickTest {
 //	private final FileCacheVisitors _subject = my(FileCacheVisitors.class);
 	
 	@Test
-	public void visitMissingContents() {
-//		_subject.accept(new MissingContentVisitor() {
-//			
-//		});
+	public void testSometing() {
 	}
 	
 }

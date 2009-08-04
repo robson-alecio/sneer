@@ -5,6 +5,6 @@ import sneer.foundation.brickness.Brick;
 @Brick
 public interface FileCacheVisitors {
 
-	void accept(MissingContentVisitor missingContentVisitor);
+	
 
 }

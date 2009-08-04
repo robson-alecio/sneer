@@ -8,7 +8,7 @@ import java.io.IOException;
 import sneer.bricks.hardwaresharing.files.writer.FileWriter;
 import sneer.bricks.pulp.crypto.Sneer1024;
 
-public class LocalCopyTest extends FileCopyTest {
+public class RemoteCopyTest extends FileCopyTest {
 
 	private final FileWriter _writer = my(FileWriter.class);
 

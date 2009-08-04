@@ -34,13 +34,14 @@ public abstract class FileCopyTest extends BrickTest {
 		Sneer1024 hash = _publisher.publish(fileOrFolder);
 		assertNotNull(hash);
 
-		File copy = copyFromFileCache(fileOrFolder, hash);
+		File copy = newTempFile(); 
+		copyFromFileCache(hash, copy);
 		
 		assertSameContents(fileOrFolder, copy);
 	}
 
 
-	abstract protected File copyFromFileCache(File fileOrFolder, Sneer1024 hash) throws IOException;
+	abstract protected void copyFromFileCache(Sneer1024 hashOfContents, File destination) throws IOException;
 
 
 	private File anySmallFile() {
@@ -57,6 +58,10 @@ public abstract class FileCopyTest extends BrickTest {
 
 	private void assertSameContents(File file1, File file2) throws IOException {
 		assertTrue(my(IO.class).files().contentEquals(file1, file2));
+	}
+
+	private File newTempFile() {
+		return new File(tmpFolder(), "copy" + System.nanoTime());
 	}
 
 }

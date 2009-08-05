@@ -5,7 +5,7 @@
 			
 	- [Klaus] Revise entire package structure.  
 	
-	- [Sandro and Rodrigo] Enable Rod to commit to Sandro's repository.
+	- [Sandro] Enable Rod to commit to Sandro's repository.
 
 	- [Sandro] Hudson Linux Reboot
 

@@ -51,39 +51,46 @@ class IOImpl implements IO {
 		
 		@Override public void writeByteArrayToFile(File file, byte[] data) throws IOException { FileUtils.writeByteArrayToFile(file, data); }
 		
-		@Override public boolean contentEquals(File file1, File file2) throws IOException {
-			if (file1.isDirectory() != file2.isDirectory()) return false;
+		@Override public void assertSameContents(File file1, File file2) throws IOException {
+			if (file1.isDirectory() != file2.isDirectory())
+				throw new IllegalStateException(file1 + " is a " + type(file1) + " but " + file2 + " is a " + type(file2));
 			
-			return file1.isDirectory()
-				? folderContentEquals(file1, file2)
-				: FileUtils.contentEquals(file1, file2);
+			if (file1.isDirectory())
+				assertFolderContentEquals(file1, file2);
+			else
+				if (!FileUtils.contentEquals(file1, file2))
+					throw new IllegalStateException(file1 + " != " + file2);
+			
 		}
 
-		private boolean folderContentEquals(File folder1, File folder2) throws IOException {
+		private String type(File file) {
+			return file.isDirectory() ? "folder" : "file";
+		}
+		private void assertFolderContentEquals(File folder1, File folder2) throws IOException {
 			File[] files1 = sortedFiles(folder1);
 			File[] files2 = sortedFiles(folder2);
 			
-			if (files1.length != files2.length) return false;
+			if (files1.length != files2.length)
+				throw new IllegalStateException("Different number of files in: '" + folder1 + "' and '" + folder2 + "'");
 			
 			for (int i = 0; i < files1.length; i++)
-				if (!folderEntryEquals(files1[i], files2[i])) return false;
-			
-			return true;
+				assertFolderEntryEquals(files1[i], files2[i]);
 		}
 
-		private boolean folderEntryEquals(File file1, File file2) throws IOException {
-			if (!nameEquals(file1, file2)) return false;
-			if (!dateEquals(file1, file2)) return false;
-			if (!contentEquals(file1, file2)) return false;
-			return true;
+		private void assertFolderEntryEquals(File file1, File file2) throws IOException {
+			assertNameEquals(file1, file2);
+			assertDateEquals(file1, file2);
+			assertSameContents(file1, file2);
 		}
 
-		private boolean dateEquals(File file, File file2) {
-			return file.lastModified() == file2.lastModified();
+		private void assertDateEquals(File file1, File file2) {
+			if (file1.lastModified() != file2.lastModified())
+				throw new IllegalStateException("Different modification dates for: '" + file1 + "' and '" + file2 + "'");
 		}
 
-		private boolean nameEquals(File file, File file2) {
-			return file.getName().equals(file2.getName());
+		private void assertNameEquals(File file1, File file2) {
+			if (!file1.getName().equals(file2.getName()))
+				throw new IllegalStateException("Expecting '" + file1 + "' but got '" + file2 + "'");
 		}
 
 		private File[] sortedFiles(File folder) {

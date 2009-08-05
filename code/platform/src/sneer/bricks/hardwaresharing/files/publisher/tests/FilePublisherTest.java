@@ -32,7 +32,7 @@ public class FilePublisherTest extends BrickTest {
 		_subject.publish(fixture("file1.txt"));
 	}
 
-	@Test //(timeout = 3000)
+	@Test (timeout = 3000)
 	public void publishFolderWithAFewFiles() throws IOException {
 		checking(new Expectations(){{
 			Sequence seq = newSequence("whatever");

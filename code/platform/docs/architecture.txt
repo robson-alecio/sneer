@@ -10,23 +10,23 @@
 
              ----------------------------------------
  
-                    SOFWARE SHARING (FREEDOM 7)
-                            (MeToo)
+                   SOFWARE SHARING (FREEDOM 7)
+                           (MeToo)
 
-                  - HARDWARE SHARING (FREEDOM 6)
-           (T4T Barter: Routing, Backups, Clustering)
+                   HARDWARE SHARING (FREEDOM 6)
+            (T4T Barter: Routing, Backups, Clustering)
 
                         TRUST (FREEDOM 3)
                (Affinity, AccessControl (Sandbox))
 
-                      EXPRESSION (FREEDOM 5)
-                          (TupleSpace)
+                     EXPRESSION (FREEDOM 5)
+                         (TupleSpace)
 
-                    NETWORK.SOCIAL (FREEDOM 2)
-                  (Contacts, Discovery, Queries)
+                   NETWORK.SOCIAL (FREEDOM 2)
+                 (Contacts, Discovery, Queries)
 
-                  - NETWORK.COMPUTERS (FREEDOM 2)
-                  (Mesh, Connections, Discovery)
+                  NETWORK.COMPUTERS (FREEDOM 2)
+                 (Mesh, Connections, Discovery)
 
                        IDENTITY (FREEDOM 1)
                         (Name, Public Key)
@@ -36,11 +36,13 @@
 
                      OWN HARDWARE (FREEDOM 6)
                (Clock, Files, Network, GUI support)
+          (REACTIVITY: Events, Signals, Registers, Gates)
                   (RAM: Collections, References)
-(CPU: Threads, Natures (Concurrency), Consumers, Signals, Exceptions)
-                          (T4T Billing)
+       (CPU: Threads, Concurrency Nature, Stack(Exceptions))
 
-                     RESOURCE TALLY (FREEDOM 4)
+                      RESOURCES (FREEDOM 4)
+                        (Resource Tally)
+                            (Logging)
 
                                                                   BRICKS
 ------------------------------------------------------------------------

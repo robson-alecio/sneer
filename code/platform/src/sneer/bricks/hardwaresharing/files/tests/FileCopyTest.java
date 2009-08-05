@@ -57,7 +57,7 @@ public abstract class FileCopyTest extends BrickTest {
 	}
 
 	private void assertSameContents(File file1, File file2) throws IOException {
-		assertTrue(my(IO.class).files().contentEquals(file1, file2));
+		my(IO.class).files().assertSameContents(file1, file2);
 	}
 
 	private File newTempFile() {

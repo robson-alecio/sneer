@@ -50,7 +50,7 @@ public interface IO {
 		
 		void writeByteArrayToFile(File file, byte[] data) throws IOException;
 
-		boolean contentEquals(File file1, File file2) throws IOException;
+		void assertSameContents(File file1, File file2) throws IOException;
 	}
 	
 	interface Streams{

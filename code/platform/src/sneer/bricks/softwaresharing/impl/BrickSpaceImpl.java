@@ -8,17 +8,17 @@ import sneer.bricks.pulp.reactive.collections.impl.SetRegisterImpl;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.bricks.softwaresharing.BrickInfo;
 import sneer.bricks.softwaresharing.BrickSpace;
-import sneer.bricks.softwaresharing.publisher.BrickUsage;
+import sneer.bricks.softwaresharing.publisher.Building;
 import sneer.foundation.lang.Consumer;
 
-class BrickSpaceImpl implements BrickSpace, Consumer<BrickUsage> {
+class BrickSpaceImpl implements BrickSpace, Consumer<Building> {
 
 	private SetRegister<BrickInfo> _availableBricks = new SetRegisterImpl<BrickInfo>();
 	@SuppressWarnings("unused")	private final WeakContract _brickUsageContract;
 
 	{
-		my(TupleSpace.class).keep(BrickUsage.class);
-		_brickUsageContract = my(TupleSpace.class).addSubscription(BrickUsage.class, this);
+		my(TupleSpace.class).keep(Building.class);
+		_brickUsageContract = my(TupleSpace.class).addSubscription(Building.class, this);
 	}
 	
 	@Override
@@ -27,8 +27,11 @@ class BrickSpaceImpl implements BrickSpace, Consumer<BrickUsage> {
 	}
 
 	@Override
-	public void consume(BrickUsage brickUsage) {
-		_availableBricks.add(new BrickInfoImpl(brickUsage.brickName, brickUsage.hashOfCurrentVersion));
+	public void consume(Building building) {
+		_availableBricks.addAll(new BrickFetcher(
+			building.hashOfOwnBricks,
+			building.hashOfPlatformBricks
+		).bricks());
 	}
 
 }

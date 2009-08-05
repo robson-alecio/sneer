@@ -7,6 +7,6 @@ import sneer.foundation.brickness.Brick;
 public interface FileClient {
 
 	/** Fetches the contents of hashOfContents from peers into the FileCache. */
-	void fetch(Sneer1024 hashOfContents);
+	void fetchToCache(Sneer1024 hashOfContents);
 
 }

@@ -41,7 +41,7 @@ class FileClientImpl implements FileClient {
 
 	
 	@Override
-	public void fetch(Sneer1024 hashOfContents) {
+	public void fetchToCache(Sneer1024 hashOfContents) {
 		Latch latch;
 
 		synchronized (this) {
@@ -64,7 +64,7 @@ class FileClientImpl implements FileClient {
 
 	private void fetchFolderEntries(FolderContents contents) {
 		for (FolderEntry entry : contents.contents)
-			fetch(entry.hashOfContents);
+			fetchToCache(entry.hashOfContents);
 	}
 
 	private Object cachedContentsOf(Sneer1024 hashOfContents) {

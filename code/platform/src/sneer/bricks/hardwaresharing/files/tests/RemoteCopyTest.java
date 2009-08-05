@@ -28,7 +28,7 @@ public class RemoteCopyTest extends LocalCopyTest {
 	}
 
 	private void fetch(Sneer1024 hashOfContents, File destination) throws IOException {
-		my(FileClient.class).fetch(hashOfContents);
+		my(FileClient.class).fetchToCache(hashOfContents);
 		super.copyFromFileCache(hashOfContents, destination);
 	}
 

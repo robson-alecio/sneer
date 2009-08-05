@@ -7,7 +7,6 @@ import sneer.bricks.hardwaresharing.files.cache.visitors.FileCacheVisitors;
 import sneer.bricks.hardwaresharing.files.protocol.FolderContents;
 import sneer.bricks.hardwaresharing.files.protocol.FolderEntry;
 import sneer.bricks.pulp.crypto.Sneer1024;
-import sneer.foundation.lang.exceptions.NotImplementedYet;
 
 public class FileCacheVisitorsImpl implements FileCacheVisitors {
 
@@ -15,7 +14,7 @@ public class FileCacheVisitorsImpl implements FileCacheVisitors {
 	public void accept(Sneer1024 startingPoint, FileCacheVisitor visitor) {
 		
 		Object contents = my(FileCache.class).getContents(startingPoint);
-		if (contents == null) throw new NotImplementedYet();
+		if (contents == null) throw new IllegalStateException("Contents not found in " + FileCache.class.getSimpleName());
 		
 		if (contents instanceof FolderContents)
 			visitFolderContents(visitor, (FolderContents)contents);

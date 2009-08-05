@@ -4,6 +4,9 @@
 
 package sneer.bricks.pulp.reactive.collections;
 
+import java.util.Collection;
+
+
 
 
 public interface SetRegister<T> extends CollectionRegister<T> {
@@ -11,8 +14,10 @@ public interface SetRegister<T> extends CollectionRegister<T> {
 	SetSignal<T> output();
 
 	void add(T elementAdded);
+	void addAll(Collection<T> elements);
 	void remove(T elementRemoved);
 
 	void change(CollectionChange<T> change);
+
 
 }

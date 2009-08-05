@@ -118,4 +118,9 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 		change.elementsRemoved().retainAll(_contents);
 	}
 
+	@Override
+	public void addAll(Collection<T> elements) {
+		change(new CollectionChangeImpl<T>(elements, null));
+	}
+
 }

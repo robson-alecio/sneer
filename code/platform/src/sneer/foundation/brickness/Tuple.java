@@ -121,7 +121,7 @@ public abstract class Tuple {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + ":" + hashCode();
+		return getClass().getSimpleName() + "-" + _publisher + "-" + hashCode();
 	}
 	
 	

@@ -1,6 +1,5 @@
 package sneer.bricks.softwaresharing.gui.impl;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -88,9 +87,6 @@ class FakeModel {
 					return;
 				}
 				_status = Status.DIFFERENT;
-			}
-			@Override public File sourceFolder() {
-				throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 			}
 			@Override public Sneer1024 hash() {
 				throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement

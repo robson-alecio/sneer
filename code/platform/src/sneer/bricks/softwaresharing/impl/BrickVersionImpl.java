@@ -1,6 +1,5 @@
 package sneer.bricks.softwaresharing.impl;
 
-import java.io.File;
 import java.util.List;
 
 import sneer.bricks.pulp.crypto.Sneer1024;
@@ -11,12 +10,10 @@ import sneer.foundation.lang.exceptions.NotImplementedYet;
 class BrickVersionImpl implements BrickVersion {
 
 
-	private File _sourceFolder;
 	private final Sneer1024 _hash;
 
 	
-	BrickVersionImpl(File sourceFolder, Sneer1024 hash) {
-		_sourceFolder = sourceFolder;
+	BrickVersionImpl(Sneer1024 hash) {
 		_hash = hash;
 	}
 
@@ -36,6 +33,11 @@ class BrickVersionImpl implements BrickVersion {
 	}
 
 	@Override
+	public int unknownUsers() {
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
+	}
+	
+	@Override
 	public List<String> knownUsers() {
 		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
@@ -51,17 +53,7 @@ class BrickVersionImpl implements BrickVersion {
 	}
 
 	@Override
-	public File sourceFolder() {
-		return _sourceFolder;
-	}
-
-	@Override
 	public Status status() {
-		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
-	}
-
-	@Override
-	public int unknownUsers() {
 		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
 

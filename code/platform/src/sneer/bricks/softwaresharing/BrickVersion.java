@@ -1,6 +1,5 @@
 package sneer.bricks.softwaresharing;
 
-import java.io.File;
 import java.util.List;
 
 import sneer.bricks.pulp.crypto.Sneer1024;
@@ -25,6 +24,5 @@ public interface BrickVersion {
 	List<String> knownUsers();
 	int unknownUsers();
 	
-	File sourceFolder();
 	List<FileVersion> files();
 }

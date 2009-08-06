@@ -261,6 +261,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private void tryToInstallStagedBricks() throws IOException {
 		for(BrickInfo brickInfo: my(BrickSpace.class).availableBricks())
 			for (BrickVersion version : brickInfo.versions())
@@ -268,8 +269,9 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 					installStagedVersion(version);
 	}
 
-	private void installStagedVersion(BrickVersion version) throws IOException {
-		installBricks(version.sourceFolder());
+	private void installStagedVersion(@SuppressWarnings("unused") BrickVersion version) {
+		//installBricks(tmpSrcFolderContainingFilesFor(version));
+		throw new NotImplementedYet();
 	}
 
 }

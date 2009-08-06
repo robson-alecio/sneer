@@ -2,12 +2,9 @@ package sneer.bricks.softwaresharing.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import sneer.bricks.hardwaresharing.files.writer.FileWriter;
 import sneer.bricks.pulp.crypto.Sneer1024;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.bricks.softwaresharing.BrickInfo;
@@ -17,46 +14,23 @@ import sneer.foundation.lang.exceptions.NotImplementedYet;
 
 class BrickInfoImpl implements BrickInfo {
 
-	private final String _brickName;
 	
-	private final Sneer1024 _hashOfCurrentVersion;
+	private final String _brickName;
 	private final BrickVersion _currentVersion;
 
 	
-	public BrickInfoImpl(String brickName, Sneer1024 hash) {
+	public BrickInfoImpl(String brickName, Sneer1024 hashOfCurrentVersion) {
 		_brickName = brickName;
-		
-		_hashOfCurrentVersion = hash;
-		_currentVersion = fetchSingleVersion();
+		_currentVersion = new BrickVersionImpl(hashOfCurrentVersion);
 	}
 
-
-	private BrickVersion fetchSingleVersion() {
-		try {
-			return tryToFetchSingleVersion();
-		} catch (IOException e) {
-			throw new sneer.foundation.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
-		}
-	}
-
-
-	private BrickVersion tryToFetchSingleVersion() throws IOException {
-		File srcFolder = File.createTempFile("tmpSrcForBrick_" + _brickName + "_", "");
-		srcFolder.delete();
-		fetchInto(srcFolder);
-		return new BrickVersionImpl(srcFolder, _hashOfCurrentVersion);
-	}
-
-
-	private void fetchInto(File folder) throws IOException {
-		my(FileWriter.class).writeTo(folder, System.currentTimeMillis(), _hashOfCurrentVersion);
-	}
 
 	@Override
 	public boolean isSnapp() {
 		throw new NotImplementedYet(); // Implement
 	}
 
+	
 	@Override
 	public String name() {
 		return _brickName;
@@ -68,6 +42,7 @@ class BrickInfoImpl implements BrickInfo {
 		return Arrays.asList(_currentVersion);
 	}
 
+	
 	@Override
 	public Status status() {
 		throw new NotImplementedYet(); // Implement

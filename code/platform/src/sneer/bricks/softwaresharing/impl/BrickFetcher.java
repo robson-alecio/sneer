@@ -5,9 +5,9 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.Deque;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Map;
+import java.util.Set;
 
 import sneer.bricks.hardware.cpu.lang.Lang;
 import sneer.bricks.hardware.cpu.lang.Lang.Strings;
@@ -16,14 +16,15 @@ import sneer.bricks.hardwaresharing.files.cache.visitors.FileCacheVisitor;
 import sneer.bricks.hardwaresharing.files.client.FileClient;
 import sneer.bricks.pulp.crypto.Sneer1024;
 import sneer.bricks.softwaresharing.BrickInfo;
-import sneer.foundation.lang.exceptions.NotImplementedYet;
 
 class BrickFetcher implements FileCacheVisitor {
 
 	private final Strings _strings = my(Lang.class).strings();
 
-	Map<String, BrickInfo> _bricksByName = new HashMap<String, BrickInfo>();
-	private Deque<String> _currentPath = new LinkedList<String>();
+	
+	private final Set<BrickInfo> _bricks = new HashSet<BrickInfo>();
+	private final Deque<String> _namePath = new LinkedList<String>();
+	private final Deque<Sneer1024> _hashPath = new LinkedList<Sneer1024>();
 	
 	
 	BrickFetcher(Sneer1024 hashOfAllBricks) {
@@ -33,39 +34,41 @@ class BrickFetcher implements FileCacheVisitor {
 
 	
 	@Override
-	public void visitFileOrFolder(String name, long lastModified) {
-		_currentPath.add(name);
+	public void visitFileOrFolder(String name, long lastModified, Sneer1024 hashOfContents) {
+		_namePath.add(name);
+		_hashPath.add(hashOfContents);
 	}
 
 	
 	@Override
 	public void visitFileContents(byte[] fileContents) {
-		if (!currentFolderEntry().endsWith(".java")) return;
+		String fileName = _namePath.peekLast();
 		
+		_namePath.pop();
+		_hashPath.pop();
+		
+		if (!fileName.endsWith(".java")) return;
 		if (!asString(fileContents).contains("@Brick")) return;
-		if (_bricksByName.containsKey(currentBrick())) return; //Visiting platform now and brick had already been found in own.
 		
-		throw new NotImplementedYet();
+		_bricks.add(brickFound(fileName));
 	}
+
+
+	@Override public void enterFolder() {}
 	
 	
-	@Override
-	public void enterFolder() {
-		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
-	}
-	
-	
-	@Override
-	public void leaveFolder() {
-		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
+	@Override public void leaveFolder() {
+		_namePath.pop();
+		_hashPath.pop();
 	}
 
 	
-	private String currentBrick() {
-		String result = _strings.join(_currentPath, ".");
-		return _strings.chomp(result, ".java");
+	private BrickInfo brickFound(String fileName) {
+		String packageName = _strings.join(_namePath, ".");
+		String brickName = packageName + _strings.chomp(fileName, ".java");
+		return new BrickInfoImpl(brickName, _hashPath.peekLast());
 	}
-
+	
 	
 	private String asString(byte[] fileContents) {
 		try {
@@ -77,13 +80,7 @@ class BrickFetcher implements FileCacheVisitor {
 
 	
 	Collection<BrickInfo> bricks() {
-		return _bricksByName.values();
+		return _bricks;
 	}
-
 	
-	private String currentFolderEntry() {
-		return _currentPath.peekLast();
-	}
-
-
 }

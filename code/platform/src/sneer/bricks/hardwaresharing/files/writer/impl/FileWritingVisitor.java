@@ -9,6 +9,7 @@ import java.util.LinkedList;
 
 import sneer.bricks.hardware.io.IO;
 import sneer.bricks.hardwaresharing.files.cache.visitors.FileCacheVisitor;
+import sneer.bricks.pulp.crypto.Sneer1024;
 
 final class FileWritingVisitor implements FileCacheVisitor {
 	
@@ -23,7 +24,7 @@ final class FileWritingVisitor implements FileCacheVisitor {
 	}
 
 	
-	@Override public void visitFileOrFolder(String name, long lastModified) {
+	@Override public void visitFileOrFolder(String name, long lastModified, Sneer1024 hashOfContents) {
 		_fileOrFolder = new File(_fileOrFolder, name);
 		_lastModified.push(lastModified);
 	}

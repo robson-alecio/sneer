@@ -44,7 +44,7 @@ class GuidedTour {
 
 
 	private void showFileOrFolder(FileOrFolder fileOrFolder) {
-		_visitor.visitFileOrFolder(fileOrFolder.name, fileOrFolder.lastModified);
+		_visitor.visitFileOrFolder(fileOrFolder.name, fileOrFolder.lastModified, fileOrFolder.hashOfContents);
 		showContents(fileOrFolder.hashOfContents);
 	}
 

@@ -28,6 +28,10 @@ class BrickFetcher implements FileCacheVisitor {
 	
 	
 	BrickFetcher(Sneer1024 hashOfAllBricks) {
+		
+		_namePath.add(null); // placeholder for the root
+		_hashPath.add(null);
+		
 		my(FileClient.class).fetchToCache(hashOfAllBricks);
 		my(FileCacheGuide.class).guide(this, hashOfAllBricks);
 	}

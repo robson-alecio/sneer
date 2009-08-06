@@ -28,7 +28,16 @@ public class InProcessNetwork implements Network {
 	}
 
 	private InProcessByteArrayServerSocket findServer(int serverPort) {
-	    return (InProcessByteArrayServerSocket) _serverSocketByPort.get(serverPort);
+	    InProcessByteArrayServerSocket existing = (InProcessByteArrayServerSocket) _serverSocketByPort.get(serverPort);
+	    if (null == existing)
+	    	return null;
+	    
+	    if (existing.isCrashed()) {
+	    	_serverSocketByPort.remove(serverPort);
+	    	return null;
+	    }
+	    
+		return existing;
 	}
 
 	private ByteArraySocket startClient(int serverPort) throws IOException {
@@ -40,9 +49,9 @@ public class InProcessNetwork implements Network {
 
 	private ByteArrayServerSocket startServer(int serverPort) throws IOException {
 	    InProcessByteArrayServerSocket old = findServer(serverPort);
-	    if (old != null) throw new IOException("Port "+serverPort+" already in use.");
+	    if (old != null) throw new IOException("Port " + serverPort + " already in use.");
 	
-	    InProcessByteArrayServerSocket result = new InProcessByteArrayServerSocket();
+	    InProcessByteArrayServerSocket result = new InProcessByteArrayServerSocket(serverPort);
 	    _serverSocketByPort.put(serverPort, result);
 	    
 	    return result;

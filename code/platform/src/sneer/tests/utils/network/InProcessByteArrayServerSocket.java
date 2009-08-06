@@ -8,32 +8,43 @@ import sneer.bricks.pulp.network.ByteArraySocket;
 class InProcessByteArrayServerSocket implements ByteArrayServerSocket {
 
 	private ByteArraySocket _clientSide;
+	private volatile boolean _isCrashed;
+	private final int _serverPort;
+
+	public InProcessByteArrayServerSocket(int serverPort) {
+		_serverPort = serverPort;
+	}
 
 	public synchronized ByteArraySocket accept() throws IOException {
 		
 		if (_clientSide != null) throw new IOException("Port already in use.");
-		InProcessByteArraySocket result = new InProcessByteArraySocket();
+		InProcessByteArraySocket result = new InProcessByteArraySocket(_serverPort);
 		_clientSide = result.counterpart();
 		
 		notifyAll(); //Notifies all client threads.
-		waitWithoutInterruptions();
-
+		waitWithoutInterruptionsCheckingForCrash();
+		
 		return result;
 	}
 
-	synchronized ByteArraySocket openClientSocket() {
+	synchronized ByteArraySocket openClientSocket() throws IOException {
 		while (_clientSide == null)
-			waitWithoutInterruptions();
+			waitWithoutInterruptionsCheckingForCrash();
 
 		ByteArraySocket result = _clientSide;
         _clientSide = null;
         notifyAll(); //Notifies the server thread (necessary) and eventual client threads (harmless).
         return result;
 	}
+	
+	boolean isCrashed() {
+		return _isCrashed;
+	}
 
 	@Override
-	public void crash() {
-		throw new sneer.foundation.lang.exceptions.NotImplementedYet();
+	public synchronized void crash() {
+		_isCrashed = true;
+		notifyAll();
 	}
 	
 	private void waitWithoutInterruptions() {
@@ -42,6 +53,11 @@ class InProcessByteArrayServerSocket implements ByteArrayServerSocket {
 		} catch (InterruptedException e) {
 			throw new IllegalStateException(e);
 		}		
+	}
+	
+	private void waitWithoutInterruptionsCheckingForCrash() throws IOException {
+		waitWithoutInterruptions();
+		if (_isCrashed) throw new IOException("Crashed!");
 	}
 
 }

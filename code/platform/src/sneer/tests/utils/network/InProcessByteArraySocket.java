@@ -13,13 +13,16 @@ class InProcessByteArraySocket implements ByteArraySocket {
 	private List<byte[]> _receivedObjects = new LinkedList<byte[]>();
 	
 	private volatile boolean _isCrashed = false;
-	
 
-	public InProcessByteArraySocket() {
-		initialize(new InProcessByteArraySocket(this));
+	private final int _port;
+
+	public InProcessByteArraySocket(int port) {
+		_port = port;
+		initialize(new InProcessByteArraySocket(port, this));
 	}
 
-	private InProcessByteArraySocket(InProcessByteArraySocket counterpart) {
+	private InProcessByteArraySocket(int port, InProcessByteArraySocket counterpart) {
+		_port = port;
 		initialize(counterpart);
 	}
 
@@ -53,7 +56,14 @@ class InProcessByteArraySocket implements ByteArraySocket {
 
 	@Override
 	public void crash() {
+		if (_isCrashed) return;
 		_isCrashed = true;
+		_counterpart.crash();
+	}
+	
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + "(" + _port + ")";
 	}
 
 	private void checkIsNotCrashed() throws IOException {

@@ -27,8 +27,8 @@ class IndividualSocketReception {
 		} catch (EOFException e) {
 			my(Logger.class).log("Incoming Socket Closed by Peer");
 			_socket.crash();
-		} catch (Exception e) {
-			my(Logger.class).logShort(e, "Exception thrown by incoming socket.");
+		} catch (IOException e) {
+			my(Logger.class).log("Exception thrown by incoming socket: {}.", e.getMessage());
 			_socket.crash();
 		}
 	}

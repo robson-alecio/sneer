@@ -12,6 +12,7 @@ import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.lang.Lang;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
+import sneer.bricks.hardware.io.IO;
 import sneer.bricks.hardware.ram.iterables.Iterables;
 import sneer.bricks.hardwaresharing.files.server.FileServer;
 import sneer.bricks.network.computers.sockets.connections.originator.SocketOriginator;
@@ -29,12 +30,10 @@ import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.SignalUtils;
 import sneer.bricks.snapps.wind.Shout;
 import sneer.bricks.snapps.wind.Wind;
-import sneer.bricks.software.bricks.Bricks;
 import sneer.bricks.software.folderconfig.FolderConfig;
 import sneer.bricks.softwaresharing.BrickInfo;
 import sneer.bricks.softwaresharing.BrickSpace;
 import sneer.bricks.softwaresharing.BrickVersion;
-import sneer.bricks.softwaresharing.publisher.BrickPublisher;
 import sneer.foundation.brickness.Seal;
 import sneer.foundation.lang.Predicate;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
@@ -59,13 +58,17 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 	@Override
 	public void connectTo(SneerParty party) {
-		Contact contact = my(ContactManager.class).produceContact(party.ownName());
+		Contact contact = produceContact(party.ownName());
 
 		SneerParty sneerParty = party;
 		//storePublicKey(contact, new PublicKey(sneerParty.publicKey()));
 		my(InternetAddressKeeper.class).add(contact, MOCK_ADDRESS, sneerParty.sneerPort());
 
 		waitUntilOnline(contact);
+	}
+
+	private Contact produceContact(String contactName) {
+		return my(ContactManager.class).produceContact(contactName);
 	}
 
 //	private void storePublicKey(Contact contact, PublicKey publicKey) {
@@ -95,6 +98,11 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 		}
 		
 		waitUntilOnline(contact);
+    }
+    
+    @Override
+    public void waitUntilOnline(String nickname) {
+    	waitUntilOnline(produceContact(nickname));
     }
 
 	private void waitUntilOnline(Contact contact) {
@@ -133,13 +141,6 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
         return my(PortKeeper.class).port().currentValue();
     }
 
-
-	@Override
-	public void installBricks(File sourceFolder) throws IOException {
-		my(Bricks.class).install(sourceFolder);
-	}
-
-
 	@Override
 	public void shout(String phrase) {
 		my(Wind.class).megaphone().consume(phrase);
@@ -164,10 +165,8 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	}
 
 	@Override
-	public void configDirectories(File dataFolder, File ownSrcFolder, File ownBinFolder, File platformSrcFolder, File platformBinFolder) {
+	public void configDirectories(File dataFolder, File platformSrcFolder, File platformBinFolder) {
 		my(FolderConfig.class).dataFolder().set(dataFolder);
-		my(FolderConfig.class).ownSrcFolder().set(ownSrcFolder);
-		my(FolderConfig.class).ownBinFolder().set(ownBinFolder);
 		my(FolderConfig.class).platformSrcFolder().set(platformSrcFolder);
 		my(FolderConfig.class).platformBinFolder().set(platformBinFolder);
 	}
@@ -234,11 +233,6 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	}
 
 	@Override
-	public void publishBrick(String brickName) throws IOException {
-		my(BrickPublisher.class).publishBrick(brickName);
-	}
-
-	@Override
 	public void crash() {
 		my(Threads.class).crashAllThreads();
 	}
@@ -272,6 +266,16 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	private void installStagedVersion(@SuppressWarnings("unused") BrickVersion version) {
 		//installBricks(tmpSrcFolderContainingFilesFor(version));
 		throw new NotImplementedYet();
+	}
+
+	@Override
+	public void copyToSourceFolder(File folderWithBricks) throws IOException {
+		
+		my(IO.class).files().copyFolder(folderWithBricks, platformSrcFolder());
+	}
+
+	private File platformSrcFolder() {
+		return my(FolderConfig.class).platformSrcFolder().get();
 	}
 
 }

@@ -31,12 +31,20 @@ public class ThreadsTest extends BrickTest {
 
 	@Test (timeout = 2000)
 	public void threadsAreCrashed() {
-		Thread thread = new Thread() { @Override public void run(){
-			_subject.crashAllThreads();
-		}};
-		thread.start();
+		crashAllThreads();
 
 		_subject.waitUntilCrash();
+	}
+
+	private void crashAllThreads() {
+		final Environment environment = my(Environment.class);
+		
+		Thread thread = new Thread() { @Override public void run(){
+			Environments.runWith(environment, new Runnable()  { @Override public void run() {
+				_subject.crashAllThreads();
+			}});
+		}};
+		thread.start();
 	}
 	
 	@Test (timeout = 2000)
@@ -46,10 +54,7 @@ public class ThreadsTest extends BrickTest {
 		@SuppressWarnings("unused")
 		WeakContract crashingContract = my(Threads.class).crashing().addPulseReceiver(crashingLatch);
 		
-		Thread thread = new Thread() { @Override public void run(){
-			_subject.crashAllThreads();
-		}};
-		thread.start();
+		crashAllThreads();
 
 		_subject.waitUntilCrash();
 		

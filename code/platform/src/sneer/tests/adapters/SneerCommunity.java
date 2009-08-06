@@ -45,19 +45,18 @@ public class SneerCommunity implements SovereignCommunity {
 
 	private SovereignParty createParty(final String name, int port) {
 		File sneerHome = rootFolder(name);
-		File ownBinFolder = makeFolder(sneerHome, "own/bin");
-		File ownSrcFolder = makeFolder(sneerHome, "own/src");
-		File platformBinFolder = my(ClassUtils.class).classpathRootFor(SneerCommunity.class);
-		File platformSrcFolder = new File(platformBinFolder.getParent(), "src");
+		File privateBinFolder = makeFolder(sneerHome, "platform/bin");
+		File privateSrcFolder = makeFolder(sneerHome, "platform/src");
+		File sharedBinFolder = my(ClassUtils.class).classpathRootFor(SneerCommunity.class);
 		File dataFolder = makeFolder(sneerHome, "data");
 		
 		Environment container = Brickness.newBrickContainer(_network);
-		URLClassLoader apiClassLoader = apiClassLoader(ownBinFolder, platformBinFolder, name);
+		URLClassLoader apiClassLoader = apiClassLoader(privateBinFolder, sharedBinFolder, name);
 		
 		Object partyImpl = EnvironmentUtils.retrieveFrom(container, loadProbeClassUsing(apiClassLoader));
 		final SneerParty party = (SneerParty)ProxyInEnvironment.newInstance(container, partyImpl);
 		
-		party.configDirectories(dataFolder, ownSrcFolder, ownBinFolder, platformSrcFolder, platformBinFolder);
+		party.configDirectories(dataFolder, privateSrcFolder, privateBinFolder);
 		party.setOwnName(name);
 		party.setSneerPort(port);
 
@@ -97,8 +96,8 @@ public class SneerCommunity implements SovereignCommunity {
 		}
 	}
 
-	private URLClassLoader apiClassLoader(File ownBin, File platformBin, final String name) {
-		return new EagerClassLoader(new URL[]{toURL(ownBin), toURL(platformBin)}, SneerCommunity.class.getClassLoader()) {
+	private URLClassLoader apiClassLoader(File privateBin, File sharedBin, final String name) {
+		return new EagerClassLoader(new URL[]{toURL(privateBin), toURL(sharedBin)}, SneerCommunity.class.getClassLoader()) {
 			@Override
 			protected boolean isEagerToLoad(String className) {
 				return !isSharedByAllParties(className);

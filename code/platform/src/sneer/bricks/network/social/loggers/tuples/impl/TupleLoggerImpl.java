@@ -5,6 +5,7 @@ import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.network.social.loggers.tuples.TupleLogger;
 import sneer.bricks.pulp.keymanager.Seals;
+import sneer.bricks.pulp.own.name.OwnNameKeeper;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.brickness.Seal;
 import sneer.foundation.brickness.Tuple;
@@ -26,15 +27,15 @@ class TupleLoggerImpl implements TupleLogger, Consumer<Tuple> {
 		if (my(Seals.class).ownSeal().equals(publisherSeal))
 			logPublished(tuple);
 		else
-			logReceived(tuple, publisherSeal);
+			logObserved(tuple, publisherSeal);
 	}
 
 	private void logPublished(Tuple tuple) {
-		my(Logger.class).log("Tuple published: {}", tuple.getClass().getSimpleName());
+		my(Logger.class).log("Tuple published: {} by: {}", tuple.getClass().getSimpleName(), my(OwnNameKeeper.class).name());
 	}
 	
-	private void logReceived(Tuple tuple, Seal publisherSeal) {
-		my(Logger.class).log("Tuple received: {} from: {}", tuple.getClass().getSimpleName(), my(Seals.class).contactGiven(publisherSeal));
+	private void logObserved(Tuple tuple, Seal publisherSeal) {
+		my(Logger.class).log("Tuple observed: {} from: {}", tuple.getClass().getSimpleName(), my(Seals.class).contactGiven(publisherSeal));
 	}
 
 }

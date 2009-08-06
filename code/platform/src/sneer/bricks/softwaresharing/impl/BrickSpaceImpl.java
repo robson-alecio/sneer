@@ -8,6 +8,7 @@ import sneer.bricks.pulp.reactive.collections.impl.SetRegisterImpl;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.bricks.softwaresharing.BrickInfo;
 import sneer.bricks.softwaresharing.BrickSpace;
+import sneer.bricks.softwaresharing.publisher.BrickPublisher;
 import sneer.bricks.softwaresharing.publisher.Building;
 import sneer.foundation.lang.Consumer;
 
@@ -19,6 +20,8 @@ class BrickSpaceImpl implements BrickSpace, Consumer<Building> {
 	{
 		my(TupleSpace.class).keep(Building.class);
 		_brickUsageContract = my(TupleSpace.class).addSubscription(Building.class, this);
+		
+		my(BrickPublisher.class).publishAllBricks();
 	}
 	
 	@Override

@@ -41,15 +41,17 @@ class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 		return (WeakRefWithAlias<Consumer<T>>[]) _receivers.toArray(RECEIVER_HOLDER_ARRAY_TYPE);
 	}
 
-	private void notify(WeakRefWithAlias<Consumer<T>> reference, T valueChange) {
-		Consumer<T> receiver = reference.get();
+	private void notify(WeakRefWithAlias<Consumer<T>> reference, final T valueChange) {
+		final Consumer<T> receiver = reference.get();
 		if (receiver == null) {
 			my(Logger.class).log("Receiver has been garbage collected. ({})", reference._alias);
 			_receivers.remove(reference);
 			return;
 		}
 
-		receiver.consume(valueChange);
+		my(ExceptionHandler.class).shield(new Runnable() { @Override public void run() {
+			receiver.consume(valueChange);
+		}});
 	}
 
 	@Override

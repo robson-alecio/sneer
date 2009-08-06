@@ -1,32 +1,55 @@
 package sneer.bricks.softwaresharing.publisher.impl;
 
+import static sneer.foundation.environments.Environments.my;
+
+import java.io.File;
+import java.io.IOException;
+
+import sneer.bricks.hardware.io.log.Logger;
+import sneer.bricks.hardwaresharing.files.publisher.FilePublisher;
+import sneer.bricks.pulp.blinkinglights.BlinkingLights;
+import sneer.bricks.pulp.blinkinglights.Light;
+import sneer.bricks.pulp.blinkinglights.LightType;
+import sneer.bricks.pulp.crypto.Sneer1024;
+import sneer.bricks.pulp.tuples.TupleSpace;
+import sneer.bricks.software.folderconfig.FolderConfig;
 import sneer.bricks.softwaresharing.publisher.BrickPublisher;
-import sneer.foundation.lang.exceptions.NotImplementedYet;
+import sneer.bricks.softwaresharing.publisher.Building;
 
 class BrickPublisherImpl implements BrickPublisher {
+	
+	private final Light _errorLight = my(BlinkingLights.class).prepare(LightType.ERROR);
 
 	@Override
-	public void publishBrick(String brickName) {
-		throw new NotImplementedYet();
-//		File brickFolder = brickFolderFor(brickName);
-//		Sneer1024 hash = my(FilePublisher.class).publish(brickFolder);
-//		my(TupleSpace.class).publish(new Building(hash));
+	public void publishAllBricks() {
+		
+		publishBuilding(platformSrcFolder());
+		
 	}
 
+
+	private File platformSrcFolder() {
+		return my(FolderConfig.class).platformSrcFolder().get();
+	}
+
+
+	private void publishBuilding(File srcFolder) {
+		Sneer1024 hash;
+		try {
+			hash = my(FilePublisher.class).publish(srcFolder);
+		} catch (IOException e) {
+			my(Logger.class).logShort(e, "Error publishing bricks.");
+			my(BlinkingLights.class).turnOnIfNecessary(_errorLight, "Error publishing bricks.", helpMessage(), e);
+			return;
+		}
+		
+		my(TupleSpace.class).publish(new Building(hash));
+	}
+
+	private static String helpMessage() {
+		return "There was trouble trying to publish bricks. See log for details.";
+	}
 	
-//	private File brickFolderFor(String brickName) {
-//		String brickFolder = packageFor(brickName).replace('.', File.separatorChar);
-//		
-//		File ownBrickFolder = new File(my(FolderConfig.class).ownSrcFolder().get(), brickFolder);
-//		if (ownBrickFolder.exists())
-//			return ownBrickFolder;
-//		
-//		File platformBrickFolder = new File(my(FolderConfig.class).platformSrcFolder().get(), brickFolder);
-//		if (platformBrickFolder.exists())
-//			return platformBrickFolder;
-//		
-//		throw new IllegalStateException("Brick not found: " + brickName);
-//	}
 //
 //
 //	private String packageFor(String brickName) {

@@ -5,6 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.IOException;
 
 import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
@@ -27,6 +28,11 @@ class SocketAccepterImpl implements SocketAccepter {
 	private final Network _network = my(Network.class);
 	private final BlinkingLights _lights = my(BlinkingLights.class);
 	private final Threads _threads = my(Threads.class);
+	@SuppressWarnings("unused")
+	private final WeakContract _crashingContract = _threads.crashing().addPulseReceiver(new Runnable() { @Override public void run() {
+		crashServerSocketIfNecessary();
+	}});
+	
 
 	private final EventNotifier<ByteArraySocket> _notifier = my(EventNotifiers.class).newInstance();
 

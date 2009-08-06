@@ -13,6 +13,7 @@ public interface SovereignParty {
 	//Freedom2
 	void giveNicknameTo(SovereignParty peer, String nickname);
 	boolean isOnline(String nickname);
+	void waitUntilOnline(String nickname);
 	void navigateAndWaitForName(String nicknamePath, String expectedName);
 
 	//Freedom5
@@ -20,8 +21,7 @@ public interface SovereignParty {
 	void waitForShouts(String shoutsExpected);
 
 	//Freedom7
-	void installBricks(File sourceFolder) throws IOException;
-	void publishBrick(String brickName) throws IOException;
 	void waitForAvailableBrick(String brickName);
 	void stageBrickForExecution(String brickName);
+	void copyToSourceFolder(File folderWithBricks) throws IOException;
 }

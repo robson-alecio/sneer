@@ -11,8 +11,8 @@ import java.util.Map;
 
 import sneer.bricks.hardware.cpu.lang.Lang;
 import sneer.bricks.hardware.cpu.lang.Lang.Strings;
-import sneer.bricks.hardwaresharing.files.cache.visitors.FileCacheVisitor;
 import sneer.bricks.hardwaresharing.files.cache.visitors.FileCacheGuide;
+import sneer.bricks.hardwaresharing.files.cache.visitors.FileCacheVisitor;
 import sneer.bricks.hardwaresharing.files.client.FileClient;
 import sneer.bricks.pulp.crypto.Sneer1024;
 import sneer.bricks.softwaresharing.BrickInfo;
@@ -33,14 +33,8 @@ class BrickFetcher implements FileCacheVisitor {
 
 	
 	@Override
-	public void enterFileOrFolder(String entryName, long lastModified) {
-		_currentPath.add(entryName);
-	}
-
-	
-	@Override
-	public void leaveFileOrFolder() {
-		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
+	public void visitFileOrFolder(String name, long lastModified) {
+		_currentPath.add(name);
 	}
 
 	
@@ -53,13 +47,19 @@ class BrickFetcher implements FileCacheVisitor {
 		
 		throw new NotImplementedYet();
 	}
-
+	
 	
 	@Override
-	public void visitFolder() {
+	public void enterFolder() {
 		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
 	
+	
+	@Override
+	public void leaveFolder() {
+		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
+	}
+
 	
 	private String currentBrick() {
 		String result = _strings.join(_currentPath, ".");

@@ -11,38 +11,41 @@ class GuidedTour {
 	
 	private final FileCacheVisitor _visitor;
 
-
 	GuidedTour(Sneer1024 startingPoint, FileCacheVisitor visitor) {
 		_visitor = visitor;
-		showToVisitor(startingPoint);
+		showContents(startingPoint);
 	}
 
 
-	private void showToVisitor(Sneer1024 hashOfContents) {
+	private void showContents(Sneer1024 hashOfContents) {
 		Object contents = my(FileCache.class).getContents(hashOfContents);
 		if (contents == null) throw new IllegalStateException("Contents not found in " + FileCache.class.getSimpleName());
 		
 		if (contents instanceof FolderContents)
-			showFolderContents((FolderContents)contents);
+			showFolder((FolderContents)contents);
 		else
-			showFileContents((byte[])contents);
-	}
-
-
-	private void showFileContents(byte[] contents) {
-		_visitor.visitFileContents(contents);
+			showFile((byte[])contents);
 	}
 
 	
-	private void showFolderContents(FolderContents contents) {
-		
-		_visitor.visitFolder();
-		
-		for (FileOrFolder entry : contents.contents) {
-			_visitor.enterFileOrFolder(entry.name, entry.lastModified);
-			showToVisitor(entry.hashOfContents);
-			_visitor.leaveFileOrFolder();
-		}
+	private void showFile(byte[] contents) {
+		_visitor.visitFileContents(contents);
+	}
+	
+
+	private void showFolder(FolderContents folderContents) {
+		_visitor.enterFolder();
+			
+		for (FileOrFolder fileOrFolder : folderContents.contents)
+			showFileOrFolder(fileOrFolder);
+
+		_visitor.leaveFolder();
+	}
+
+
+	private void showFileOrFolder(FileOrFolder fileOrFolder) {
+		_visitor.visitFileOrFolder(fileOrFolder.name, fileOrFolder.lastModified);
+		showContents(fileOrFolder.hashOfContents);
 	}
 
 }

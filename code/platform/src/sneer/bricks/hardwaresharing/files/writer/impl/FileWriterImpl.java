@@ -18,7 +18,7 @@ public class FileWriterImpl implements FileWriter {
 		if (fileOrFolder.exists()) throw new IOException("File to be written already exists: " + fileOrFolder);
 		
 		final File dotPart = prepareDotPart(fileOrFolder);
-		my(FileCacheGuide.class).guide(new FileWritingVisitor(lastModified, dotPart), hash);
+		my(FileCacheGuide.class).guide(new FileWritingVisitor(dotPart, lastModified), hash);
 		rename(dotPart, fileOrFolder);
 	}
 	

@@ -2,11 +2,11 @@ package sneer.bricks.hardwaresharing.files.cache.visitors;
 
 public interface FileCacheVisitor {
 
-	void enterFolderEntry(String entryName, long lastModified);
+	void enterFileOrFolder(String name, long lastModified);
 
 	void visitFolder();
 	
 	void visitFileContents(byte[] fileContents);
 	
-	void leaveFolderEntry();
+	void leaveFileOrFolder();
 }

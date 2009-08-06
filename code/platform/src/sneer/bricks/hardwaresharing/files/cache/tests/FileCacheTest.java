@@ -14,7 +14,7 @@ import sneer.bricks.hardware.ram.arrays.ImmutableArray;
 import sneer.bricks.hardware.ram.arrays.ImmutableArrays;
 import sneer.bricks.hardwaresharing.files.cache.FileCache;
 import sneer.bricks.hardwaresharing.files.protocol.FolderContents;
-import sneer.bricks.hardwaresharing.files.protocol.FolderEntry;
+import sneer.bricks.hardwaresharing.files.protocol.FileOrFolder;
 import sneer.bricks.pulp.crypto.Crypto;
 import sneer.bricks.pulp.crypto.Sneer1024;
 import sneer.foundation.brickness.testsupport.BrickTest;
@@ -39,10 +39,10 @@ public class FileCacheTest extends BrickTest {
 				latch.open();
 			}});
 		
-		FolderContents folderContents = new FolderContents(immutable(Arrays.asList(new FolderEntry[]{
-			new FolderEntry("readme.txt", anyReasonableDate(), hash(1)),
-			new FolderEntry("src", anyReasonableDate(), hash(2)),
-			new FolderEntry("docs", anyReasonableDate(), hash(3))
+		FolderContents folderContents = new FolderContents(immutable(Arrays.asList(new FileOrFolder[]{
+			new FileOrFolder("readme.txt", anyReasonableDate(), hash(1)),
+			new FileOrFolder("src", anyReasonableDate(), hash(2)),
+			new FileOrFolder("docs", anyReasonableDate(), hash(3))
 		})));
 
 		Sneer1024 hash = _subject.putFolderContents(folderContents);
@@ -51,7 +51,7 @@ public class FileCacheTest extends BrickTest {
 		assertEquals(folderContents, _subject.getContents(hash));
 	}
 
-	private ImmutableArray<FolderEntry> immutable(Collection<FolderEntry> entries) {
+	private ImmutableArray<FileOrFolder> immutable(Collection<FileOrFolder> entries) {
 		return my(ImmutableArrays.class).newImmutableArray(entries);
 	}
 

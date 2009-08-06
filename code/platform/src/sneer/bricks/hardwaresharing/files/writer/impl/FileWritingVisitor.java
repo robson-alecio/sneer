@@ -23,7 +23,7 @@ final class FileWritingVisitor implements FileCacheVisitor {
 		_fileOrFolder.mkdirs();
 	}
 	
-	@Override public void enterFolderEntry(String entryName, long lastModified) {
+	@Override public void enterFileOrFolder(String entryName, long lastModified) {
 		_fileOrFolder = new File(_fileOrFolder, entryName);
 		_lastModified.push(lastModified);
 	}
@@ -36,7 +36,7 @@ final class FileWritingVisitor implements FileCacheVisitor {
 		}
 	}
 	
-	@Override public void leaveFolderEntry() {
+	@Override public void leaveFileOrFolder() {
 		try {
 			setLastModified(_fileOrFolder, _lastModified.pop());
 		} catch (IOException e) {

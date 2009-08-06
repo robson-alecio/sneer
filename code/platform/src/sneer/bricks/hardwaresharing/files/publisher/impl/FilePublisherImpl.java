@@ -14,7 +14,7 @@ import sneer.bricks.hardware.ram.arrays.ImmutableArray;
 import sneer.bricks.hardware.ram.arrays.ImmutableArrays;
 import sneer.bricks.hardwaresharing.files.cache.FileCache;
 import sneer.bricks.hardwaresharing.files.protocol.FolderContents;
-import sneer.bricks.hardwaresharing.files.protocol.FolderEntry;
+import sneer.bricks.hardwaresharing.files.protocol.FileOrFolder;
 import sneer.bricks.hardwaresharing.files.publisher.FilePublisher;
 import sneer.bricks.pulp.crypto.Sneer1024;
 
@@ -53,8 +53,8 @@ class FilePublisherImpl implements FilePublisher {
 	}
 
 	
-	private List<FolderEntry> publishEachFolderEntry(File folder) throws IOException {
-		List<FolderEntry> result = new ArrayList<FolderEntry>();
+	private List<FileOrFolder> publishEachFolderEntry(File folder) throws IOException {
+		List<FileOrFolder> result = new ArrayList<FileOrFolder>();
 		
 		for (File fileOrFolder : sortedFiles(folder))
 			result.add(publishFolderEntry(fileOrFolder));
@@ -63,10 +63,10 @@ class FilePublisherImpl implements FilePublisher {
 	}
 
 	
-	private FolderEntry publishFolderEntry(File fileOrFolder) throws IOException {
+	private FileOrFolder publishFolderEntry(File fileOrFolder) throws IOException {
 		Sneer1024 hashOfContents = publish(fileOrFolder);
 		
-		return new FolderEntry(
+		return new FileOrFolder(
 			fileOrFolder.getName(),
 			fileOrFolder.lastModified(),
 			hashOfContents
@@ -74,7 +74,7 @@ class FilePublisherImpl implements FilePublisher {
 	}
 	
 	
-	private static ImmutableArray<FolderEntry> immutable(List<FolderEntry> entries) {
+	private static ImmutableArray<FileOrFolder> immutable(List<FileOrFolder> entries) {
 		return my(ImmutableArrays.class).newImmutableArray(entries);
 	}
 	

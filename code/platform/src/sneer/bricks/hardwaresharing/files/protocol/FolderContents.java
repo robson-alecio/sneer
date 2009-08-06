@@ -5,9 +5,9 @@ import sneer.foundation.brickness.Tuple;
 
 public class FolderContents extends Tuple {
 
-	public final ImmutableArray<FolderEntry> contents;
+	public final ImmutableArray<FileOrFolder> contents;
 
-	public FolderContents(ImmutableArray<FolderEntry> contents_) {
+	public FolderContents(ImmutableArray<FileOrFolder> contents_) {
 		contents = contents_;
 	}
 

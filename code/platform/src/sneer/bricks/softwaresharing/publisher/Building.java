@@ -6,12 +6,10 @@ import sneer.foundation.brickness.Tuple;
 /** Conveys the hash of all bricks of a given publisher at a certain point in time. */
 public class Building extends Tuple {
 
-	public final Sneer1024 hashOfOwnBricks;
-	public final Sneer1024 hashOfPlatformBricks;
+	public final Sneer1024 hashOfAllBricks;
 
-	public Building(Sneer1024 hashOfOwnBricks_, Sneer1024 hashOfPlatformBricks_) {
-		hashOfOwnBricks = hashOfOwnBricks_;
-		hashOfPlatformBricks = hashOfPlatformBricks_;
+	public Building(Sneer1024 hashOfAllBricks_) {
+		hashOfAllBricks = hashOfAllBricks_;
 	}
 
 }

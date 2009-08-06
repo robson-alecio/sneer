@@ -12,7 +12,7 @@ import java.util.Map;
 import sneer.bricks.hardware.cpu.lang.Lang;
 import sneer.bricks.hardware.cpu.lang.Lang.Strings;
 import sneer.bricks.hardwaresharing.files.cache.visitors.FileCacheVisitor;
-import sneer.bricks.hardwaresharing.files.cache.visitors.FileCacheVisitors;
+import sneer.bricks.hardwaresharing.files.cache.visitors.FileCacheGuide;
 import sneer.bricks.hardwaresharing.files.client.FileClient;
 import sneer.bricks.pulp.crypto.Sneer1024;
 import sneer.bricks.softwaresharing.BrickInfo;
@@ -26,26 +26,20 @@ class BrickFetcher implements FileCacheVisitor {
 	private Deque<String> _currentPath = new LinkedList<String>();
 	
 	
-	BrickFetcher(Sneer1024 hashOfOwnBricks, Sneer1024 hashOfPlatformBricks) {
-		fetchBricks(hashOfOwnBricks);
-		fetchBricks(hashOfPlatformBricks);
-	}
-
-	
-	private void fetchBricks(Sneer1024 hash) {
-		my(FileClient.class).fetchToCache(hash);
-		my(FileCacheVisitors.class).accept(hash, this);
+	BrickFetcher(Sneer1024 hashOfAllBricks) {
+		my(FileClient.class).fetchToCache(hashOfAllBricks);
+		my(FileCacheGuide.class).guide(this, hashOfAllBricks);
 	}
 
 	
 	@Override
-	public void enterFolderEntry(String entryName, long lastModified) {
+	public void enterFileOrFolder(String entryName, long lastModified) {
 		_currentPath.add(entryName);
 	}
 
 	
 	@Override
-	public void leaveFolderEntry() {
+	public void leaveFileOrFolder() {
 		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
 	}
 

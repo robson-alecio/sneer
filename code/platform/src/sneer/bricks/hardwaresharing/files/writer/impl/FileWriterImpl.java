@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 import sneer.bricks.hardware.io.IO;
-import sneer.bricks.hardwaresharing.files.cache.visitors.FileCacheVisitors;
+import sneer.bricks.hardwaresharing.files.cache.visitors.FileCacheGuide;
 import sneer.bricks.hardwaresharing.files.writer.FileWriter;
 import sneer.bricks.pulp.crypto.Sneer1024;
 
@@ -18,7 +18,7 @@ public class FileWriterImpl implements FileWriter {
 		if (fileOrFolder.exists()) throw new IOException("File to be written already exists: " + fileOrFolder);
 		
 		final File dotPart = prepareDotPart(fileOrFolder);
-		my(FileCacheVisitors.class).accept(hash, new FileWritingVisitor(lastModified, dotPart));
+		my(FileCacheGuide.class).guide(new FileWritingVisitor(lastModified, dotPart), hash);
 		rename(dotPart, fileOrFolder);
 	}
 	

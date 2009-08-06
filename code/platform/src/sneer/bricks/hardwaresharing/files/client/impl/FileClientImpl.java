@@ -11,7 +11,7 @@ import sneer.bricks.hardwaresharing.files.client.FileClient;
 import sneer.bricks.hardwaresharing.files.protocol.FileContents;
 import sneer.bricks.hardwaresharing.files.protocol.FileRequest;
 import sneer.bricks.hardwaresharing.files.protocol.FolderContents;
-import sneer.bricks.hardwaresharing.files.protocol.FolderEntry;
+import sneer.bricks.hardwaresharing.files.protocol.FileOrFolder;
 import sneer.bricks.pulp.crypto.Sneer1024;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.lang.Consumer;
@@ -63,7 +63,7 @@ class FileClientImpl implements FileClient {
 	}
 
 	private void fetchFolderEntries(FolderContents contents) {
-		for (FolderEntry entry : contents.contents)
+		for (FileOrFolder entry : contents.contents)
 			fetchToCache(entry.hashOfContents);
 	}
 

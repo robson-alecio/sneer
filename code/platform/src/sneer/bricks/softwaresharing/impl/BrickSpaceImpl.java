@@ -28,10 +28,7 @@ class BrickSpaceImpl implements BrickSpace, Consumer<Building> {
 
 	@Override
 	public void consume(Building building) {
-		_availableBricks.addAll(new BrickFetcher(
-			building.hashOfOwnBricks,
-			building.hashOfPlatformBricks
-		).bricks());
+		_availableBricks.addAll(new BrickFetcher(building.hashOfAllBricks).bricks());
 	}
 
 }

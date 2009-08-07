@@ -9,6 +9,7 @@ import java.net.URLClassLoader;
 import java.util.HashSet;
 import java.util.Set;
 
+import sneer.bricks.hardware.io.log.filter.LogFilter;
 import sneer.bricks.pulp.network.ByteArrayServerSocket;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.bricks.pulp.network.Network;
@@ -50,7 +51,7 @@ public class SneerCommunity implements SovereignCommunity {
 		File sharedBinFolder = my(ClassUtils.class).classpathRootFor(SneerCommunity.class);
 		File dataFolder = makeFolder(sneerHome, "data");
 		
-		Environment container = Brickness.newBrickContainer(_network);
+		Environment container = Brickness.newBrickContainer(_network, new LogFilterForTests());
 		URLClassLoader apiClassLoader = apiClassLoader(privateBinFolder, sharedBinFolder, name);
 		
 		Object partyImpl = EnvironmentUtils.retrieveFrom(container, loadProbeClassUsing(apiClassLoader));
@@ -105,6 +106,7 @@ public class SneerCommunity implements SovereignCommunity {
 
 			private boolean isSharedByAllParties(String className) {
 				if (isNetworkClass(className)) return true;
+				if (className.equals(LogFilter.class.getName())) return true;
 				if (className.equals(SneerPartyProbe.class.getName())) return false;
 				if (isPublishedByUser(className)) return false;
 				return !isBrick(className); //Foundation classes such as Environments and functional tests classes such as SovereignParty must be shared by all SneerParties.

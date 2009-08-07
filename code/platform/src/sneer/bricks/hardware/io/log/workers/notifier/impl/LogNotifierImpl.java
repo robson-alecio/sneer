@@ -17,9 +17,9 @@ public class LogNotifierImpl implements LogNotifier {
 	private final EventNotifier<String> _loggedMessages = my(EventNotifiers.class).newInstance();
 	
 	{
-		my(Logger.class).setDelegate(new LogWorker(){
-			@Override public void log(String message, Object... messageInsets) {  notifyEntry(_formatter.format(message, messageInsets)); }
-		});
+		my(Logger.class).setDelegate(new LogWorker() { @Override public void log(String message, Object... messageInsets) {
+			notifyEntry(_formatter.format(message, messageInsets));
+		}});
 	}
 	
 	private void notifyEntry(String msg){

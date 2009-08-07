@@ -1,21 +1,29 @@
 package sneer.tests.adapters;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import sneer.bricks.hardware.io.log.LogWorker;
 import sneer.bricks.hardware.io.log.Logger;
 
 class LoggerForTests implements Logger {
 
+	private static List<String> _allPrefixes = new ArrayList<String>();
+	
 	private final String _prefix;
 
 	
 	LoggerForTests(String prefix) {
-		_prefix = prefix;
+		_allPrefixes.add(prefix);
+		_prefix = prefix + " " + count(prefix);
 	}
 
-	
+
 	@Override
 	public void log(String message, Object... messageInsets) {
-		//System.out.println(format(message, messageInsets));
+		String formatted = format(message, messageInsets);
+		if (formatted.contains("Tuple")) return;
+		//System.out.println(formatted);
 	}
 
 	@Override
@@ -47,5 +55,15 @@ class LoggerForTests implements Logger {
 			i++;
 		}
 	}
+
+	
+	private int count(String prefix) {
+		int result = 0;
+		for (String existing : _allPrefixes)
+			if (existing.equals(prefix)) result++;
+		return result;
+	}
+
+
 	
 }

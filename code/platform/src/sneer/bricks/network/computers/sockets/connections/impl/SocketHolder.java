@@ -25,7 +25,7 @@ class SocketHolder {
 
 	synchronized void setSocketIfNecessary(ByteArraySocket newSocket) {
 		if (!isEmpty()) {
-			my(Logger.class).log("New socket crashed: " + newSocket);
+			my(Logger.class).log("New socket crashed: ", newSocket);
 			newSocket.crash();
 			return;
 		}
@@ -38,7 +38,7 @@ class SocketHolder {
 		referenceToSocket.crash();
 
 		if (referenceToSocket != _socket) {
-			my(Logger.class).log("Crashing different socket: " + referenceToSocket);
+			my(Logger.class).log("Crashing different socket: ", referenceToSocket);
 			return;
 		}
 

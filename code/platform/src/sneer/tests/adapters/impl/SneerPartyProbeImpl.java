@@ -173,10 +173,6 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	}
 
 
-	private void startLogging() {
-		//startAndKeep(LogToSysout.class);
-	}
-
 	private void startSnapps() {
 		startAndKeep(SocketOriginator.class);
 		startAndKeep(SocketReceiver.class);
@@ -244,8 +240,6 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 	@Override
 	public void start() {
-		startLogging();
-		
 		installStagedBricks();
 		
 		startSnapps();

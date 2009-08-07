@@ -6,37 +6,16 @@ import java.text.SimpleDateFormat;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.io.log.formatter.LogFormatter;
-import sneer.bricks.hardware.io.log.stacktrace.StackTraceLogger;
 
 public class LogFormatterImpl implements LogFormatter {
 
 	private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	private final StackTraceLogger _stackTraceLogger = my(StackTraceLogger.class);
 
 	@Override
 	public String format(String message, Object... messageInsets) {
 		return logMessage(message, messageInsets).append("\n").toString();
 	}
 
-	@Override
-	public String format(Throwable throwable, String message, Object... messageInsets) {
-		return logMessage(message, messageInsets)
-			.append("\n")
-			.append(_stackTraceLogger.stackToString(throwable)).append("\n").toString();
-	}
-
-	@Override
-	public String format(Throwable throwable) {
-		return new StringBuilder()
-			.append(_stackTraceLogger.stackToString(throwable)).append("\n").toString();
-	}
-
-	@Override
-	public String formatShort(Throwable throwable, String message, Object... messageInsets) {
-		return logMessage(message, messageInsets).append(' ')
-			.append(throwable.getClass().getSimpleName()).append(' ')
-			.append(throwable.getMessage()).append("\n").toString();
-	}
 
 	private StringBuilder logMessage(String message, Object... messageInsets) {
 		StringBuilder result = new StringBuilder();

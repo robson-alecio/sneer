@@ -5,7 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import sneer.bricks.hardware.io.log.Logger;
+import sneer.bricks.hardware.io.log.exceptions.ExceptionLogger;
 import sneer.bricks.network.httpgateway.HttpGateway;
 import sneer.bricks.snapps.gis.location.Location;
 import sneer.foundation.lang.Consumer;
@@ -38,7 +38,7 @@ class LocationImpl implements Location {
 						"output=csv&key=ABQIAAAAipu2vgwNjShyGzhINGjXvRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxTKgtleBywtdYBkXFEBvmkPMqvBzg&q=" 
 						+ URLEncoder.encode(location, "UTF-8") + "";
 			} catch (UnsupportedEncodingException e) {
-				my(Logger.class).log(e);
+				my(ExceptionLogger.class).log(e);
 				return;
 			}
 			

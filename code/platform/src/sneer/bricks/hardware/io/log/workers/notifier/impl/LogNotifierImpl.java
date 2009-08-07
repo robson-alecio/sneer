@@ -19,9 +19,6 @@ public class LogNotifierImpl implements LogNotifier {
 	{
 		my(Logger.class).setDelegate(new LogWorker(){
 			@Override public void log(String message, Object... messageInsets) {  notifyEntry(_formatter.format(message, messageInsets)); }
-			@Override public void log(Throwable throwable, String message, Object... messageInsets) { notifyEntry(_formatter.format(throwable, message, messageInsets));}
-			@Override public void log(Throwable throwable) { notifyEntry(_formatter.format(throwable)); }
-			@Override public void logShort(Throwable throwable, String message, Object... messageInsets) { notifyEntry(_formatter.formatShort(throwable, message, messageInsets));}
 		});
 	}
 	

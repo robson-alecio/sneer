@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import sneer.bricks.hardware.io.log.Logger;
+import sneer.bricks.hardware.io.log.exceptions.ExceptionLogger;
 import sneer.bricks.network.httpgateway.HttpGateway;
 import sneer.bricks.snapps.gis.location.Location;
 import sneer.bricks.snapps.gis.map.MapRenderer;
@@ -37,7 +37,7 @@ class MapRendererImpl implements MapRenderer{
 				try {
 					receiver.consume(bytesToImage(bytes));
 				} catch (IOException e) {
-					my(Logger.class).log(e);
+					my(ExceptionLogger.class).log(e);
 				}
 			}});
 	}

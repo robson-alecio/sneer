@@ -7,7 +7,7 @@ import java.net.URL;
 
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.IO;
-import sneer.bricks.hardware.io.log.Logger;
+import sneer.bricks.hardware.io.log.exceptions.ExceptionLogger;
 import sneer.bricks.network.httpgateway.HttpGateway;
 import sneer.foundation.lang.Consumer;
 
@@ -27,7 +27,7 @@ public class HttpGatewayImpl implements HttpGateway {
 	@Override
 	public void get(String httpUrl, Consumer<byte[]> response) {
 		get(httpUrl, response, new Consumer<IOException>(){ @Override public void consume(IOException exception) {
-			my(Logger.class).log(exception);
+			my(ExceptionLogger.class).log(exception);
 		}});
 	}
 }

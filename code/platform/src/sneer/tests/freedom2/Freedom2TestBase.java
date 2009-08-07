@@ -21,8 +21,6 @@ public abstract class Freedom2TestBase extends SovereignFunctionalTestBase {
 		newSession(b());
 		a().waitUntilOnline("Bruno Barros");
 		b().waitUntilOnline("Ana Almeida");
-		assertTrue(a().isOnline("Bruno Barros"));
-		assertTrue(b().isOnline("Ana Almeida"));
 	}
 
 	

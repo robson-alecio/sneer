@@ -5,9 +5,8 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.IOException;
 
 import sneer.bricks.hardware.clock.timer.Timer;
-import sneer.bricks.hardware.cpu.lang.contracts.Contract;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
-import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddress;
@@ -19,14 +18,13 @@ class OutgoingAttempt {
 	private final Network _network = my(Network.class);
 	private final ConnectionManager _connectionManager = my(ConnectionManager.class);
 	private final InternetAddress _address;
-	private final Contract _steppingContract;
+	private final WeakContract _steppingContract;
 
 	OutgoingAttempt(InternetAddress address) {
 		_address = address;
 
-		_steppingContract = my(Threads.class).startStepping(new Steppable() { @Override public void step() {
+		_steppingContract = my(Timer.class).wakeUpNowAndEvery(20 * 1000, new Steppable() { @Override public void step() {
 			tryToOpen();
-			my(Timer.class).sleepAtLeast(20 * 1000);
 		}});
 
 	}

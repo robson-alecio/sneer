@@ -5,7 +5,6 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.File;
 import java.io.IOException;
 
-import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.hardwaresharing.files.publisher.FilePublisher;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
@@ -38,7 +37,6 @@ class BrickPublisherImpl implements BrickPublisher {
 		try {
 			hash = my(FilePublisher.class).publish(srcFolder);
 		} catch (IOException e) {
-			my(Logger.class).logShort(e, "Error publishing bricks.");
 			my(BlinkingLights.class).turnOnIfNecessary(_errorLight, "Error publishing bricks.", helpMessage(), e);
 			return;
 		}

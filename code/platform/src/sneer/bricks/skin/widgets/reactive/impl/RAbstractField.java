@@ -18,7 +18,6 @@ import javax.swing.JComponent;
 import javax.swing.text.JTextComponent;
 
 import sneer.bricks.hardware.gui.guithread.GuiThread;
-import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.pulp.reactive.Signal;
@@ -227,7 +226,6 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends RPanel<WIDG
 			_setter.consume(text);
 		} catch (Refusal ip) {
 			my(BlinkingLights.class).turnOn(LightType.ERROR, "Invalid Field Value: " + text, ip.getMessage(), ip, 20000);
-			my(Logger.class).logShort(ip, "Invalid Field Value: {} - ", text);
 			requestFocus();
 		}
 	}

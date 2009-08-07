@@ -18,26 +18,4 @@ class LoggerImpl implements Logger {
 		_delegate.log(message, messageInsets);
 	}
 
-	@Override
-	public void log(Throwable throwable, String message, Object... messageInsets) {
-		leakIfNecessary(throwable);
-		_delegate.log(throwable, message, messageInsets);
-	}
-
-	@Override
-	public void log(Throwable throwable) {
-		leakIfNecessary(throwable);
-		_delegate.log(throwable);
-	}
-
-	@Override
-	public void logShort(Throwable throwable, String message, Object... messageInsets) {
-		leakIfNecessary(throwable);
-		_delegate.logShort(throwable, message, messageInsets);
-	}
-
-	private void leakIfNecessary(Throwable throwable) {
-		if (_delegate != null) return;
-		throw new RuntimeException("Logger not configured for Throwables (Use Logger.setDelegate()).", throwable);
-	}
 }

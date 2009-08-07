@@ -9,6 +9,7 @@ import static sneer.main.SneerDirectories.PLATFORM_BIN;
 import java.io.File;
 
 import sneer.bricks.hardware.cpu.threads.Threads;
+import sneer.bricks.hardware.io.log.exceptions.robust.RobustExceptionLogging;
 import sneer.bricks.hardware.ram.ref.immutable.Immutable;
 import sneer.bricks.snapps.system.log.sysout.LogToSysout;
 import sneer.bricks.software.bricks.snappstarter.SnappStarter;
@@ -33,6 +34,7 @@ public class SneerSession implements Runnable {
 	}
 
 	private void startLogging() {
+		my(RobustExceptionLogging.class).turnOn();
 		my(LogToSysout.class);
 	}
 

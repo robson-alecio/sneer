@@ -21,6 +21,7 @@ import sneer.bricks.network.social.Contact;
 import sneer.bricks.network.social.ContactManager;
 import sneer.bricks.network.social.heartbeat.Heart;
 import sneer.bricks.network.social.heartbeat.stethoscope.Stethoscope;
+import sneer.bricks.network.social.loggers.tuples.TupleLogger;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.own.name.OwnNameKeeper;
@@ -173,17 +174,21 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 
 	private void startLogging() {
-//		startAndKeep(LogToSysout.class);
-//		startAndKeep(TupleLogger.class);
+		//startAndKeep(LogToSysout.class);
 	}
 
 	private void startSnapps() {
 		startAndKeep(SocketOriginator.class);
 		startAndKeep(SocketReceiver.class);
 		startAndKeep(ProbeManager.class);
+
+		startAndKeep(TupleLogger.class);
+
 		startAndKeep(Wind.class);
+
 		startAndKeep(FileServer.class);
 		startAndKeep(BrickSpace.class);
+
 		startAndKeep(Stethoscope.class);
 		startAndKeep(Heart.class);
 	}

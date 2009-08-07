@@ -73,7 +73,7 @@ class ByteConnectionImpl implements ByteConnection {
 		try {
 			return tryToShakeHands(socket);
 		} catch (IOException e) {
-			my(Logger.class).logShort(e, "Exception while shaking hands in outgoing connection.");
+			my(Logger.class).log("Exception while shaking hands in outgoing connection: {}", e);
 			return false;
 		}
 	}

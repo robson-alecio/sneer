@@ -56,34 +56,8 @@ class IndividualSocketReception {
 	}
 
 	private Contact produceContact(Seal peersPublicKey) {
-//		return my(KeyManager.class).contactGiven(peersPublicKey, new Producer<Contact>(){@Override public Contact produce() {
-//			return createUnconfirmedContact();
-//		}});
-		
 		return my(Seals.class).contactGiven(peersPublicKey);
 	}
-
-//	private Contact createUnconfirmedContact() {
-//		String baseNick = "Unconfirmed";   //"Unconfirmed (2)", "Unconfirmed (3)", etc.
-//		
-//		Contact result = tryToCreate(baseNick);
-//		if (result != null) return result;
-//		
-//		int i = 2;
-//		while (tryToCreate(baseNick + " (" + i + ")") == null)
-//			i++;
-//		
-//		return result;
-//	}
-//
-//	private Contact tryToCreate(String nickname) {
-//		try {
-//			return my(ContactManager.class).addContact(nickname);
-//		} catch (Refusal e) {
-//			return null;
-//		}
-//	}
-
 
 	private void shakeHands() throws IOException {
 		while (true) {

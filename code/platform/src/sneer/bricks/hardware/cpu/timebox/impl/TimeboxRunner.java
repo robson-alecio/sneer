@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import sneer.bricks.hardware.cpu.threads.Threads;
-import sneer.bricks.hardware.io.log.Logger;
+import sneer.bricks.hardware.io.log.exceptions.ExceptionLogger;
 
 @SuppressWarnings("deprecation")
 class TimeboxRunner {
@@ -54,7 +54,7 @@ class TimeboxRunner {
 		synchronized (_isDeadMonitor) {
 			_isDead = true;
 		}
-		my(Logger.class).log(timeIsUp);
+		my(ExceptionLogger.class).log(timeIsUp);
 	}
 
 	private void tryToRun(Runnable toRun) {

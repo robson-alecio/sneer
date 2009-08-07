@@ -1,10 +1,11 @@
 package sneer.bricks.hardware.io.log.exceptions;
 
-import sneer.bricks.software.bricks.snappstarter.Snapp;
 import sneer.foundation.brickness.Brick;
 
-@Snapp
 @Brick
 public interface ExceptionLogger {
-
+	
+	void log(Throwable throwable);
+	void log(Throwable throwable, String message, Object... messageInsets) ;
+	
 }

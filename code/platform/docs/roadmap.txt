@@ -1,13 +1,11 @@
 ﻿TASKS
 =========
 
-	- [Klaus] Revise handshake, send OK only after approving socket
+	- [Klaus] Unignore Freedom2.isOnlineAfterNewSession()
 
 	- [Klaus and Sandro] Sneer Responsiveness - Find a way to avoid snapp starter thread from waiting for gui thread.
 			
 	- [Klaus] Revise entire package structure.  
-	
-	- [Sandro] Enable Rod to commit to Sandro's repository.
 
 	- [Sandro] Hudson Linux Reboot
 

@@ -29,7 +29,7 @@ public class ThreadsMock implements Threads {
 		return null;
 	}
 
-	public synchronized Steppable stepper(int i) {
+	public synchronized Steppable getStepper(int i) {
 		return _steppers.get(i);
 	}
 

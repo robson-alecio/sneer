@@ -7,7 +7,7 @@ import sneer.foundation.brickness.Brick;
 @Brick
 public interface ConnectionManager {
 
-	void manageIncomingSocket(Contact contact, ByteArraySocket socket);
+	void manageIncomingSocket(ByteArraySocket socket);
 	void manageOutgoingSocket(Contact contact, ByteArraySocket socket);
 
 	ByteConnection connectionFor(Contact contact);

@@ -25,7 +25,6 @@ public abstract class BrickTest extends CleanTest {
 		my(FolderConfig.class).dataFolder().set(tmpFolder());
 	}
 	
-	
 	@After
 	public void afterBrickTest() {
 		my(Threads.class).crashAllThreads();
@@ -38,6 +37,10 @@ public abstract class BrickTest extends CleanTest {
 	
 	protected <T> T mock(Class<T> type) {
 		return _mockery.mock(type);
+	}
+
+	protected <T> T mock(Class<T> type, String name) {
+		return _mockery.mock(type, name);
 	}
 	
 	protected void checking(ExpectationBuilder expectations) {

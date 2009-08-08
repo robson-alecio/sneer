@@ -16,7 +16,7 @@ public class CleanTestMethod extends TestMethod {
 	public void invoke(Object test) throws InvocationTargetException, IllegalAccessException {
 		super.invoke(test);
 		
-		//Will only happen if the test passes (InvocationTargetException is not thrown above).
+		//Will only happen if the test passes (if InvocationTargetException is not thrown above).
 		if (!(test instanceof CleanTest)) return;
 		((CleanTest)test).afterSuccessfulTest();
 	}

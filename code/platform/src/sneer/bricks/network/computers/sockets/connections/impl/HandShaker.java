@@ -1,53 +1,44 @@
-package sneer.bricks.network.computers.sockets.connections.receiver.impl;
+package sneer.bricks.network.computers.sockets.connections.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.util.Arrays;
 
 import sneer.bricks.hardware.io.log.Logger;
-import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
 import sneer.bricks.network.computers.sockets.protocol.ProtocolTokens;
 import sneer.bricks.network.social.Contact;
 import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.foundation.brickness.Seal;
 
-class IndividualSocketReception {
+class HandShaker {
 	
 	private final ByteArraySocket _socket;
+	private Contact _contact;
 
 	
-	IndividualSocketReception(ByteArraySocket socket) {
+	HandShaker(ByteArraySocket socket) {
 		_socket = socket;
 
 		try {
-			if (!tryToServe()) _socket.crash();
-		} catch (EOFException e) {
-			my(Logger.class).log("Incoming Socket Closed by Peer");
-			_socket.crash();
+			_contact = tryToDetermineContact();
 		} catch (IOException e) {
 			my(Logger.class).log("Exception thrown by incoming socket: {}.", e.getMessage());
-			_socket.crash();
 		}
+		
+		if (_contact == null) _socket.crash();
 	}
 
-	private boolean tryToServe() throws IOException {
+	private Contact tryToDetermineContact() throws IOException {
 		shakeHands();
 
 		Seal peersPublicKey = peersPublicKey();	
-
 		if (peersPublicKey.equals(my(Seals.class).ownSeal()))
-			return false;
-			
+			return null;
 		//Implement: Challenge pk.
 
-		_socket.write(ProtocolTokens.OK);
-
-		Contact contact = produceContact(peersPublicKey);
-		my(ConnectionManager.class).manageIncomingSocket(contact, _socket);
-		return true;
+		return produceContact(peersPublicKey);
 	}
 
 	private Seal peersPublicKey() throws IOException {
@@ -72,6 +63,10 @@ class IndividualSocketReception {
 		
 	private void discardFirstDataPacket() throws IOException {
 		_socket.read();
+	}
+
+	Contact determineContact() {
+		return _contact;
 	}
 
 	

@@ -74,6 +74,7 @@ class ByteConnectionImpl implements ByteConnection {
 			return tryToShakeHands(socket);
 		} catch (IOException e) {
 			my(Logger.class).log("Exception while shaking hands in outgoing connection: {}", e);
+			socket.crash();
 			return false;
 		}
 	}
@@ -86,7 +87,8 @@ class ByteConnectionImpl implements ByteConnection {
 	}
 
 	void manageIncomingSocket(ByteArraySocket socket) {
-		_socketHolder.setSocketIfNecessary(socket);
+		if (!_socketHolder.setSocketIfNecessary(socket)) return;
+		tryToSend(ProtocolTokens.OK);
 	}
 
 	private boolean tryToSend(byte[] array) {

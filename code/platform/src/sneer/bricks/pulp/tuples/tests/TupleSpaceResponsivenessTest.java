@@ -29,7 +29,7 @@ public class TupleSpaceResponsivenessTest extends BrickTest {
 		_subject.publish(tuple);
 		
 		assertFalse(wasPublished.value);
-		_threads.stepper(0).step();
+		_threads.getStepper(0).step();
 		assertTrue(wasPublished.value);
 	}
 	

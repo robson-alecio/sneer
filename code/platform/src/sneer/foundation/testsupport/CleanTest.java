@@ -10,7 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 
-/** A test that does not pollute the environment: it deletes all files it creates, it does not leak threads, it does not write do the console (out and err). */
+/** A test that does not pollute the environment: it closes all files handles it opens, it does not leak threads, it does not write do the console (out and err). */
 @RunWith(CleanTestRunner.class)
 public abstract class CleanTest extends AssertUtils {
 
@@ -20,6 +20,8 @@ public abstract class CleanTest extends AssertUtils {
 
 	private final PrintStreamSentinel _outSentinel = new PrintStreamSentinel(System.out);
 	private final PrintStreamSentinel _errSentinel = new PrintStreamSentinel(System.err);
+
+	private boolean _wasSuccessful = false;
 
 	
 	protected File tmpFolder() {
@@ -31,13 +33,32 @@ public abstract class CleanTest extends AssertUtils {
 
 	
 	@Before
-	public void beforeTestThatMightUseResources() {
+	public void beforeCleanTest() {
 		_activeThreadsBeforeTest = Thread.getAllStackTraces().keySet();
 		
 		System.setOut(_outSentinel);
 		System.setErr(_errSentinel);
 	}
 
+	void afterSuccessfulTest() {
+		_wasSuccessful = true;
+	}
+
+	@After
+	public void afterCleanTest() {
+		recoverConsole();
+
+		if (!_wasSuccessful) return; 
+
+		deleteFiles();
+		checkThreadLeak();
+		checkConsolePollution();
+	}
+	
+	private void recoverConsole() {
+		System.setOut(_outSentinel._delegate);
+		System.setErr(_errSentinel._delegate);
+	}
 	
 	@SuppressWarnings("deprecation")
 	private void checkThreadLeak() {
@@ -72,16 +93,6 @@ public abstract class CleanTest extends AssertUtils {
 		}
 	}
 
-	@After
-	public void afterTestThatMightUseResources() {
-		System.setOut(_outSentinel._delegate);
-		System.setErr(_errSentinel._delegate);
-
-		checkThreadLeak();
-		deleteFiles();
-	}
-
-
 	private void checkConsolePollution() {
 		_outSentinel.complainIfUsed();
 		_errSentinel.complainIfUsed();
@@ -89,11 +100,7 @@ public abstract class CleanTest extends AssertUtils {
 
 	private void deleteFiles() {
 		if (_tmpFolder == null) return;
-		try {
-			tryToClean(_tmpFolder);
-		} finally {
-			_tmpFolder = null;
-		}
+		tryToClean(_tmpFolder);
 	}
 	
 	private void tryToClean(File tmp) {
@@ -151,10 +158,6 @@ public abstract class CleanTest extends AssertUtils {
 			
 			deleteFolder(file);
 		}
-	}
-
-	protected void afterSuccessfulTest() {
-		checkConsolePollution();
 	}
 
 }

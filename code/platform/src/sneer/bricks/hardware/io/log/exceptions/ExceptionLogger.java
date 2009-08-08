@@ -6,6 +6,6 @@ import sneer.foundation.brickness.Brick;
 public interface ExceptionLogger {
 	
 	void log(Throwable throwable);
-	void log(Throwable throwable, String message, Object... messageInsets) ;
+	void log(Throwable throwable, String message, Object... messageInsets);
 	
 }

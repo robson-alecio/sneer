@@ -11,30 +11,40 @@ class SocketHolder {
 	private ByteArraySocket _socket;
 	private final Consumer<Boolean> _activityReceiver;
 
+	
 	public SocketHolder(Consumer<Boolean> activityReceiver) {
 		_activityReceiver = activityReceiver;
 	}
 
-	synchronized boolean isEmpty() {
+	
+	synchronized
+	boolean isEmpty() {
 		return _socket == null;
 	}
 
-	synchronized ByteArraySocket socket() {
+	
+	synchronized
+	ByteArraySocket socket() {
 		return _socket;
 	}
 
-	synchronized void setSocketIfNecessary(ByteArraySocket newSocket) {
+	
+	synchronized
+	boolean setSocketIfNecessary(ByteArraySocket newSocket) {
 		if (!isEmpty()) {
 			my(Logger.class).log("New socket crashed: ", newSocket);
 			newSocket.crash();
-			return;
+			return false;
 		}
 
 		_socket = newSocket;
 		_activityReceiver.consume(true);
+		return true;
 	}
 
-	synchronized void crash(ByteArraySocket referenceToSocket) {
+	
+	synchronized
+	void crash(ByteArraySocket referenceToSocket) {
 		referenceToSocket.crash();
 
 		if (referenceToSocket != _socket) {
@@ -48,8 +58,4 @@ class SocketHolder {
 		_activityReceiver.consume(false);
 	}
 
-	synchronized void crashSocket() {
-		if (_socket == null) return;
-		crash(_socket);
-	}
 }

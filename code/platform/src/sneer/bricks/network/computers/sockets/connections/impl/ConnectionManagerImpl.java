@@ -25,16 +25,15 @@ class ConnectionManagerImpl implements ConnectionManager {
 	@Override
 	public void manageIncomingSocket(ByteArraySocket socket) {
 		Contact contact = new HandShaker(socket).determineContact();
-
-		ByteConnectionImpl connection = connectionFor(contact);
-		connection.manageIncomingSocket(socket);
+		if (contact == null) return;
+		
+		connectionFor(contact).manageIncomingSocket(socket);
 
 	}
 
 	@Override
 	public void manageOutgoingSocket(Contact contact, ByteArraySocket socket) {
-		ByteConnectionImpl connection = connectionFor(contact);
-		connection.manageOutgoingSocket(socket);
+		connectionFor(contact).manageOutgoingSocket(socket);
 	}
 
 	@Override

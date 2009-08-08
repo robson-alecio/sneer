@@ -19,7 +19,7 @@ abstract class Daemon extends Thread {
 		_instances.add(instance);
 	}
 
-	synchronized static public void killAllInstances() {
+	synchronized static void killAllInstances() {
 		for (Daemon victim : _instances)
 			victim.dieQuietly();
 		

@@ -3,15 +3,16 @@ package sneer.bricks.network.computers.sockets.connections.originator.tests;
 import static sneer.foundation.environments.Environments.my;
 
 import org.jmock.Expectations;
-import org.jmock.Sequence;
 import org.jmock.api.Invocation;
 import org.jmock.lib.action.CustomAction;
 import org.junit.Test;
 
+import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.threads.Latch;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
 import sneer.bricks.network.computers.sockets.connections.originator.SocketOriginator;
+import sneer.bricks.network.social.Contact;
 import sneer.bricks.network.social.ContactManager;
 import sneer.bricks.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.bricks.pulp.network.ByteArraySocket;
@@ -34,14 +35,13 @@ public class SocketOriginatorTest extends BrickTest {
 	@Test (timeout = 2000)
 	public void openConnection() throws Exception {
 		final Latch _ready = my(Threads.class).newLatch();
-
+		final Contact neide = _contactManager.produceContact("Neide");
+		
 		checking(new Expectations() {{
-			Sequence sequence = newSequence("main");
-
 			oneOf(_networkMock).openSocket("neide.selfip.net", 5000);
 				will(returnValue(_openedSocket));
 
-			oneOf(_connectionManagerMock).manageOutgoingSocket(_contactManager.produceContact("Neide"), _openedSocket); inSequence(sequence);
+			oneOf(_connectionManagerMock).manageOutgoingSocket(neide, _openedSocket);
 				will(new CustomAction("manageIncomingSocket") { @Override public Object invoke(Invocation ignored) {
 					_ready.open(); return null;
 				}});
@@ -49,8 +49,8 @@ public class SocketOriginatorTest extends BrickTest {
 
 		_subject = my(SocketOriginator.class);
 
-		_internetAddressKeeper.add(_contactManager.produceContact("Neide"), "neide.selfip.net", 5000);
-
+		_internetAddressKeeper.add(neide, "neide.selfip.net", 5000);
+		my(Clock.class).advanceTime(1);
 		_ready.waitTillOpen();
 	}
 }

@@ -14,22 +14,16 @@ public abstract class Freedom2TestBase extends SovereignFunctionalTestBase {
 		assertTrue(b().isOnline("Ana Almeida"));
 	}
 	
-	@Ignore
-	@Test //(timeout = 8000)
+	
+	
+	@Test (timeout = 6000)
 	public void isOnlineAfterNewSession() {
-		System.out.println("Initing connection:");
 		a();
-		
-		System.out.println("\nCrashing Ana");
 		newSession(a());
-		
-		System.out.println("\nCrashing Bruno");
 		newSession(b());
 		
 		a().waitUntilOnline("Bruno Barros");
 		b().waitUntilOnline("Ana Almeida");
-		
-		System.out.println("ALMOST PASSED :)");
 	}
 
 	

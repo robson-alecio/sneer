@@ -5,6 +5,7 @@ import static sneer.foundation.environments.Environments.my;
 import java.util.HashSet;
 import java.util.Set;
 
+import sneer.bricks.hardware.clock.timer.Timer;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.exceptions.ExceptionLogger;
 
@@ -18,12 +19,12 @@ class TimeboxRunner {
 	private final Runnable _toCallWhenBlocked;
 
 	static {
-		final Threads threads = my(Threads.class);
+		final Timer timer = my(Timer.class);
 
-		threads.startDaemon("Timebox Killer", new Runnable() { @Override public void run() {
+		my(Threads.class).startDaemon("Timebox Killer", new Runnable() { @Override public void run() {
 			Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 			while (true) {
-				threads.sleepWithoutInterruptions(PRECISION_IN_MILLIS);
+				timer.sleepAtLeast(PRECISION_IN_MILLIS);
 
 				for (TimeboxRunner victim : _activeTimeboxes.toArray(ARRAY_TYPE))
 					victim.payOrDie(PRECISION_IN_MILLIS);

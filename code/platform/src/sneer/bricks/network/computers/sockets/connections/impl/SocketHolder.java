@@ -1,6 +1,7 @@
 package sneer.bricks.network.computers.sockets.connections.impl;
 
 import static sneer.foundation.environments.Environments.my;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.foundation.lang.Consumer;
@@ -39,6 +40,7 @@ class SocketHolder {
 
 		_socket = newSocket;
 		_activityReceiver.consume(true);
+		notifyAll();
 		return true;
 	}
 
@@ -56,6 +58,15 @@ class SocketHolder {
 
 		_socket = null;
 		_activityReceiver.consume(false);
+	}
+
+
+	synchronized
+	ByteArraySocket waitForSocket() {
+		while (_socket == null)
+			my(Threads.class).waitWithoutInterruptions(this);
+		
+		return _socket;
 	}
 
 }

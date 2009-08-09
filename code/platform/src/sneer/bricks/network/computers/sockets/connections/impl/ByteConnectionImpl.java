@@ -44,11 +44,6 @@ class ByteConnectionImpl implements ByteConnection {
 		_contact = contact;
 	}
 
-	@Override
-	public String toString() {
-		return _label + " - " + _contact.nickname();
-	}
-
 	
 	@Override
 	public Signal<Boolean> isConnected() {
@@ -56,11 +51,23 @@ class ByteConnectionImpl implements ByteConnection {
 	}
 
 
+	@Override
+	public void initCommunications(PacketScheduler sender, Consumer<byte[]> receiver) {
+		if (_scheduler != null) throw new IllegalStateException();
+		_scheduler = sender;
+		_receiver = receiver;
+
+		startSending();
+		startReceiving();
+	}
+
+	
 	void manageOutgoingSocket(ByteArraySocket newSocket) {
 		if (!tryToManageOutgoingSocket(newSocket))
 			newSocket.crash();
 	}
 
+	
 	private boolean tryToManageOutgoingSocket(ByteArraySocket newSocket) {
 		if (!_socketHolder.isEmpty()) return false;
 		if (!shakeHands(newSocket)) return false;
@@ -69,6 +76,7 @@ class ByteConnectionImpl implements ByteConnection {
 		return true;
 	}
 
+	
 	private boolean shakeHands(ByteArraySocket socket) {
 		try {
 			return tryToShakeHands(socket);
@@ -79,6 +87,7 @@ class ByteConnectionImpl implements ByteConnection {
 		}
 	}
 
+	
 	private boolean tryToShakeHands(ByteArraySocket socket) throws IOException {
 		socket.write(ProtocolTokens.SNEER_WIRE_PROTOCOL_1);
 		socket.write(_keyManager.ownSeal().bytes());
@@ -86,10 +95,27 @@ class ByteConnectionImpl implements ByteConnection {
 		return Arrays.equals(ProtocolTokens.OK, response);
 	}
 
+	
 	void manageIncomingSocket(ByteArraySocket socket) {
 		if (!_socketHolder.setSocketIfNecessary(socket)) return;
 		tryToSend(ProtocolTokens.OK);
 	}
+
+	
+	private void startSending() {
+		_contractToSend = _threads.startStepping(new Steppable() { @Override public void step() {
+			send();
+		}});
+	}
+
+	
+	private void send() {
+		if (tryToSend(_scheduler.highestPriorityPacketToSend()))
+			_scheduler.previousPacketWasSent();
+		else
+			_threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify.
+	}
+
 
 	private boolean tryToSend(byte[] array) {
 		ByteArraySocket mySocket = _socketHolder.socket();
@@ -104,57 +130,38 @@ class ByteConnectionImpl implements ByteConnection {
 
 		_bandwidthCounter.sent(array.length);
 		return true;
-}
-
-
-	private void startSending() {
-		_contractToSend = _threads.startStepping(new Steppable() { @Override public void step() {
-			if (tryToSend(_scheduler.highestPriorityPacketToSend()))
-				_scheduler.previousPacketWasSent();
-			else
-				_threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify.
-		}});
 	}
-	
+
+
 	private void startReceiving() {
 		_contractToReceive = _threads.startStepping(new Steppable() { @Override public void step() {
-			if (!tryToReceive())
-				_threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify
+			receive();
 		}});
 	}
 
-	private boolean tryToReceive() {
-		ByteArraySocket mySocket = _socketHolder.socket();
-		if (mySocket ==  null) return false;
+	
+	private void receive() {
+		ByteArraySocket mySocket = _socketHolder.waitForSocket();
 
 		byte[] array;
 		try {
 			array = mySocket.read();
 		} catch (IOException e) {
 			crash(mySocket, "Error trying to receive packet.");
-			return false;
+			return;
 		}
 
 		_bandwidthCounter.received(array.length);
 		_receiver.consume(array);
-		return true;
 	}
 
+	
 	private void crash(ByteArraySocket mySocket, final String message) {
 		my(Logger.class).log("Closing socket. {}", message);
 		_socketHolder.crash(mySocket);
 	}
 
-	@Override
-	public void initCommunications(PacketScheduler sender, Consumer<byte[]> receiver) {
-		if (_scheduler != null) throw new IllegalStateException();
-		_scheduler = sender;
-		_receiver = receiver;
-
-		startSending();
-		startReceiving();
-	}
-
+	
 	void close() {
 		_contractToSend.dispose();
 		_contractToReceive.dispose();
@@ -162,6 +169,12 @@ class ByteConnectionImpl implements ByteConnection {
 		ByteArraySocket socket = _socketHolder.socket();
 		if (socket == null) return;
 		crash(socket, "");
+	}
+
+	
+	@Override
+	public String toString() {
+		return _label + " - " + _contact.nickname();
 	}
 
 }

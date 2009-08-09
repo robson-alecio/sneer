@@ -12,7 +12,7 @@ class SocketHolder {
 	private final Consumer<Boolean> _activityReceiver;
 
 	
-	public SocketHolder(Consumer<Boolean> activityReceiver) {
+	SocketHolder(Consumer<Boolean> activityReceiver) {
 		_activityReceiver = activityReceiver;
 	}
 

@@ -98,29 +98,24 @@ class ByteConnectionImpl implements ByteConnection {
 	
 	void manageIncomingSocket(ByteArraySocket socket) {
 		if (!_socketHolder.setSocketIfNecessary(socket)) return;
-		tryToSend(ProtocolTokens.OK);
+		tryToSend(ProtocolTokens.OK, socket);
 	}
 
 	
 	private void startSending() {
 		_contractToSend = _threads.startStepping(new Steppable() { @Override public void step() {
-			send();
+			send(_socketHolder.waitForSocket());
 		}});
 	}
 
 	
-	private void send() {
-		if (tryToSend(_scheduler.highestPriorityPacketToSend()))
+	private void send(ByteArraySocket socket) {
+		if (tryToSend(_scheduler.highestPriorityPacketToSend(), socket))
 			_scheduler.previousPacketWasSent();
-		else
-			_threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify.
 	}
 
 
-	private boolean tryToSend(byte[] array) {
-		ByteArraySocket mySocket = _socketHolder.socket();
-		if (mySocket == null) return false;
-		
+	private boolean tryToSend(byte[] array, ByteArraySocket mySocket) {
 		try {
 			mySocket.write(array);
 		} catch (IOException iox) {
@@ -135,14 +130,12 @@ class ByteConnectionImpl implements ByteConnection {
 
 	private void startReceiving() {
 		_contractToReceive = _threads.startStepping(new Steppable() { @Override public void step() {
-			receive();
+			receiveFrom(_socketHolder.waitForSocket());
 		}});
 	}
 
 	
-	private void receive() {
-		ByteArraySocket mySocket = _socketHolder.waitForSocket();
-
+	private void receiveFrom(ByteArraySocket mySocket) {
 		byte[] array;
 		try {
 			array = mySocket.read();

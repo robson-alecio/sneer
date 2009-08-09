@@ -23,7 +23,7 @@ class LoggerForTests implements Logger {
 	public void log(String message, Object... messageInsets) {
 		String formatted = format(message, messageInsets);
 		if (formatted.contains("Tuple")) return;
-		//System.out.println(formatted); ////////////////////////////////////////////////////////
+		//System.out.println(formatted); //////////////////////// This is the line you uncomment to turn logging on for functional tests.
 	}
 
 	@Override

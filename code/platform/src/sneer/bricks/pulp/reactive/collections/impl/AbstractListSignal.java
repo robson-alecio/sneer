@@ -26,7 +26,7 @@ abstract class AbstractListSignal<T> implements ListSignal<T> {
 
 	@Override
 	public WeakContract addPulseReceiver(Runnable pulseReceiver) {
-		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
+		return _notifierAsCollection.output().addPulseReceiver(pulseReceiver);
 	}
 
 	@Override

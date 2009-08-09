@@ -130,7 +130,7 @@ class ByteConnectionImpl implements ByteConnection {
 		byte[] array;
 		try {
 			array = mySocket.read();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			crash(mySocket, "Error trying to receive packet.");
 			return false;
 		}

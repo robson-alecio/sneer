@@ -10,6 +10,8 @@ import java.util.List;
 
 import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.lang.Lang;
+import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
+import sneer.bricks.hardware.cpu.threads.Latch;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.IO;
@@ -148,16 +150,22 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	}
 
 	@Override
-	public void waitForShouts(String shoutsExpected) {
-		while (true) {
-			String shoutsHeard = concat(my(Wind.class).shoutsHeard());
-			if (shoutsHeard.equals(shoutsExpected)) return;
-			try {
-				Thread.sleep(200);
-			} catch (InterruptedException ignored) {
-				throw new RuntimeException(ownName() + " was waiting for: " + shoutsExpected + "  was still: " + shoutsHeard);
-			}
-		}
+	public void waitForShouts(final String shoutsExpected) {
+		final Latch latch = my(Threads.class).newLatch();
+
+		WeakContract contract = my(Wind.class).shoutsHeard().addPulseReceiver(new Runnable() { @Override public void run() {
+			openLatchIfShoutsHeard(shoutsExpected, latch);
+		}});
+		openLatchIfShoutsHeard(shoutsExpected, latch);
+		
+		latch.waitTillOpen();
+		contract.dispose();
+	}
+
+	private void openLatchIfShoutsHeard( String shoutsExpected, Latch latch) {
+		String shoutsHeard = concat(my(Wind.class).shoutsHeard());
+		if (shoutsHeard.equals(shoutsExpected))
+			latch.open();
 	}
 
 	private String concat(Iterable<Shout> shouts) {

@@ -19,7 +19,7 @@ import sneer.bricks.hardware.cpu.lang.contracts.Contract;
 import sneer.bricks.hardware.cpu.threads.Steppable;
 import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.hardware.io.IO;
-import sneer.bricks.hardware.io.log.Logger;
+import sneer.bricks.hardware.io.log.exceptions.ExceptionLogger;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
 import spikes.sneer.bricks.skin.audio.kernel.Audio;
 import spikes.sneer.bricks.skin.audio.player.SoundPlayer;
@@ -94,7 +94,7 @@ class SoundPlayerImpl implements SoundPlayer, Steppable {
 		try {
 			return audioInputStream.read(buffer, 0, buffer.length);
 		} catch (IOException e) {
-			my(Logger.class).log(e); //Implement Make this a blinking light.
+			my(ExceptionLogger.class).log(e); //Implement Make this a blinking light.
 			return -1;
 		}
 	}

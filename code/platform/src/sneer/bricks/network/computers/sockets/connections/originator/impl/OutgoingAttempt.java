@@ -24,6 +24,7 @@ class OutgoingAttempt {
 
 	private AtomicBoolean _isOpening = new AtomicBoolean(false);
 	
+	
 	OutgoingAttempt(InternetAddress address) {
 		_address = address;
 
@@ -35,6 +36,7 @@ class OutgoingAttempt {
 
 	}
 
+	
 	private void tryToOpenOnlyOnce() {
 		if (_isOpening.getAndSet(true)) return;
 		try {
@@ -44,21 +46,31 @@ class OutgoingAttempt {
 		}
 	}	
 
+	
 	private void tryToOpen() {
+		if (hasSocketAlready()) return;
+		
 		my(Logger.class).log("Trying to open socket to: {} port: {}", _address.host(), _address.port());
 
 		ByteArraySocket socket;
 		try {
 			socket = _network.openSocket(_address.host(), _address.port());
 		} catch (IOException e) {
+			my(Logger.class).log(e.getMessage());
 			return;
 		}
 
 		my(Logger.class).log("Socket opened to: {} port: {}", _address.host(), _address.port());
-		_connectionManager.manageOutgoingSocket(_address.contact(), socket);
+		_connectionManager.manageOutgoingSocket(socket, _address.contact());
 	}
 
-	public synchronized void crash() {
+	
+	private boolean hasSocketAlready() {
+		return _connectionManager.connectionFor(_address.contact()).isConnected().currentValue();
+	}
+
+	
+	void crash() {
 		_steppingContract.dispose();
 	}
 	

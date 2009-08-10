@@ -1,45 +1,86 @@
 package sneer.bricks.network.computers.sockets.connections.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.hardware.ram.maps.cachemaps.CacheMap;
-import sneer.bricks.hardware.ram.maps.cachemaps.CacheMaps;
+
+import java.io.IOException;
+
 import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
 import sneer.bricks.network.social.Contact;
+import sneer.bricks.pulp.keymanager.Seals;
 import sneer.bricks.pulp.network.ByteArraySocket;
-import sneer.bricks.pulp.own.name.OwnNameKeeper;
-import sneer.foundation.lang.Producer;
+import sneer.foundation.brickness.Seal;
+import sneer.foundation.lang.Closure;
 
 class ConnectionManagerImpl implements ConnectionManager {
 
-	private final OwnNameKeeper _nameKeeper = my(OwnNameKeeper.class);
+	static private final Seals Seals = my(Seals.class);
 
-	private final CacheMap<Contact, ByteConnectionImpl> _connectionsByContact = my(CacheMaps.class).newInstance();
 
 	@Override
-	public synchronized ByteConnectionImpl connectionFor(final Contact contact) {
-		return _connectionsByContact.get(contact, new Producer<ByteConnectionImpl>() { @Override public ByteConnectionImpl produce() {
-			return new ByteConnectionImpl("" + _nameKeeper.name(), contact);
+	public ByteConnectionImpl connectionFor(final Contact contact) {
+		return ConnectionsByContact.get(contact);
+	}
+
+	
+	@Override
+	public void manageIncomingSocket(final ByteArraySocket socket) {
+		SocketCloser.closeIfUnsuccessful(socket, "Incoming socket closed.", new Closure<IOException>() { @Override public void run() throws IOException {
+			Seal contactsSeal = IncomingHandShaker.greet(socket);
+			breakTieIfNecessary(contactsSeal, socket, true);
 		}});
 	}
 
+
 	@Override
-	public void manageIncomingSocket(ByteArraySocket socket) {
-		Contact contact = new HandShaker(socket).determineContact();
-		if (contact == null) return;
+	public void manageOutgoingSocket(final ByteArraySocket socket, final Contact contact) {
+		SocketCloser.closeIfUnsuccessful(socket, "Outgoing socket closed.", new Closure<IOException>() { @Override public void run() throws IOException {
+			OutgoingHandShaker.greet(socket);
+			breakTieIfNecessary(Seals.sealGiven(contact), socket, false);
+		}});
+	}
+
+	
+	@Override
+	public void closeConnectionFor(Contact contact) {
+		ByteConnectionImpl connection = ConnectionsByContact.remove(contact);
+		if (connection != null) connection.close();
+	}
+	
+	
+	private void breakTieIfNecessary(Seal contactsSeal, ByteArraySocket socket, boolean isIncoming) {
+		Contact contact = Seals.contactGiven(contactsSeal);
+		ByteConnectionImpl connection = ConnectionsByContact.get(contact);
+		SocketHolder socketHolder = connection.socketHolder();
 		
-		connectionFor(contact).manageIncomingSocket(socket);
+		synchronized (socketHolder) {
+			if (socketHolder.socket() == null) {
+				socketHolder.setSocket(socket);
+				return;
+			}
+			
+			boolean mustOverride = isIncoming
+				? compare(Seals.ownSeal(), contactsSeal)
+				: compare(contactsSeal, Seals.ownSeal());
+				
+			if (!mustOverride) return;
+			socketHolder.close("Existing socket overriden by new one.");
+			socketHolder.setSocket(socket);
+		}
 
 	}
 
-	@Override
-	public void manageOutgoingSocket(Contact contact, ByteArraySocket socket) {
-		connectionFor(contact).manageOutgoingSocket(socket);
+
+	private boolean compare(Seal seal1, Seal seal2) {
+		byte[] bytes1 = seal1.bytes();
+		byte[] bytes2 = seal2.bytes();
+		
+		for (int i = 0; i < bytes1.length; i++) {
+			if (bytes1[i] == bytes2[i]) continue;
+			return bytes1[i] > bytes2[i];
+		}
+		
+		throw new IllegalStateException("Two Seal are the same.");
 	}
 
-	@Override
-	synchronized public void closeConnectionFor(Contact contact) {
-		ByteConnectionImpl connection = _connectionsByContact.remove(contact);
-		if (connection == null) return;
-		connection.close();
-	}	
+
 }

@@ -51,7 +51,7 @@ class ByteArraySocketImpl implements ByteArraySocket {
 	}
 
 	@Override
-	public void crash() {
+	public void close() {
 		my(IO.class).crash(_inputStream);
 		my(IO.class).crash(_outputStream);
 		try {

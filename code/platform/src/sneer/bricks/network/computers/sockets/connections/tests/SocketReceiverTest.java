@@ -4,6 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import org.jmock.Expectations;
 import org.jmock.Sequence;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
@@ -11,6 +12,7 @@ import sneer.bricks.network.computers.sockets.protocol.ProtocolTokens;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.foundation.brickness.testsupport.BrickTest;
 
+@Ignore
 public class SocketReceiverTest extends BrickTest {
 
 	private ConnectionManager _subject = my(ConnectionManager.class);
@@ -30,7 +32,8 @@ public class SocketReceiverTest extends BrickTest {
 
 			oneOf(_socket2).read(); will(returnValue(ProtocolTokens.SNEER_WIRE_PROTOCOL_1)); inSequence(sequence);
 			oneOf(_socket2).read(); will(returnValue("Neide".getBytes("UTF-8"))); inSequence(sequence);
-			oneOf(_socket2).crash(); inSequence(sequence);
+			oneOf(_socket2).write(ProtocolTokens.OK); inSequence(sequence);
+			oneOf(_socket2).close(); inSequence(sequence);
 			
 		}});
 

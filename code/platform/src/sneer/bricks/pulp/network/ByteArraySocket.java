@@ -8,6 +8,6 @@ public interface ByteArraySocket {
 
 	void write(byte[] array) throws IOException;
 	
-	void crash();
+	void close();
 
 }

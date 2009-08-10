@@ -55,10 +55,10 @@ class InProcessByteArraySocket implements ByteArraySocket {
 	}
 
 	@Override
-	public void crash() {
+	public void close() {
 		if (_isCrashed) return;
 		_isCrashed = true;
-		_counterpart.crash();
+		_counterpart.close();
 	}
 	
 	@Override

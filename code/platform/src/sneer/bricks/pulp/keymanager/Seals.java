@@ -9,7 +9,7 @@ public interface Seals {
 
 	Seal ownSeal();
 
-	Seal keyGiven(Contact contact);
+	Seal sealGiven(Contact contact);
 	Contact contactGiven(Seal peersPublicKey);
 
 	Seal unmarshall(byte[] publicKeyBytes);

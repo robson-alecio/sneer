@@ -1,8 +1,10 @@
 package sneer.bricks.network.computers.sockets.connections.impl;
 
 import static sneer.foundation.environments.Environments.my;
+
+import java.io.IOException;
+
 import sneer.bricks.hardware.cpu.threads.Threads;
-import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.network.ByteArraySocket;
 import sneer.foundation.lang.Consumer;
 
@@ -10,17 +12,11 @@ import sneer.foundation.lang.Consumer;
 class SocketHolder {
 
 	private ByteArraySocket _socket;
-	private final Consumer<Boolean> _activityReceiver;
+	private final Consumer<Boolean> _hasSocketReceiver;
 
 	
-	SocketHolder(Consumer<Boolean> activityReceiver) {
-		_activityReceiver = activityReceiver;
-	}
-
-	
-	synchronized
-	boolean isEmpty() {
-		return _socket == null;
+	SocketHolder(Consumer<Boolean> hasSocketReceiver) {
+		_hasSocketReceiver = hasSocketReceiver;
 	}
 
 	
@@ -31,42 +27,36 @@ class SocketHolder {
 
 	
 	synchronized
-	boolean setSocketIfNecessary(ByteArraySocket newSocket) {
-		if (!isEmpty()) {
-			my(Logger.class).log("New socket crashed: ", newSocket);
-			newSocket.crash();
-			return false;
-		}
-
+	void setSocket(ByteArraySocket newSocket) {
+		if (_socket != null) throw new IllegalStateException();
 		_socket = newSocket;
-		_activityReceiver.consume(true);
+
+		_hasSocketReceiver.consume(true);
 		notifyAll();
-		return true;
 	}
 
 	
-	synchronized
-	void crash(ByteArraySocket referenceToSocket) {
-		referenceToSocket.crash();
-
-		if (referenceToSocket != _socket) {
-			my(Logger.class).log("Crashing different socket: ", referenceToSocket);
-			return;
-		}
-
-		my(Logger.class).log("Crashing socket: ", _socket);
-
-		_socket = null;
-		_activityReceiver.consume(false);
-	}
-
-
 	synchronized
 	ByteArraySocket waitForSocket() {
 		while (_socket == null)
 			my(Threads.class).waitWithoutInterruptions(this);
 		
 		return _socket;
+	}
+
+	
+	synchronized
+	void close(ByteArraySocket socket, String message, IOException exception) {
+		SocketCloser.close(socket, message, exception);
+		if (_socket == socket) _socket = null;
+	}
+
+	
+	synchronized
+	void close(String message) {
+		if (_socket == null) return;
+		SocketCloser.close(_socket, message);
+		_socket = null;
 	}
 
 }

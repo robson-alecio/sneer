@@ -1,7 +1,7 @@
 ﻿TASKS
 =========
 
-	- [Klaus] Unignore Freedom2.isOnlineAfterNewSession()
+	- [Klaus] Unignore Freedom2.isOnlineAfterNewSession(), SocketOriginatorTest and SocketReceiverTest
 
 	- [Klaus and Sandro] Sneer Responsiveness - Find a way to avoid snapp starter thread from waiting for gui thread.
 			

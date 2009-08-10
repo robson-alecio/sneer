@@ -80,7 +80,7 @@ final class ProbeImpl implements Consumer<Tuple> {
 
 	private void initContactsPKIfNecessary() {
 		if (_contactsPK != null) return;
-		_contactsPK = _keyManager.keyGiven(_contact);
+		_contactsPK = _keyManager.sealGiven(_contact);
 	}
 
 }

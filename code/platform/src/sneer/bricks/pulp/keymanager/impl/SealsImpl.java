@@ -27,7 +27,7 @@ class SealsImpl implements Seals {
 	}
 
 	@Override
-	public Seal keyGiven(Contact contact) {
+	public Seal sealGiven(Contact contact) {
 		//return _keyByContact.get(contact);
 		return generateMickeyMouseKey(contact.nickname().currentValue());
 	}

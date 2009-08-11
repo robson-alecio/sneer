@@ -210,7 +210,7 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	private void accelerateHeartbeat() {
 		my(Threads.class).startStepping(new Steppable() { @Override public void step() {
 			my(Clock.class).advanceTime(10 * 1000);
-			my(Threads.class).sleepWithoutInterruptions(100);
+			my(Threads.class).sleepWithoutInterruptions(200);
 		}});
 	}
 

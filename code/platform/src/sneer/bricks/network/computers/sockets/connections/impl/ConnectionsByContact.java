@@ -22,4 +22,9 @@ class ConnectionsByContact {
 		return _cache.remove(contact);
 	}
 
+
+	static Iterable<ByteConnectionImpl> all() {
+		return _cache.values();
+	}
+
 }

@@ -92,8 +92,8 @@ class ByteConnectionImpl implements ByteConnection {
 
 	
 	void close() {
-		_contractToSend.dispose();
-		_contractToReceive.dispose();
+		if (_contractToSend != null) _contractToSend.dispose();
+		if (_contractToReceive != null) _contractToReceive.dispose();
 		
 		_socketHolder.close("Connection closed.");
 	}

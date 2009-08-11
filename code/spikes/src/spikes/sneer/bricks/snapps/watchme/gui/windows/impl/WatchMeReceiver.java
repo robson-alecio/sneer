@@ -28,7 +28,7 @@ import spikes.sneer.bricks.snapps.watchme.WatchMe;
 class WatchMeReceiver{
 
 	private final WatchMe _watchMe = my(WatchMe.class);
-	private final Seals _keyManager = my(Seals.class);
+	private final Seals Seals = my(Seals.class);
 	private final ReactiveWidgetFactory _factory = my(ReactiveWidgetFactory.class);
 	private final Contact _contact;
 
@@ -39,7 +39,7 @@ class WatchMeReceiver{
 
 	WatchMeReceiver(Contact contact) {
 		_contact = contact;
-		startWindowPaint(_keyManager.keyGiven(_contact));
+		startWindowPaint(Seals.sealGiven(_contact));
 	}
 
 	private void initGui() {

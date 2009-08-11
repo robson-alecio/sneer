@@ -11,7 +11,7 @@ public class HardcodedContactsImpl implements HardcodedContacts {
 	private final ContactManager _contactManager = my(ContactManager.class);
 
 	HardcodedContactsImpl(){
-		if(_contactManager.contacts().currentElements().size()>0) 
+		if(!_contactManager.contacts().currentElements().isEmpty()) 
 			return;
 				
 		for (ContactInfo contact : contacts())

@@ -8,7 +8,7 @@ import sneer.foundation.brickness.Brick;
 public interface ProtocolTokens {
 
 	static final byte[] FALLBACK = my(Lang.class).strings().toByteArray("Fallback");
-	static final byte[] OK = my(Lang.class).strings().toByteArray("OK");
+	static final byte[] CONFIRMED = my(Lang.class).strings().toByteArray("Confirmed");
 	static final byte[] SNEER_WIRE_PROTOCOL_1 = my(Lang.class).strings().toByteArray("Sneer Wire Protocol 1");
 
 }

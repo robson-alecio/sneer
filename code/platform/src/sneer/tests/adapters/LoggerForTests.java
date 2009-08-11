@@ -22,7 +22,7 @@ class LoggerForTests implements Logger {
 	@Override
 	public void log(String message, Object... messageInsets) {
 		String formatted = format(message, messageInsets);
-		if (formatted.contains("Tuple")) return;
+		if (formatted.contains("Tuple")) return; ///////////////////// Message to filter out.
 		//System.out.println(formatted); //////////////////////// This is the line you uncomment to turn logging on for functional tests.
 	}
 
@@ -57,11 +57,11 @@ class LoggerForTests implements Logger {
 	}
 
 	
-	private int count(String prefix) {
+	private String count(String prefix) {
 		int result = 0;
 		for (String existing : _allPrefixes)
 			if (existing.equals(prefix)) result++;
-		return result;
+		return result == 1 ? "" : " " + result;
 	}
 
 

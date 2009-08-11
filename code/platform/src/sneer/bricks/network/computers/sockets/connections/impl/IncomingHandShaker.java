@@ -20,7 +20,7 @@ class IncomingHandShaker {
 		byte[] contactsSealBytes = identifyContact(socket);
 		Seal contactsSeal = Seals.unmarshall(contactsSealBytes);
 
-		rejectReflexiveSocket(contactsSeal);
+		rejectLoopback(contactsSeal);
 		
 		//Implement: Challenge pk.
 
@@ -28,7 +28,7 @@ class IncomingHandShaker {
 	}
 
 
-	static private void rejectReflexiveSocket(Seal peersSeal) throws IOException {
+	static private void rejectLoopback(Seal peersSeal) throws IOException {
 		if (peersSeal.equals(Seals.ownSeal()))
 			throw new IOException("Socket identified as originating from yourself.");
 	}
@@ -39,10 +39,8 @@ class IncomingHandShaker {
 			byte[] header = socket.read();
 			byte[] sealBytes = socket.read();
 			
-			if (Arrays.equals(header, ProtocolTokens.SNEER_WIRE_PROTOCOL_1)) {
-				socket.write(ProtocolTokens.OK);
+			if (Arrays.equals(header, ProtocolTokens.SNEER_WIRE_PROTOCOL_1))
 				return sealBytes;
-			}
 			
 			socket.write(ProtocolTokens.FALLBACK);
 		}

@@ -3,7 +3,7 @@
 
 	- [Klaus] Ask Sandro why Hudson tries to run FileCopyTest (abstract) but not FreedomXBase (also abstract). 
 
-	- [Klaus] Unignore Freedom2.isOnlineAfterNewSession(), SocketOriginatorTest and SocketReceiverTest
+	- [Klaus] Unignore Freedom2.isOnlineAfterNewSession()
 
 	- [Klaus and Sandro] Sneer Responsiveness - Find a way to avoid snapp starter thread from waiting for gui thread.
 			

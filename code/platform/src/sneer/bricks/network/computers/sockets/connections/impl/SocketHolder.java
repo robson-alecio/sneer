@@ -5,20 +5,19 @@ import static sneer.foundation.environments.Environments.my;
 import java.io.IOException;
 
 import sneer.bricks.hardware.cpu.threads.Threads;
+import sneer.bricks.hardware.io.log.Logger;
 import sneer.bricks.pulp.network.ByteArraySocket;
-import sneer.foundation.lang.Consumer;
+import sneer.bricks.pulp.reactive.Register;
+import sneer.bricks.pulp.reactive.Signal;
+import sneer.bricks.pulp.reactive.Signals;
 
 
 class SocketHolder {
 
+	private final Register<Boolean> _isConnected = my(Signals.class).newRegister(false);
+
 	private ByteArraySocket _socket;
-	private final Consumer<Boolean> _hasSocketReceiver;
-
 	
-	SocketHolder(Consumer<Boolean> hasSocketReceiver) {
-		_hasSocketReceiver = hasSocketReceiver;
-	}
-
 	
 	synchronized
 	ByteArraySocket socket() {
@@ -31,15 +30,29 @@ class SocketHolder {
 		if (_socket != null) throw new IllegalStateException();
 		_socket = newSocket;
 
-		_hasSocketReceiver.consume(true);
+		_isConnected.setter().consume(true);
 		notifyAll();
+		
+		my(Logger.class).log("New socket set.");
 	}
 
 	
 	synchronized
+	void overrideSocket(ByteArraySocket newSocket) {
+		close("Existing socket overriden by new socket.");
+		setSocket(newSocket);
+	}
+	
+	
+	synchronized
 	ByteArraySocket waitForSocket() {
-		while (_socket == null)
+		while (_socket == null) {
+			my(Logger.class).log("Waiting for socket...");
 			my(Threads.class).waitWithoutInterruptions(this);
+			
+			if (_socket != null) my(Logger.class).log("Socket aquired.");
+		}
+
 		
 		return _socket;
 	}
@@ -48,7 +61,10 @@ class SocketHolder {
 	synchronized
 	void close(ByteArraySocket socket, String message, IOException exception) {
 		SocketCloser.close(socket, message, exception);
-		if (_socket == socket) _socket = null;
+		if (socket != _socket) return;
+		
+		_socket = null;
+		_isConnected.setter().consume(false);
 	}
 
 	
@@ -59,4 +75,9 @@ class SocketHolder {
 		_socket = null;
 	}
 
+
+	Signal<Boolean> isConnected() {
+		return _isConnected.output();
+	}
+	
 }

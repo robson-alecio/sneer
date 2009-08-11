@@ -10,9 +10,7 @@ import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.network.computers.sockets.connections.ByteConnection;
 import sneer.bricks.pulp.bandwidth.BandwidthCounter;
 import sneer.bricks.pulp.network.ByteArraySocket;
-import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
-import sneer.bricks.pulp.reactive.Signals;
 import sneer.foundation.lang.Consumer;
 
 class ByteConnectionImpl implements ByteConnection {
@@ -20,8 +18,7 @@ class ByteConnectionImpl implements ByteConnection {
 	static private final Threads Threads = my(Threads.class);
 	private final BandwidthCounter _bandwidthCounter = my(BandwidthCounter.class);
 
-	private final Register<Boolean> _isConnected = my(Signals.class).newRegister(false);
-	private final SocketHolder _socketHolder = new SocketHolder(_isConnected.setter());
+	private final SocketHolder _socketHolder = new SocketHolder();
 	
 	private PacketScheduler _scheduler;
 	private Consumer<byte[]> _receiver;
@@ -32,7 +29,7 @@ class ByteConnectionImpl implements ByteConnection {
 
 	@Override
 	public Signal<Boolean> isConnected() {
-		return _isConnected.output();
+		return _socketHolder.isConnected();
 	}
 
 

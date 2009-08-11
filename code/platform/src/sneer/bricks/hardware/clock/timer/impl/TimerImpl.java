@@ -35,7 +35,8 @@ class TimerImpl implements Timer {
 	
 	
 	@Override
-	synchronized public WeakContract wakeUpNoEarlierThan(long timeToWakeUp, Runnable runnable) {
+	synchronized
+	public WeakContract wakeUpNoEarlierThan(long timeToWakeUp, Runnable runnable) {
 		long millisFromNow = timeToWakeUp <= currentTime()
 			? 0
 			: timeToWakeUp - currentTime();
@@ -43,18 +44,21 @@ class TimerImpl implements Timer {
 	}
 
 	@Override
-	synchronized public WeakContract wakeUpInAtLeast(long millisFromCurrentTime, Runnable runnable) {
+	synchronized
+	public WeakContract wakeUpInAtLeast(long millisFromCurrentTime, Runnable runnable) {
 		return wakeUp(millisFromCurrentTime, asSteppable(runnable), false);
 	}
 
 	@Override
-	synchronized public WeakContract wakeUpNowAndEvery(long period, final Steppable stepper) {
+	synchronized
+	public WeakContract wakeUpNowAndEvery(long period, final Steppable stepper) {
 		wakeUp(0, stepper, false);
 		return wakeUpEvery(period, stepper);
 	}
 
 	@Override
-	synchronized public WeakContract wakeUpEvery(long period, Steppable stepper) {
+	synchronized
+	public WeakContract wakeUpEvery(long period, Steppable stepper) {
 		return wakeUp(period, stepper, true);
 	}
 
@@ -71,6 +75,7 @@ class TimerImpl implements Timer {
 		latch.waitTillOpen();
 	}
 	
+	synchronized
 	private void wakeUpAlarmsIfNecessary() {
 		while (!_alarms.isEmpty()) {
 			Alarm first = _alarms.first();

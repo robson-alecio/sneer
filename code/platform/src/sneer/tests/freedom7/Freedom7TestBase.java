@@ -7,6 +7,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.tests.SovereignFunctionalTestBase;
+import sneer.tests.adapters.LoggerForTests;
 
 public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	
@@ -15,6 +16,8 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	@Ignore
 	@Test (timeout = 10000)
 	public void meToo() throws Exception {
+		LoggerForTests.isOn = true;
+		
 		a().copyToSourceFolder(generateY());
 		
 		newSession(a());

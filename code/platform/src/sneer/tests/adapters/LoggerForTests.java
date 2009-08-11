@@ -6,24 +6,26 @@ import java.util.List;
 import sneer.bricks.hardware.io.log.LogWorker;
 import sneer.bricks.hardware.io.log.Logger;
 
-class LoggerForTests implements Logger {
+public class LoggerForTests implements Logger {
+
+	public static boolean isOn = false;
 
 	private static List<String> _allPrefixes = new ArrayList<String>();
-	
 	private final String _prefix;
 
 	
 	LoggerForTests(String prefix) {
 		_allPrefixes.add(prefix);
-		_prefix = prefix + " " + count(prefix);
+		_prefix = prefix + count(prefix) + " : ";
 	}
 
 
 	@Override
 	public void log(String message, Object... messageInsets) {
+		if (!isOn) return;
 		String formatted = format(message, messageInsets);
-		if (formatted.contains("Tuple")) return; ///////////////////// Message to filter out.
-		//System.out.println(formatted); //////////////////////// This is the line you uncomment to turn logging on for functional tests.
+		if (formatted.contains("Heartbeat")) return; ///////////////////// Message to filter out.
+		System.out.println(formatted); //////////////////////// This is the line you uncomment to turn logging on for functional tests.
 	}
 
 	@Override
@@ -33,12 +35,8 @@ class LoggerForTests implements Logger {
 
 	String format(String message, Object... messageInsets) {
 		StringBuilder result = new StringBuilder();
-		
 		result.append(_prefix);
-		result.append(": ");
-		
 		formatInsets(result, message, messageInsets);
-		
 		return result.toString();
 	}
 

@@ -18,4 +18,6 @@ public interface Crypto {
 	Digester newDigester();
 
 	Sneer1024 unmarshallSneer1024(byte[] bytes);
+
+	String toHexa(byte[] bytes);
 }

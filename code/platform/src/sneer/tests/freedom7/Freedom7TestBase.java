@@ -6,6 +6,8 @@ import java.io.IOException;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import sneer.bricks.software.bricks.snappstarter.Snapp;
+import sneer.foundation.brickness.Brick;
 import sneer.tests.SovereignFunctionalTestBase;
 import sneer.tests.adapters.LoggerForTests;
 
@@ -14,7 +16,7 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 //	private final JavaCompiler _compiler = my(JavaCompiler.class);
 
 	@Ignore
-	@Test (timeout = 10000)
+	@Test (timeout = 12000)
 	public void meToo() throws Exception {
 		LoggerForTests.isOn = true;
 		
@@ -23,9 +25,9 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 		newSession(a());
 		
 		a().waitForAvailableBrick("freedom7.y.Y");
-		
 		b().waitForAvailableBrick("freedom7.y.Y");
-		b().stageBrickForExecution("freedom7.y.Y");
+		
+		b().stageBricksForExecution("freedom7.y.Y");
 
 		System.clearProperty("freedom7.y.Y.installed");
 		newSession(b());
@@ -139,7 +141,10 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 //	}
 //
 	private void writeY(SourceFileWriter writer) throws IOException {
-		writer.write("freedom7.y.Y", "@sneer.foundation.brickness.Brick public interface Y {}");
+		writer.write("freedom7.y.Y",
+				"@" + Brick.class.getName() + " " +
+				"@" + Snapp.class.getName() + " " +
+				"public interface Y {}");
 		writer.write("freedom7.y.impl.YImpl",
 				"class YImpl implements freedom7.y.Y {\n" +
 					"public YImpl() {\n" +

@@ -11,7 +11,7 @@ class BrickVersionImpl implements BrickVersion {
 
 
 	private final Sneer1024 _hash;
-
+	private boolean _stagedForExecution;
 	
 	BrickVersionImpl(Sneer1024 hash) {
 		_hash = hash;
@@ -29,7 +29,7 @@ class BrickVersionImpl implements BrickVersion {
 
 	@Override
 	public boolean isStagedForExecution() {
-		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
+		return _stagedForExecution;
 	}
 
 	@Override
@@ -55,6 +55,10 @@ class BrickVersionImpl implements BrickVersion {
 	@Override
 	public Status status() {
 		throw new sneer.foundation.lang.exceptions.NotImplementedYet(); // Implement
+	}
+
+	public void setStagedForExecution(boolean value) {
+		_stagedForExecution = value;
 	}
 
 }

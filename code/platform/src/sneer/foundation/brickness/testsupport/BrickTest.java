@@ -39,7 +39,7 @@ public abstract class BrickTest extends CleanTest {
 		return _mockery.mock(type);
 	}
 
-	protected <T> T mock(Class<T> type, String name) {
+	protected <T> T mock(String name, Class<T> type) {
 		return _mockery.mock(type, name);
 	}
 	

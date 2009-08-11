@@ -2,9 +2,9 @@ package sneer.bricks.pulp.crypto.impl;
 
 import java.util.Arrays;
 
-import org.bouncycastle.util.encoders.Hex;
-
+import sneer.bricks.pulp.crypto.Crypto;
 import sneer.bricks.pulp.crypto.Sneer1024;
+import static sneer.foundation.environments.Environments.my;
 
 class Sneer1024Impl implements Sneer1024 {
 
@@ -24,7 +24,7 @@ class Sneer1024Impl implements Sneer1024 {
 
 	@Override
 	public String toHexa() {
-		return new String(Hex.encode(_bytes));
+		return my(Crypto.class).toHexa(_bytes);
 	}
 
 	@Override

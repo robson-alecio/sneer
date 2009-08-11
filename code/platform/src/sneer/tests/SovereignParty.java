@@ -22,6 +22,6 @@ public interface SovereignParty {
 
 	//Freedom7
 	void waitForAvailableBrick(String brickName);
-	void stageBrickForExecution(String brickName);
+	void stageBricksForExecution(String... brickNames);
 	void copyToSourceFolder(File folderWithBricks) throws IOException;
 }

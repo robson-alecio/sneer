@@ -2,6 +2,7 @@ package sneer.bricks.softwaresharing.impl;
 
 import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.cpu.lang.contracts.WeakContract;
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.pulp.reactive.collections.SetRegister;
 import sneer.bricks.pulp.reactive.collections.SetSignal;
 import sneer.bricks.pulp.reactive.collections.impl.SetRegisterImpl;
@@ -19,6 +20,7 @@ class BrickSpaceImpl implements BrickSpace, Consumer<Building> {
 
 	{
 		my(TupleSpace.class).keep(Building.class);
+		
 		_brickUsageContract = my(TupleSpace.class).addSubscription(Building.class, this);
 		
 		my(BrickPublisher.class).publishAllBricks();
@@ -30,8 +32,10 @@ class BrickSpaceImpl implements BrickSpace, Consumer<Building> {
 	}
 
 	@Override
-	public void consume(Building building) {
-		_availableBricks.addAll(new BrickFetcher(building.hashOfAllBricks).bricks());
+	public void consume(final Building building) {
+		my(Threads.class).startDaemon("BrickFetcher", new Runnable() { @Override public void run() {
+			_availableBricks.addAll(new BrickFetcher(building.hashOfAllBricks).bricks());
+		}});
 	}
 
 }

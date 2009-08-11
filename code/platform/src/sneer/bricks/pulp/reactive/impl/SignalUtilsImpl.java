@@ -35,13 +35,16 @@ class SignalUtilsImpl implements SignalUtils {
 	@Override
 	public <T> void waitForElement(SetSignal<T> setSignal, final Predicate<T> predicate) {
 		final Latch latch = my(Threads.class).newLatch();
-		@SuppressWarnings("unused")
 		WeakContract reception = setSignal.addReceiver(new Consumer<CollectionChange<T>>() { @Override public void consume(CollectionChange<T> change) {
 			for (T element : change.elementsAdded())
-				if (predicate.evaluate(element)) latch.open();
+				if (predicate.evaluate(element)) {
+					latch.open();
+					break;
+				}
 		}});
 		
 		latch.waitTillOpen();
+		reception.dispose();
 	}
 	
 	static private <T> boolean equalsWithNulls(final T expected, T value) {

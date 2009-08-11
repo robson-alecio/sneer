@@ -9,6 +9,7 @@ import java.security.MessageDigest;
 import java.security.Security;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.util.encoders.Hex;
 
 import sneer.bricks.hardware.io.IO;
 import sneer.bricks.pulp.crypto.Crypto;
@@ -62,6 +63,11 @@ class CryptoImpl implements Crypto {
 	@Override
 	public Sneer1024 unmarshallSneer1024(byte[] bytes) {
 		return new Sneer1024Impl(bytes);
+	}
+
+	@Override
+	public String toHexa(byte[] bytes) {
+		return new String(Hex.encode(bytes));
 	}
 
 }

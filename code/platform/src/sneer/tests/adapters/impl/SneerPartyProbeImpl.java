@@ -37,6 +37,7 @@ import sneer.bricks.software.folderconfig.FolderConfig;
 import sneer.bricks.softwaresharing.BrickInfo;
 import sneer.bricks.softwaresharing.BrickSpace;
 import sneer.bricks.softwaresharing.BrickVersion;
+import sneer.bricks.softwaresharing.installer.BrickInstaller;
 import sneer.foundation.brickness.Seal;
 import sneer.foundation.lang.Predicate;
 import sneer.foundation.lang.exceptions.NotImplementedYet;
@@ -222,7 +223,12 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 	}
 	
 	@Override
-	public void stageBrickForExecution(String brickName) {
+	public void stageBricksForExecution(String... brickNames) {
+		for (String brickName : brickNames) stageBrickForExecution(brickName);
+		my(BrickInstaller.class).prepareStagedBricksInstallation();
+	}
+
+	private void stageBrickForExecution(String brickName) {
 		final BrickInfo brick = availableBrick(brickName);
 		final BrickVersion singleVersion = singleVersionOf(brick);
 		brick.setStagedForExecution(singleVersion, true);
@@ -248,32 +254,16 @@ class SneerPartyProbeImpl implements SneerPartyProbe, SneerParty {
 
 	@Override
 	public void start() {
-		installStagedBricks();
+		commitStagedBricksInstallation();
 		
 		startSnapps();
 		accelerateHeartbeat();
 	}
 
-	private void installStagedBricks() {
-		try {
-			tryToInstallStagedBricks();
-		} catch (IOException e) {
-			throw new IllegalStateException(e);
-		}
+	private void commitStagedBricksInstallation() {
+//		my(BrickInstaller.class).commitStagedBricksInstallation();
 	}
-
-	@SuppressWarnings("unused")
-	private void tryToInstallStagedBricks() throws IOException {
-		for(BrickInfo brickInfo: my(BrickSpace.class).availableBricks())
-			for (BrickVersion version : brickInfo.versions())
-				if (version.isStagedForExecution())
-					installStagedVersion(version);
-	}
-
-	private void installStagedVersion(@SuppressWarnings("unused") BrickVersion version) {
-		//installBricks(tmpSrcFolderContainingFilesFor(version));
-		throw new NotImplementedYet();
-	}
+	
 
 	@Override
 	public void copyToSourceFolder(File folderWithBricks) throws IOException {

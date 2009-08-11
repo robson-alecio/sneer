@@ -20,12 +20,10 @@ import sneer.bricks.softwaresharing.BrickInfo;
 class BrickFetcher implements FileCacheVisitor {
 
 	private final Strings _strings = my(Lang.class).strings();
-
 	
 	private final Set<BrickInfo> _bricks = new HashSet<BrickInfo>();
 	private final Deque<String> _namePath = new LinkedList<String>();
 	private final Deque<Sneer1024> _hashPath = new LinkedList<Sneer1024>();
-	
 	
 	BrickFetcher(Sneer1024 hashOfAllBricks) {
 		
@@ -52,9 +50,17 @@ class BrickFetcher implements FileCacheVisitor {
 		_hashPath.pop();
 		
 		if (!fileName.endsWith(".java")) return;
-		if (!asString(fileContents).contains("@Brick")) return;
+
+		if (!isBrickDefinition(fileContents)) return;
 		
-		_bricks.add(brickFound(fileName));
+		_bricks.add(brickFound());
+	}
+
+
+	private boolean isBrickDefinition(byte[] fileContents) {
+		String contents = asString(fileContents);
+		return contents.contains("@Brick")
+			|| contents.contains("@sneer.foundation.brickness.Brick");
 	}
 
 
@@ -65,14 +71,12 @@ class BrickFetcher implements FileCacheVisitor {
 		_namePath.pop();
 		_hashPath.pop();
 	}
-
 	
-	private BrickInfo brickFound(String fileName) {
-		String packageName = _strings.join(_namePath, ".");
-		String brickName = packageName + _strings.chomp(fileName, ".java");
+	private BrickInfo brickFound() {
+		String fileName = _strings.join(_namePath, ".");
+		String brickName = _strings.chomp(fileName, ".java");
 		return new BrickInfoImpl(brickName, _hashPath.peekLast());
 	}
-	
 	
 	private String asString(byte[] fileContents) {
 		try {
@@ -81,10 +85,8 @@ class BrickFetcher implements FileCacheVisitor {
 			throw new IllegalStateException(e);
 		}
 	}
-
 	
 	Collection<BrickInfo> bricks() {
 		return _bricks;
 	}
-	
 }

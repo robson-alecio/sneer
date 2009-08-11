@@ -21,8 +21,8 @@ public class IncomingSocketTest extends BrickTest {
 
 	private ConnectionManager _subject = my(ConnectionManager.class);
 
-	private final ByteArraySocket _socketA = mock(ByteArraySocket.class, "socketA");
-	private final ByteArraySocket _socketB = mock(ByteArraySocket.class, "socketB");
+	private final ByteArraySocket _socketA = mock("socketA", ByteArraySocket.class);
+	private final ByteArraySocket _socketB = mock("socketB", ByteArraySocket.class);
 
 	private final Seal _smallerSeal = new Seal(new byte[]{1, 1, 1});
 	private final Seal _ownSeal     = new Seal(new byte[]{2, 2, 2});

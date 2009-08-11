@@ -43,7 +43,7 @@ public class FileServerImpl implements FileServer, Consumer<FileRequest> {
 
 	private Tuple asTuple(Object response) {
 		return response instanceof FolderContents
-			? (FolderContents)response
+			? new FolderContents(((FolderContents)response).contents)
 			: asFileContents((byte[])response);
 	}
 

@@ -3,8 +3,6 @@
 
 	- [Klaus] Ask Sandro why Hudson tries to run FileCopyTest (abstract) but not FreedomXBase (also abstract). 
 
-	- [Klaus] Unignore Freedom2.isOnlineAfterNewSession()
-
 	- [Klaus] Revise entire package structure.
 		- Remove all calls to sleep() including indirect.  
 

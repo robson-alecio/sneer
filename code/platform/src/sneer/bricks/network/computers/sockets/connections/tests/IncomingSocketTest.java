@@ -6,6 +6,7 @@ import org.jmock.Expectations;
 import org.jmock.Sequence;
 import org.junit.Test;
 
+import sneer.bricks.hardware.cpu.threads.Threads;
 import sneer.bricks.network.computers.sockets.connections.ConnectionManager;
 import sneer.bricks.network.computers.sockets.protocol.ProtocolTokens;
 import sneer.bricks.network.social.Contact;
@@ -20,8 +21,8 @@ public class IncomingSocketTest extends BrickTest {
 
 	private ConnectionManager _subject = my(ConnectionManager.class);
 
-	private final ByteArraySocket _socketB = mock(ByteArraySocket.class, "socket1");
-	private final ByteArraySocket _socketA = mock(ByteArraySocket.class, "socket2");
+	private final ByteArraySocket _socketA = mock(ByteArraySocket.class, "socketA");
+	private final ByteArraySocket _socketB = mock(ByteArraySocket.class, "socketB");
 
 	private final Seal _smallerSeal = new Seal(new byte[]{1, 1, 1});
 	private final Seal _ownSeal     = new Seal(new byte[]{2, 2, 2});
@@ -54,10 +55,15 @@ public class IncomingSocketTest extends BrickTest {
 			oneOf(_socketB).read(); will(returnValue(new byte[]{3, 3, 3})); inSequence(sequence);
 			oneOf(_seals).unmarshall(new byte[]{3, 3, 3}); will(returnValue(_greaterSeal)); inSequence(sequence);
 			oneOf(_socketB).read(); will(returnValue(ProtocolTokens.CONFIRMED)); inSequence(sequence);
+
+			oneOf(_socketA).close(); inSequence(sequence);
+			oneOf(_socketB).close(); inSequence(sequence);
 			
 		}});
 
 		_subject.manageIncomingSocket(_socketA);
 		_subject.manageIncomingSocket(_socketB);
+		
+		my(Threads.class).crashAllThreads();
 	}
 }

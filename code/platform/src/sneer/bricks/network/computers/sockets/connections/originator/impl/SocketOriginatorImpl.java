@@ -48,7 +48,7 @@ class SocketOriginatorImpl implements SocketOriginator {
 
 	
 	private boolean isMyOwnAddress(InternetAddress address) {
-		return Seals.sealGiven(address.contact()) == Seals.ownSeal();
+		return Seals.sealGiven(address.contact()).equals(Seals.ownSeal());
 	}
 	
 }

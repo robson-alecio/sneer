@@ -46,13 +46,8 @@ class SocketHolder {
 	
 	synchronized
 	ByteArraySocket waitForSocket() {
-		while (_socket == null) {
-			my(Logger.class).log("Waiting for socket...");
+		while (_socket == null)
 			my(Threads.class).waitWithoutInterruptions(this);
-			
-			if (_socket != null) my(Logger.class).log("Socket aquired.");
-		}
-
 		
 		return _socket;
 	}

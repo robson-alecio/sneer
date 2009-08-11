@@ -5,10 +5,11 @@
 
 	- [Klaus] Unignore Freedom2.isOnlineAfterNewSession()
 
+	- [Klaus] Revise entire package structure.
+		- Remove all calls to sleep() including indirect.  
+
 	- [Klaus and Sandro] Sneer Responsiveness - Find a way to avoid snapp starter thread from waiting for gui thread.
 			
-	- [Klaus] Revise entire package structure.  
-
 	- [Sandro] Hudson Linux Reboot
 
 	- Metoo
